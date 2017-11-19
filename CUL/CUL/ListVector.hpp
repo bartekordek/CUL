@@ -3,6 +3,7 @@
 #include "IteratorListVector.hpp"
 #include "IteratorListVectorReverse.hpp"
 #include <memory>
+#include <algorithm>
 namespace CUL
 {
 	template<typename Type>

@@ -140,7 +140,7 @@ namespace CUL
 
 			const Vector3D<Type> crossProducti( const Vector3D<Type>& right )const
 			{
-				const auto& v1 = this*;
+				const auto& v1 = *this;
 				const auto& v2 = right;
 
 				const Type cx = v1.y * v2.z - v1.z * v2.y;
