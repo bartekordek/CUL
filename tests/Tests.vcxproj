@@ -95,9 +95,10 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(HOME_GTEST_WINDOWS)\googletest\include;$(SolutionDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)deps\gtest\googletest\include;$(SolutionDir)CUL</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(HOME_GTEST_WINDOWS)\Build-Windows\googlemock\gtest\$(Configuration)\;$(HOME_GTEST_WINDOWS)\Build-Windows\googlemock\$(Configuration)\;$(SolutionDir)Build\$(Platform)_$(Configuration)\;$(BOOST)\stage\lib;$(SolutionDir)MogeLib\$(Configuration)</AdditionalLibraryDirectories>
@@ -111,9 +112,10 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(HOME_GTEST_WINDOWS)\googletest\include;$(SolutionDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)deps\gtest\googletest\include;$(SolutionDir)CUL</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(HOME_GTEST_WINDOWS)\Build-Windows\googlemock\gtest\$(Configuration)\;$(HOME_GTEST_WINDOWS)\Build-Windows\googlemock\$(Configuration)\;$(SolutionDir)Build\$(Platform)_$(Configuration)\;$(BOOST)\stage\lib;$(SolutionDir)MogeLib\$(Configuration)</AdditionalLibraryDirectories>
@@ -128,8 +130,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(HOME_GTEST_WINDOWS)\googletest\include;$(SolutionDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)deps\gtest\googletest\include;$(SolutionDir)CUL</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -146,8 +149,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(HOME_GTEST_WINDOWS)\googletest\include;$(SolutionDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)deps\gtest\googletest\include;$(SolutionDir)CUL</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
