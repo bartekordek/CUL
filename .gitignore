@@ -1,9 +1,7 @@
 *.VC.db
-*.a
 *.bin
 *.check_cache
 *.cmake
-*.dll
 *.exe
 *.exp
 *.idb
@@ -12,8 +10,8 @@
 *.iobj
 *.ipch
 *.ipdb
+*.keep
 *.lastcodeanalysisissucceded
-*.lib
 *.log
 *.make
 *.marks
