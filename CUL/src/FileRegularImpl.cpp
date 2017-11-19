@@ -51,12 +51,24 @@ void FileRegularImpl::reload()
 
 void FileRegularImpl::load()
 {
-	std::ifstream infile( this->path.getPath() );
+	std::ifstream infile;
+    infile.open( 
+        this->path.getPath(), 
+        std::ios_base::in );
 	std::string line;
 	while( std::getline( infile, line ) )
 	{
+        if(
+            false == line.empty() && 
+                ( 
+                    line.back() == ( '\r' ) || 
+                    line.back() == ( '\n' ) ) )
+        {
+            line.pop_back();
+        }
 		this->rows->pushBack( line );
 	}
+    infile.close();
 }
 
 void FileRegularImpl::unload()
