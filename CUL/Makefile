@@ -1,7 +1,7 @@
 DYN_LIB_EXT := .so
 BUILD_ROOT := Build-Linux
 ifeq ($(OS),Windows_NT)
-    DYN_LIB_EXT := .dll
+	DYN_LIB_EXT := .dll
 	BUILD_ROOT := Build-Cygwin
 endif
 
@@ -18,18 +18,18 @@ RELEASE_FLAGS = -Ofast
 PROJECT_NAME = libcul
 IMP_LIB_NAME = $(PROJECT_NAME).a
 DEPS_ROOT := ../deps
-BOOST_ROOT := $(DEPS)/boost_1_64_0
+BOOST_ROOT := $(DEPS_ROOT)/boost_1_64_0
 BOOST_INCLUDE := $(BOOST_ROOT)
-BOOST_IMPORT_LIB := $(BOOST_ROOT)/$(BUILD_ROOT)/libboost_filesystem-mt.a 
+BOOST_IMPORT_LIB := $(BOOST_ROOT)/$(BUILD_ROOT)/libboost_filesystem-mt.a  $(BOOST_ROOT)/$(BUILD_ROOT)/libboost_system-mt.a
 
 OUTPUT_DIR := ../build
 OUTPUT_DIR_DEBUG = $(OUTPUT_DIR)/$(BUILD_ROOT)_Debug
-OUTPUT_DIR_RELEASE = $(OUTPUT_DEBUG)/$(BUILD_ROOT)_Release
+OUTPUT_DIR_RELEASE = $(OUTPUT_DIR)/$(BUILD_ROOT)_Release
 
-HEADER_INC = -I . -I $(HOME_BOOST_LINUX)
+HEADER_INC = -I . -I $(BOOST_ROOT)
 
-IMPORT_LIBS_DEBUG = $(HOME_BOOST_LINUX)/$(BUILD_ROOT)/lib/libboost_filesystem-mt.a $(HOME_BOOST_LINUX)/$(BUILD_ROOT)/lib/libboost_system-mt.a
-IMPORT_LIBS_RELEASE = $(HOME_BOOST_LINUX)/$(BUILD_ROOT)/lib/libboost_filesystem-mt.a $(HOME_BOOST_LINUX)/$(BUILD_ROOT)/lib/libboost_system-mt.a
+IMPORT_LIBS_DEBUG = $(BOOST_IMPORT_LIB)
+IMPORT_LIBS_RELEASE = $(BOOST_IMPORT_LIB)
 IMP_LIB_DEBUG = $(OUTPUT_DIR_DEBUG)/$(IMP_LIB_NAME)
 IMP_LIB_RELEASE = $(OUTPUT_DIR_RELEASE)/$(IMP_LIB_NAME)
 
@@ -41,7 +41,7 @@ OBJ_DEBUG_DIR := $(OUTPUT_DIR_DEBUG)/intermediate_$(PROJECT_NAME)/
 OBJ_RELEASE_DIR := $(OUTPUT_DIR_RELEASE)/intermediate_$(PROJECT_NAME)/
 OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
 OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
-	
+
 DLL_NAME = $(PROJECT_NAME)$(DYN_LIB_EXT)
 
 debug: $(OUTPUT_DIR_DEBUG)/$(DLL_NAME)
@@ -53,13 +53,13 @@ $(OUTPUT_DIR_DEBUG)/$(DLL_NAME): $(OBJ_DEBUG_FILES) $(OUTPUT_DIR_DEBUG)
 
 $(OUTPUT_DIR_RELEASE)/$(DLL_NAME): $(OBJ_RELEASE_FILES) $(OUTPUT_DIR_RELEASE)
 	$(CC_LINK) -o $(OUTPUT_DIR_RELEASE)/$(DLL_NAME) $(OBJ_RELEASE_FILES) $(RELEASE_FLAGS) $(IMPORT_LIBS_RELEASE) \
-	-Wl,--out-implib,$(OUTPUT_DIR_RELEASE)/$(IMP_LIB_NAME) $(EXPORT_ALL_SYMBOLS) $(ENABLE_AUTO_IMPORT)
+	-Wl,--out-implib,$(OUTPUT_DIR_RELEASE)/$(IMP_LIB_NAME)
 
 $(OUTPUT_DIR_DEBUG):
-	mkdir -p $@
+	@mkdir -p $@
 
 $(OUTPUT_DIR_RELEASE):
-	mkdir -p $@
+	@mkdir -p $@
 
 $(OBJ_DEBUG_DIR)%.o: %.cpp
 	mkdir -p $(dir $@)
@@ -74,10 +74,11 @@ clean:
 	rm -f $(OBJ_RELEASE_FILES)
 	rm -f $(OUTPUT_DEBUG)
 	rm -f $(OUTPUT_RELEASE)
-	
+
 test:
 	@echo "All .o files: $(OBJ_DEBUG_FILES)"
 	@echo "All .cpp files: $(CPP_FILES)"
+	@echo "BOOST_ROOT: $(BOOST_ROOT)"
 
 help:
 	echo "If run first time, please run \"make first_run\" it will create necessary dirs."
