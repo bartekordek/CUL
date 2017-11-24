@@ -2,7 +2,7 @@ DYN_LIB_EXT := .so
 BUILD_ROOT := Build-Linux
 ifeq ($(OS),Windows_NT)
 	DYN_LIB_EXT := .dll
-	BUILD_ROOT := Build-Cygwin
+	BUILD_ROOT := Cygwin
 endif
 
 CC = g++ -fdiagnostics-color=always
