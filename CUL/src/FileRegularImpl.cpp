@@ -6,19 +6,19 @@ using namespace CUL;
 using namespace FS;
 
 FileRegularImpl::FileRegularImpl():
-	rows( ListFactory::createVectorListPtr<std::string>() )
+    rows( ListFactory::createVectorListPtr<std::string>() )
 {
 }
 
 FileRegularImpl::FileRegularImpl( const FileRegularImpl& file ):
-	path( file.path ),
-	rows( ListFactory::createVectorListPtr<std::string>() )
+    path( file.path ),
+    rows( ListFactory::createVectorListPtr<std::string>() )
 {
 }
 
 FileRegularImpl::FileRegularImpl( const std::string& filePath ):
-	path( filePath ),
-	rows( ListFactory::createVectorListPtr<std::string>() )
+    path( filePath ),
+    rows( ListFactory::createVectorListPtr<std::string>() )
 {
 
 }
@@ -30,34 +30,34 @@ FileRegularImpl::~FileRegularImpl()
 
 Path* FileRegularImpl::getPath()
 {
-	return &this->path;
+    return &this->path;
 }
 
 const bool FileRegularImpl::exists()const
 {
-	return this->path.exists();
+    return this->path.exists();
 }
 
 const bool FileRegularImpl::isBinary()const
 {
-	return true;//TODO: Implement
+    return true;//TODO: Implement
 }
 
 void FileRegularImpl::reload()
 {
-	unload();
-	load();
+    unload();
+    load();
 }
 
 void FileRegularImpl::load()
 {
-	std::ifstream infile;
+    std::ifstream infile;
     infile.open( 
         this->path.getPath(), 
         std::ios_base::in );
-	std::string line;
-	while( std::getline( infile, line ) )
-	{
+    std::string line;
+    while( std::getline( infile, line ) )
+    {
         if(
             false == line.empty() && 
                 ( 
@@ -66,37 +66,37 @@ void FileRegularImpl::load()
         {
             line.pop_back();
         }
-		this->rows->pushBack( line );
-	}
+    this->rows->pushBack( line );
+    }
     infile.close();
 }
 
 void FileRegularImpl::unload()
 {
-	this->rows->clear();
+    this->rows->clear();
 }
 
 const IIterator<std::string>* FileRegularImpl::begin()const
 {
-	return &this->rows->begin();
+    return &this->rows->begin();
 }
 
 const IIterator<std::string>* FileRegularImpl::end()const
 {
-	return &this->rows->end();
+    return &this->rows->end();
 }
 
 IIterator<std::string>* FileRegularImpl::getIt()
 {
-	return this->rows->getRandomIteratorPtr();
+    return this->rows->getRandomIteratorPtr();
 }
 
 const IIterator<std::string>* FileRegularImpl::firstLine()const
 {
-	return &this->rows->firstElement();
+    return &this->rows->firstElement();
 }
 
 const IIterator<std::string>* FileRegularImpl::lastLine()const
 {
-	return &this->rows->lastElement();
+    return &this->rows->lastElement();
 }
