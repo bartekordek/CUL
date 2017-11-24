@@ -1,8 +1,8 @@
 DYN_LIB_EXT := .so
 BUILD_ROOT := Build-Linux
 ifeq ($(OS),Windows_NT)
-    DYN_LIB_EXT := .dll
-	BUILD_ROOT := Build-Cygwin
+	DYN_LIB_EXT := .dll
+	BUILD_ROOT := Cygwin
 endif
 
 CC := g++ -fdiagnostics-color=always -no-pie
@@ -20,9 +20,9 @@ OUTPUT_DIR_RELEASE = $(OUTPUT_DIR)/$(BUILD_ROOT)_Release
 DEPS_ROOT := ../deps
 GTEST_ROOT := $(DEPS_ROOT)/gtest
 GTEST_INCLUDE := $(GTEST_ROOT)/googletest/include
-GTEST_LIBRARY_DIR := $(GTEST_ROOT)/$(BUILD_ROOT)
+GTEST_LIBRARY_DIR := $(GTEST_ROOT)/Build-$(BUILD_ROOT)
 
-HEADER_INC := -I . -I $(GTEST_INCLUDE) -I ../CUL
+HEADER_INC := -I . -isystem $(GTEST_INCLUDE) -I ../CUL
 IMPORT_LIBS_DEBUG := -L$(OUTPUT_DIR_DEBUG) -L$(GTEST_LIBRARY_DIR)
 IMPORT_LIBS_RELEASE := -L$(OUTPUT_DIR_RELEASE) -L$(GTEST_LIBRARY_DIR)
 IMPORT_LIBS_FILES := -lgtest -lgtest_main -lcul
@@ -31,9 +31,8 @@ CPP_FILES := $(wildcard */*.cpp)
 CPP_FILES += $(wildcard *.cpp)
 
 # OBJ:
-OBJ_ROOT_DIR := ../build/$(BUILD_ROOT)
-OBJ_DEBUG_DIR := $(OBJ_ROOT_DIR)/intermediate/debug/
-OBJ_RELEASE_DIR := $(OBJ_ROOT_DIR)/intermediate/release/
+OBJ_DEBUG_DIR := $(OUTPUT_DIR_DEBUG)/intermediate_$(PROJECT_NAME)/debug/
+OBJ_RELEASE_DIR := $(OUTPUT_DIR_RELEASE)/intermediate_$(PROJECT_NAME)/release/
 OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
 OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
 

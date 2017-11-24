@@ -20,7 +20,8 @@ IMP_LIB_NAME = $(PROJECT_NAME).a
 DEPS_ROOT := ../deps
 BOOST_ROOT := $(DEPS_ROOT)/boost_1_64_0
 BOOST_INCLUDE := $(BOOST_ROOT)
-BOOST_IMPORT_LIB := $(BOOST_ROOT)/$(BUILD_ROOT)/libboost_filesystem-mt.a  $(BOOST_ROOT)/$(BUILD_ROOT)/libboost_system-mt.a
+BOOST_LIB_ROOT := Build-$(BUILD_ROOT)
+BOOST_IMPORT_LIB := $(BOOST_ROOT)/$(BOOST_LIB_ROOT)/libboost_filesystem-mt.a  $(BOOST_ROOT)/$(BOOST_LIB_ROOT)/libboost_system-mt.a
 
 OUTPUT_DIR := ../build
 OUTPUT_DIR_DEBUG = $(OUTPUT_DIR)/$(BUILD_ROOT)_Debug
@@ -36,7 +37,6 @@ IMP_LIB_RELEASE = $(OUTPUT_DIR_RELEASE)/$(IMP_LIB_NAME)
 CPP_FILES := $(wildcard */*.cpp)
 
 # OBJ:
-OBJ_ROOT := ../build/$(BUILD_ROOT)
 OBJ_DEBUG_DIR := $(OUTPUT_DIR_DEBUG)/intermediate_$(PROJECT_NAME)/
 OBJ_RELEASE_DIR := $(OUTPUT_DIR_RELEASE)/intermediate_$(PROJECT_NAME)/
 OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
