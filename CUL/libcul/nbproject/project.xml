@@ -3,23 +3,21 @@
     <type>org.netbeans.modules.cnd.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>CUL</name>
+            <name>libcul</name>
             <c-extensions/>
             <cpp-extensions>cpp</cpp-extensions>
             <header-extensions>hpp</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
-            <sourceRootList>
-                <sourceRootElem>.</sourceRootElem>
-            </sourceRootList>
+            <sourceRootList/>
             <confList>
                 <confElem>
-                    <name>debug</name>
-                    <type>0</type>
+                    <name>Debug</name>
+                    <type>2</type>
                 </confElem>
                 <confElem>
-                    <name>release</name>
-                    <type>0</type>
+                    <name>Release</name>
+                    <type>2</type>
                 </confElem>
             </confList>
             <formatting>
