@@ -1,4 +1,3 @@
-*.VC.db
 *.bin
 *.check_cache
 *.cmake
@@ -16,6 +15,7 @@
 *.make
 *.marks
 *.o
+*.o.d
 *.obj
 *.opendb
 *.opensdf
@@ -24,6 +24,7 @@
 *.suo
 *.tlog
 *.user
+*.VC.db
 *cache
 *~ml
 CMakeFiles/
