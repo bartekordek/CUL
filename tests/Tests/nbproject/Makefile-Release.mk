@@ -56,7 +56,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a ../../build/Cygwin-Release/libcul.a
+LDLIBSOPTIONS=-L../../build/Cygwin_${CND_CONF} ../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -65,8 +65,6 @@ LDLIBSOPTIONS=../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cy
 ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest.a
 
 ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest_main.a
-
-../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../build/Cygwin-Release/libcul.a
 
 ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ${OBJECTFILES}
 	${MKDIR} -p ../../build/${CND_PLATFORM}-${CND_CONF}

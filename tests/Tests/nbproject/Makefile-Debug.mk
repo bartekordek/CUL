@@ -56,21 +56,24 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a ../../build/Cygwin-Debug/libcul.a
+LDLIBSOPTIONS=../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a ../../build/Cygwin_Debug/libcul.a ../../build/Cygwin_Debug/libcul.dll
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe
+	${CP} ../../build/Cygwin_Debug/libcul.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 
-../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest.a
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest.a
 
-../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest_main.a
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest_main.a
 
-../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../build/Cygwin-Debug/libcul.a
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../build/Cygwin_Debug/libcul.a
 
-../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ${OBJECTFILES}
-	${MKDIR} -p ../../build/${CND_PLATFORM}-${CND_CONF}
-	${LINK.cc} -o ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe ${OBJECTFILES} ${LDLIBSOPTIONS}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../build/Cygwin_Debug/libcul.dll
+
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ${OBJECTFILES}
+	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/_ext/5c0/FileTest.o: ../FileTest.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/5c0
@@ -103,6 +106,8 @@ ${OBJECTDIR}/_ext/5c0/main.o: ../main.cpp nbproject/Makefile-${CND_CONF}.mk
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
+	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcul.dll
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe
 
 # Subprojects
 .clean-subprojects:

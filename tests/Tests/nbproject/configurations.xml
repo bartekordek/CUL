@@ -52,14 +52,33 @@
           </incDir>
         </ccTool>
         <linkerTool>
-          <output>../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe</output>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests</output>
+          <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest.a</linkerLibFileItem>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest_main.a</linkerLibFileItem>
-            <linkerLibFileItem>../../build/Cygwin-Debug/libcul.a</linkerLibFileItem>
+            <linkerLibFileItem>../../build/Cygwin_Debug/libcul.a</linkerLibFileItem>
+            <linkerLibFileItem>../../build/Cygwin_Debug/libcul.dll</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <packaging>
+        <packType>Tar</packType>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libcul.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcul.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
       <item path="../FileTest.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../FileTest.hpp" ex="false" tool="3" flavor2="0">
@@ -106,10 +125,12 @@
         </asmTool>
         <linkerTool>
           <output>../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe</output>
+          <linkerAddLib>
+            <pElem>../../build/Cygwin_${CND_CONF}</pElem>
+          </linkerAddLib>
           <linkerLibItems>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest.a</linkerLibFileItem>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest_main.a</linkerLibFileItem>
-            <linkerLibFileItem>../../build/Cygwin-Release/libcul.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

@@ -8,9 +8,9 @@ CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=Cygwin-Windows
-CND_ARTIFACT_DIR_Debug=../../build/Cygwin-Windows-Debug
-CND_ARTIFACT_NAME_Debug=Tests.exe
-CND_ARTIFACT_PATH_Debug=../../build/Cygwin-Windows-Debug/Tests.exe
+CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
+CND_ARTIFACT_NAME_Debug=Tests
+CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/Tests
 CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
 CND_PACKAGE_NAME_Debug=tests.tar
 CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/tests.tar
