@@ -156,6 +156,7 @@
             <Elem>CULLib_EXPORT</Elem>
             <Elem>CUL_DYNAMIC</Elem>
           </preprocessorList>
+          <warningLevel>3</warningLevel>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>

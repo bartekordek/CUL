@@ -76,42 +76,42 @@ LDLIBSOPTIONS=../../deps/boost_1_64_0/Build-Cygwin/libboost_system-mt.a ../../de
 ${OBJECTDIR}/_ext/511e4115/ConsoleUtilities.o: ../src/ConsoleUtilities.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/ConsoleUtilities.o ../src/ConsoleUtilities.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/ConsoleUtilities.o ../src/ConsoleUtilities.cpp
 
 ${OBJECTDIR}/_ext/511e4115/FS.o: ../src/FS.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FS.o ../src/FS.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FS.o ../src/FS.cpp
 
 ${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o: ../src/FileRegularImpl.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o ../src/FileRegularImpl.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o ../src/FileRegularImpl.cpp
 
 ${OBJECTDIR}/_ext/511e4115/IFile.o: ../src/IFile.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/IFile.o ../src/IFile.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/IFile.o ../src/IFile.cpp
 
 ${OBJECTDIR}/_ext/511e4115/MyString.o: ../src/MyString.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/MyString.o ../src/MyString.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/MyString.o ../src/MyString.cpp
 
 ${OBJECTDIR}/_ext/511e4115/Named.o: ../src/Named.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Named.o ../src/Named.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Named.o ../src/Named.cpp
 
 ${OBJECTDIR}/_ext/511e4115/Path.o: ../src/Path.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Path.o ../src/Path.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Path.o ../src/Path.cpp
 
 ${OBJECTDIR}/_ext/511e4115/XYPosition.o: ../src/XYPosition.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/XYPosition.o ../src/XYPosition.cpp
+	$(COMPILE.cc) -O2 -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/XYPosition.o ../src/XYPosition.cpp
 
 # Subprojects
 .build-subprojects:
