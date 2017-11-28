@@ -27,6 +27,4 @@
 *.VC.db
 *cache
 *~ml
-CMakeFiles/
-Tetris/nbproject/private/
-MogeLib/nbproject/private/
+tests/Tests/dist
