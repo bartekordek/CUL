@@ -56,20 +56,20 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a ../../build/Cygwin_Debug/libcul.a ../../build/Cygwin_Debug/libcul.dll
+LDLIBSOPTIONS=../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a ../../build/Cygwin-Windows-Debug/libcul.a ../../build/Cygwin-Windows-Debug/libcul.dll
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe
-	${CP} ../../build/Cygwin_Debug/libcul.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+	${CP} ../../build/Cygwin-Windows-Debug/libcul.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest_main.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../build/Cygwin_Debug/libcul.a
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../build/Cygwin-Windows-Debug/libcul.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../build/Cygwin_Debug/libcul.dll
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ../../build/Cygwin-Windows-Debug/libcul.dll
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/Tests.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}

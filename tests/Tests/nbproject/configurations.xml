@@ -58,14 +58,26 @@
           <linkerLibItems>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest.a</linkerLibFileItem>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest_main.a</linkerLibFileItem>
-            <linkerLibFileItem>../../build/Cygwin_Debug/libcul.a</linkerLibFileItem>
-            <linkerLibFileItem>../../build/Cygwin_Debug/libcul.dll</linkerLibFileItem>
+            <linkerLibFileItem>../../build/Cygwin-Windows-Debug/libcul.a</linkerLibFileItem>
+            <linkerLibFileItem>../../build/Cygwin-Windows-Debug/libcul.dll</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
       <packaging>
         <packType>Tar</packType>
         <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libcul.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcul.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/libcul.dll"
                             from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcul.dll"
@@ -144,6 +156,8 @@
           <linkerLibItems>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest.a</linkerLibFileItem>
             <linkerLibFileItem>../../deps/gtest/Build-Cygwin/libgtest_main.a</linkerLibFileItem>
+            <linkerLibFileItem>../../build/Cygwin-Windows-Release/libcul.a</linkerLibFileItem>
+            <linkerLibFileItem>../../build/Cygwin-Windows-Release/libcul.dll</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

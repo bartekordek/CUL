@@ -56,7 +56,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L../../build/Cygwin_${CND_CONF} ../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a
+LDLIBSOPTIONS=-L../../build/Cygwin_${CND_CONF} ../../deps/gtest/Build-Cygwin/libgtest.a ../../deps/gtest/Build-Cygwin/libgtest_main.a ../../build/Cygwin-Windows-Release/libcul.a ../../build/Cygwin-Windows-Release/libcul.dll
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -65,6 +65,10 @@ LDLIBSOPTIONS=-L../../build/Cygwin_${CND_CONF} ../../deps/gtest/Build-Cygwin/lib
 ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest.a
 
 ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../deps/gtest/Build-Cygwin/libgtest_main.a
+
+../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../build/Cygwin-Windows-Release/libcul.a
+
+../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ../../build/Cygwin-Windows-Release/libcul.dll
 
 ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe: ${OBJECTFILES}
 	${MKDIR} -p ../../build/${CND_PLATFORM}-${CND_CONF}
@@ -101,6 +105,8 @@ ${OBJECTDIR}/_ext/5c0/main.o: ../main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
+	${RM} -r ../../build/${CND_PLATFORM}-${CND_CONF}/libcul.dll
+	${RM} ../../build/${CND_PLATFORM}-${CND_CONF}/Tests.exe
 
 # Subprojects
 .clean-subprojects:
