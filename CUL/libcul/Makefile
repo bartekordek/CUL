@@ -48,8 +48,6 @@
 MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
-CND_PLATFORM := Cygwin
-
 
 # build
 build: .build-post
