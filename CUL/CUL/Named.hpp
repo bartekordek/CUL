@@ -1,8 +1,9 @@
 #pragma once
+#include <CUL/CUL.hpp>
 #include "CUL/MyString.hpp"
 namespace CUL
 {
-	class Name
+	class CULLib_API Name
 	{
 	public:
 		explicit Name( const CUL::MyString& name = CUL::MyString("") );

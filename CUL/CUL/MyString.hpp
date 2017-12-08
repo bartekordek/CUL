@@ -1,5 +1,6 @@
 #pragma once
 
+#include <CUL/CUL.hpp>
 #include <string>
 
 #if _MSC_VER
@@ -8,7 +9,7 @@
 
 namespace CUL
 {
-	class MyString: public std::string
+	class CULLib_API MyString: public std::string
 	{
 	public:
 		MyString();
