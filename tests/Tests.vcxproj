@@ -103,6 +103,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)deps\gtest\Build-Windows\$(Platform);$(SolutionDir)Build\$(Platform)_$(Configuration)\;$(BOOST)\stage\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>gtest.lib;gtest_main.lib;CULdynamic.lib</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,6 +121,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)deps\gtest\Build-Windows\$(Platform)_$(Configuration)\;$(SolutionDir)Build\$(Platform)_$(Configuration)\;$(BOOST)\stage\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>gtest.lib;gtest_main.lib;CULdynamic.lib</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,6 +141,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)deps\gtest\Build-Windows\$(Platform);$(SolutionDir)Build\$(Platform)_$(Configuration)\;$(BOOST)\stage\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>gtest.lib;gtest_main.lib;CULdynamic.lib</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,6 +161,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)deps\gtest\Build-Windows\$(Platform)_$(Configuration)\;$(SolutionDir)Build\$(Platform)_$(Configuration)\;$(BOOST)\stage\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>gtest.lib;gtest_main.lib;CULdynamic.lib</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -166,6 +170,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NameTests.cpp" />
     <ClCompile Include="PathTests.cpp" />
+    <ClCompile Include="StringTests.cpp" />
     <ClCompile Include="Vector3DTests.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +178,7 @@
     <ClInclude Include="IteratorTests.hpp" />
     <ClInclude Include="NameTests.hpp" />
     <ClInclude Include="PathTests.hpp" />
+    <ClInclude Include="StringTest.hpp" />
     <ClInclude Include="Vector3DTests.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
