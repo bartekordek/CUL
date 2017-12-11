@@ -60,6 +60,7 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <standard>11</standard>
           <incDir>
             <pElem>..</pElem>
             <pElem>../src</pElem>
@@ -146,6 +147,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <standard>11</standard>
           <incDir>
             <pElem>..</pElem>
             <pElem>../src</pElem>

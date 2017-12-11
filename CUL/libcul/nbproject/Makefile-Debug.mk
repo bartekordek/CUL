@@ -76,42 +76,42 @@ LDLIBSOPTIONS=../../deps/boost_1_64_0/Build-Cygwin/libboost_system-mt.a ../../de
 ${OBJECTDIR}/_ext/511e4115/ConsoleUtilities.o: ../src/ConsoleUtilities.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/ConsoleUtilities.o ../src/ConsoleUtilities.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/ConsoleUtilities.o ../src/ConsoleUtilities.cpp
 
 ${OBJECTDIR}/_ext/511e4115/FS.o: ../src/FS.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FS.o ../src/FS.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FS.o ../src/FS.cpp
 
 ${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o: ../src/FileRegularImpl.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o ../src/FileRegularImpl.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o ../src/FileRegularImpl.cpp
 
 ${OBJECTDIR}/_ext/511e4115/IFile.o: ../src/IFile.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/IFile.o ../src/IFile.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/IFile.o ../src/IFile.cpp
 
 ${OBJECTDIR}/_ext/511e4115/MyString.o: ../src/MyString.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/MyString.o ../src/MyString.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/MyString.o ../src/MyString.cpp
 
 ${OBJECTDIR}/_ext/511e4115/Named.o: ../src/Named.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Named.o ../src/Named.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Named.o ../src/Named.cpp
 
 ${OBJECTDIR}/_ext/511e4115/Path.o: ../src/Path.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Path.o ../src/Path.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Path.o ../src/Path.cpp
 
 ${OBJECTDIR}/_ext/511e4115/XYPosition.o: ../src/XYPosition.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/XYPosition.o ../src/XYPosition.cpp
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/XYPosition.o ../src/XYPosition.cpp
 
 # Subprojects
 .build-subprojects:
