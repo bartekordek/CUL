@@ -27,13 +27,13 @@
     <ClCompile Include="FileTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PathTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NameTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StringTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilesystemTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,13 +47,13 @@
     <ClInclude Include="FileTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PathTests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NameTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StringTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilesystemTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
