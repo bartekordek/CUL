@@ -72,7 +72,7 @@
     <ProjectGuid>{a44b1777-b335-4580-ae9e-89cb3779f81e}</ProjectGuid>
     <RootNamespace>PFS</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>CULdynamic</ProjectName>
+    <ProjectName>libcul</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -120,23 +120,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Build\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\build\intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Build\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\build\intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Build\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\build\intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Build\$(Platform)_$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\build\intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -146,7 +146,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(SolutionDir)deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -157,7 +157,8 @@
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -167,7 +168,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(SolutionDir)deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -177,7 +178,8 @@
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -188,7 +190,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(SolutionDir)deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -196,7 +198,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -211,7 +214,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(SolutionDir)deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -219,7 +222,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(SolutionDir)deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
