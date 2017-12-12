@@ -22,6 +22,6 @@ protected:
 	{
 	}
 
-	std::string dummyFilePath = "../../media/Dummy.txt";
+	std::string dummyFilePath = "../media/Dummy.txt";
 
 };
