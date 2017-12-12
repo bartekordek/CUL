@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="29" failures="0" disabled="0" errors="0" timestamp="2017-12-12T16:29:44" time="4.318" name="AllTests">
+  <testsuite name="FilesystemTests" tests="6" failures="0" disabled="0" errors="0" time="0.011">
+    <testcase name="GetExtension" status="run" time="0.004" classname="FilesystemTests" />
+    <testcase name="GetDirectory" status="run" time="0.001" classname="FilesystemTests" />
+    <testcase name="GetBaseName" status="run" time="0.001" classname="FilesystemTests" />
+    <testcase name="GetFullPath" status="run" time="0.001" classname="FilesystemTests" />
+    <testcase name="FileExistence" status="run" time="0.002" classname="FilesystemTests" />
+    <testcase name="FileNotExist" status="run" time="0.001" classname="FilesystemTests" />
+  </testsuite>
+  <testsuite name="FileTest" tests="4" failures="0" disabled="0" errors="0" time="0.008">
+    <testcase name="fileFileExtistFileReturnsTrue" status="run" time="0.002" classname="FileTest" />
+    <testcase name="fileFileDontExtistFileReturnsFalse" status="run" time="0.001" classname="FileTest" />
+    <testcase name="basicFileLoadFirstLine" status="run" time="0.003" classname="FileTest" />
+    <testcase name="basicFileLoadlastLine" status="run" time="0.001" classname="FileTest" />
+  </testsuite>
+  <testsuite name="IteratorTests" tests="9" failures="0" disabled="0" errors="0" time="4.287">
+    <testcase name="mainTest" status="run" time="0" classname="IteratorTests" />
+    <testcase name="VectorDoubleAdd" status="run" time="0" classname="IteratorTests" />
+    <testcase name="VectorIntIterateOneElement" status="run" time="0" classname="IteratorTests" />
+    <testcase name="VectorIntIterateTwoElements" status="run" time="0" classname="IteratorTests" />
+    <testcase name="VectorIntIterateManyElements" status="run" time="2.158" classname="IteratorTests" />
+    <testcase name="LinkedDoubleAdd" status="run" time="0" classname="IteratorTests" />
+    <testcase name="LinkedIntIterateOneElement" status="run" time="0" classname="IteratorTests" />
+    <testcase name="LinkedIntIterateTwoElements" status="run" time="0" classname="IteratorTests" />
+    <testcase name="LinkedIntIterateManyElements" status="run" time="2.127" classname="IteratorTests" />
+  </testsuite>
+  <testsuite name="NameTests" tests="3" failures="0" disabled="0" errors="0" time="0.002">
+    <testcase name="CopyConstructorWorks" status="run" time="0" classname="NameTests" />
+    <testcase name="ConstructorWithParameterWorks" status="run" time="0" classname="NameTests" />
+    <testcase name="AccessorsWork" status="run" time="0" classname="NameTests" />
+  </testsuite>
+  <testsuite name="StringTests" tests="2" failures="0" disabled="0" errors="0" time="0.002">
+    <testcase name="shouldStringBeLowerWhenLowered" status="run" time="0" classname="StringTests" />
+    <testcase name="shouldStringBeLowerWhenLoweredByStatic" status="run" time="0" classname="StringTests" />
+  </testsuite>
+  <testsuite name="Vector3DTests" tests="5" failures="0" disabled="0" errors="0" time="0.003">
+    <testcase name="initialization" status="run" time="0" classname="Vector3DTests" />
+    <testcase name="multiplicationVecTimesVec" status="run" time="0" classname="Vector3DTests" />
+    <testcase name="addVec2Vec" status="run" time="0" classname="Vector3DTests" />
+    <testcase name="multiplicationVecTimesScalar" status="run" time="0" classname="Vector3DTests" />
+    <testcase name="assigmentOperator" status="run" time="0" classname="Vector3DTests" />
+  </testsuite>
+</testsuites>
