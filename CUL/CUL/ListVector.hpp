@@ -18,7 +18,7 @@ namespace CUL
             this->lastEl.reset( new IteratorListVector<Type>( this->values ) );
         }    
         
-        IList& operator=( const IList& list ) override
+        IList<Type>& operator=( const IList<Type>& list ) override
         {
             if( this != &list )
             {

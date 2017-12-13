@@ -16,7 +16,7 @@ namespace CUL
 			this->last.reset( new IteratorListLinked<Type>( this->values ) );
 		}
 
-		IList& operator=(const IList& list) override
+		IList<Type>& operator=( const IList<Type>& list ) override
 		{
 			if (this != &list)
 			{
