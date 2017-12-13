@@ -37,11 +37,16 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/511e4115/ConsoleUtilities.o \
 	${OBJECTDIR}/_ext/511e4115/FS.o \
+	${OBJECTDIR}/_ext/511e4115/FileCompileTest.o \
 	${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o \
 	${OBJECTDIR}/_ext/511e4115/IFile.o \
+	${OBJECTDIR}/_ext/511e4115/ITime.o \
+	${OBJECTDIR}/_ext/511e4115/ITimer.o \
 	${OBJECTDIR}/_ext/511e4115/MyString.o \
 	${OBJECTDIR}/_ext/511e4115/Named.o \
 	${OBJECTDIR}/_ext/511e4115/Path.o \
+	${OBJECTDIR}/_ext/511e4115/TimeConcrete.o \
+	${OBJECTDIR}/_ext/511e4115/TimerChrono.o \
 	${OBJECTDIR}/_ext/511e4115/XYPosition.o
 
 
@@ -83,6 +88,11 @@ ${OBJECTDIR}/_ext/511e4115/FS.o: ../src/FS.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FS.o ../src/FS.cpp
 
+${OBJECTDIR}/_ext/511e4115/FileCompileTest.o: ../src/FileCompileTest.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/FileCompileTest.o ../src/FileCompileTest.cpp
+
 ${OBJECTDIR}/_ext/511e4115/FileRegularImpl.o: ../src/FileRegularImpl.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
@@ -92,6 +102,16 @@ ${OBJECTDIR}/_ext/511e4115/IFile.o: ../src/IFile.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/IFile.o ../src/IFile.cpp
+
+${OBJECTDIR}/_ext/511e4115/ITime.o: ../src/ITime.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/ITime.o ../src/ITime.cpp
+
+${OBJECTDIR}/_ext/511e4115/ITimer.o: ../src/ITimer.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/ITimer.o ../src/ITimer.cpp
 
 ${OBJECTDIR}/_ext/511e4115/MyString.o: ../src/MyString.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
@@ -107,6 +127,16 @@ ${OBJECTDIR}/_ext/511e4115/Path.o: ../src/Path.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/Path.o ../src/Path.cpp
+
+${OBJECTDIR}/_ext/511e4115/TimeConcrete.o: ../src/TimeConcrete.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/TimeConcrete.o ../src/TimeConcrete.cpp
+
+${OBJECTDIR}/_ext/511e4115/TimerChrono.o: ../src/TimerChrono.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -DCULLib_EXPORT -DCUL_DYNAMIC -I.. -I../src -I../../deps/boost_1_64_0 -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/511e4115/TimerChrono.o ../src/TimerChrono.cpp
 
 ${OBJECTDIR}/_ext/511e4115/XYPosition.o: ../src/XYPosition.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/511e4115

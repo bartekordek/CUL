@@ -10,6 +10,8 @@
       <itemPath>../CUL/IFile.hpp</itemPath>
       <itemPath>../CUL/IIterator.hpp</itemPath>
       <itemPath>../CUL/IList.hpp</itemPath>
+      <itemPath>../CUL/ITime.hpp</itemPath>
+      <itemPath>../CUL/ITimer.hpp</itemPath>
       <itemPath>../CUL/IteratorListLinked.hpp</itemPath>
       <itemPath>../CUL/IteratorListVector.hpp</itemPath>
       <itemPath>../CUL/IteratorListVectorReverse.hpp</itemPath>
@@ -30,12 +32,19 @@
                    projectFiles="true">
       <itemPath>../src/ConsoleUtilities.cpp</itemPath>
       <itemPath>../src/FS.cpp</itemPath>
+      <itemPath>../src/FileCompileTest.cpp</itemPath>
       <itemPath>../src/FileRegularImpl.cpp</itemPath>
       <itemPath>../src/FileRegularImpl.hpp</itemPath>
       <itemPath>../src/IFile.cpp</itemPath>
+      <itemPath>../src/ITime.cpp</itemPath>
+      <itemPath>../src/ITimer.cpp</itemPath>
       <itemPath>../src/MyString.cpp</itemPath>
       <itemPath>../src/Named.cpp</itemPath>
       <itemPath>../src/Path.cpp</itemPath>
+      <itemPath>../src/TimeConcrete.cpp</itemPath>
+      <itemPath>../src/TimeConcrete.hpp</itemPath>
+      <itemPath>../src/TimerChrono.cpp</itemPath>
+      <itemPath>../src/TimerChrono.hpp</itemPath>
       <itemPath>../src/XYPosition.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -93,6 +102,10 @@
       </item>
       <item path="../CUL/IList.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../CUL/ITime.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../CUL/ITimer.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../CUL/IteratorListLinked.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../CUL/IteratorListVector.hpp" ex="false" tool="3" flavor2="0">
@@ -120,17 +133,31 @@
       </item>
       <item path="../src/FS.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/FileCompileTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/FileRegularImpl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/FileRegularImpl.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/IFile.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/ITime.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ITimer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/MyString.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Named.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Path.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/TimeConcrete.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/TimeConcrete.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/TimerChrono.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/TimerChrono.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/XYPosition.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -188,6 +215,10 @@
       </item>
       <item path="../CUL/IList.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../CUL/ITime.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../CUL/ITimer.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../CUL/IteratorListLinked.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../CUL/IteratorListVector.hpp" ex="false" tool="3" flavor2="0">
@@ -215,17 +246,31 @@
       </item>
       <item path="../src/FS.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/FileCompileTest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/FileRegularImpl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/FileRegularImpl.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/IFile.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/ITime.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ITimer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/MyString.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Named.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Path.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/TimeConcrete.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/TimeConcrete.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/TimerChrono.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/TimerChrono.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/XYPosition.cpp" ex="false" tool="1" flavor2="0">
       </item>
