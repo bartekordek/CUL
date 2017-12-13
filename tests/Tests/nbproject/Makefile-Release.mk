@@ -36,8 +36,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/_ext/5c0/FileTest.o \
+	${OBJECTDIR}/_ext/5c0/FilesystemTests.o \
 	${OBJECTDIR}/_ext/5c0/IteratorTests.o \
-	${OBJECTDIR}/_ext/5c0/PathTests.o \
+	${OBJECTDIR}/_ext/5c0/NameTests.o \
+	${OBJECTDIR}/_ext/5c0/StringTests.o \
 	${OBJECTDIR}/_ext/5c0/Vector3DTests.o \
 	${OBJECTDIR}/_ext/5c0/main.o
 
@@ -79,15 +81,25 @@ ${OBJECTDIR}/_ext/5c0/FileTest.o: ../FileTest.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I.. -I../../deps/gtest/googletest/include -I../../deps/gtest/googlemock/include -I../../CUL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/FileTest.o ../FileTest.cpp
 
+${OBJECTDIR}/_ext/5c0/FilesystemTests.o: ../FilesystemTests.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/5c0
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I.. -I../../deps/gtest/googletest/include -I../../deps/gtest/googlemock/include -I../../CUL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/FilesystemTests.o ../FilesystemTests.cpp
+
 ${OBJECTDIR}/_ext/5c0/IteratorTests.o: ../IteratorTests.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/5c0
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I.. -I../../deps/gtest/googletest/include -I../../deps/gtest/googlemock/include -I../../CUL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/IteratorTests.o ../IteratorTests.cpp
 
-${OBJECTDIR}/_ext/5c0/PathTests.o: ../PathTests.cpp
+${OBJECTDIR}/_ext/5c0/NameTests.o: ../NameTests.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/5c0
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I.. -I../../deps/gtest/googletest/include -I../../deps/gtest/googlemock/include -I../../CUL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/PathTests.o ../PathTests.cpp
+	$(COMPILE.cc) -O2 -I.. -I../../deps/gtest/googletest/include -I../../deps/gtest/googlemock/include -I../../CUL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/NameTests.o ../NameTests.cpp
+
+${OBJECTDIR}/_ext/5c0/StringTests.o: ../StringTests.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/5c0
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I.. -I../../deps/gtest/googletest/include -I../../deps/gtest/googlemock/include -I../../CUL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/5c0/StringTests.o ../StringTests.cpp
 
 ${OBJECTDIR}/_ext/5c0/Vector3DTests.o: ../Vector3DTests.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/5c0

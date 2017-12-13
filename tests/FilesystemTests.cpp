@@ -37,7 +37,7 @@ TEST_F( FilesystemTests, GetFullPath )
 
 TEST_F( FilesystemTests, FileExistence )
 {
-    std::string filePath = "../Media/Dummy.txt";
+    std::string filePath = "../media/Dummy.txt";
     std::cout << "Trying to find: " << filePath << std::endl;
     Path file( filePath.c_str() );
     ASSERT_EQ( file.exists(), true );

@@ -5,22 +5,26 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>../FileTest.hpp</itemPath>
+      <itemPath>../FilesystemTests.hpp</itemPath>
       <itemPath>../IteratorTests.hpp</itemPath>
-      <itemPath>../PathTests.hpp</itemPath>
+      <itemPath>../NameTests.hpp</itemPath>
+      <itemPath>../StringTest.hpp</itemPath>
       <itemPath>../Vector3DTests.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <itemPath>../FileTest.cpp</itemPath>
-      <itemPath>../IteratorTests.cpp</itemPath>
-      <itemPath>../PathTests.cpp</itemPath>
-      <itemPath>../Vector3DTests.cpp</itemPath>
-      <itemPath>../main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>../FileTest.cpp</itemPath>
+      <itemPath>../FilesystemTests.cpp</itemPath>
+      <itemPath>../IteratorTests.cpp</itemPath>
+      <itemPath>../NameTests.cpp</itemPath>
+      <itemPath>../StringTests.cpp</itemPath>
+      <itemPath>../Vector3DTests.cpp</itemPath>
+      <itemPath>../main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -102,19 +106,39 @@
                             perm="755"
                             owner="root"
                             group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libcul.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcul.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
         </packFileList>
       </packaging>
       <item path="../FileTest.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../FileTest.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../FilesystemTests.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../FilesystemTests.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../IteratorTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../IteratorTests.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../PathTests.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../NameTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../PathTests.hpp" ex="false" tool="3" flavor2="0">
+      <item path="../NameTests.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../StringTest.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../StringTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../Vector3DTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -165,13 +189,21 @@
       </item>
       <item path="../FileTest.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../FilesystemTests.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../FilesystemTests.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../IteratorTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../IteratorTests.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../PathTests.cpp" ex="false" tool="1" flavor2="0">
+      <item path="../NameTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="../PathTests.hpp" ex="false" tool="3" flavor2="0">
+      <item path="../NameTests.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../StringTest.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../StringTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../Vector3DTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
