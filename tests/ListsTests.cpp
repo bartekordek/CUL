@@ -23,14 +23,14 @@ void ListTests::TearDownTestCase()
 
 TEST_F( ListTests, VectorDoubleAdd )
 {
-    auto result = std::make_unique<CUL::IList<double>>( CUL::ListFactory::createVectorListPtr<double>() );
+    auto result = std::unique_ptr<CUL::IList<double>>( CUL::ListFactory::createVectorListPtr<double>() );
     result->pushBack( 2.2 );
     GTEST_ASSERT_EQ( 1, result->size() );
 }
-/*
+
 TEST_F( ListTests, VectorIntIterateOneElement )
 {
-    auto result = std::make_unique<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
+    auto result = std::unique_ptr<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
 
     unsigned limit = 1;
     for( unsigned i = 0; i < limit; ++i )
@@ -50,7 +50,7 @@ TEST_F( ListTests, VectorIntIterateOneElement )
 
 TEST_F( ListTests, VectorIntIterateTwoElements )
 {
-    auto result = std::make_unique<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
+    auto result = std::unique_ptr<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
 
     unsigned limit = 4;
     for( unsigned i = 0; i < limit; ++i )
@@ -70,7 +70,7 @@ TEST_F( ListTests, VectorIntIterateTwoElements )
 
 TEST_F( ListTests, VectorIntIterateManyElements )
 {
-    auto result = std::make_unique<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
+    auto result = std::unique_ptr<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
 
     unsigned limit = noticableAmount;
     for( unsigned i = 0; i < limit; ++i )
@@ -90,7 +90,7 @@ TEST_F( ListTests, VectorIntIterateManyElements )
 
 TEST_F( ListTests, LinkedDoubleAdd )
 {
-    auto result = std::make_unique<CUL::IList<double>>( CUL::ListFactory::createLinkedListPtr<double>() );
+    auto result = std::unique_ptr<CUL::IList<double>>( CUL::ListFactory::createLinkedListPtr<double>() );
 
     result->pushBack( 2.2 );
     GTEST_ASSERT_EQ( 1, result->size() );
@@ -98,7 +98,7 @@ TEST_F( ListTests, LinkedDoubleAdd )
 
 TEST_F( ListTests, LinkedIntIterateOneElement )
 {
-    auto result = std::make_unique<CUL::IList<unsigned>>( CUL::ListFactory::createLinkedListPtr<unsigned>() );
+    auto result = std::unique_ptr<CUL::IList<unsigned>>( CUL::ListFactory::createLinkedListPtr<unsigned>() );
 
     unsigned limit = 1;
     for( unsigned i = 0; i < limit; ++i )
@@ -118,7 +118,7 @@ TEST_F( ListTests, LinkedIntIterateOneElement )
 
 TEST_F( ListTests, LinkedIntIterateTwoElements )
 {
-    auto result = std::make_unique<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
+    auto result = std::unique_ptr<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
 
     unsigned limit = 4;
     for( unsigned i = 0; i < limit; ++i )
@@ -138,7 +138,7 @@ TEST_F( ListTests, LinkedIntIterateTwoElements )
 
 TEST_F( ListTests, LinkedIntIterateManyElements )
 {
-    auto result = std::make_unique<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
+    auto result = std::unique_ptr<CUL::IList<unsigned>>( CUL::ListFactory::createVectorListPtr<unsigned>() );
 
     unsigned limit = noticableAmount;
     for( unsigned i = 0; i < limit; ++i )
@@ -155,4 +155,3 @@ TEST_F( ListTests, LinkedIntIterateManyElements )
         ++i;
     }
 }
-*/
