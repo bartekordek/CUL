@@ -2,7 +2,7 @@
 #include "CUL/ListLinked.hpp"
 #include "CUL/ListFactory.hpp"
 
-unsigned manyElementsCount = 1000 * 1000;
+unsigned hugeAmount = 1000 * 1000;
 
 using namespace CUL;
 
@@ -59,7 +59,7 @@ TEST_F( IteratorTests, VectorIntIterateTwoElements )
 TEST_F( IteratorTests, VectorIntIterateManyElements )
 {
 	std::unique_ptr<IList<unsigned>> result( ListFactory::createVectorListPtr<unsigned>() );
-	unsigned limit = manyElementsCount;
+	unsigned limit = hugeAmount;
 	for( unsigned i = 0; i < limit; ++i )
 	{
 		result->pushBack( i );
@@ -123,7 +123,7 @@ TEST_F( IteratorTests, LinkedIntIterateTwoElements )
 TEST_F( IteratorTests, LinkedIntIterateManyElements )
 {
 	std::unique_ptr<IList<unsigned>> result( ListFactory::createVectorListPtr<unsigned>() );
-	unsigned limit = manyElementsCount;
+	unsigned limit = hugeAmount;
 	for( unsigned i = 0; i < limit; ++i )
 	{
 		result->pushBack( i );

@@ -20,12 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ConsoleUtilities.cpp" />
+    <ClCompile Include="src\FileCompileTest.cpp" />
     <ClCompile Include="src\FileRegularImpl.cpp" />
     <ClCompile Include="src\FS.cpp" />
     <ClCompile Include="src\IFile.cpp" />
+    <ClCompile Include="src\ITime.cpp" />
+    <ClCompile Include="src\ITimer.cpp" />
     <ClCompile Include="src\MyString.cpp" />
     <ClCompile Include="src\Named.cpp" />
     <ClCompile Include="src\Path.cpp" />
+    <ClCompile Include="src\TimeConcrete.cpp" />
+    <ClCompile Include="src\TimerChrono.cpp" />
     <ClCompile Include="src\XYPosition.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +43,8 @@
     <ClInclude Include="CUL\IteratorListLinked.hpp" />
     <ClInclude Include="CUL\IteratorListVector.hpp" />
     <ClInclude Include="CUL\IteratorListVectorReverse.hpp" />
+    <ClInclude Include="CUL\ITime.hpp" />
+    <ClInclude Include="CUL\ITimer.hpp" />
     <ClInclude Include="CUL\ListFactory.hpp" />
     <ClInclude Include="CUL\ListLinked.hpp" />
     <ClInclude Include="CUL\ListVector.hpp" />
@@ -67,6 +74,8 @@
     <ClInclude Include="CUL\Named.hpp" />
     <ClInclude Include="CUL\Path.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
+    <ClInclude Include="src\TimeConcrete.hpp" />
+    <ClInclude Include="src\TimerChrono.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{a44b1777-b335-4580-ae9e-89cb3779f81e}</ProjectGuid>

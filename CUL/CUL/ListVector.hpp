@@ -7,7 +7,7 @@
 namespace CUL
 {
     template<typename Type>
-    class ListVector: public IList<Type>
+    class ListVector final: public IList<Type>
     {
     public:
         ListVector<Type>()
@@ -18,7 +18,7 @@ namespace CUL
             this->lastEl.reset( new IteratorListVector<Type>( this->values ) );
         }    
         
-        IList<Type>& operator=( const IList<Type>& list ) override
+        IList& operator=( const IList& list ) override
         {
             if( this != &list )
             {

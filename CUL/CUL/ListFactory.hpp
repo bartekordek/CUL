@@ -5,7 +5,6 @@
 
 namespace CUL
 {
-	
 	class ListFactory
 	{
 	public:
