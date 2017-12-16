@@ -12,16 +12,16 @@ CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
 CND_ARTIFACT_NAME_Debug=Tests
 CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/Tests
 CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
-CND_PACKAGE_NAME_Debug=tests.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/tests.tar
+CND_PACKAGE_NAME_Debug=libcultests.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/libcultests.tar
 # Release configuration
 CND_PLATFORM_Release=Cygwin-Windows
 CND_ARTIFACT_DIR_Release=../../build/Cygwin-Windows-Release
 CND_ARTIFACT_NAME_Release=Tests.exe
 CND_ARTIFACT_PATH_Release=../../build/Cygwin-Windows-Release/Tests.exe
 CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
-CND_PACKAGE_NAME_Release=tests.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/tests.tar
+CND_PACKAGE_NAME_Release=libcultests.tar
+CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/libcultests.tar
 #
 # include compiler specific variables
 #
