@@ -18,34 +18,71 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ConsoleUtilities.cpp" />
+    <ClCompile Include="src\FileCompileTest.cpp" />
+    <ClCompile Include="src\FileRegularImpl.cpp" />
+    <ClCompile Include="src\FS.cpp" />
+    <ClCompile Include="src\IFile.cpp" />
+    <ClCompile Include="src\ITime.cpp" />
+    <ClCompile Include="src\ITimer.cpp" />
+    <ClCompile Include="src\MyString.cpp" />
+    <ClCompile Include="src\Named.cpp" />
+    <ClCompile Include="src\Path.cpp" />
+    <ClCompile Include="src\TimeConcrete.cpp" />
+    <ClCompile Include="src\TimerChrono.cpp" />
+    <ClCompile Include="src\XYPosition.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\CUL\ConsoleUtilities.hpp" />
+    <ClInclude Include="inc\CUL\CUL.hpp" />
+    <ClInclude Include="inc\CUL\FS.hpp" />
+    <ClInclude Include="inc\CUL\IFile.hpp" />
+    <ClInclude Include="inc\CUL\IIterator.hpp" />
+    <ClInclude Include="inc\CUL\IList.hpp" />
+    <ClInclude Include="inc\CUL\IteratorListLinked.hpp" />
+    <ClInclude Include="inc\CUL\IteratorListVector.hpp" />
+    <ClInclude Include="inc\CUL\IteratorListVectorReverse.hpp" />
+    <ClInclude Include="inc\CUL\ITime.hpp" />
+    <ClInclude Include="inc\CUL\ITimer.hpp" />
+    <ClInclude Include="inc\CUL\ListFactory.hpp" />
+    <ClInclude Include="inc\CUL\ListLinked.hpp" />
+    <ClInclude Include="inc\CUL\ListVector.hpp" />
+    <ClInclude Include="inc\CUL\MyString.hpp" />
+    <ClInclude Include="inc\CUL\Named.hpp" />
+    <ClInclude Include="inc\CUL\Path.hpp" />
+    <ClInclude Include="src\FileRegularImpl.hpp" />
+    <ClInclude Include="src\TimeConcrete.hpp" />
+    <ClInclude Include="src\TimerChrono.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6b7ff520-98cf-4132-813c-0f205c22152f}</ProjectGuid>
-    <RootNamespace>Tests</RootNamespace>
+    <ProjectGuid>{a44b1777-b335-4580-ae9e-89cb3779f81e}</ProjectGuid>
+    <RootNamespace>PFS</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>libculTests</ProjectName>
+    <ProjectName>libcul</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -96,16 +133,19 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\CUL</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Lib>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\build\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest.lib;gtest_main.lib;libcul.lib</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,16 +155,18 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\CUL</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\build\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest.lib;gtest_main.lib;libcul.lib</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,18 +177,21 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\CUL</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\build\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest.lib;gtest_main.lib;libcul.lib</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
+    <Lib>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -156,40 +201,21 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\CUL</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_64_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\build\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>gtest.lib;gtest_main.lib;libcul.lib</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <OutputFile>$(TargetPath)</OutputFile>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_64_0\Build-Windows</AdditionalLibraryDirectories>
+      <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="FilesystemTests.cpp" />
-    <ClCompile Include="FileTest.cpp" />
-    <ClCompile Include="IteratorTests.cpp" />
-    <ClCompile Include="ListsTests.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="NameTests.cpp" />
-    <ClCompile Include="StringTests.cpp" />
-    <ClCompile Include="TimeTests.cpp" />
-    <ClCompile Include="Vector3DTests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FilesystemTests.hpp" />
-    <ClInclude Include="FileTest.hpp" />
-    <ClInclude Include="IteratorTests.hpp" />
-    <ClInclude Include="ListTests.hpp" />
-    <ClInclude Include="NameTests.hpp" />
-    <ClInclude Include="StringTest.hpp" />
-    <ClInclude Include="TimeTests.hpp" />
-    <ClInclude Include="Vector3DTests.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
