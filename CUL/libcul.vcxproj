@@ -55,6 +55,9 @@
     <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.git\config" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{a44b1777-b335-4580-ae9e-89cb3779f81e}</ProjectGuid>
     <RootNamespace>PFS</RootNamespace>
