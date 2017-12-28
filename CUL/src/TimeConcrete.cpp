@@ -1,5 +1,7 @@
 #include "TimeConcrete.hpp"
+
 using namespace CUL;
+
 TimeConcrete::TimeConcrete( void )
 {
 }
@@ -8,27 +10,32 @@ TimeConcrete::~TimeConcrete()
 {
 }
 
-void TimeConcrete::setTimeMs( const unsigned int time )
+void TimeConcrete::setTimeMs( const double time )
 {
-    this->ms = time;
+    this->m_us = 1.0 * time / 1000.0;
 }
 
-const unsigned int TimeConcrete::getMs()const
+const double TimeConcrete::getMs()const
 {
-    return this->ms;
+    return this->m_us * 1000.;
 }
 
-const unsigned int TimeConcrete::getS()const
+const double TimeConcrete::getS()const
 {
-    return this->ms / 1000;
+    return this->m_us / (1000 * 1000);
 }
 
-const unsigned int TimeConcrete::getM()const
+const double TimeConcrete::getM()const
 {
-    return this->ms / 60000;
+    return this->m_us / (60000 * 1000);
 }
 
-const unsigned TimeConcrete::getH()const
+const double TimeConcrete::getH()const
 {
-    return this->ms / 3600000;
+    return this->m_us / ( 3600000.0 * 1000.0 );
+}
+
+const double TimeConcrete::getUs()const
+{
+    return this->m_us;
 }

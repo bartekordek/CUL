@@ -8,10 +8,11 @@ namespace CUL
         ITime() = default;
         virtual ~ITime() = default;
 
-        virtual void setTimeMs( const unsigned int time ) = 0;
-        virtual const unsigned int getMs()const = 0;
-        virtual const unsigned int getS()const = 0;
-        virtual const unsigned int getM()const = 0;
-        virtual const unsigned int getH()const = 0;
+        virtual void setTimeMs( const double time ) = 0;
+        virtual const double getMs()const = 0;
+        virtual const double getS()const = 0;
+        virtual const double getM()const = 0;
+        virtual const double getH()const = 0;
+        virtual const double getUs()const = 0;
     };
 }

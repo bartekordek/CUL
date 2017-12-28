@@ -26,7 +26,7 @@ void TimerChrono::start()
 
 void TimerChrono::stop()
 {
-    
+
 }
 
 void TimerChrono::reset()
@@ -42,4 +42,3 @@ const ITime& TimerChrono::getElapsed() const
     this->time->setTimeMs( msUInt );
     return *this->time;
 }
-
