@@ -17,9 +17,6 @@ namespace CUL
         static void sleepSeconds( const unsigned int seconds );
         static void sleepMiliSeconds( const unsigned int mSeconds );
         static void sleepMicroSeconds( const unsigned int uSeconds );
-
-         
-
     };
 
     class CULLib_API TimerFactory
