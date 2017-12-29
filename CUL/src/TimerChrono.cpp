@@ -16,7 +16,6 @@ TimerChrono::TimerChrono( const bool run )
 
 TimerChrono::~TimerChrono()
 {
-    
 }
 
 void TimerChrono::start()
