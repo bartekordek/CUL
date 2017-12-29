@@ -15,6 +15,11 @@ void TimeConcrete::setTimeMs( const double time )
     this->m_us = 1.0 * time / 1000.0;
 }
 
+void TimeConcrete::setTimeUs( const double us )
+{
+    this->m_us = us;
+}
+
 const double TimeConcrete::getMs()const
 {
     return this->m_us * 1000.;

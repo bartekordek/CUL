@@ -9,6 +9,7 @@ namespace CUL
         virtual ~ITime() = default;
 
         virtual void setTimeMs( const double time ) = 0;
+        virtual void setTimeUs( const double us ) = 0;
         virtual const double getMs()const = 0;
         virtual const double getS()const = 0;
         virtual const double getM()const = 0;

@@ -25,7 +25,6 @@ void TimerChrono::start()
 
 void TimerChrono::stop()
 {
-
 }
 
 void TimerChrono::reset()
@@ -36,8 +35,8 @@ void TimerChrono::reset()
 const ITime& TimerChrono::getElapsed() const
 {
     auto difference = this->clock.now() - startPoint;
-    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>( difference ).count();
-    auto msUInt = static_cast<unsigned int>( ms );
-    this->time->setTimeMs( msUInt );
+    auto us = std::chrono::duration_cast<std::chrono::microseconds>( difference ).count();
+    auto d_us = static_cast<double>( us );
+    this->time->setTimeUs( d_us );
     return *this->time;
 }

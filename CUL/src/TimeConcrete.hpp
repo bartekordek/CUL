@@ -8,7 +8,8 @@ namespace CUL
         TimeConcrete();
         virtual ~TimeConcrete();
 
-        void setTimeMs( const double time ) override;
+        void setTimeMs( const double ms ) override;
+        void setTimeUs( const double us ) override;
         const double getMs()const override;
         const double getS()const override;
         const double getM()const override;
