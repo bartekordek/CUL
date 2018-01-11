@@ -30,4 +30,4 @@ private*.xml
 build
 CUL/libcul/nbproject/Makefile-*
 CMakeFiles/
-tests/Tests/dist
+tests/libculTests/dist
