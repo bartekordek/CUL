@@ -31,3 +31,5 @@ build
 CUL/libcul/nbproject/Makefile-*
 CMakeFiles/
 tests/libculTests/dist
+tests/libculTests/nbproject/Makefile-*
+tests/libculTests/nbproject/Package*
