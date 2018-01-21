@@ -19,7 +19,7 @@ namespace CUL
 			*this = size;
 		}
 
-		~Size()
+		virtual ~Size()
 		{
 		}
 
@@ -33,33 +33,33 @@ namespace CUL
 			return *this;
 		}
 
-		const Type GetWidth()const
+		const Type getWidth()const
 		{
 			return mWidth;
 		}
 
-		const Type GetHeight()const
+		const Type getHeight()const
 		{
 			return mHeight;
 		}
 
-		void SetWidth( const Type width )
+		void setWidth( const Type width )
 		{
 			mWidth = width;
 		}
 
-		void SetHeight( const Type height )
+		void setHeight( const Type height )
 		{
 			mHeight = height;
 		}
 
-		void SetWH( const unsigned int width, const unsigned int height )
+		void setWH( const unsigned int width, const unsigned int height )
 		{
 			mWidth = width;
 			mHeight = height;
 		}
 
-		void SetWH( const Size& size )
+		void setWH( const Size& size )
 		{
 			if( this != &size )
 			{
