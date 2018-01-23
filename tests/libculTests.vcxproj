@@ -176,6 +176,7 @@
     <ClCompile Include="ListsTests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NameTests.cpp" />
+    <ClCompile Include="PivotTests.cpp" />
     <ClCompile Include="StringTests.cpp" />
     <ClCompile Include="TimeTests.cpp" />
     <ClCompile Include="Vector3DTests.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="IteratorTests.hpp" />
     <ClInclude Include="ListTests.hpp" />
     <ClInclude Include="NameTests.hpp" />
+    <ClInclude Include="PivotTests.hpp" />
     <ClInclude Include="StringTest.hpp" />
     <ClInclude Include="TimeTests.hpp" />
     <ClInclude Include="Vector3DTests.hpp" />
