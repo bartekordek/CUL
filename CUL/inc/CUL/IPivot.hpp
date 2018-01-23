@@ -1,8 +1,9 @@
 #pragma once
 #include "CUL/Math/Vector3D.hpp"
+#include "CUL/CUL.hpp"
 namespace CUL
 {
-    class IPivot
+    class CULLib_API IPivot
     {
     public:
         enum class PivotType : short
@@ -33,8 +34,15 @@ namespace CUL
         void recalculatePivotAbs();
         void recalculatePivotNorm();
 
+#ifdef _MSC_VER
+    __pragma(warning( push )) \
+    __pragma(warning( disable:4251 ))
+#endif
         CUL::Math::Vector3Dd m_pNorm = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
         CUL::Math::Vector3Dd m_pAbs = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
         CUL::Math::Vector3Dd m_sizeAbs;
+#ifdef _MSC_VER
+        __pragma(warning( pop ))
+#endif
     };
 }
