@@ -1,6 +1,7 @@
 #pragma once
 #include "CUL/Math/Vector3D.hpp"
 #include "CUL/CUL.hpp"
+#include "CUL/IPivotObserver.hpp"
 namespace CUL
 {
     class CULLib_API IPivot
@@ -12,7 +13,7 @@ namespace CUL
             NORMALIZED
         };
 
-        IPivot();
+        IPivot( IPivotObserver* pivotObserver );
         virtual ~IPivot();
 
         void setPivot( const PivotType type, const double px, const double py, const double pz );
@@ -33,6 +34,8 @@ namespace CUL
     private:
         void recalculatePivotAbs();
         void recalculatePivotNorm();
+        void notifyPivotObserver();
+        IPivotObserver* m_pivotObserver = nullptr;
 
 #ifdef _MSC_VER
     __pragma(warning( push )) \
@@ -41,6 +44,7 @@ namespace CUL
         CUL::Math::Vector3Dd m_pNorm = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
         CUL::Math::Vector3Dd m_pAbs = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
         CUL::Math::Vector3Dd m_sizeAbs;
+
 #ifdef _MSC_VER
         __pragma(warning( pop ))
 #endif

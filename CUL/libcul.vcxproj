@@ -42,6 +42,7 @@
     <ClInclude Include="inc\CUL\IIterator.hpp" />
     <ClInclude Include="inc\CUL\IList.hpp" />
     <ClInclude Include="inc\CUL\IPivot.hpp" />
+    <ClInclude Include="inc\CUL\IPivotObserver.hpp" />
     <ClInclude Include="inc\CUL\IteratorListLinked.hpp" />
     <ClInclude Include="inc\CUL\IteratorListVector.hpp" />
     <ClInclude Include="inc\CUL\IteratorListVectorReverse.hpp" />

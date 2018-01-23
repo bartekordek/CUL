@@ -101,6 +101,15 @@ namespace CUL
                 return result;
             }
 
+            Vector3D<Type> operator-( const Vector3D<Type>& t )const
+            {
+                Vector3D<Type> result;
+                result.x = this->x - t.x;
+                result.y = this->y - t.y;
+                result.z = this->z - t.z;
+                return result;
+            }
+
             Vector3D<Type>& operator*=( const Vector3D<Type>& t )
             {
                 this->x = this->x * t.x;
@@ -131,6 +140,14 @@ namespace CUL
                 this->x += right.x;
                 this->y += right.y;
                 this->z += right.z;
+                return *this;
+            }
+
+            Vector3D<Type>& operator-=( const Vector3D<Type>& right )
+            {
+                this->x -= right.x;
+                this->y -= right.y;
+                this->z -= right.z;
                 return *this;
             }
 
