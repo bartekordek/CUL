@@ -10,6 +10,7 @@
       <itemPath>../inc/CUL/IFile.hpp</itemPath>
       <itemPath>../inc/CUL/IIterator.hpp</itemPath>
       <itemPath>../inc/CUL/IList.hpp</itemPath>
+      <itemPath>../inc/CUL/IPivot.hpp</itemPath>
       <itemPath>../inc/CUL/ITime.hpp</itemPath>
       <itemPath>../inc/CUL/ITimer.hpp</itemPath>
       <itemPath>../inc/CUL/IteratorListLinked.hpp</itemPath>
@@ -36,6 +37,7 @@
       <itemPath>../src/FileRegularImpl.cpp</itemPath>
       <itemPath>../src/FileRegularImpl.hpp</itemPath>
       <itemPath>../src/IFile.cpp</itemPath>
+      <itemPath>../src/IPivot.cpp</itemPath>
       <itemPath>../src/ITime.cpp</itemPath>
       <itemPath>../src/ITimer.cpp</itemPath>
       <itemPath>../src/MyString.cpp</itemPath>
@@ -103,6 +105,8 @@
       </item>
       <item path="../inc/CUL/IList.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../inc/CUL/IPivot.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../inc/CUL/ITime.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ITimer.hpp" ex="false" tool="3" flavor2="0">
@@ -141,6 +145,8 @@
       <item path="../src/FileRegularImpl.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/IFile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/IPivot.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/ITime.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -216,6 +222,8 @@
       </item>
       <item path="../inc/CUL/IList.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../inc/CUL/IPivot.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../inc/CUL/ITime.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ITimer.hpp" ex="false" tool="3" flavor2="0">
@@ -254,6 +262,8 @@
       <item path="../src/FileRegularImpl.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/IFile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/IPivot.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/ITime.cpp" ex="false" tool="1" flavor2="0">
       </item>
