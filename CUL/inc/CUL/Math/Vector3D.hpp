@@ -1,6 +1,6 @@
 #pragma once
 #include "CUL/Math/Epsilon.hpp"
-
+#include "CUL/CUL.hpp"
 namespace CUL
 {
 	namespace Math
@@ -213,7 +213,7 @@ namespace CUL
 			Type z = static_cast<Type>( 0 );
 		};
 
-		using Vector3Dd = Vector3D<double>;
+		using Vector3Dd = Vector3D<double> ;
 		using Vector3Di = Vector3D<int>;
 		using Vector3Du = Vector3D<unsigned>;
 	}
