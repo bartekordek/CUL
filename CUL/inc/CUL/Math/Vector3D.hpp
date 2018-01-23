@@ -9,6 +9,13 @@ namespace CUL
 		class Vector3D: public Epsilon<Type>
 		{
 		public:
+            enum class Axis : short
+            {
+                X,
+                Y,
+                Z
+            };
+
 			Vector3D() = default;
 			Vector3D( const Type xVal, const Type yVal, const Type zVal ):
 				x(xVal), 
@@ -130,13 +137,47 @@ namespace CUL
 				return *this;
 			}
 
-			const Type dotProdcut( const Vector3D<Type>& right )const
-			{
-				const Type xx = this->x * right.x;
-				const Type yy = this->y * right.y;
-				const Type zz = this->z * right.z;
-				return xx * yy * zz;
-			}
+            Vector3D<Type> operator/( const Vector3D<Type>& t )const
+            {
+                Vector3D<Type> result;
+                result.x = this->x / t.x;
+                result.y = this->y / t.y;
+                result.z = this->z / t.z;
+                return result;
+            }
+
+            Vector3D<Type>& operator/=( const Vector3D<Type>& t )
+            {
+                this->x = this->x / t.x;
+                this->y = this->y / t.y;
+                this->z = this->z / t.z;
+                return *this;
+            }
+
+            Vector3D<Type> operator/( const Type& t )const
+            {
+                Vector3D<Type> result;
+                result.x = this->x / t;
+                result.y = this->y / t;
+                result.z = this->z / t;
+                return result;
+            }
+
+            Vector3D<Type>& operator/=( const Type& t )
+            {
+                this->x = this->x / t;
+                this->y = this->y / t;
+                this->z = this->z / t;
+                return *this;
+            }
+
+            const Type dotProdcut( const Vector3D<Type>& right )const
+            {
+                const Type xx = this->x * right.x;
+                const Type yy = this->y * right.y;
+                const Type zz = this->z * right.z;
+                return xx * yy * zz;
+            }
 
 			const Vector3D<Type> crossProducti( const Vector3D<Type>& right )const
 			{
@@ -148,6 +189,23 @@ namespace CUL
 				const Type cz = v1.x * v2.y - v1.y * v2.x;
 				return Vector3D<Type>( cx, cy, cz );
 			}
+
+            const Type getAxis( const Axis axis )const
+            {
+                if( Axis::X == axis )
+                {
+                    return this->x;
+                }
+                else if( Axis::Y == axis )
+                {
+                    return this->y;
+                }
+                else if( Axis::Z == axis )
+                {
+                    return this->z;
+                }
+                return static_cast<Type>(0);
+            }
 
 		protected:
 			Type x = static_cast<Type>( 0 );
