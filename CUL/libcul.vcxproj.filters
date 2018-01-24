@@ -60,6 +60,9 @@
     <ClCompile Include="src\IPivot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IAngle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -193,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\IPivotObserver.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Math\IAngle.hpp">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

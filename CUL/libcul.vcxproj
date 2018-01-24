@@ -23,6 +23,7 @@
     <ClCompile Include="src\FileCompileTest.cpp" />
     <ClCompile Include="src\FileRegularImpl.cpp" />
     <ClCompile Include="src\FS.cpp" />
+    <ClCompile Include="src\IAngle.cpp" />
     <ClCompile Include="src\IFile.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
     <ClCompile Include="src\ITime.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="inc\CUL\Math\Axis.hpp" />
     <ClInclude Include="inc\CUL\Math\Epsilon.hpp" />
     <ClInclude Include="inc\CUL\Math\Frustum.hpp" />
+    <ClInclude Include="inc\CUL\Math\IAngle.hpp" />
     <ClInclude Include="inc\CUL\Math\ISize.hpp" />
     <ClInclude Include="inc\CUL\Math\IVector.hpp" />
     <ClInclude Include="inc\CUL\Math\Line.hpp" />
