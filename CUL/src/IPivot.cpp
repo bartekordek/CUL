@@ -25,7 +25,7 @@ void IPivot::setPivot(
         this->m_pAbs.setXYZ( px, py, pz );
         recalculatePivotNorm();
     }
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setPivotX( 
@@ -42,7 +42,7 @@ void IPivot::setPivotX(
         this->m_pAbs.setX( val );
         this->m_pNorm.setX( this->m_pAbs.getX() / this->m_sizeAbs.getX() );
     }
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setPivotY( 
@@ -59,7 +59,7 @@ void IPivot::setPivotY(
         this->m_pAbs.setY( val );
         this->m_pNorm.setY( this->m_pAbs.getY() / this->m_sizeAbs.getY() );
     }
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setPivotZ( const PivotType type, const double val )
@@ -74,42 +74,42 @@ void IPivot::setPivotZ( const PivotType type, const double val )
         this->m_pAbs.setZ( val );
         this->m_pNorm.setZ( this->m_pAbs.getZ() / this->m_sizeAbs.getZ() );
     }
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setRealSize( const CUL::Math::Vector3Dd& val )
 {
     this->m_sizeAbs = val;
     recalculatePivotAbs();
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setRealSize( const double width, const double height, const double depth )
 {
     this->m_sizeAbs.setXYZ( width, height, depth );
     recalculatePivotAbs();
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setWidth( const double val )
 {
     this->m_sizeAbs.setX( val );
     this->m_pAbs.setX( this->m_sizeAbs.getX() * this->m_pNorm.getX() );
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setHeight( const double val )
 {
     this->m_sizeAbs.setY( val );
     this->m_pAbs.setY( this->m_sizeAbs.getY() * this->m_pNorm.getY() );
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 void IPivot::setDepth( const double val )
 {
     this->m_sizeAbs.setZ( val );
     this->m_pAbs.setZ( this->m_sizeAbs.getZ() * this->m_pNorm.getZ() );
-    m_pivotObserver->pivotHasBeenChanged();
+    notifyPivotObserver();
 }
 
 const CUL::Math::Vector3Dd& IPivot::getPivot( const PivotType type )const
@@ -129,4 +129,12 @@ void IPivot::recalculatePivotAbs()
 void IPivot::recalculatePivotNorm()
 {
     this->m_pNorm = this->m_pAbs / this->m_sizeAbs;
+}
+
+void IPivot::notifyPivotObserver()
+{
+    if( m_pivotObserver )
+    {
+        m_pivotObserver->pivotHasBeenChanged();
+    }
 }
