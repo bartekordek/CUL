@@ -16,6 +16,7 @@
       <itemPath>../inc/CUL/IteratorListLinked.hpp</itemPath>
       <itemPath>../inc/CUL/IteratorListVector.hpp</itemPath>
       <itemPath>../inc/CUL/IteratorListVectorReverse.hpp</itemPath>
+      <itemPath>../inc/CUL/LckPrim.hpp</itemPath>
       <itemPath>../inc/CUL/ListFactory.hpp</itemPath>
       <itemPath>../inc/CUL/ListLinked.hpp</itemPath>
       <itemPath>../inc/CUL/ListVector.hpp</itemPath>
@@ -119,6 +120,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../inc/CUL/LckPrim.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ListFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -236,6 +239,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="../inc/CUL/LckPrim.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ListFactory.hpp" ex="false" tool="3" flavor2="0">
       </item>
