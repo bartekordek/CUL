@@ -1,7 +1,7 @@
 #pragma once
 #include <CUL/CUL.hpp>
 #include <mutex>
-namespace Moge
+namespace CUL
 {
     template <typename Type>
     class CULLib_API LckPrim
