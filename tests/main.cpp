@@ -2,12 +2,14 @@
 
 int main( int argc, char **argv )
 {
-	::testing::InitGoogleTest( &argc, argv );
-	const int result = RUN_ALL_TESTS();
+    ::testing::InitGoogleTest( &argc, argv );
+    const int result = RUN_ALL_TESTS();
 #ifdef _WIN32
-	std::getchar();
-	return result;
+    int x;
+    std::cout << "Press key to exit tests...";
+    std::cin >> x;
+    return result;
 #else
-	return result;
+    return result;
 #endif
 }
