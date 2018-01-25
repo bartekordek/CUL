@@ -3,7 +3,7 @@
 #include "CUL/IIterator.hpp"
 #include <memory>
 
-unsigned noticableAmount = 10000 * 1000;
+unsigned noticableAmount = 1000 * 1000;
 
 ListTests::ListTests( void )
 {

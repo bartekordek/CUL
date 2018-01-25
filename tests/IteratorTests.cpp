@@ -2,7 +2,7 @@
 #include "CUL/ListLinked.hpp"
 #include "CUL/ListFactory.hpp"
 
-unsigned hugeAmount = 1000 * 1000;
+unsigned hugeAmount = 100 * 1000;
 
 using namespace CUL;
 
