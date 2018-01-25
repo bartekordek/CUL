@@ -24,17 +24,19 @@ TEST_F( PivotTests, dimensionSetting )
     const double w = 1.0;
     const double h = 2.0;
     const double d = 3.0;
-    CUL::IPivot pivot;
+    CUL::IPivot pivot( nullptr );
     pivot.setWidth( w );
     pivot.setHeight( h );
     pivot.setDepth( d );
 
-    GTEST_ASSERT_GE( w, 0.0 );
-    GTEST_ASSERT_LE( w, 1.5 );
+    auto pivotType = CUL::IPivot::PivotType::ABSOLUTE;
 
-    GTEST_ASSERT_GE( h, 1.5 );
-    GTEST_ASSERT_LE( h, 2.5 );
+    GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getX() < ( w / 2.0 + 0.1 ), true );
+    GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getX() > ( w / 2.0 - 0.1), true );
 
-    GTEST_ASSERT_GE( d, 2.5 );
-    GTEST_ASSERT_LE( d, 3.5 );
+    GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getY() < ( h / 2.0 + 0.1 ), true );
+    GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getY() > ( h / 2.0 - 0.1 ), true );
+
+    GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getZ() < ( d / 2.0 + 0.1 ), true );
+    GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getZ() > ( d / 2.0 - 0.1 ), true );
 }
