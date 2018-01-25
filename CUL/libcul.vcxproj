@@ -49,6 +49,7 @@
     <ClInclude Include="inc\CUL\IteratorListVectorReverse.hpp" />
     <ClInclude Include="inc\CUL\ITime.hpp" />
     <ClInclude Include="inc\CUL\ITimer.hpp" />
+    <ClInclude Include="inc\CUL\LckPrim.hpp" />
     <ClInclude Include="inc\CUL\ListFactory.hpp" />
     <ClInclude Include="inc\CUL\ListLinked.hpp" />
     <ClInclude Include="inc\CUL\ListVector.hpp" />
