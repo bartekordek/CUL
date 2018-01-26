@@ -48,7 +48,6 @@
       <itemPath>../src/TimeConcrete.hpp</itemPath>
       <itemPath>../src/TimerChrono.cpp</itemPath>
       <itemPath>../src/TimerChrono.hpp</itemPath>
-      <itemPath>../src/XYPosition.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -169,8 +168,6 @@
       </item>
       <item path="../src/TimerChrono.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../src/XYPosition.cpp" ex="false" tool="1" flavor2="0">
-      </item>
     </conf>
     <conf name="Release" type="2">
       <toolsSet>
@@ -287,8 +284,6 @@
       <item path="../src/TimerChrono.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/TimerChrono.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../src/XYPosition.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>
