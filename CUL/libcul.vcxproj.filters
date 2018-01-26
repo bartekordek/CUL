@@ -36,9 +36,6 @@
     <ClCompile Include="src\Named.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\XYPosition.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -167,21 +164,6 @@
     <ClInclude Include="inc\CUL\Math\Segment.hpp">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\Math\Size.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\Math\SizeDouble2D.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\Math\SizeDouble3D.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\Math\SizeInt2D.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\Math\SizeUInt2D.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Math\SquareMatrix2D.hpp">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
@@ -189,9 +171,6 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Vector3DFactory.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\Math\XYPosition.hpp">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\IPivotObserver.hpp">

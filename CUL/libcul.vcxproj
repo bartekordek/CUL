@@ -33,7 +33,6 @@
     <ClCompile Include="src\Path.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
-    <ClCompile Include="src\XYPosition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\CUL\ConsoleUtilities.hpp" />
@@ -67,15 +66,9 @@
     <ClInclude Include="inc\CUL\Math\Quaternion.hpp" />
     <ClInclude Include="inc\CUL\Math\Rectangle.hpp" />
     <ClInclude Include="inc\CUL\Math\Segment.hpp" />
-    <ClInclude Include="inc\CUL\Math\Size.hpp" />
-    <ClInclude Include="inc\CUL\Math\SizeDouble2D.hpp" />
-    <ClInclude Include="inc\CUL\Math\SizeDouble3D.hpp" />
-    <ClInclude Include="inc\CUL\Math\SizeInt2D.hpp" />
-    <ClInclude Include="inc\CUL\Math\SizeUInt2D.hpp" />
     <ClInclude Include="inc\CUL\Math\SquareMatrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\Vector3D.hpp" />
     <ClInclude Include="inc\CUL\Math\Vector3DFactory.hpp" />
-    <ClInclude Include="inc\CUL\Math\XYPosition.hpp" />
     <ClInclude Include="inc\CUL\MyString.hpp" />
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Path.hpp" />
