@@ -60,6 +60,12 @@
     <ClCompile Include="src\IAngle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Frustum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Line.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -132,9 +138,6 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Frustum.hpp">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\Math\ISize.hpp">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\IVector.hpp">

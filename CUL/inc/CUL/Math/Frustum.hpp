@@ -1,10 +1,10 @@
 #pragma once
-
+#include <CUL/CUL.hpp>
 namespace CUL
 {
 	namespace Math
 	{
-		class Frustum
+		class CULLib_API Frustum
 		{
 		public:
 			Frustum();
