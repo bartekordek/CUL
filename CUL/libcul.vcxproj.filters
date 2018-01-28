@@ -66,6 +66,9 @@
     <ClCompile Include="src\Line.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Degree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\LckPrim.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Math\Degree.hpp">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

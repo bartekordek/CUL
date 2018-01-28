@@ -2,15 +2,19 @@
 #include <CUL/CUL.hpp>
 namespace CUL
 {
-    class CULLib_API IAngle
+    namespace Math
     {
-    public:
-        IAngle( void );
-        virtual ~IAngle( void );
+        class CULLib_API IAngle
+        {
+        public:
+            IAngle( void );
+            virtual ~IAngle( void );
 
-        virtual const double getValue()const = 0;
+            virtual const double getValueD()const = 0;
+            virtual const int getValueI()const = 0;
 
-    protected:
-    private:
-    };
+        protected:
+        private:
+        };
+    }
 }
