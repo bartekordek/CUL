@@ -33,17 +33,24 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>../src/ConsoleUtilities.cpp</itemPath>
+      <itemPath>../src/Degree.cpp</itemPath>
       <itemPath>../src/FS.cpp</itemPath>
       <itemPath>../src/FileCompileTest.cpp</itemPath>
       <itemPath>../src/FileRegularImpl.cpp</itemPath>
       <itemPath>../src/FileRegularImpl.hpp</itemPath>
+      <itemPath>../src/Frustum.cpp</itemPath>
+      <itemPath>../src/IAngle.cpp</itemPath>
       <itemPath>../src/IFile.cpp</itemPath>
       <itemPath>../src/IPivot.cpp</itemPath>
       <itemPath>../src/ITime.cpp</itemPath>
       <itemPath>../src/ITimer.cpp</itemPath>
+      <itemPath>../src/Line.cpp</itemPath>
+      <itemPath>../src/MultiPointFactory.cpp</itemPath>
       <itemPath>../src/MyString.cpp</itemPath>
       <itemPath>../src/Named.cpp</itemPath>
       <itemPath>../src/Path.cpp</itemPath>
+      <itemPath>../src/Quaternion.cpp</itemPath>
+      <itemPath>../src/Rectangle.cpp</itemPath>
       <itemPath>../src/TimeConcrete.cpp</itemPath>
       <itemPath>../src/TimeConcrete.hpp</itemPath>
       <itemPath>../src/TimerChrono.cpp</itemPath>
@@ -138,6 +145,8 @@
       </item>
       <item path="../src/ConsoleUtilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/Degree.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/FS.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/FileCompileTest.cpp" ex="false" tool="1" flavor2="0">
@@ -145,6 +154,10 @@
       <item path="../src/FileRegularImpl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/FileRegularImpl.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/Frustum.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/IAngle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/IFile.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -154,11 +167,19 @@
       </item>
       <item path="../src/ITimer.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/Line.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/MultiPointFactory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/MyString.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Named.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Path.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/Quaternion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/Rectangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/TimeConcrete.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -255,6 +276,8 @@
       </item>
       <item path="../src/ConsoleUtilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/Degree.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/FS.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/FileCompileTest.cpp" ex="false" tool="1" flavor2="0">
@@ -262,6 +285,10 @@
       <item path="../src/FileRegularImpl.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/FileRegularImpl.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/Frustum.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/IAngle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/IFile.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -271,11 +298,19 @@
       </item>
       <item path="../src/ITimer.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/Line.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/MultiPointFactory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/MyString.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Named.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Path.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/Quaternion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/Rectangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/TimeConcrete.cpp" ex="false" tool="1" flavor2="0">
       </item>

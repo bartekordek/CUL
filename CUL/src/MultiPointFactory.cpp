@@ -1,6 +1,6 @@
-#include "Math/MultiPointFactory.h"
+#include "CUL/Math/MultiPointFactory.hpp"
 
-namespace Moge
+namespace CUL
 {
     namespace Math
     {

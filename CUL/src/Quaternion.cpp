@@ -1,5 +1,5 @@
-#include "Math/Quaternion.h"
+#include "CUL/Math/Quaternion.hpp"
 
-namespace Moge
+namespace CUL
 {
 }

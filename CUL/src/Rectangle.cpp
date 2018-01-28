@@ -1,5 +1,5 @@
-#include "Math/Rectangle.h"
+#include "CUL/Math/Rectangle.hpp"
 
-namespace Moge
+namespace CUL
 {
 }
