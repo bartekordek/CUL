@@ -77,5 +77,17 @@ namespace CUL
             this->m_val += static_cast<double>( val );
             return *this;
         }
+
+        IAngle& Degree::operator-=( const double val )
+        {
+            this->m_val -= val;
+            return *this;
+        }
+
+        IAngle& Degree::operator-=( const int val )
+        {
+            this->m_val -= static_cast<double>( val );
+            return *this;
+        }
     }
 }

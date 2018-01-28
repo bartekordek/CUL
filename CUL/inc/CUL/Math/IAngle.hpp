@@ -23,6 +23,10 @@ namespace CUL
             virtual IAngle& operator+=( const double val ) = 0;
             virtual IAngle& operator+=( const int val ) = 0;
 
+            virtual IAngle& operator-=( const double val ) = 0;
+            virtual IAngle& operator-=( const int val ) = 0;
+
+
         protected:
         private:
         };

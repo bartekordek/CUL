@@ -24,6 +24,9 @@ namespace CUL
             IAngle& operator+=( const double val ) override;
             IAngle& operator+=( const int val ) override;
 
+            IAngle& operator-=( const double val ) override;
+            IAngle& operator-=( const int val ) override;
+
         protected:
         private:
             double m_val = 0.0;
