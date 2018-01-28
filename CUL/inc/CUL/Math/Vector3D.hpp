@@ -66,7 +66,10 @@ namespace CUL
                 this->z = zValue;
             }
 
-            void setXYZ( const Type xVal, const Type yVal, const Type zVal )
+            void setXYZ( 
+                const Type xVal,
+                const Type yVal,
+                const Type zVal )
             {
                 this->x = xVal;
                 this->y = yVal;
