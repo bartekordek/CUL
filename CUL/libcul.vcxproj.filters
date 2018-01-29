@@ -131,9 +131,6 @@
     <ClInclude Include="inc\CUL\Path.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\IPivot.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Math\Axis.hpp">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
@@ -189,6 +186,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Degree.hpp">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Math\IPivot.hpp">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Math\IPivotObserver.hpp">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>

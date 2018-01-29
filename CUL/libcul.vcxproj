@@ -44,7 +44,6 @@
     <ClInclude Include="inc\CUL\IFile.hpp" />
     <ClInclude Include="inc\CUL\IIterator.hpp" />
     <ClInclude Include="inc\CUL\IList.hpp" />
-    <ClInclude Include="inc\CUL\IPivot.hpp" />
     <ClInclude Include="inc\CUL\IPivotObserver.hpp" />
     <ClInclude Include="inc\CUL\IteratorListLinked.hpp" />
     <ClInclude Include="inc\CUL\IteratorListVector.hpp" />
@@ -60,6 +59,8 @@
     <ClInclude Include="inc\CUL\Math\Epsilon.hpp" />
     <ClInclude Include="inc\CUL\Math\Frustum.hpp" />
     <ClInclude Include="inc\CUL\Math\IAngle.hpp" />
+    <ClInclude Include="inc\CUL\Math\IPivot.hpp" />
+    <ClInclude Include="inc\CUL\Math\IPivotObserver.hpp" />
     <ClInclude Include="inc\CUL\Math\IVector.hpp" />
     <ClInclude Include="inc\CUL\Math\Line.hpp" />
     <ClInclude Include="inc\CUL\Math\Math.hpp" />

@@ -1,6 +1,7 @@
-#include "CUL/IPivot.hpp"
+#include "CUL/Math/IPivot.hpp"
 
 using namespace CUL;
+using namespace Math;
 
 IPivot::IPivot( IPivotObserver* pivotObserver ):
     m_pivotObserver( pivotObserver )

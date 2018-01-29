@@ -1,7 +1,7 @@
 #include "PivotTests.hpp"
-#include "CUL/IPivot.hpp"
+#include "CUL/Math/IPivot.hpp"
 
-using namespace CUL;
+using IPivot = CUL::Math::IPivot;
 
 PivotTests::PivotTests( void )
 {
@@ -24,12 +24,12 @@ TEST_F( PivotTests, dimensionSetting )
     const double w = 1.0;
     const double h = 2.0;
     const double d = 3.0;
-    CUL::IPivot pivot( nullptr );
+    IPivot pivot( nullptr );
     pivot.setWidth( w );
     pivot.setHeight( h );
     pivot.setDepth( d );
 
-    auto pivotType = CUL::IPivot::PivotType::ABSOLUTE;
+    auto pivotType = IPivot::PivotType::ABSOLUTE;
 
     GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getX() < ( w / 2.0 + 0.1 ), true );
     GTEST_ASSERT_EQ( pivot.getPivot( pivotType ).getX() > ( w / 2.0 - 0.1), true );
