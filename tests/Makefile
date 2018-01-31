@@ -25,21 +25,23 @@ BINARY_NAME = $(PROJECT_NAME).exe
 OUTPUT_DIR := ../build
 OUTPUT_DIR_DEBUG = $(OUTPUT_DIR)/Debug
 OUTPUT_DIR_RELEASE = $(OUTPUT_DIR)/Release
-RUN_DIR := ../runTests
+RUN_DIR := ../runTestsDir
 
 DEPS_ROOT := ../deps
 GTEST_ROOT := $(DEPS_ROOT)/gtest
 GTEST_INCLUDE := $(GTEST_ROOT)/googletest/include
 GTEST_LIBRARY_DIR := $(GTEST_ROOT)/Build-$(BUILD_ROOT)
-ROOT_LIBMOGE := ../libcul
+ROOT_LIBCUL := ../libcul
 
-HEADER_INC := -I . -isystem $(GTEST_INCLUDE) -I $(ROOT_LIBMOGE)/inc
+HEADER_INC := -I . -isystem $(GTEST_INCLUDE) -I $(ROOT_LIBCUL)/inc
 IMPORT_LIBS_DEBUG := -L$(OUTPUT_DIR_DEBUG) -L$(GTEST_LIBRARY_DIR)
 IMPORT_LIBS_RELEASE := -L$(OUTPUT_DIR_RELEASE) -L$(GTEST_LIBRARY_DIR)
 IMPORT_LIBS_FILES := -lgtest -lgtest_main -lcul
 
 CPP_FILES := $(wildcard */*.cpp)
 CPP_FILES += $(wildcard *.cpp)
+
+# $(@D) <- dir of target
 
 # OBJ:
 OBJ_DEBUG_DIR := $(OUTPUT_DIR_DEBUG)/intermediate_$(PROJECT_NAME)/debug/
@@ -50,46 +52,42 @@ OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
 debug: $(OUTPUT_DIR_DEBUG)/$(BINARY_NAME)
 release: $(OUTPUT_DIR_RELEASE)/$(BINARY_NAME)
 
-run_debug: debug
-	cd $(RUN_DIR);./$(OUTPUT_DIR_DEBUG)/$(BINARY_NAME)
+run_debug: $(OUTPUT_DIR_DEBUG)/$(BINARY_NAME)
+	cd $(RUN_DIR);./$<
 
-run_release: release
-	cd $(RUN_DIR);./$(OUTPUT_DIR_RELEASE)/$(BINARY_NAME)
+run_release: $(OUTPUT_DIR_RELEASE)/$(BINARY_NAME)
+	cd $(RUN_DIR);./$<
 
-$(OUTPUT_DIR_DEBUG)/$(BINARY_NAME): run_debug_deps $(OBJ_DEBUG_FILES) $(OUTPUT_DIR_DEBUG)
+$(OUTPUT_DIR_DEBUG)/$(BINARY_NAME): $(OBJ_DEBUG_FILES)
+	@make run_debug_deps
 	@mkdir -p $(@D)
-	$(CC_LINK) -o $(OUTPUT_DIR_DEBUG)/$(BINARY_NAME) $(OBJ_DEBUG_FILES) $(IMPORT_LIBS_DEBUG) $(IMPORT_LIBS_FILES)
+	$(CC_LINK) -o $@ $(OBJ_DEBUG_FILES) $(IMPORT_LIBS_DEBUG) $(IMPORT_LIBS_FILES)
 
-$(OUTPUT_DIR_RELEASE)/$(BINARY_NAME): run_release_deps $(OBJ_RELEASE_FILES) $(OUTPUT_DIR_RELEASE)
+$(OUTPUT_DIR_RELEASE)/$(BINARY_NAME): $(OBJ_RELEASE_FILES)
+	@make run_release_deps
 	@mkdir -p $(@D)
-	$(CC_LINK) -o $(OUTPUT_DIR_RELEASE)/$(BINARY_NAME) $(OBJ_RELEASE_FILES) $(IMPORT_LIBS_RELEASE) $(IMPORT_LIBS_FILES)
-
-$(OUTPUT_DIR_DEBUG):
-	mkdir -p $@
-
-$(OUTPUT_DIR_RELEASE):
-	mkdir -p $@
+	$(CC_LINK) -o $@ $(OBJ_RELEASE_FILES) $(IMPORT_LIBS_RELEASE) $(IMPORT_LIBS_FILES)
 
 $(OBJ_DEBUG_DIR)%.o: %.cpp
 	mkdir -p $(dir $@)
 	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(DEBUG_FLAGS) -c -o $@ $<
 
 $(OBJ_RELEASE_DIR)%.o: %.cpp
-	mkdir -p $(dir $@)
+	@ mkdir -p $(dir $@)
 	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(RELEASE_FLAGS) -c -o $@ $<
 
 clean:
-	make -C $(ROOT_LIBMOGE) clean
+	make -C $(ROOT_LIBCUL) clean
 	rm -f $(OBJ_DEBUG_FILES)
 	rm -f $(OBJ_RELEASE_FILES)
 	rm -f $(OUTPUT_DEBUG)
 	rm -f $(OUTPUT_RELEASE)
 
 run_debug_deps:
-	make -C $(ROOT_LIBMOGE) debug
+	make -C $(ROOT_LIBCUL) debug
 
 run_release_deps:
-	make -C $(ROOT_LIBMOGE) release
+	make -C $(ROOT_LIBCUL) release
 
 clear_all:
 	find . -name '*.o' | xargs rm
