@@ -1,5 +1,21 @@
-CC = g++ -fdiagnostics-color=always
-CC_LINK = g++ -fdiagnostics-color=always -shared
+ARCH := $(shell getconf LONG_BIT)
+ifeq ($(OS),Windows_NT)
+DYN_LIB_EXT := .dll
+BUILD_ROOT := Cygwin
+else
+DYN_LIB_EXT := .so
+BUILD_ROOT := Build-Linux
+endif
+
+ifeq ($(ARCH),64)
+ARCH_FLAG := -m64
+else
+ARCH_FLAG := -m32
+endif
+
+DIAG_FLAG := -fdiagnostics-color=always
+CC := g++ $(ARCH_FLAG) $(DIAG_FLAG)
+CC_LINK := g++ $(ARCH_FLAG) $(DIAG_FLAG) -shared
 COMPILER_FLAGS = -pedantic -Wall -std=c++11 -DCULLib_EXPORT -DCUL_DYNAMIC -Wno-ignored-attributes
 LINKER_ENABLE_IMPORT := -Wl,--export-all-symbols -Wl,--enable-auto-import
 DEBUG_FLAGS = -ggdb
@@ -30,16 +46,9 @@ IMP_LIB_RELEASE = $(OUTPUT_DIR_RELEASE)/$(IMP_LIB_NAME)
 CPP_FILES := $(wildcard src/*.cpp)
 
 OBJ_DEBUG_DIR := obj/debug/
-OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
-
 OBJ_RELEASE_DIR := obj/release/
+OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
 OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
-
-ifeq ($(OS),Windows_NT)
-    DYN_LIB_EXT = .dll
-else
-    DYN_LIB_EXT = .so
-endif
 
 DLL_NAME = $(PROJECT_NAME)$(DYN_LIB_EXT)
 
@@ -76,8 +85,3 @@ clean:
 	rm -f $(OUTPUT_DEBUG)
 	rm -f $(OUTPUT_RELEASE)
 	find . -name '*.o' | xargs rm -fv
-
-test:
-	@echo "All .o files: $(OBJ_DEBUG_FILES)"
-	@echo "All .cpp files: $(CPP_FILES)"
-	@echo "SDL2: $(HOME_SDL2_LINUX)/"
