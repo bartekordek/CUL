@@ -66,18 +66,12 @@ $(OUTPUT_RELEASE): $(OBJ_RELEASE_FILES)
 	cp -fv $(HOME_SDL2_LINUX)/Build-Linux/build/.libs/*$(DYN_LIB_EXT) $(OUTPUT_DIR_RELEASE)
 
 $(OBJ_DEBUG_DIR)%.o: %.cpp
-	mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)
 	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(DEBUG_FLAGS) -c -o $@ $<
 
 $(OBJ_RELEASE_DIR)%.o: %.cpp
-	mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)
 	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(RELEASE_FLAGS) -c -o $@ $<
-
-first_run:
-	mkdir -p $(dir $(OBJ_DEBUG_FILES))
-	mkdir -p $(dir $(OUTPUT_DEBUG))
-	mkdir -p $(dir $(OBJ_RELEASE_FILES))
-	mkdir -p $(dir $(OUTPUT_RELEASE))
 
 clean:
 	rm -f $(OBJ_DEBUG_FILES)

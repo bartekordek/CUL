@@ -32,11 +32,12 @@ GTEST_ROOT := $(DEPS_ROOT)/gtest
 GTEST_INCLUDE := $(GTEST_ROOT)/googletest/include
 GTEST_LIBRARY_DIR := $(GTEST_ROOT)/Build-$(BUILD_ROOT)
 ROOT_LIBCUL := ../libcul
+LIBCUL_IMPORT_LIB := libcul.a
 
 HEADER_INC := -I . -isystem $(GTEST_INCLUDE) -I $(ROOT_LIBCUL)/inc
 IMPORT_LIBS_DEBUG := -L$(OUTPUT_DIR_DEBUG) -L$(GTEST_LIBRARY_DIR)
 IMPORT_LIBS_RELEASE := -L$(OUTPUT_DIR_RELEASE) -L$(GTEST_LIBRARY_DIR)
-IMPORT_LIBS_FILES := -lgtest -lgtest_main -lcul
+IMPORT_LIBS_FILES := -lgtest -lgtest_main
 
 CPP_FILES := $(wildcard */*.cpp)
 CPP_FILES += $(wildcard *.cpp)
@@ -59,21 +60,27 @@ run_release: $(OUTPUT_DIR_RELEASE)/$(BINARY_NAME)
 	cd $(RUN_DIR);./$<
 
 $(OUTPUT_DIR_DEBUG)/$(BINARY_NAME): $(OBJ_DEBUG_FILES)
-	@make run_debug_deps
+	@make deps_debug
 	@mkdir -p $(@D)
 	$(CC_LINK) -o $@ $(OBJ_DEBUG_FILES) $(IMPORT_LIBS_DEBUG) $(IMPORT_LIBS_FILES)
 
 $(OUTPUT_DIR_RELEASE)/$(BINARY_NAME): $(OBJ_RELEASE_FILES)
-	@make run_release_deps
+	@make deps_release
 	@mkdir -p $(@D)
 	$(CC_LINK) -o $@ $(OBJ_RELEASE_FILES) $(IMPORT_LIBS_RELEASE) $(IMPORT_LIBS_FILES)
 
+$(OUTPUT_DIR_DEBUG)/$(LIBCUL_IMPORT_LIB):
+	@echo "HALO"
+
+$(OUTPUT_DIR_RELEASE)/$(LIBCUL_IMPORT_LIB):
+	@echo "HALO"
+
 $(OBJ_DEBUG_DIR)%.o: %.cpp
-	mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)
 	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(DEBUG_FLAGS) -c -o $@ $<
 
 $(OBJ_RELEASE_DIR)%.o: %.cpp
-	@ mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)
 	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(RELEASE_FLAGS) -c -o $@ $<
 
 clean:
@@ -83,10 +90,10 @@ clean:
 	rm -f $(OUTPUT_DEBUG)
 	rm -f $(OUTPUT_RELEASE)
 
-run_debug_deps:
+deps_debug:
 	make -C $(ROOT_LIBCUL) debug
 
-run_release_deps:
+deps_release:
 	make -C $(ROOT_LIBCUL) release
 
 clear_all:
