@@ -165,6 +165,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -187,6 +188,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CULLib_EXPORT;CUL_DYNAMIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

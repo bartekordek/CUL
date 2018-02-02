@@ -1,4 +1,5 @@
 #include "CUL/FS.hpp"
+#define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
 #include <boost/filesystem.hpp>
 using namespace CUL;
 using namespace FS;
