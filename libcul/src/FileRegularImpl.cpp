@@ -1,5 +1,6 @@
 #include "FileRegularImpl.hpp"
 #include "CUL/ListFactory.hpp"
+#define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
 using namespace CUL;
