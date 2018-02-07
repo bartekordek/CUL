@@ -74,22 +74,34 @@ const std::string MyString::toLower()const
 
 void MyString::toLowerS( std::string& inOutString )
 {
-
+#if _MSC_VER
+    __pragma(warning( push )) \
+    __pragma(warning( disable:4244 ))
+#endif
     std::transform(
         inOutString.begin(),
         inOutString.end(),
         inOutString.begin(),
             ::tolower );
+#if _MSC_VER
+    __pragma(warning( pop ))
+#endif
 }
 
 void MyString::toUpperS( std::string& inOutString )
 {
-
+#if _MSC_VER
+    __pragma(warning( push )) \
+    __pragma(warning( disable:4244 ))
+#endif
     std::transform(
         inOutString.begin(),
         inOutString.end(),
         inOutString.begin(),
         ::toupper );
+#if _MSC_VER
+    __pragma(warning( pop ))
+#endif
 }
 
 const std::string MyString::string()const
