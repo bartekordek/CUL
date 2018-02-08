@@ -59,16 +59,16 @@ namespace CUL
             return this->iterator.get();
         }
 
-        IIterator<Type>& getRandomIterator()override
-        {
-            *this->iterator.get() = *this->first.get();
-            return *this->iterator.get();
-        }
-
         const IIterator<Type>* getRandomIteratorPtr()const override
         {
             *this->iterator.get() = *this->first.get();
             return this->iterator.get();
+        }
+
+        IIterator<Type>& getRandomIterator()override
+        {
+            *this->iterator.get() = *this->first.get();
+            return *this->iterator.get();
         }
 
         const IIterator<Type>& getRandomIterator()const override

@@ -175,6 +175,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -197,6 +198,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -217,6 +219,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -241,6 +244,7 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
