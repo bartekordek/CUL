@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\ConsoleUtilities.cpp" />
     <ClCompile Include="src\Degree.cpp" />
     <ClCompile Include="src\FileCompileTest.cpp" />
@@ -38,6 +39,7 @@
     <ClCompile Include="src\TimerChrono.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\CUL\Color.hpp" />
     <ClInclude Include="inc\CUL\ConsoleUtilities.hpp" />
     <ClInclude Include="inc\CUL\CUL.hpp" />
     <ClInclude Include="inc\CUL\FS.hpp" />
