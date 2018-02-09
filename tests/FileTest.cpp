@@ -16,14 +16,14 @@ TEST_F(FileTest, fileFileDontExtistFileReturnsFalse)
 
 TEST_F( FileTest, basicFileLoadFirstLine )
 {
-	auto f = CUL::FS::IFile::createFile( dummyFilePath );
-	f->load();
-	GTEST_ASSERT_EQ( "Line1", f->firstLine()->getVal() );
+    auto f = CUL::FS::IFile::createFile( dummyFilePath );
+    f->load();
+    GTEST_ASSERT_EQ( "Line1", f->firstLine()->getVal() );
 }
 
 TEST_F( FileTest, basicFileLoadlastLine )
 {
-	auto f = CUL::FS::IFile::createFile( dummyFilePath );
-	f->load();
-	GTEST_ASSERT_EQ( "Line3", f->lastLine()->getVal() );
+    auto f = CUL::FS::IFile::createFile( dummyFilePath );
+    f->load();
+    GTEST_ASSERT_EQ( "Line3", f->lastLine()->getVal() );
 }

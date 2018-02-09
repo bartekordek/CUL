@@ -11,7 +11,7 @@ IFile::IFile()
 
 IFile::IFile( const std::string& fPath )
 {
-	std::cout << " IFile::IFile( const std::string& fPath ), fPath = " << fPath << "\n";
+    std::cout << " IFile::IFile( const std::string& fPath ), fPath = " << fPath << "\n";
 }
 
 IFile::~IFile()
@@ -20,7 +20,7 @@ IFile::~IFile()
 
 std::shared_ptr<IFile> IFile::createFile( const Path& path )
 {
-	auto fr = new FileRegularImpl( path.getPath() );
-	std::shared_ptr<IFile> file( fr );
-	return file;
+    auto fr = new FileRegularImpl( path.getPath() );
+    std::shared_ptr<IFile> file( fr );
+    return file;
 }

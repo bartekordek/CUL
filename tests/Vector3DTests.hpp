@@ -6,19 +6,19 @@ class Vector3DTests: public ::testing::Test
 {
 public:
 protected:
-	Vector3DTests()
-	{
-	}
+    Vector3DTests()
+    {
+    }
 
-	virtual ~Vector3DTests()
-	{
-	}
+    virtual ~Vector3DTests()
+    {
+    }
 
-	virtual void SetUp()
-	{
-	}
+    virtual void SetUp()
+    {
+    }
 
-	virtual void TearDown()
-	{
-	}
+    virtual void TearDown()
+    {
+    }
 };

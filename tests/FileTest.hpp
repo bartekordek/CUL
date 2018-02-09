@@ -6,22 +6,22 @@ class FileTest: public ::testing::Test
 {
 public:
 protected:
-	FileTest()
-	{
-	}
+    FileTest()
+    {
+    }
 
-	virtual ~FileTest()
-	{
-	}
+    virtual ~FileTest()
+    {
+    }
 
-	virtual void SetUp()
-	{
-	}
+    virtual void SetUp()
+    {
+    }
 
-	virtual void TearDown()
-	{
-	}
+    virtual void TearDown()
+    {
+    }
 
-	std::string dummyFilePath = "../media/Dummy.txt";
+    std::string dummyFilePath = "../media/Dummy.txt";
 
 };

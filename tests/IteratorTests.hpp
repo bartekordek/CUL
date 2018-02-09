@@ -11,20 +11,20 @@ class IteratorTests: public ::testing::Test
 {
 public:
 protected:
-	IteratorTests()
-	{
-	}
+    IteratorTests()
+    {
+    }
 
-	virtual ~IteratorTests()
-	{
-	}
+    virtual ~IteratorTests()
+    {
+    }
 
-	virtual void SetUp()
-	{
-	}
+    virtual void SetUp()
+    {
+    }
 
-	virtual void TearDown()
-	{
-	}
+    virtual void TearDown()
+    {
+    }
 };
 
