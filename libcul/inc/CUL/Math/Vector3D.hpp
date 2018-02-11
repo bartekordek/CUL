@@ -238,9 +238,9 @@ namespace CUL
             template <class someOtherClass>
             Vector3D<Type>& operator=( const Vector3D<someOtherClass>& right )
             {
-                this->x = static_cast<Type>( right.x );
-                this->y = static_cast<Type>( right.y );
-                this->z = static_cast<Type>( right.z );
+                this->x = static_cast<Type>( right.getX() );
+                this->y = static_cast<Type>( right.getY() );
+                this->z = static_cast<Type>( right.getZ() );
                 return *this;
             }
 
