@@ -106,20 +106,15 @@ namespace CUL
             }
         }
 
-        const std::shared_ptr<IIterator<Type>> find( const Type& type ) const override
+        const IIterator<Type>* find( const Type& wantedElement ) const override
         {
-            auto ptr = static_cast<IteratorListVector<Type>*>( this->first.get() );
-            std::shared_ptr<IIterator<Type>> result( new IteratorListVector<Type>( *ptr ) );
-            while( result->hasNext() )
-            {
-                if( result.get()->getVal() == type  )
-                {
-                    return result;
-                }
-                ++*result.get();
-
-            }
-            return result;
+            auto findIter =
+                std::find( 
+                    this->values.begin(), 
+                    this->values.end(), 
+                    wantedElement );
+            this->iterator->setIterator( &findIter );
+            return this->iterator.get();
         }
         
         void clear()override
@@ -139,7 +134,7 @@ namespace CUL
         }
 
         std::vector<Type> values;
-        std::unique_ptr<IteratorListVector<Type>> iterator;
+        mutable std::unique_ptr<IteratorListVector<Type>> iterator;
         std::unique_ptr<IteratorListVector<Type>> first;
         std::unique_ptr<IteratorListVector<Type>> last;
         std::unique_ptr<IteratorListVector<Type>> lastEl;

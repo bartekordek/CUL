@@ -32,7 +32,7 @@ namespace CUL
 
         virtual void clear() = 0;
 
-        virtual const std::shared_ptr<IIterator<Type>> find( const Type& type ) const = 0;
+        virtual const IIterator<Type>* find( const Type& type ) const = 0;
 
     protected:
     private:

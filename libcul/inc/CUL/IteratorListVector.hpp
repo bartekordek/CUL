@@ -73,22 +73,22 @@ namespace CUL
 
         Type& first() override
         {
-            return *this->it;
+            return **this->it;
         }
 
         Type& last() override
         {
-            return *this->it;
+            return **this->it;
         }
         
         const Type& first()const override
         {
-            return *this->it;
+            return **this->it;
         }
 
         const Type& last()const override
         {
-            return *this->it;
+            return **this->it;
         }
 
         IIterator<Type>& operator=( const typename std::vector<Type>::iterator& inIt )
@@ -110,33 +110,38 @@ namespace CUL
             return *this;
         }
 
-        void setIterator( const typename std::vector<Type>::iterator& inIt )
+        void setIterator( typename std::vector<Type>::iterator* inIt )
         {
             this->it = inIt;
         }
 
-        Type& operator++() override
+        void setIterator( typename std::vector<Type>::const_iterator* inIt )
         {
-            ++this->it;
-            return *this->it;
+            this->it = inIt;
         }
 
-        Type operator++( int ) override
+        const Type& operator++() override
         {
-            Type temp = *this->it;
+            ++this->it;
+            return **this->it;
+        }
+
+        const Type operator++( int ) override
+        {
+            Type temp = **this->it;
             ++this->it;
             return temp;
         }
 
-        Type& operator--() override
+        const Type& operator--() override
         {
             --this->it;
-            return *this->it;
+            return **this->it;
         }
 
-        Type operator--( int ) override
+        const Type operator--( int ) override
         {
-            Type temp = *this->it;
+            Type temp = **this->it;
             --this->it;
             return temp;
         }
@@ -168,6 +173,6 @@ namespace CUL
     protected:
     private:
         std::vector<Type>& elements;
-        typename std::vector<Type>::iterator it;
+        typename std::vector<Type>::const_iterator* it = nullptr;
     };
 }

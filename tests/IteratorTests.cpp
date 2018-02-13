@@ -138,3 +138,16 @@ TEST_F( IteratorTests, LinkedIntIterateManyElements )
         ++i;
     }
 }
+
+TEST_F( IteratorTests, findElement )
+{
+    std::unique_ptr<IList<unsigned>> result( ListFactory::createLinkedListPtr<unsigned>() );
+    unsigned limit = hugeAmount;
+    for ( unsigned i = 0; i < limit; ++i )
+    {
+        result->pushBack( i );
+    }
+
+    auto it = result->find( 1 );
+    GTEST_ASSERT_NE( result->end(), *it );
+}

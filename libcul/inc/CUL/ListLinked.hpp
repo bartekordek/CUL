@@ -85,7 +85,6 @@ namespace CUL
             this->values.push_back( element );
             this->first->setIterator( this->values.begin() );
             this->last->setIterator( this->values.end() );
-            //this->lastEl->setIterator( this->values.rend() );
         }
 
         void remove( const IIterator<Type>& it ) override
@@ -105,18 +104,15 @@ namespace CUL
             }
         }
 
-        const std::shared_ptr<IIterator<Type>> find( const Type& type ) const override
+        const IIterator<Type>* find( const Type& wantedElement ) const override
         {
-            std::shared_ptr<IIterator<Type>> result( new IteratorListLinked<Type>( *this->first ) );
-            while( result->hasNext() )
-            {
-                if( result.get()->getVal() == type )
-                {
-                    return result;
-                }
-                ++*result;
-            }
-            return result;
+            const std::list<Type>::iterator& findIter =
+                std::find( 
+                    this->values.begin(), 
+                    this->values.end(), 
+                    wantedElement );
+            this->iterator->setIterator( findIter );
+            return this->iterator;
         }
 
         void clear()override
@@ -127,7 +123,7 @@ namespace CUL
     protected:
     private:
         std::list<Type> values;
-        std::unique_ptr<IteratorListLinked<Type>> iterator;
+        mutable std::unique_ptr<IteratorListLinked<Type>> iterator;
         std::unique_ptr<IteratorListLinked<Type>> first;
         std::unique_ptr<IteratorListLinked<Type>> last;
         std::unique_ptr<IteratorListLinked<Type>> lastEl;
