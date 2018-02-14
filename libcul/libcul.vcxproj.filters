@@ -95,34 +95,10 @@
     <ClInclude Include="inc\CUL\IFile.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\IIterator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\IList.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\IteratorListLinked.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\IteratorListVector.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\IteratorListVectorReverse.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\ITime.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\ITimer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\ListFactory.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\ListLinked.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\ListVector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\MyString.hpp">

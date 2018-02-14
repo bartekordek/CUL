@@ -176,8 +176,6 @@
   <ItemGroup>
     <ClCompile Include="FilesystemTests.cpp" />
     <ClCompile Include="FileTest.cpp" />
-    <ClCompile Include="IteratorTests.cpp" />
-    <ClCompile Include="ListsTests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NameTests.cpp" />
     <ClCompile Include="PivotTests.cpp" />
@@ -189,7 +187,6 @@
     <ClInclude Include="FilesystemTests.hpp" />
     <ClInclude Include="FileTest.hpp" />
     <ClInclude Include="IteratorTests.hpp" />
-    <ClInclude Include="ListTests.hpp" />
     <ClInclude Include="NameTests.hpp" />
     <ClInclude Include="PivotTests.hpp" />
     <ClInclude Include="StringTest.hpp" />
