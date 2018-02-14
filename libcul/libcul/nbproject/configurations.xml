@@ -8,18 +8,10 @@
       <itemPath>../inc/CUL/ConsoleUtilities.hpp</itemPath>
       <itemPath>../inc/CUL/FS.hpp</itemPath>
       <itemPath>../inc/CUL/IFile.hpp</itemPath>
-      <itemPath>../inc/CUL/IIterator.hpp</itemPath>
-      <itemPath>../inc/CUL/IList.hpp</itemPath>
       <itemPath>../inc/CUL/IPivot.hpp</itemPath>
       <itemPath>../inc/CUL/ITime.hpp</itemPath>
       <itemPath>../inc/CUL/ITimer.hpp</itemPath>
-      <itemPath>../inc/CUL/IteratorListLinked.hpp</itemPath>
-      <itemPath>../inc/CUL/IteratorListVector.hpp</itemPath>
-      <itemPath>../inc/CUL/IteratorListVectorReverse.hpp</itemPath>
       <itemPath>../inc/CUL/LckPrim.hpp</itemPath>
-      <itemPath>../inc/CUL/ListFactory.hpp</itemPath>
-      <itemPath>../inc/CUL/ListLinked.hpp</itemPath>
-      <itemPath>../inc/CUL/ListVector.hpp</itemPath>
       <itemPath>../inc/CUL/Math</itemPath>
       <itemPath>../inc/CUL/MyString.hpp</itemPath>
       <itemPath>../inc/CUL/Named.hpp</itemPath>
@@ -32,6 +24,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>../src/Color.cpp</itemPath>
       <itemPath>../src/ConsoleUtilities.cpp</itemPath>
       <itemPath>../src/Degree.cpp</itemPath>
       <itemPath>../src/FS.cpp</itemPath>
@@ -83,7 +76,7 @@
           <incDir>
             <pElem>../inc</pElem>
             <pElem>../src</pElem>
-            <pElem>../../deps/boost_1_64_0</pElem>
+            <pElem>../../deps/boost_1_66_0</pElem>
           </incDir>
           <preprocessorList>
             <Elem>CULLib_EXPORT</Elem>
@@ -94,8 +87,8 @@
         <linkerTool>
           <output>../../build/${CND_PLATFORM}-${CND_CONF}/libcul.${CND_DLIB_EXT}</output>
           <linkerLibItems>
-            <linkerLibFileItem>../../deps/boost_1_64_0/Build-Cygwin/libboost_system-mt.a</linkerLibFileItem>
-            <linkerLibFileItem>../../deps/boost_1_64_0/Build-Cygwin/libboost_filesystem-mt.a</linkerLibFileItem>
+            <linkerLibFileItem>../../deps/boost_1_66_0/Build-Cygwin/libboost_system-gcc64-mt-d-x64-1_66.a</linkerLibFileItem>
+            <linkerLibFileItem>../../deps/boost_1_66_0/Build-Cygwin/libboost_filesystem-gcc64-mt-x64-1_66.a</linkerLibFileItem>
           </linkerLibItems>
           <commandLine>-Wl,--out-implib,../../build/${CND_PLATFORM}-${CND_CONF}/libcul.a</commandLine>
         </linkerTool>
@@ -108,32 +101,13 @@
       </item>
       <item path="../inc/CUL/IFile.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../inc/CUL/IIterator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/IList.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../inc/CUL/IPivot.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ITime.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ITimer.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../inc/CUL/IteratorListLinked.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/IteratorListVector.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/IteratorListVectorReverse.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../inc/CUL/LckPrim.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/ListFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/ListLinked.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/ListVector.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/Math" ex="false" tool="3" flavor2="0">
       </item>
@@ -142,6 +116,8 @@
       <item path="../inc/CUL/Named.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/Path.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/Color.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/ConsoleUtilities.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -206,7 +182,7 @@
           <incDir>
             <pElem>../inc</pElem>
             <pElem>../src</pElem>
-            <pElem>../../deps/boost_1_64_0</pElem>
+            <pElem>../../deps/boost_1_66_0</pElem>
           </incDir>
           <commandLine>-Ofast</commandLine>
           <preprocessorList>
@@ -225,8 +201,8 @@
           <output>../../build/${CND_PLATFORM}-${CND_CONF}/libcul.${CND_DLIB_EXT}</output>
           <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
-            <linkerLibFileItem>../../deps/boost_1_64_0/Build-Cygwin/libboost_system-mt.a</linkerLibFileItem>
-            <linkerLibFileItem>../../deps/boost_1_64_0/Build-Cygwin/libboost_filesystem-mt.a</linkerLibFileItem>
+            <linkerLibFileItem>../../deps/boost_1_66_0/Build-Cygwin/libboost_system-gcc64-mt-d-x64-1_66.a</linkerLibFileItem>
+            <linkerLibFileItem>../../deps/boost_1_66_0/Build-Cygwin/libboost_filesystem-gcc64-mt-x64-1_66.a</linkerLibFileItem>
           </linkerLibItems>
           <commandLine>-Wl,--out-implib,../../build/${CND_PLATFORM}-${CND_CONF}/libcul.a</commandLine>
         </linkerTool>
@@ -239,32 +215,13 @@
       </item>
       <item path="../inc/CUL/IFile.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../inc/CUL/IIterator.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/IList.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../inc/CUL/IPivot.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ITime.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/ITimer.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../inc/CUL/IteratorListLinked.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/IteratorListVector.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/IteratorListVectorReverse.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="../inc/CUL/LckPrim.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/ListFactory.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/ListLinked.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../inc/CUL/ListVector.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/Math" ex="false" tool="3" flavor2="0">
       </item>
@@ -273,6 +230,8 @@
       <item path="../inc/CUL/Named.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/Path.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/Color.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/ConsoleUtilities.cpp" ex="false" tool="1" flavor2="0">
       </item>

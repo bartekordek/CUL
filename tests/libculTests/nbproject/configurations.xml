@@ -6,7 +6,6 @@
                    projectFiles="true">
       <itemPath>../FileTest.hpp</itemPath>
       <itemPath>../FilesystemTests.hpp</itemPath>
-      <itemPath>../IteratorTests.hpp</itemPath>
       <itemPath>../NameTests.hpp</itemPath>
       <itemPath>../StringTest.hpp</itemPath>
       <itemPath>../Vector3DTests.hpp</itemPath>
@@ -20,7 +19,6 @@
                    projectFiles="true">
       <itemPath>../FileTest.cpp</itemPath>
       <itemPath>../FilesystemTests.cpp</itemPath>
-      <itemPath>../IteratorTests.cpp</itemPath>
       <itemPath>../NameTests.cpp</itemPath>
       <itemPath>../StringTests.cpp</itemPath>
       <itemPath>../Vector3DTests.cpp</itemPath>
@@ -52,7 +50,7 @@
             <pElem>..</pElem>
             <pElem>../../deps/gtest/googletest/include</pElem>
             <pElem>../../deps/gtest/googlemock/include</pElem>
-            <pElem>../../CUL/inc</pElem>
+            <pElem>../../libcul/inc</pElem>
           </incDir>
           <warningLevel>2</warningLevel>
         </ccTool>
@@ -152,10 +150,6 @@
       </item>
       <item path="../FilesystemTests.hpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="../IteratorTests.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../IteratorTests.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="../NameTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../NameTests.hpp" ex="false" tool="3" flavor2="0">
@@ -187,7 +181,7 @@
             <pElem>..</pElem>
             <pElem>../../deps/gtest/googletest/include</pElem>
             <pElem>../../deps/gtest/googlemock/include</pElem>
-            <pElem>../../inc</pElem>
+            <pElem>../../libcul/inc</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -216,10 +210,6 @@
       <item path="../FilesystemTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../FilesystemTests.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="../IteratorTests.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="../IteratorTests.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../NameTests.cpp" ex="false" tool="1" flavor2="0">
       </item>
