@@ -1,25 +1,21 @@
 #include "FileRegularImpl.hpp"
-#include "CUL/ListFactory.hpp"
 #define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
 using namespace CUL;
 using namespace FS;
 
-FileRegularImpl::FileRegularImpl():
-    rows( ListFactory::createVectorListPtr<std::string>() )
+FileRegularImpl::FileRegularImpl()
 {
 }
 
 FileRegularImpl::FileRegularImpl( const FileRegularImpl& file ):
-    path( file.path ),
-    rows( ListFactory::createVectorListPtr<std::string>() )
+    path( file.path )
 {
 }
 
 FileRegularImpl::FileRegularImpl( const std::string& filePath ):
-    path( filePath ),
-    rows( ListFactory::createVectorListPtr<std::string>() )
+    path( filePath )
 {
 
 }
@@ -67,37 +63,22 @@ void FileRegularImpl::load()
         {
             line.pop_back();
         }
-    this->rows->pushBack( line );
+    this->rows.push_back( line );
     }
     infile.close();
 }
 
 void FileRegularImpl::unload()
 {
-    this->rows->clear();
+    this->rows.clear();
 }
 
-const IIterator<std::string>* FileRegularImpl::begin()const
+const std::string& FileRegularImpl::firstLine()const
 {
-    return &this->rows->begin();
+    return this->rows.front();
 }
 
-const IIterator<std::string>* FileRegularImpl::end()const
+const std::string& FileRegularImpl::lastLine()const
 {
-    return &this->rows->end();
-}
-
-IIterator<std::string>* FileRegularImpl::getIt()
-{
-    return this->rows->getRandomIteratorPtr();
-}
-
-const IIterator<std::string>* FileRegularImpl::firstLine()const
-{
-    return &this->rows->firstElement();
-}
-
-const IIterator<std::string>* FileRegularImpl::lastLine()const
-{
-    return &this->rows->lastElement();
+    return this->rows.back();
 }

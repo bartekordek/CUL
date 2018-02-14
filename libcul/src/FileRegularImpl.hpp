@@ -1,7 +1,6 @@
 #pragma once
 #include "CUL/IFile.hpp"
 #include "CUL/Path.hpp"
-#include "CUL/ListVector.hpp"
 #include <vector>
 #include <memory>
 namespace CUL
@@ -25,17 +24,13 @@ namespace CUL
             void load() override;
             void unload() override;
 
-            const IIterator<std::string>* begin()const override;
-            const IIterator<std::string>* end()const override;
+            const std::string& firstLine()const override;
+            const std::string& lastLine()const override;
 
-            const IIterator<std::string>* firstLine()const override;
-            const IIterator<std::string>* lastLine()const override;
-
-            IIterator<std::string>* getIt() override;
         protected:
         private:
             Path path;
-            std::unique_ptr < IList<std::string> > rows;
+            std::vector<std::string> rows;
         };
     }
 }

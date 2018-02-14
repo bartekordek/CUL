@@ -18,12 +18,12 @@ TEST_F( FileTest, basicFileLoadFirstLine )
 {
     auto f = CUL::FS::IFile::createFile( dummyFilePath );
     f->load();
-    GTEST_ASSERT_EQ( "Line1", f->firstLine()->getVal() );
+    GTEST_ASSERT_EQ( "Line1", f->firstLine() );
 }
 
 TEST_F( FileTest, basicFileLoadlastLine )
 {
     auto f = CUL::FS::IFile::createFile( dummyFilePath );
     f->load();
-    GTEST_ASSERT_EQ( "Line3", f->lastLine()->getVal() );
+    GTEST_ASSERT_EQ( "Line3", f->lastLine() );
 }
