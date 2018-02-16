@@ -25,7 +25,7 @@ const std::string& Path::getDirSeparator()
 
 Path::Path()
 {
-    
+
 }
 
 Path::Path( const Path& path ): 
@@ -36,7 +36,14 @@ Path::Path( const Path& path ):
 {
 }
 
-Path::Path( const std::string& path ): fullPath(path)
+Path::Path( const std::string& path ):
+    fullPath(path)
+{
+    preparePaths();
+}
+
+Path::Path( const char* r ):
+    fullPath( r )
 {
     preparePaths();
 }
@@ -51,6 +58,16 @@ Path& Path::operator=( const std::string& path )
     if( this->fullPath != path )
     {
         this->fullPath = path;
+        preparePaths();
+    }
+    return *this;
+}
+
+Path& Path::operator=( const char* r )
+{
+    if ( this->fullPath != r )
+    {
+        this->fullPath = r;
         preparePaths();
     }
     return *this;

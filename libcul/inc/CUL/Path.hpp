@@ -15,9 +15,11 @@ namespace CUL
             Path();
             Path( const Path& path );
             Path( const std::string& path );
+            Path( const char* r );
             virtual ~Path();
 
-            Path& operator=( const std::string& path );
+            Path& operator=( const std::string& r );
+            Path& operator=( const char* r );
 
             const std::string& getPath()const;
             const std::string& getExtension()const;

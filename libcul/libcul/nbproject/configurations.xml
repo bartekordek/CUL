@@ -72,7 +72,6 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <standard>11</standard>
           <incDir>
             <pElem>../inc</pElem>
             <pElem>../src</pElem>
@@ -178,7 +177,6 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <standard>11</standard>
           <incDir>
             <pElem>../inc</pElem>
             <pElem>../src</pElem>
@@ -204,7 +202,7 @@
             <linkerLibFileItem>../../deps/boost_1_66_0/Build-Cygwin/libboost_system-gcc64-mt-d-x64-1_66.a</linkerLibFileItem>
             <linkerLibFileItem>../../deps/boost_1_66_0/Build-Cygwin/libboost_filesystem-gcc64-mt-x64-1_66.a</linkerLibFileItem>
           </linkerLibItems>
-          <commandLine>-Wl,--out-implib,../../build/${CND_PLATFORM}-${CND_CONF}/libcul.a</commandLine>
+          <commandLine>-Wl,--out-implib,../../build/${CND_PLATFORM}-${CND_CONF}/libcul.a -Ofast</commandLine>
         </linkerTool>
       </compileType>
       <item path="../inc/CUL/CUL.hpp" ex="false" tool="3" flavor2="0">
