@@ -28,7 +28,7 @@
 *~ml
 private*.xml
 build
-CUL/libcul/nbproject/Makefile-*
+libcul/libcul/nbproject/Makefile-*
 CMakeFiles/
 tests/libculTests/dist
 tests/libculTests/nbproject/Makefile-*
