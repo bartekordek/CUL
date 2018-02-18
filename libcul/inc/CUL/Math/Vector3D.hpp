@@ -138,12 +138,26 @@ namespace CUL
                 return *this;
             }
 
+            Vector3D<Type> operator+( const Vector3D<Type>& right )
+            {
+                Vector3D<Type> result( *this );
+                result += right;
+                return result;
+            }
+
             Vector3D<Type>& operator+=( const Vector3D<Type>& right )
             {
                 this->x += right.x;
                 this->y += right.y;
                 this->z += right.z;
                 return *this;
+            }
+
+            Vector3D<Type> operator-( const Vector3D<Type>& right )
+            {
+                Vector3D<Type> result( *this );
+                result -= right;
+                return result;
             }
 
             Vector3D<Type>& operator-=( const Vector3D<Type>& right )

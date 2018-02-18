@@ -91,8 +91,8 @@ public:
 
     Type& operator()( const unsigned int elementIndex )
     {
-        const unsigned int colIndex = elementIndex % getColumnCount();
-        const unsigned int rowIndex = elementIndex / getRowsCount();
+        const unsigned int colIndex = elementIndex % getXumnCount();
+        const unsigned int rowIndex = elementIndex / getYsCount();
         return this->getValue( rowIndex, colIndex );
     }
 
@@ -101,7 +101,7 @@ public:
         this->getValue( rowIndex, colIndex ) = value;
     }
 
-    const unsigned int getColumnCount()const
+    const unsigned int getXumnCount()const
     {
         if( 0 == this->values.size() )
         {
@@ -110,7 +110,7 @@ public:
         return static_cast<unsigned int>( this->values[0].size() );
     }
 
-    const unsigned int getRowsCount()const
+    const unsigned int getYsCount()const
     {
         return static_cast<unsigned int>( this->values.size() );
     }
@@ -177,10 +177,10 @@ public:
                 Directions::R == direction ? columnIndex >= 0: columnIndex < static_cast<int> (columnsCount);
                 Directions::R == direction ? --columnIndex: ++columnIndex )
             {
-                const unsigned int targetColumnIndex = columnIndex - offset.second;
-                if( elementExist( rowIndex + offset.first, targetColumnIndex ) )
+                const unsigned int targetXumnIndex = columnIndex - offset.second;
+                if( elementExist( rowIndex + offset.first, targetXumnIndex ) )
                 {
-                    this->values[rowIndex][columnIndex] = this->values[rowIndex + offset.first][targetColumnIndex];
+                    this->values[rowIndex][columnIndex] = this->values[rowIndex + offset.first][targetXumnIndex];
                 }
                 else
                 {
@@ -192,7 +192,7 @@ public:
 
     const bool elementExist( const unsigned row, const unsigned col )const
     {
-        if( this->getRowsCount() <= row || this->getColumnCount() <= col )
+        if( this->getYsCount() <= row || this->getXumnCount() <= col )
         {
             return false;
         }
@@ -238,11 +238,11 @@ public:
 protected:
     const bool columnIsEmpty( const unsigned int columnIndex )const
     {
-        if( getRowsCount() == 0 && columnIndex >= getColumnCount() )
+        if( getYsCount() == 0 && columnIndex >= getXumnCount() )
         {
             return false;
         }
-        const unsigned int rowsCount = getRowsCount();
+        const unsigned int rowsCount = getYsCount();
         for( unsigned int i = 0; i < rowsCount; ++i )
         {
             if( this->values[i][columnIndex] != static_cast<Type>( 0 ) )
@@ -255,7 +255,7 @@ protected:
 
     const bool rowIsEmpty( const unsigned int rowIndex )const
     {
-        if( rowIndex >= getRowsCount() )
+        if( rowIndex >= getYsCount() )
         {
             return false;
         }
