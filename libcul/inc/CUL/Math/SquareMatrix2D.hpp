@@ -31,7 +31,7 @@ namespace CUL
             void rotate( const bool clockWise = true )
             {
                 auto copiedValues = Matrix2D<Type>::copyValues();
-                const auto size = Matrix2D<Type>::getYsCount();
+                const auto size = Matrix2D<Type>::getRowsCount();
                 for( unsigned int rowIndex = 0; rowIndex < size; ++rowIndex )
                 {
                     for( unsigned int columnIndex = 0; columnIndex < size; ++columnIndex )
@@ -59,7 +59,7 @@ namespace CUL
 
             const unsigned int getSize()const
             {
-                return Matrix2D<Type>::getXumnCount();
+                return Matrix2D<Type>::getColumnCount();
             }
 
             const Type& det()const
