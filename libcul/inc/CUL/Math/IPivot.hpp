@@ -25,8 +25,8 @@ namespace CUL
 
             const CUL::Math::Vector3Dd& getPivot( const PivotType type )const;
 
-            void setRealSize( const CUL::Math::Vector3Dd& val );
-            void setRealSize( const double width, const double height, const double depth );
+            void setSizeReal( const CUL::Math::Vector3Dd& val );
+            void setSizeReal( const double width, const double height, const double depth );
             void setWidth( const double val );
             void setHeight( const double val );
             void setDepth( const double val );
@@ -45,7 +45,7 @@ namespace CUL
 #endif
                 CUL::Math::Vector3Dd m_pNorm = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
             CUL::Math::Vector3Dd m_pAbs = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
-            CUL::Math::Vector3Dd m_sizeAbs;
+            CUL::Math::Vector3Dd m_sizeReal;
 
 #ifdef _MSC_VER
             __pragma( warning( pop ) )

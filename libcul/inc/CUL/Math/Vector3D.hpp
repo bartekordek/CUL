@@ -9,7 +9,7 @@ namespace CUL
         class Vector3D: public Epsilon<Type>
         {
         public:
-            enum class Axis : short
+            enum class Axis: short
             {
                 X,
                 Y,
@@ -18,9 +18,9 @@ namespace CUL
 
             Vector3D() = default;
             Vector3D( const Type xVal, const Type yVal, const Type zVal ):
-                x(xVal), 
-                y(yVal),
-                z(zVal)
+                x( xVal ),
+                y( yVal ),
+                z( zVal )
             {
             }
 
@@ -66,7 +66,7 @@ namespace CUL
                 this->z = zValue;
             }
 
-            void setXYZ( 
+            void setXYZ(
                 const Type xVal,
                 const Type yVal,
                 const Type zVal )
@@ -81,6 +81,11 @@ namespace CUL
                 this->x = object.x;
                 this->y = object.y;
                 this->z = object.z;
+            }
+
+            const bool operator!=( Vector3D& r ) const
+            {
+                return !this->operator==( r );
             }
 
             const bool operator==( const Vector3D& ivector )const
