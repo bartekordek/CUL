@@ -35,6 +35,7 @@
     <ClCompile Include="src\MyString.cpp" />
     <ClCompile Include="src\Named.cpp" />
     <ClCompile Include="src\Path.cpp" />
+    <ClCompile Include="src\SimpleAssert.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
   </ItemGroup>
@@ -70,6 +71,7 @@
     <ClInclude Include="inc\CUL\MyString.hpp" />
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Path.hpp" />
+    <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />

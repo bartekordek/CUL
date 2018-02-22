@@ -72,6 +72,9 @@
     <ClCompile Include="src\Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\SimpleAssert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -174,6 +177,9 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Color.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\SimpleAssert.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
