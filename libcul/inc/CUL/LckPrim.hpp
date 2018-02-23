@@ -1,6 +1,10 @@
 #pragma once
 #include <CUL/CUL.hpp>
 #include <mutex>
+#if _MSC_VER
+__pragma( warning( push ) )
+__pragma( warning( disable:4251 ) )
+#endif
 namespace CUL
 {
     template <typename Type>
@@ -116,3 +120,6 @@ namespace CUL
         return l == r;
     }
 }
+#if _MSC_VER
+__pragma( warning( pop ) )
+#endif
