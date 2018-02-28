@@ -96,9 +96,9 @@ const std::string& Path::getDir()const
 void Path::preparePaths()
 {
     boost::filesystem::path bPath( this->fullPath );
-    this->baseName = ws2s( bPath.stem().c_str() );
-    this->extension = ws2s( bPath.extension().c_str() );
-    this->dir = ws2s( bPath.parent_path().c_str() );
+    this->baseName = bPath.stem().c_str();
+    this->extension = bPath.extension().c_str();
+    this->dir = bPath.parent_path().c_str();
 }
 
 std::string ws2s( const std::wstring& wstr )

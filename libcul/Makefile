@@ -1,23 +1,22 @@
 ARCH := $(shell getconf LONG_BIT)
 ifeq ($(OS),Windows_NT)
 DYN_LIB_EXT := .dll
-BUILD_ROOT := Cygwin
+BUILD_ROOT := Build-Cygwin
 else
 DYN_LIB_EXT := .so
 BUILD_ROOT := Build-Linux
 endif
 
-ifeq ($(ARCH),64)
-ARCH_FLAG := -m64
-else
-ARCH_FLAG := -m32
-endif
+#ifeq ($(ARCH),64)
+#ARCH_FLAG := -m64
+#else
+#ARCH_FLAG := -m32
+#endif
 
 DIAG_FLAG := -fdiagnostics-color=always
-CC := g++ $(ARCH_FLAG) $(DIAG_FLAG)
-CC_LINK := g++ $(ARCH_FLAG) $(DIAG_FLAG) -shared
-COMPILER_FLAGS = -pedantic -Wall -std=c++11 -DCULLib_EXPORT -DCUL_DYNAMIC -Wno-ignored-attributes
-LINKER_ENABLE_IMPORT := -Wl,--export-all-symbols -Wl,--enable-auto-import
+CC := g++ $(ARCH_FLAG) $(DIAG_FLAG) -fPIC
+CC_LINK := g++ $(ARCH_FLAG) $(DIAG_FLAG) -shared -fPIC
+COMPILER_FLAGS = -pedantic -Wall -std=c++11 -D CULLib_EXPORT -D CUL_LINUX -Wno-ignored-attributes
 DEBUG_FLAGS = -ggdb
 RELEASE_FLAGS = -Ofast
 PROJECT_NAME = libcul
@@ -26,18 +25,15 @@ OUTPUT_DIR := ../build
 OUTPUT_DIR_DEBUG = $(OUTPUT_DIR)/Debug
 OUTPUT_DIR_RELEASE = $(OUTPUT_DIR)/Release
 
-HOME_BOOST := ../deps/boost_1_64_0
-ifeq ($(OS),Windows_NT)
-BOOST_LIB_DIR := $(HOME_BOOST)/Build-Cygwin
-else
-BOOST_LIB_DIR := $(HOME_BOOST)/Build-Linux
-endif
-BOOST_FS_LIB_PATH := $(BOOST_LIB_DIR)/libboost_filesystem-mt.a
-BOOST_SYS_LIB_PATH := $(BOOST_LIB_DIR)/libboost_system-mt.a
+#DEPS
+HOME_DEPS := ../deps
+HOME_BOOST := $(HOME_DEPS)/boost_1_66_0
+BOOST_LIB := $(HOME_BOOST)/$(BUILD_ROOT)
+BOOST_IMP_LIB := $(BOOST_LIB)/libboost_filesystem-gcc54-mt-x64-1_66.a $(BOOST_LIB)/libboost_system-gcc54-mt-x64-1_66.a
 
 HEADER_INC = -I inc -I $(HOME_BOOST)
-IMPORT_LIBS_DEBUG = $(BOOST_FS_LIB_PATH) $(BOOST_SYS_LIB_PATH)
-IMPORT_LIBS_RELEASE = $(BOOST_FS_LIB_PATH) $(BOOST_SYS_LIB_PATH)
+IMPORT_LIBS_DEBUG = $(BOOST_IMP_LIB)
+IMPORT_LIBS_RELEASE = $(BOOST_IMP_LIB)
 OUTPUT_DEBUG = $(OUTPUT_DIR_DEBUG)/$(DLL_NAME)
 OUTPUT_RELEASE = $(OUTPUT_DIR_RELEASE)/$(DLL_NAME)
 IMP_LIB_DEBUG = $(OUTPUT_DIR_DEBUG)/$(IMP_LIB_NAME)
@@ -57,13 +53,11 @@ release: $(OUTPUT_RELEASE)
 
 $(OUTPUT_DEBUG): $(OBJ_DEBUG_FILES)
 	@mkdir -p $(@D)
-	$(CC_LINK) -o $(OUTPUT_DEBUG) $(OBJ_DEBUG_FILES) $(DEBUG_FLAGS) $(IMPORT_LIBS_DEBUG) -Wl,--out-implib,$(OUTPUT_DIR_DEBUG)/$(IMP_LIB_NAME) $(LINKER_ENABLE_IMPORT)
-	cp -fv $(HOME_SDL2_LINUX)/Build-Linux/build/.libs/*$(DYN_LIB_EXT) $(OUTPUT_DIR_DEBUG)
+	$(CC_LINK) -o $(OUTPUT_DEBUG) $(OBJ_DEBUG_FILES) $(DEBUG_FLAGS) $(IMPORT_LIBS_DEBUG)
 
 $(OUTPUT_RELEASE): $(OBJ_RELEASE_FILES)
 	@mkdir -p $(@D)
-	$(CC_LINK) -o $(OUTPUT_RELEASE) $(OBJ_RELEASE_FILES) $(RELEASE_FLAGS) $(IMPORT_LIBS_RELEASE) -Wl,--out-implib,$(OUTPUT_DIR_RELEASE)/$(IMP_LIB_NAME) $(LINKER_ENABLE_IMPORT)
-	cp -fv $(HOME_SDL2_LINUX)/Build-Linux/build/.libs/*$(DYN_LIB_EXT) $(OUTPUT_DIR_RELEASE)
+	$(CC_LINK) -o $(OUTPUT_RELEASE) $(OBJ_RELEASE_FILES) $(RELEASE_FLAGS) $(IMPORT_LIBS_RELEASE)
 
 $(OBJ_DEBUG_DIR)%.o: %.cpp
 	@mkdir -p $(dir $@)
