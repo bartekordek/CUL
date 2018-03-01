@@ -30,6 +30,7 @@ private*.xml
 build
 libcul/libcul/nbproject/Makefile-*
 CMakeFiles/
+runTestsDir/*.so
 tests/libculTests/dist
 tests/libculTests/nbproject/Makefile-*
 tests/libculTests/nbproject/Package*
