@@ -16,7 +16,7 @@ endif
 DIAG_FLAG := -fdiagnostics-color=always
 CC := g++ $(ARCH_FLAG) $(DIAG_FLAG) -fPIC
 CC_LINK := g++ $(ARCH_FLAG) $(DIAG_FLAG) -shared -fPIC
-COMPILER_FLAGS = -pedantic -Wall -std=c++11 -D CULLib_EXPORT -D CUL_LINUX -Wno-ignored-attributes
+COMPILER_FLAGS = -pedantic -Wall -std=c++11 -D CUL_EXPORT -D CUL_LINUX -Wno-ignored-attributes
 DEBUG_FLAGS = -ggdb
 RELEASE_FLAGS = -Ofast
 PROJECT_NAME = libcul

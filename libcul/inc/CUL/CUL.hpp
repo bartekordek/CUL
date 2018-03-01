@@ -1,12 +1,10 @@
 #pragma once
 
-#include <iostream>
-
-#if defined CULLib_EXPORT && defined CUL_DYNAMIC
-#define CULLib_API __declspec(dllexport)
-#define CULLib_API_TEMPLATE
-#elif defined CULLib_EXPORT && defined CUL_LINUX
+#if defined CUL_EXPORT && defined CUL_LINUX
 #define CULLib_API
+#define CULLib_API_TEMPLATE
+#elif defined CUL_EXPORT && defined CUL_DYNAMIC
+#define CULLib_API __declspec(dllexport)
 #define CULLib_API_TEMPLATE
 #else
 #define CULLib_API __declspec(dllimport)
