@@ -98,7 +98,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -118,7 +118,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -160,7 +160,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CUL_DYNAMIC;CULLib_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>

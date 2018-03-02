@@ -1,9 +1,15 @@
 #pragma once
 
+#if _WIN32
+#define CUL_WINDOWS
+#else
+#define CUL_LINUX
+#endif
+
 #if defined CUL_EXPORT && defined CUL_LINUX
 #define CULLib_API
 #define CULLib_API_TEMPLATE
-#elif defined CUL_EXPORT && defined CUL_DYNAMIC
+#elif defined CUL_EXPORT && defined CUL_WINDOWS
 #define CULLib_API __declspec(dllexport)
 #define CULLib_API_TEMPLATE
 #else
