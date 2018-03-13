@@ -41,7 +41,7 @@ namespace CUL
 
 #ifdef _MSC_VER
             __pragma( warning( push ) ) \
-                __pragma( warning( disable:4251 ) )
+            __pragma( warning( disable:4251 ) )
 #endif
                 CUL::Math::Vector3Dd m_pNorm = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
             CUL::Math::Vector3Dd m_pAbs = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );

@@ -15,7 +15,8 @@ namespace CUL
             IFile( const std::string& fPath );
             virtual ~IFile();
 
-            static std::shared_ptr<IFile> createFile( const Path& path );
+            static std::shared_ptr<IFile> createRegularFile( const Path& path );
+            static std::shared_ptr<IFile> createCSVFile( const Path& path );
 
             virtual Path* getPath() = 0;
 

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\ConsoleUtilities.cpp" />
+    <ClCompile Include="src\CSVFile.cpp" />
     <ClCompile Include="src\Degree.cpp" />
     <ClCompile Include="src\FileCompileTest.cpp" />
     <ClCompile Include="src\FileRegularImpl.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Path.hpp" />
     <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
+    <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />

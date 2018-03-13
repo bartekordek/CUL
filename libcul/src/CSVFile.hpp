@@ -1,0 +1,55 @@
+#pragma once
+
+#include "CUL/Path.hpp"
+#include "CUL/ICSVFile.hpp"
+#include <vector>
+#include <string>
+
+
+using Row = std::vector<std::string>;
+using Rows = std::vector<Row>;
+
+namespace CUL
+{
+    namespace FS
+    {
+        class CSVFile final:
+            public ICSVFile
+        {
+        public:
+            CSVFile( const std::string& fPath );
+            ~CSVFile();
+
+            Path* getPath() override;
+
+            const bool checkIfFileIsAllRight()const override;
+            cunt rowsCount()const override;
+            cunt colsCount()const override;
+            const std::string& getVal( cunt row, cunt col )const override;
+            void setVal( const std::string& val, cunt row, cunt col ) override;
+
+            const bool exists()const override;
+            const bool isBinary()const override;
+
+            void load() override;
+            void unload() override;
+            void reload() override;
+
+            const std::string& firstLine()const override;
+            const std::string& lastLine()const override;
+
+            void setDelimeter( const std::string& delimeter ) override;
+
+
+        protected:
+        private:
+            CSVFile();
+            void parseLine( const std::string& line );
+
+            std::string m_delimeter = ",";
+            Path m_path;
+            Rows m_rows;
+
+        };
+    }
+}
