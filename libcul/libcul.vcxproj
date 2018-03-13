@@ -42,6 +42,7 @@
   <ItemGroup>
     <ClInclude Include="inc\CUL\Color.hpp" />
     <ClInclude Include="inc\CUL\ConsoleUtilities.hpp" />
+    <ClInclude Include="inc\CUL\ICSVFile.hpp" />
     <ClInclude Include="inc\CUL\CUL.hpp" />
     <ClInclude Include="inc\CUL\FS.hpp" />
     <ClInclude Include="inc\CUL\IFile.hpp" />

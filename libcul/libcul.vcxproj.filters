@@ -182,6 +182,9 @@
     <ClInclude Include="inc\CUL\SimpleAssert.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\CUL\ICSVFile.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.git\config" />
