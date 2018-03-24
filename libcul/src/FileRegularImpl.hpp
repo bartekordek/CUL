@@ -27,10 +27,15 @@ namespace CUL
             const std::string& firstLine()const override;
             const std::string& lastLine()const override;
 
+            const std::string& getAsOneString() override;
+
         protected:
         private:
+            void cacheFile();
+
             Path path;
             std::vector<std::string> rows;
+            std::string m_cached;
         };
     }
 }

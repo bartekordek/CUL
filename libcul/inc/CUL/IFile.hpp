@@ -30,6 +30,8 @@ namespace CUL
             virtual const std::string& firstLine()const = 0;
             virtual const std::string& lastLine()const = 0;
 
+            virtual const std::string& getAsOneString() = 0;
+
         protected:
         private:
             IFile( const IFile& file ) = default;

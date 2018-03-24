@@ -82,3 +82,19 @@ const std::string& FileRegularImpl::lastLine()const
 {
     return this->rows.back();
 }
+
+const std::string& FileRegularImpl::getAsOneString()
+{
+    cacheFile();
+    return this->m_cached;
+}
+
+void FileRegularImpl::cacheFile()
+{
+    this->m_cached = "";
+    for( const auto& line: this->rows )
+    {
+        this->m_cached += line;
+        this->m_cached += "\n";
+    }
+}

@@ -40,16 +40,19 @@ namespace CUL
 
             void setDelimeter( const std::string& delimeter ) override;
 
+            const std::string& getAsOneString() override;
 
         protected:
         private:
             CSVFile();
             void parseLine( const std::string& line );
 
+            void cacheFile();
+
             std::string m_delimeter = ",";
             Path m_path;
             Rows m_rows;
-
+            std::string m_cached;
         };
     }
 }

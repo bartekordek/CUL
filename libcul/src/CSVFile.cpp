@@ -115,3 +115,26 @@ Path* CSVFile::getPath()
 {
     return &this->m_path;
 }
+
+const std::string& CSVFile::getAsOneString()
+{
+    cacheFile();
+    return this->m_cached;
+}
+
+void CSVFile::cacheFile()
+{
+    this->m_cached = "";
+    for( const auto& row : this->m_rows )
+    {
+        std::string line;
+        for( const auto& cell: row )
+        {
+            line += cell;
+            line += this->m_delimeter;
+        }
+
+        this->m_cached += line;
+        this->m_cached += "\n";
+    }
+}
