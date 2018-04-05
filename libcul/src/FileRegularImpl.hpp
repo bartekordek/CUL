@@ -15,6 +15,8 @@ namespace CUL
             FileRegularImpl( const std::string& path );
             virtual ~FileRegularImpl();
 
+            IFile& operator=( const std::string& rPath );
+
             Path* getPath() override;
 
             const bool exists()const override;
@@ -28,6 +30,8 @@ namespace CUL
             const std::string& lastLine()const override;
 
             const std::string& getAsOneString() override;
+
+            cunt getLinesCount()const override;
 
         protected:
         private:

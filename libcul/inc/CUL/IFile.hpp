@@ -4,6 +4,8 @@
 
 #include <memory>
 
+using cunt = const unsigned int;
+
 namespace CUL
 {
     namespace FS
@@ -14,6 +16,8 @@ namespace CUL
             IFile();
             IFile( const std::string& fPath );
             virtual ~IFile();
+
+            virtual IFile& operator=( const std::string& rPath ) = 0;
 
             static std::shared_ptr<IFile> createRegularFile( const Path& path );
             static std::shared_ptr<IFile> createCSVFile( const Path& path );
@@ -31,6 +35,8 @@ namespace CUL
             virtual const std::string& lastLine()const = 0;
 
             virtual const std::string& getAsOneString() = 0;
+
+            virtual cunt getLinesCount()const = 0;
 
         protected:
         private:

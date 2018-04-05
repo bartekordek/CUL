@@ -16,6 +16,13 @@ CSVFile::~CSVFile()
 
 }
 
+IFile& CSVFile::operator=( const std::string& rPath )
+{
+    this->m_path = rPath;
+    reload();
+    return *this;
+}
+
 const bool CSVFile::checkIfFileIsAllRight()const
 {
     return true;//TODO
@@ -137,4 +144,9 @@ void CSVFile::cacheFile()
         this->m_cached += line;
         this->m_cached += "\n";
     }
+}
+
+cunt CSVFile::getLinesCount()const
+{
+    return static_cast< cunt >( this->m_rows.size() );
 }

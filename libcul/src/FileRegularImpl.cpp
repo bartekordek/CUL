@@ -20,6 +20,13 @@ FileRegularImpl::FileRegularImpl( const std::string& filePath ):
 
 }
 
+IFile& FileRegularImpl::operator=( const std::string& rPath )
+{
+    this->path = rPath;
+    reload();
+    return *this;
+}
+
 FileRegularImpl::~FileRegularImpl()
 {
 
@@ -97,4 +104,9 @@ void FileRegularImpl::cacheFile()
         this->m_cached += line;
         this->m_cached += "\n";
     }
+}
+
+cunt FileRegularImpl::getLinesCount()const
+{
+    return static_cast< cunt >( this->rows.size() );
 }

@@ -20,6 +20,8 @@ namespace CUL
             CSVFile( const std::string& fPath );
             ~CSVFile();
 
+            IFile& operator=( const std::string& rPath );
+
             Path* getPath() override;
 
             const bool checkIfFileIsAllRight()const override;
@@ -41,6 +43,8 @@ namespace CUL
             void setDelimeter( const std::string& delimeter ) override;
 
             const std::string& getAsOneString() override;
+
+            cunt getLinesCount()const override;
 
         protected:
         private:
