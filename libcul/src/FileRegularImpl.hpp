@@ -29,7 +29,8 @@ namespace CUL
             const std::string& firstLine()const override;
             const std::string& lastLine()const override;
 
-            const std::string& getAsOneString() override;
+            const std::string& getAsOneString()const override;
+            const char** getContent()const override;
 
             cunt getLinesCount()const override;
 
@@ -39,6 +40,7 @@ namespace CUL
 
             Path path;
             std::vector<std::string> rows;
+            std::vector<char*> m_rowsAsChars;
             std::string m_cached;
         };
     }

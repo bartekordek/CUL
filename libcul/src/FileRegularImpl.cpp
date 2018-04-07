@@ -1,7 +1,11 @@
 #include "FileRegularImpl.hpp"
+
 #define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/path.hpp>
+
+#include <iostream>
+
 using namespace CUL;
 using namespace FS;
 
@@ -63,21 +67,25 @@ void FileRegularImpl::load()
     while( std::getline( infile, line ) )
     {
         if(
-            false == line.empty() && 
+            false == line.empty() && // Skip empty line
                 ( 
                     line.back() == ( '\r' ) || 
                     line.back() == ( '\n' ) ) )
         {
             line.pop_back();
         }
-    this->rows.push_back( line );
+        line += '\n';
+        this->rows.push_back( line );
     }
     infile.close();
+
+    cacheFile();
 }
 
 void FileRegularImpl::unload()
 {
     this->rows.clear();
+    this->m_cached = "";
 }
 
 const std::string& FileRegularImpl::firstLine()const
@@ -90,9 +98,8 @@ const std::string& FileRegularImpl::lastLine()const
     return this->rows.back();
 }
 
-const std::string& FileRegularImpl::getAsOneString()
+const std::string& FileRegularImpl::getAsOneString()const
 {
-    cacheFile();
     return this->m_cached;
 }
 
@@ -103,10 +110,18 @@ void FileRegularImpl::cacheFile()
     {
         this->m_cached += line;
         this->m_cached += "\n";
+
+        
+        this->m_rowsAsChars.push_back( const_cast<char*>( line.c_str() ) );
     }
 }
 
 cunt FileRegularImpl::getLinesCount()const
 {
     return static_cast< cunt >( this->rows.size() );
+}
+
+const char** FileRegularImpl::getContent()const
+{
+    return const_cast<const char**>( &this->m_rowsAsChars[ 0 ] );
 }

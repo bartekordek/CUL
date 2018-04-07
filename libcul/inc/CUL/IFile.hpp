@@ -34,7 +34,8 @@ namespace CUL
             virtual const std::string& firstLine()const = 0;
             virtual const std::string& lastLine()const = 0;
 
-            virtual const std::string& getAsOneString() = 0;
+            virtual const std::string& getAsOneString()const = 0;
+            virtual const char** getContent()const = 0;
 
             virtual cunt getLinesCount()const = 0;
 

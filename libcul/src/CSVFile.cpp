@@ -83,6 +83,8 @@ void CSVFile::load()
         parseLine( line );
     }
     infile.close();
+
+    cacheFile();
 }
 
 void CSVFile::parseLine( const std::string& line )
@@ -123,9 +125,8 @@ Path* CSVFile::getPath()
     return &this->m_path;
 }
 
-const std::string& CSVFile::getAsOneString()
+const std::string& CSVFile::getAsOneString()const
 {
-    cacheFile();
     return this->m_cached;
 }
 
@@ -149,4 +150,9 @@ void CSVFile::cacheFile()
 cunt CSVFile::getLinesCount()const
 {
     return static_cast< cunt >( this->m_rows.size() );
+}
+
+const char** CSVFile::getContent()const
+{
+    return nullptr;//TODO
 }

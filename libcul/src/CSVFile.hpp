@@ -42,7 +42,8 @@ namespace CUL
 
             void setDelimeter( const std::string& delimeter ) override;
 
-            const std::string& getAsOneString() override;
+            const std::string& getAsOneString()const override;
+            const char** getContent()const override;
 
             cunt getLinesCount()const override;
 
