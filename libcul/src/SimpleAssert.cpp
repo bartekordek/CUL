@@ -3,6 +3,11 @@
 
 using namespace CUL;
 
+void Assert::simple( const bool val, const std::string& msg )
+{
+    simple( val, msg.c_str() );
+}
+
 void Assert::simple( const bool val, const char* msg )
 {
     if( msg )
