@@ -26,9 +26,14 @@ FileRegularImpl::FileRegularImpl( const std::string& filePath ):
 
 IFile& FileRegularImpl::operator=( const std::string& rPath )
 {
-    this->path = rPath;
-    reload();
+    changePath( rPath );
     return *this;
+}
+
+void FileRegularImpl::changePath( const Path& newPath )
+{
+    this->path = newPath;
+    reload();
 }
 
 FileRegularImpl::~FileRegularImpl()
@@ -36,9 +41,9 @@ FileRegularImpl::~FileRegularImpl()
 
 }
 
-Path* FileRegularImpl::getPath()
+const Path& FileRegularImpl::getPath()const
 {
-    return &this->path;
+    return this->path;
 }
 
 const bool FileRegularImpl::exists()const

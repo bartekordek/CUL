@@ -16,8 +16,9 @@ namespace CUL
             virtual ~FileRegularImpl();
 
             IFile& operator=( const std::string& rPath );
+            void changePath( const Path& newPath ) override;
 
-            Path* getPath() override;
+            const Path& getPath() const override;
 
             const bool exists()const override;
             const bool isBinary()const override;

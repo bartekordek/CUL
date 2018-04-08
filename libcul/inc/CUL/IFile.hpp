@@ -22,10 +22,12 @@ namespace CUL
             static std::shared_ptr<IFile> createRegularFile( const Path& path );
             static std::shared_ptr<IFile> createCSVFile( const Path& path );
 
-            virtual Path* getPath() = 0;
+            virtual const Path& getPath()const = 0;
 
             virtual const bool exists()const = 0;
             virtual const bool isBinary()const = 0;
+
+            virtual void changePath( const Path& newPath ) = 0;
 
             virtual void load() = 0;
             virtual void unload() = 0;

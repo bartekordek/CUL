@@ -21,8 +21,9 @@ namespace CUL
             ~CSVFile();
 
             IFile& operator=( const std::string& rPath );
+            void changePath( const Path& newPath ) override;
 
-            Path* getPath() override;
+            const Path& getPath() const override;
 
             const bool checkIfFileIsAllRight()const override;
             cunt rowsCount()const override;

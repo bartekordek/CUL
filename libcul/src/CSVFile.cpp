@@ -18,9 +18,14 @@ CSVFile::~CSVFile()
 
 IFile& CSVFile::operator=( const std::string& rPath )
 {
-    this->m_path = rPath;
-    reload();
+    changePath( rPath );
     return *this;
+}
+
+void CSVFile::changePath( const Path& newPath )
+{
+    this->m_path = newPath;
+    reload();
 }
 
 const bool CSVFile::checkIfFileIsAllRight()const
@@ -120,9 +125,9 @@ const std::string& CSVFile::lastLine()const
     return this->m_rows.back()[ this->m_rows.size() - 1 ];
 }
 
-Path* CSVFile::getPath()
+const Path& CSVFile::getPath()const
 {
-    return &this->m_path;
+    return this->m_path;
 }
 
 const std::string& CSVFile::getAsOneString()const
