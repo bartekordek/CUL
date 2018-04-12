@@ -68,8 +68,16 @@ void CSVFile::setDelimeter( const std::string& delimeter )
     this->m_delimeter = delimeter;
 }
 
-void CSVFile::load()
+void CSVFile::reload( const bool keepLineEndingCharacter )
 {
+    unload();
+    load( keepLineEndingCharacter );
+}
+
+
+void CSVFile::load( const bool keepLineEndingCharacter )
+{
+    this->m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
     infile.open(
         this->m_path.getPath(),
@@ -108,10 +116,6 @@ void CSVFile::parseLine( const std::string& line )
 }
 
 void CSVFile::unload()
-{
-}
-
-void CSVFile::reload()
 {
 }
 

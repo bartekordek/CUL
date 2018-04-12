@@ -29,9 +29,9 @@ namespace CUL
 
             virtual void changePath( const Path& newPath ) = 0;
 
-            virtual void load() = 0;
+            virtual void reload( const bool keepLineEndingCharacter = false ) = 0;
+            virtual void load( const bool keepLineEndingCharacter = false ) = 0;
             virtual void unload() = 0;
-            virtual void reload() = 0;
 
             virtual const std::string& firstLine()const = 0;
             virtual const std::string& lastLine()const = 0;

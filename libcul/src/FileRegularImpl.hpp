@@ -23,8 +23,8 @@ namespace CUL
             const bool exists()const override;
             const bool isBinary()const override;
 
-            void reload() override;
-            void load() override;
+            void reload( const bool keepLineEndingCharacter = false ) override;
+            void load( const bool keepLineEndingCharacter = false ) override;
             void unload() override;
 
             const std::string& firstLine()const override;
@@ -43,6 +43,7 @@ namespace CUL
             std::vector<std::string> rows;
             std::vector<char*> m_rowsAsChars;
             std::string m_cached;
+            bool m_keepLineEndingCharacter = false;
         };
     }
 }

@@ -34,9 +34,9 @@ namespace CUL
             const bool exists()const override;
             const bool isBinary()const override;
 
-            void load() override;
+            void reload( const bool keepLineEndingCharacter = false ) override;
+            void load( const bool keepLineEndingCharacter = false ) override;
             void unload() override;
-            void reload() override;
 
             const std::string& firstLine()const override;
             const std::string& lastLine()const override;
@@ -59,6 +59,7 @@ namespace CUL
             Path m_path;
             Rows m_rows;
             std::string m_cached;
+            bool m_keepLineEndingCharacter = false;
         };
     }
 }

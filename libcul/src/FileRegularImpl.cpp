@@ -56,14 +56,15 @@ const bool FileRegularImpl::isBinary()const
     return true;//TODO: Implement
 }
 
-void FileRegularImpl::reload()
+void FileRegularImpl::reload( const bool keepLineEndingCharacter )
 {
     unload();
-    load();
+    load( keepLineEndingCharacter );
 }
 
-void FileRegularImpl::load()
+void FileRegularImpl::load( const bool keepLineEndingCharacter )
 {
+    this->m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
     infile.open( 
         this->path.getPath(), 
@@ -79,7 +80,11 @@ void FileRegularImpl::load()
         {
             line.pop_back();
         }
-        line += '\n';
+        if( true == this->m_keepLineEndingCharacter )
+        {
+            line += '\n';
+        }
+
         this->rows.push_back( line );
     }
     infile.close();
