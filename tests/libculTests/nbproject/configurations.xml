@@ -55,8 +55,8 @@
             <pElem>../../libcul/inc</pElem>
           </incDir>
           <preprocessorList>
-            <Elem>CULLib_EXPORT</Elem>
-            <Elem>CUL_DYNAMIC</Elem>
+            <Elem>CUL_EXPORT</Elem>
+            <Elem>CUL_WINDOWS</Elem>
           </preprocessorList>
           <warningLevel>3</warningLevel>
         </ccTool>
@@ -184,7 +184,7 @@
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
+        <rebuildPropChanged>true</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <cTool>
@@ -199,8 +199,8 @@
             <pElem>../../libcul/inc</pElem>
           </incDir>
           <preprocessorList>
-            <Elem>CULLib_EXPORT</Elem>
-            <Elem>CUL_DYNAMIC</Elem>
+            <Elem>CUL_EXPORT</Elem>
+            <Elem>CUL_WINDOWS</Elem>
           </preprocessorList>
           <warningLevel>3</warningLevel>
         </ccTool>

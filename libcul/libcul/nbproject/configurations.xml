@@ -24,6 +24,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>../src/CSVFile.cpp</itemPath>
+      <itemPath>../src/CSVFile.hpp</itemPath>
       <itemPath>../src/Color.cpp</itemPath>
       <itemPath>../src/ConsoleUtilities.cpp</itemPath>
       <itemPath>../src/Degree.cpp</itemPath>
@@ -44,6 +46,7 @@
       <itemPath>../src/Path.cpp</itemPath>
       <itemPath>../src/Quaternion.cpp</itemPath>
       <itemPath>../src/Rectangle.cpp</itemPath>
+      <itemPath>../src/SimpleAssert.cpp</itemPath>
       <itemPath>../src/TimeConcrete.cpp</itemPath>
       <itemPath>../src/TimeConcrete.hpp</itemPath>
       <itemPath>../src/TimerChrono.cpp</itemPath>
@@ -68,7 +71,7 @@
       <toolsSet>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>false</rebuildPropChanged>
+        <rebuildPropChanged>true</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <ccTool>
@@ -78,8 +81,8 @@
             <pElem>../../deps/boost_1_66_0</pElem>
           </incDir>
           <preprocessorList>
-            <Elem>CULLib_EXPORT</Elem>
-            <Elem>CUL_DYNAMIC</Elem>
+            <Elem>CUL_EXPORT</Elem>
+            <Elem>CUL_WINDOWS</Elem>
           </preprocessorList>
           <warningLevel>3</warningLevel>
         </ccTool>
@@ -115,6 +118,10 @@
       <item path="../inc/CUL/Named.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../inc/CUL/Path.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../src/CSVFile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/CSVFile.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/Color.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -156,6 +163,8 @@
       </item>
       <item path="../src/Rectangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="../src/SimpleAssert.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="../src/TimeConcrete.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/TimeConcrete.hpp" ex="false" tool="3" flavor2="0">
@@ -184,8 +193,8 @@
           </incDir>
           <commandLine>-Ofast</commandLine>
           <preprocessorList>
-            <Elem>CULLib_EXPORT</Elem>
-            <Elem>CUL_DYNAMIC</Elem>
+            <Elem>CUL_EXPORT</Elem>
+            <Elem>CUL_WINDOWS</Elem>
           </preprocessorList>
           <warningLevel>3</warningLevel>
         </ccTool>
@@ -229,6 +238,10 @@
       </item>
       <item path="../inc/CUL/Path.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../src/CSVFile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/CSVFile.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="../src/Color.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/ConsoleUtilities.cpp" ex="false" tool="1" flavor2="0">
@@ -268,6 +281,8 @@
       <item path="../src/Quaternion.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/Rectangle.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/SimpleAssert.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/TimeConcrete.cpp" ex="false" tool="1" flavor2="0">
       </item>
