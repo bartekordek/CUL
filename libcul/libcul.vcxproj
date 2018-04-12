@@ -74,6 +74,7 @@
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Path.hpp" />
     <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
+    <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
     <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />

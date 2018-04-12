@@ -191,6 +191,9 @@
     <ClInclude Include="src\CSVFile.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\CUL\ThreadWrap.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.git\config" />
