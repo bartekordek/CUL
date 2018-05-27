@@ -1,4 +1,5 @@
 #include "ArgumentsPairConcrete.hpp"
+#include <cstring>
 
 using namespace CUL;
 
@@ -38,10 +39,16 @@ char** CUL::ArgumentsPairConcrete::getArgsVal()
 void ArgumentsPairConcrete::createDummyArgs()
 {
     clearArgs();
-    this->m_argumentsAreDummy = true;;
-
-    m_argumentsPtrs.push_back( "Dummy program name." );
-    m_argumentsPtrs.push_back( "First dummy parameter." );
+    this->m_argumentsAreDummy = true;
+    auto line1 = new char[ 20 ];
+#pragma warning( push )
+#pragma warning( disable: 4996 )
+    strcpy(line1, "Dummy program name.");
+    m_argumentsPtrs.push_back( line1 );
+    auto line2 = new char[ 23 ];
+    strcpy(line2, "First dummy parameter.");
+#pragma warning( pop )
+    m_argumentsPtrs.push_back( line2 );
 }
 
 void ArgumentsPairConcrete::clearArgs()
