@@ -39,10 +39,8 @@ void ConsoleUtilities::setArgs( const int argc, char** argv )
 ConsoleUtilities& ConsoleUtilities::getInstance()
 {
     static ConsoleUtilities instance;
-    static unsigned oldAddr = 0;
-#pragma warning( push, 0 )
-    static unsigned addr = reinterpret_cast<unsigned>( &instance );
-#pragma warning( pop )
+    static ConsoleUtilities* oldAddr = nullptr;
+    static ConsoleUtilities* addr = &instance;
     if( oldAddr )
     {
         Assert::simple( oldAddr == addr, "DLL PROBLEM! THERE ARE TWO INSTANCES OF SINGLETON!" );
