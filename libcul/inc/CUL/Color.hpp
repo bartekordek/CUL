@@ -1,6 +1,7 @@
 #pragma once
 #include "CUL.hpp"
 #include <cstdint>
+using cfloat = const float;
 namespace CUL
 {
     enum class ColorE: short
@@ -16,16 +17,13 @@ namespace CUL
     {
         ColorS();
         virtual ~ColorS();
-
-        ColorS( uint8_t rr, uint8_t gg, uint8_t bb );
-
+        ColorS( cfloat rr, cfloat gg, cfloat bb, cfloat aalpha );
         ColorS( const ColorE& color );
-
         ColorS& operator=( const ColorE colore );
 
-        uint8_t r = 0;
-        uint8_t g = 0;
-        uint8_t b = 0;
-        uint8_t alpha = 255;
+        float r = 0.0f;
+        float g = 0.0f;
+        float b = 0.0f;
+        float alpha = 1.0f;
     };
 }

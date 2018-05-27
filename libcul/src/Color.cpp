@@ -7,10 +7,11 @@ ColorS::ColorS()
 
 }
 
-ColorS::ColorS( uint8_t rr, uint8_t gg, uint8_t bb ):
+ColorS::ColorS( cfloat rr, cfloat gg, cfloat bb, cfloat aalpha ):
     r( rr ),
     g( gg ),
-    b( bb )
+    b( bb ),
+    alpha( aalpha )
 {
 }
 
@@ -18,21 +19,21 @@ ColorS::ColorS( const ColorE& color )
 {
     if( ColorE::BLUE == color )
     {
-        this->b = 255;
+        this->b = 1.0f;
     }
     else if( ColorE::GREEN == color )
     {
-        this->g = 255;
+        this->g = 1.0f;
     }
     else if( ColorE::RED == color )
     {
-        this->r = 255;
+        this->r = 1.0f;
     }
     else if( ColorE::WHITE == color )
     {
-        this->r = 255;
-        this->g = 255;
-        this->b = 255;
+        this->r = 1.0f;
+        this->g = 1.0f;
+        this->b = 1.0f;
     }
 }
 
@@ -45,21 +46,21 @@ ColorS& ColorS::operator=( const ColorE color )
 {
     if( ColorE::BLUE == color )
     {
-        this->b = 255;
+        this->b = 1.0f;
     }
     else if( ColorE::GREEN == color )
     {
-        this->g = 255;
+        this->g = 1.0f;
     }
     else if( ColorE::RED == color )
     {
-        this->r = 255;
+        this->r = 1.0f;
     }
     else if( ColorE::WHITE == color )
     {
-        this->r = 255;
-        this->g = 255;
-        this->b = 255;
+        this->r = 1.0f;
+        this->g = 1.0f;
+        this->b = 1.0f;
     }
     return *this;
 }
