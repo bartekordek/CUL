@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\IArgumentsPair.cpp" />
+    <ClCompile Include="src\ArgumentsPairConcrete.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\ConsoleUtilities.cpp" />
     <ClCompile Include="src\CSVFile.cpp" />
@@ -41,6 +43,7 @@
     <ClCompile Include="src\TimerChrono.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\CUL\IArgumentsPair.hpp" />
     <ClInclude Include="inc\CUL\Color.hpp" />
     <ClInclude Include="inc\CUL\ConsoleUtilities.hpp" />
     <ClInclude Include="inc\CUL\ICSVFile.hpp" />
@@ -75,6 +78,7 @@
     <ClInclude Include="inc\CUL\Path.hpp" />
     <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
+    <ClInclude Include="src\ArgumentsPairConcrete.hpp" />
     <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />

@@ -1,31 +1,52 @@
 #include "CUL/ConsoleUtilities.hpp"
+#include "CUL/SimpleAssert.hpp"
+#include "ArgumentsPairConcrete.hpp"
 
 #include <iostream>
 
 using namespace CUL;
 
-    ArgumentsPair ConsoleUtilities::s_args = { 0, nullptr };
-
-void ConsoleUtilities::printInputParameters( const ArgumentsPair& args )
+ConsoleUtilities::ConsoleUtilities():
+    m_args( new ArgumentsPairConcrete() )
 {
-    for( int i = 0; i < args.argc; ++i )
+
+}
+
+ConsoleUtilities::~ConsoleUtilities()
+{
+
+}
+
+void ConsoleUtilities::printInputParameters()
+{
+    for( int i = 0; i < *m_args->getArgCount(); ++i )
     {
-        std::cout << "ARG[" << i << "] = " << args.argv[i] << "\n";
+        std::cout << "ARG[" << i << "] = " << m_args->getArgsVal()[i] << "\n";
     }
 }
 
-ArgumentsPair& ConsoleUtilities::getDefaultArgs()
+IArgumentsPair& ConsoleUtilities::getDefaultArgs()
 {
-    if( nullptr == s_args.argv )
+
+    return *m_args;
+}
+
+void ConsoleUtilities::setArgs( const int argc, char** argv )
+{
+    this->m_args->setArgs( argc, argv );
+}
+
+ConsoleUtilities& ConsoleUtilities::getInstance()
+{
+    static ConsoleUtilities instance;
+    static unsigned oldAddr = 0;
+#pragma warning( push, 0 )
+    static unsigned addr = reinterpret_cast<unsigned>( &instance );
+#pragma warning( pop )
+    if( oldAddr )
     {
-        s_args.argc = 2;
-        s_args.argv = new char*[ 2 ];
-
-        s_args.argv[ 0 ] = new char[ 6 ];
-        s_args.argv[ 0 ] = "12345\0";
-
-        s_args.argv[ 1 ] = new char[ 5 ];
-        s_args.argv[ 1 ] = "Test\0";
+        Assert::simple( oldAddr == addr, "DLL PROBLEM! THERE ARE TWO INSTANCES OF SINGLETON!" );
     }
-    return s_args;
+    oldAddr = addr;
+    return instance;
 }
