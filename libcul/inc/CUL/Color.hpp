@@ -2,7 +2,6 @@
 
 #include "CUL.hpp"
 #include <cstdint>
-#include <type_traits>
 
 namespace CUL
 {
@@ -15,102 +14,53 @@ namespace CUL
         BLUE
     };
 
-    template<typename Type>
+    using cfloat = const float;
+    using cuint8_t = const uint8_t;
+
     class CULLib_API ColorS
     {
     public:
-        ColorS()
-        {
-
-        }
-       
-        virtual ~ColorS()
-        {
-
-        }
-        
+        ColorS();
+      
         ColorS(
-            const Type rr,
-            const Type gg,
-            const Type bb,
-            const Type aalpha ):
-            m_r( rr ),
-            m_g( gg ),
-            m_b( bb ),
-            m_alpha( aalpha )
-        {
+            cfloat rr,
+            cfloat gg,
+            cfloat bb,
+            cfloat aalpha );
 
-        }
+        ColorS( const ColorE& color );
 
-        ColorS( const ColorE& color )
-        {
-            if( ColorE::BLUE == color )
-            {
-                this->b = this->m_max;
-            }
-            else if( ColorE::GREEN == color )
-            {
-                this->g = this->m_max;
-            }
-            else if( ColorE::RED == color )
-            {
-                this->r = this->m_max;
-            }
-            else if( ColorE::WHITE == color )
-            {
-                this->r = this->m_max;
-                this->g = this->m_max;
-                this->b = this->m_max;
-            }
-        }
+        virtual ~ColorS();
         
-        ColorS& operator=( const ColorE colore )
-        {
-            if( ColorE::BLUE == color )
-            {
-                this->b = this->m_max;
-            }
-            else if( ColorE::GREEN == color )
-            {
-                this->g = this->m_max;
-            }
-            else if( ColorE::RED == color )
-            {
-                this->r = this->m_max;
-            }
-            else if( ColorE::WHITE == color )
-            {
-                this->r = this->m_max;
-                this->g = this->m_max;
-                this->b = this->m_max;
-            }
-            return *this;
-        }
+        ColorS& operator=( const ColorE color );
 
-        Type m_r = static_cast<Type>( 0 );
-        Type m_g = static_cast<Type>( 0 );
-        Type m_b = static_cast<Type>( 0 );
-        Type m_alpha = static_cast<Type>( 0 );
-        Type m_max = static_cast<Type>( 0 );
+        cfloat getRF()const;
+        cfloat getGF()const;
+        cfloat getBF()const;
+        cfloat getAF()const;
+
+        cuint8_t getRUI()const;
+        cuint8_t getGUI()const;
+        cuint8_t getBUI()const;
+        cuint8_t getAUI()const;
+
+        void setRF( cfloat r );
+        void setGF( cfloat g );
+        void setBF( cfloat b );
+        void setAlphaF( cfloat alpha );
+
+        void setRCU( cuint8_t r );
+        void setGCU( cuint8_t g );
+        void setBCU( cuint8_t b );
+        void setAlphaCU( cuint8_t alpha );
+
 
     protected:
     private:
-        void checkTypeMax()
-        {
-            if( std::is_same<T, double> )
-            {
-                this->m_max = 1.0;
-            }
-            else if( std::is_same<T, float> )
-            {
-                this->m_max = 1.0f;
-            }
-            else if( std::is_same<T, int> || std::is_same<T, unsigned> )
-            {
-                this->m_max = 255;
-            }
-        }
-    };
+        float m_r = 0.0f;
+        float m_g = 0.0f;
+        float m_b = 0.0f;
+        float m_alpha = 0.0f;
 
-    using ColorSUI = ColorS<uint8_t>;
+    };
 }
