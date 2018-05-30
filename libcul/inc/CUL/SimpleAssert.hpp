@@ -11,7 +11,6 @@ namespace CUL
     {
     public:
         static void simple( const bool val, const std::string& msg = std::string( "" ) );
-        static void simple( const bool val, const char* msg = nullptr );
     protected:
     private:
     };
