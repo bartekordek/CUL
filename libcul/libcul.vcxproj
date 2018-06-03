@@ -165,7 +165,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_66_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -177,7 +177,7 @@
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_67_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
@@ -189,7 +189,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_66_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -200,7 +200,7 @@
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_67_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
@@ -213,7 +213,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_66_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -221,7 +221,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_67_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
@@ -238,7 +238,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_66_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -246,7 +246,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_66_0\Build-Windows</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\boost_1_67_0\Build-Windows</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>

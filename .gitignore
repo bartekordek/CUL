@@ -34,3 +34,4 @@ runTestsDir/*.so
 tests/libculTests/dist
 tests/libculTests/nbproject/Makefile-*
 tests/libculTests/nbproject/Package*
+/libcul/libcul/nbproject/Package*
