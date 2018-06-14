@@ -84,6 +84,15 @@
     <ClCompile Include="src\IArgumentsPair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MultiPointFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Quaternion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rectangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -166,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Vector3DFactory.hpp">
       <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\IPivotObserver.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\IAngle.hpp">
       <Filter>Header Files\Math</Filter>

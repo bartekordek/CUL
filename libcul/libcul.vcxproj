@@ -35,9 +35,12 @@
     <ClCompile Include="src\ITime.cpp" />
     <ClCompile Include="src\ITimer.cpp" />
     <ClCompile Include="src\Line.cpp" />
+    <ClCompile Include="src\MultiPointFactory.cpp" />
     <ClCompile Include="src\MyString.cpp" />
     <ClCompile Include="src\Named.cpp" />
     <ClCompile Include="src\Path.cpp" />
+    <ClCompile Include="src\Quaternion.cpp" />
+    <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
@@ -50,7 +53,6 @@
     <ClInclude Include="inc\CUL\CUL.hpp" />
     <ClInclude Include="inc\CUL\FS.hpp" />
     <ClInclude Include="inc\CUL\IFile.hpp" />
-    <ClInclude Include="inc\CUL\IPivotObserver.hpp" />
     <ClInclude Include="inc\CUL\ITime.hpp" />
     <ClInclude Include="inc\CUL\ITimer.hpp" />
     <ClInclude Include="inc\CUL\LckPrim.hpp" />

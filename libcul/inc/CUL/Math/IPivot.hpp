@@ -9,43 +9,31 @@ namespace CUL
         class CULLib_API IPivot
         {
         public:
-            enum class PivotType: short
+            enum class CULLib_API PivotType: short
             {
                 ABSOLUTE,
                 NORMALIZED
             };
 
-            IPivot( IPivotObserver* pivotObserver );
+           IPivot();
             virtual ~IPivot();
 
-            void setPivot( const PivotType type, const double px, const double py, const double pz );
-            void setPivotX( const PivotType type, const double val );
-            void setPivotY( const PivotType type, const double val );
-            void setPivotZ( const PivotType type, const double val );
+            virtual void setPivot( const double px, const double py, const double pz, const PivotType type = PivotType::NORMALIZED ) = 0;
+            virtual void setPivotX( const double val, const PivotType type = PivotType::NORMALIZED ) = 0;
+            virtual void setPivotY( const double val, const PivotType type = PivotType::NORMALIZED ) = 0;
+            virtual void setPivotZ( const double val, const PivotType type = PivotType::NORMALIZED ) = 0;
 
-            const CUL::Math::Vector3Dd& getPivot( const PivotType type )const;
-
-            void setSizeReal( const CUL::Math::Vector3Dd& val );
-            void setSizeReal( const double width, const double height, const double depth );
-            void setWidth( const double val );
-            void setHeight( const double val );
-            void setDepth( const double val );
+            virtual const Vector3Dd& getPivot( const PivotType type = PivotType::NORMALIZED )const = 0;
 
         protected:
 
         private:
-            void recalculatePivotAbs();
-            void recalculatePivotNorm();
-            void notifyPivotObserver();
-            IPivotObserver* m_pivotObserver = nullptr;
 
 #ifdef _MSC_VER
             __pragma( warning( push ) ) \
             __pragma( warning( disable:4251 ) )
 #endif
-            CUL::Math::Vector3Dd m_pNorm = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
-            CUL::Math::Vector3Dd m_pAbs = CUL::Math::Vector3Dd( 0.5, 0.5, 0.5 );
-            CUL::Math::Vector3Dd m_sizeReal;
+
 
 #ifdef _MSC_VER
             __pragma( warning( pop ) )
