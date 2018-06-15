@@ -16,7 +16,8 @@ endif
 DIAG_FLAG := -fdiagnostics-color=always
 CC := g++ $(ARCH_FLAG) $(DIAG_FLAG) -fPIC
 CC_LINK := g++ $(ARCH_FLAG) $(DIAG_FLAG) -shared -fPIC
-COMPILER_FLAGS = -pedantic -Wall -std=c++11 -D CUL_EXPORT -D CUL_LINUX -Wno-ignored-attributes
+TREAT_WARNINGS_AS_ERRORS := -Werror
+COMPILER_FLAGS = -pedantic -Wall -std=c++11 -D CUL_EXPORT -Wno-ignored-attributes $(TREAT_WARNINGS_AS_ERRORS)
 DEBUG_FLAGS = -ggdb
 RELEASE_FLAGS = -Ofast
 PROJECT_NAME = libcul
@@ -27,7 +28,7 @@ OUTPUT_DIR_RELEASE = $(OUTPUT_DIR)/Release
 
 #DEPS
 HOME_DEPS := ../deps
-HOME_BOOST := $(HOME_DEPS)/boost_1_66_0
+HOME_BOOST := $(HOME_DEPS)/boost_1_67_0
 BOOST_LIB := $(HOME_BOOST)/$(BUILD_ROOT)
 BOOST_IMP_LIB := $(BOOST_LIB)/libboost_filesystem-gcc54-mt-x64-1_66.a $(BOOST_LIB)/libboost_system-gcc54-mt-x64-1_66.a
 
