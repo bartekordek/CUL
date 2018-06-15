@@ -16,7 +16,7 @@ endif
 DIAG_FLAG := -fdiagnostics-color=always
 CC := g++ $(ARCH_FLAG) $(DIAG_FLAG) -fPIC
 CC_LINK := g++ $(ARCH_FLAG) $(DIAG_FLAG)
-CUL_PREPROCESOR_FLAGS := -D CULLib_EXPORT -D CUL_LINUX
+CUL_PREPROCESOR_FLAGS := -D CUL_EXPORT
 COMPILER_FLAGS = -pedantic -Wall -std=gnu++11 $(CUL_PREPROCESOR_FLAGS) -Wno-ignored-attributes
 DEBUG_FLAGS = -ggdb
 RELEASE_FLAGS = -Ofast
