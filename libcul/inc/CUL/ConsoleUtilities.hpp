@@ -1,10 +1,17 @@
 #pragma once
 #include "CUL/IArgumentsPair.hpp"
+
+#ifdef _MSC_VER
 #pragma warning( push, 0 ) // Disable all dependency header warnings.
 #pragma warning( disable: 4365 )
 #pragma warning( disable: 4514 )
+#endif
+
 #include <memory>
+
+#ifdef _MSC_VER
 #pragma warning( pop )
+#endif
 namespace CUL
 {
     class ConsoleUtilities

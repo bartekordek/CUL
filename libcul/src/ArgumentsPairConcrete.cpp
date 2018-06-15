@@ -41,13 +41,17 @@ void ArgumentsPairConcrete::createDummyArgs()
     clearArgs();
     this->m_argumentsAreDummy = true;
     auto line1 = new char[ 20 ];
+#ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4996 )
+#endif
     strcpy(line1, "Dummy program name.");
     m_argumentsPtrs.push_back( line1 );
     auto line2 = new char[ 23 ];
     strcpy(line2, "First dummy parameter.");
+#ifdef _MSC_VER
 #pragma warning( pop )
+#endif
     m_argumentsPtrs.push_back( line2 );
 }
 
