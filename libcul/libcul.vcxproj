@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Chrono.hpp" />
+    <ClCompile Include="src\FileFactory.cpp" />
     <ClCompile Include="src\IArgumentsPair.cpp" />
     <ClCompile Include="src\ArgumentsPairConcrete.cpp" />
     <ClCompile Include="src\Color.cpp" />
@@ -30,6 +32,7 @@
     <ClCompile Include="src\Frustum.cpp" />
     <ClCompile Include="src\FS.cpp" />
     <ClCompile Include="src\IAngle.cpp" />
+    <ClCompile Include="src\ICSVFile.cpp" />
     <ClCompile Include="src\IFile.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
     <ClCompile Include="src\ITime.cpp" />
@@ -42,10 +45,13 @@
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
+    <ClCompile Include="src\Thread.hpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\CUL\Algorithm.hpp" />
+    <ClInclude Include="inc\CUL\FileFactory.hpp" />
     <ClInclude Include="inc\CUL\IArgumentsPair.hpp" />
     <ClInclude Include="inc\CUL\Color.hpp" />
     <ClInclude Include="inc\CUL\ConsoleUtilities.hpp" />
@@ -53,6 +59,7 @@
     <ClInclude Include="inc\CUL\CUL.hpp" />
     <ClInclude Include="inc\CUL\FS.hpp" />
     <ClInclude Include="inc\CUL\IFile.hpp" />
+    <ClInclude Include="inc\CUL\IMPORT_boost_asset.hpp" />
     <ClInclude Include="inc\CUL\ITime.hpp" />
     <ClInclude Include="inc\CUL\ITimer.hpp" />
     <ClInclude Include="inc\CUL\LckPrim.hpp" />
@@ -79,10 +86,26 @@
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Path.hpp" />
     <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
+    <ClInclude Include="inc\CUL\STD_cmath.hpp" />
+    <ClInclude Include="inc\CUL\STD_cstdint.hpp" />
+    <ClInclude Include="inc\CUL\STD_functional.hpp" />
+    <ClInclude Include="inc\CUL\STD_iomanip.hpp" />
+    <ClInclude Include="inc\CUL\STD_iostream.hpp" />
+    <ClInclude Include="inc\CUL\STD_map.hpp" />
+    <ClInclude Include="inc\CUL\STD_memory.hpp" />
+    <ClInclude Include="inc\CUL\STD_mutex.hpp" />
+    <ClInclude Include="inc\CUL\STD_set.hpp" />
+    <ClInclude Include="inc\CUL\STD_string.hpp" />
+    <ClInclude Include="inc\CUL\STD_thread.hpp" />
+    <ClInclude Include="inc\CUL\STD_type_traits.hpp" />
+    <ClInclude Include="inc\CUL\STD_vector.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
     <ClInclude Include="src\ArgumentsPairConcrete.hpp" />
+    <ClInclude Include="src\BoostFilesystem.hpp" />
     <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
+    <ClInclude Include="src\STD_fstream.hpp" />
+    <ClInclude Include="src\STDCodecvt.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />
   </ItemGroup>
@@ -162,7 +185,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -186,7 +209,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -209,7 +232,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -234,7 +257,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

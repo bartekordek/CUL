@@ -1,7 +1,9 @@
 #include "TimeTests.hpp"
 #include "CUL/ITimer.hpp"
-#include <memory>
+#include "CUL/STD_memory.hpp"
+
 using namespace CUL;
+
 TimeTests::TimeTests( void )
 {
 }

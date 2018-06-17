@@ -1,8 +1,7 @@
 #include "CUL/ConsoleUtilities.hpp"
 #include "CUL/SimpleAssert.hpp"
 #include "ArgumentsPairConcrete.hpp"
-
-#include <iostream>
+#include "CUL/STD_iostream.hpp"
 
 using namespace CUL;
 
@@ -16,15 +15,24 @@ ConsoleUtilities::~ConsoleUtilities()
 {
 
 }
-
+#ifdef _MSC_VER
+#pragma warning( push, 0 )
+#pragma warning( disable: 5045 )
+#endif
 void ConsoleUtilities::printInputParameters()
 {
-    for( int i = 0; i < *m_args->getArgCount(); ++i )
-    {
-        std::cout << "ARG[" << i << "] = " << m_args->getArgsVal()[i] << "\n";
-    }
-}
 
+    auto argc = *m_args->getArgCount();
+    auto argv = m_args->getArgsVal();
+    for( int i = 0; i < argc; ++i )
+    {
+        std::cout << "ARG[" << i << "] = " << argv[i] << "\n";
+    }
+
+}
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 IArgumentsPair& ConsoleUtilities::getDefaultArgs()
 {
 

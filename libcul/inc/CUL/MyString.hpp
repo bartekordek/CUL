@@ -1,7 +1,7 @@
 #pragma once
 
 #include <CUL/CUL.hpp>
-#include <string>
+#include "CUL/STD_string.hpp"
 
 #if _MSC_VER
 #pragma warning( disable : 4251)
@@ -9,7 +9,8 @@
 
 namespace CUL
 {
-    class CULLib_API MyString: public std::string
+    class CULLib_API MyString:
+        public std::string
     {
     public:
         MyString();

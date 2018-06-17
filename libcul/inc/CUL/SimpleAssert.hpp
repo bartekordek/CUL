@@ -1,9 +1,7 @@
 #pragma once
 
-
 #include <CUL/CUL.hpp>
-
-#include <string>
+#include "CUL/STD_string.hpp"
 
 namespace CUL
 {

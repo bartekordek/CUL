@@ -1,10 +1,6 @@
 #include "CUL/Path.hpp"
-
-#define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/path.hpp>
-
-#include <codecvt>
+#include "BoostFilesystem.hpp"
+#include "STDCodecvt.hpp"
 
 using namespace CUL;
 using namespace FS;

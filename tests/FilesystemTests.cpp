@@ -1,7 +1,7 @@
 #include "FilesystemTests.hpp"
 #include "CUL/Path.hpp"
 #include "CUL/FS.hpp"
-#include <iostream>
+#include "CUL/STD_iostream.hpp"
 
 using Path = CUL::FS::Path;
 

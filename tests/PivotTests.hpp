@@ -1,6 +1,12 @@
 #pragma once
-#include "gtest/gtest.h"
-class PivotTests : public ::testing::Test
+#include "Gtest.hpp"
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4625 )
+#pragma warning( disable: 4626 )
+#endif
+class PivotTests final:
+    public ::testing::Test
 {
 protected:
     PivotTests( void );
@@ -9,3 +15,6 @@ protected:
     static void SetUpTestCase();
     static void TearDownTestCase();
 };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif

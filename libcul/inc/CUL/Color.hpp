@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL.hpp"
-#include <cstdint>
+#include "CUL/STD_cstdint.hpp"
 
 namespace CUL
 {

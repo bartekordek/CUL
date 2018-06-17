@@ -2,9 +2,8 @@
 
 #include "CUL/Path.hpp"
 #include "CUL/ICSVFile.hpp"
-#include <vector>
-#include <string>
-
+#include "CUL/STD_vector.hpp"
+#include "CUL/STD_string.hpp"
 
 using Row = std::vector<std::string>;
 using Rows = std::vector<Row>;
@@ -13,14 +12,21 @@ namespace CUL
 {
     namespace FS
     {
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4820 )
+#endif
         class CSVFile final:
             public ICSVFile
         {
         public:
-            CSVFile( const std::string& fPath );
+            CSVFile( const CSVFile& rhv );
+            CSVFile( CstString& fPath );
             ~CSVFile();
 
-            IFile& operator=( const std::string& rPath );
+            CSVFile& operator=( const CSVFile& rhv );
+            CSVFile& operator=( CstString& rPath );
+            
             void changePath( const Path& newPath ) override;
 
             const Path& getPath() const override;
@@ -28,22 +34,22 @@ namespace CUL
             const bool checkIfFileIsAllRight()const override;
             cunt rowsCount()const override;
             cunt colsCount()const override;
-            const std::string& getVal( cunt row, cunt col )const override;
-            void setVal( const std::string& val, cunt row, cunt col ) override;
+            CstString& getVal( cunt row, cunt col ) const override;
+            void setVal( CstString& val, cunt row, cunt col ) override;
 
-            const bool exists()const override;
-            const bool isBinary()const override;
+            CBool exists()const override;
+            CBool isBinary()const override;
 
-            void reload( const bool keepLineEndingCharacter = false ) override;
-            void load( const bool keepLineEndingCharacter = false ) override;
+            void reload( CBool keepLineEndingCharacter = false ) override;
+            void load( CBool keepLineEndingCharacter = false ) override;
             void unload() override;
 
-            const std::string& firstLine()const override;
-            const std::string& lastLine()const override;
+            CstString& firstLine()const override;
+            CstString& lastLine()const override;
 
-            void setDelimeter( const std::string& delimeter ) override;
+            void setDelimeter( CstString& delimeter ) override;
 
-            const std::string& getAsOneString()const override;
+            CstString& getAsOneString()const override;
             const char** getContent()const override;
 
             cunt getLinesCount()const override;
@@ -51,8 +57,7 @@ namespace CUL
         protected:
         private:
             CSVFile();
-            void parseLine( const std::string& line );
-
+            void parseLine( CstString& line );
             void cacheFile();
 
             std::string m_delimeter = ",";
@@ -61,5 +66,8 @@ namespace CUL
             std::string m_cached;
             bool m_keepLineEndingCharacter = false;
         };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
     }
 }

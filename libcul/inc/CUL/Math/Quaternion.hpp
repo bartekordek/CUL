@@ -1,5 +1,7 @@
 #pragma once
-#include <cmath>
+
+#include "CUL/STD_cmath.hpp"
+
 namespace CUL
 {
     namespace Math

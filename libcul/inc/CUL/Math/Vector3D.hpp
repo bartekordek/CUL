@@ -5,8 +5,14 @@ namespace CUL
 {
     namespace Math
     {
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4514 )
+#pragma warning( disable: 4820 )
+#endif
         template <typename Type>
-        class Vector3D: public Epsilon<Type>
+        class Vector3D:
+            public Epsilon<Type>
         {
         public:
             enum class Axis: short
@@ -17,10 +23,13 @@ namespace CUL
             };
 
             Vector3D() = default;
-            Vector3D( const Type xVal, const Type yVal, const Type zVal ):
-                x( xVal ),
-                y( yVal ),
-                z( zVal )
+            Vector3D( 
+                const Type xVal,
+                const Type yVal,
+                const Type zVal ):
+                    x( xVal ),
+                    y( yVal ),
+                    z( zVal )
             {
             }
 
@@ -269,7 +278,9 @@ namespace CUL
             Type y = static_cast<Type>( 0 );
             Type z = static_cast<Type>( 0 );
         };
-
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
         using Vector3Dd = Vector3D<double> ;
         using Vector3Di = Vector3D<int>;
         using Vector3Du = Vector3D<unsigned>;

@@ -1,8 +1,7 @@
 #pragma once
 #include "CUL.hpp"
 #include "Path.hpp"
-
-#include <memory>
+#include "CUL/STD_memory.hpp"
 
 using cunt = const unsigned int;
 
@@ -13,37 +12,34 @@ namespace CUL
         class CULLib_API IFile
         {
         public:
-            IFile();
-            IFile( const std::string& fPath );
+            IFile( void );
+            IFile( CstString& fPath ) = delete;
+            IFile( const IFile& file ) = delete;
             virtual ~IFile();
 
-            virtual IFile& operator=( const std::string& rPath ) = 0;
-
-            static std::shared_ptr<IFile> createRegularFile( const Path& path );
-            static std::shared_ptr<IFile> createCSVFile( const Path& path );
+            IFile& operator=( CstString& rPath ) = delete;
 
             virtual const Path& getPath()const = 0;
 
-            virtual const bool exists()const = 0;
-            virtual const bool isBinary()const = 0;
+            virtual CBool exists()const = 0;
+            virtual CBool isBinary()const = 0;
 
             virtual void changePath( const Path& newPath ) = 0;
 
-            virtual void reload( const bool keepLineEndingCharacter = false ) = 0;
-            virtual void load( const bool keepLineEndingCharacter = false ) = 0;
+            virtual void reload( CBool keepLineEndingCharacter = false ) = 0;
+            virtual void load( CBool keepLineEndingCharacter = false ) = 0;
             virtual void unload() = 0;
 
-            virtual const std::string& firstLine()const = 0;
-            virtual const std::string& lastLine()const = 0;
+            virtual CstString& firstLine()const = 0;
+            virtual CstString& lastLine()const = 0;
 
-            virtual const std::string& getAsOneString()const = 0;
+            virtual CstString& getAsOneString()const = 0;
             virtual const char** getContent()const = 0;
 
             virtual cunt getLinesCount()const = 0;
 
         protected:
         private:
-            IFile( const IFile& file ) = default;
         };
     }
 }

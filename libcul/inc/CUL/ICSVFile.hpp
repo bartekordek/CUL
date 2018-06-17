@@ -10,17 +10,11 @@ namespace CUL
             public IFile
         {
         public:
-#ifdef _MSC_VER
-            __pragma( warning( push ) ) \
-            __pragma( warning( disable:4100 ) )
-#endif
-            ICSVFile( const std::string& fPath )
-            {
-            }
-#ifdef _MSC_VER
-            __pragma( warning( pop ) )
-#endif
-            virtual ~ICSVFile() = default;
+            ICSVFile( void );
+            ICSVFile( const ICSVFile& rhv ) = delete;
+            virtual ~ICSVFile();
+
+            ICSVFile& operator=( const ICSVFile& rhv ) = delete;
 
             virtual const bool checkIfFileIsAllRight()const = 0;
             virtual cunt rowsCount()const = 0;
@@ -31,7 +25,6 @@ namespace CUL
 
         protected:
         private:
-            ICSVFile();
         };
     }
 }

@@ -6,8 +6,23 @@ TimeConcrete::TimeConcrete( void )
 {
 }
 
+TimeConcrete::TimeConcrete( const TimeConcrete& tc ):
+    m_us( tc.m_us )
+{
+
+}
+
 TimeConcrete::~TimeConcrete()
 {
+}
+
+TimeConcrete& TimeConcrete::operator=( const TimeConcrete& rhv )
+{
+    if( &rhv != this )
+    {
+        this->m_us = rhv.m_us;
+    }
+    return *this;
 }
 
 void TimeConcrete::setTimeMs( const double time )
@@ -22,7 +37,7 @@ void TimeConcrete::setTimeUs( const double us )
 
 const double TimeConcrete::getMs()const
 {
-    return this->m_us * 1000.;
+    return this->m_us * 1000.0;
 }
 
 const double TimeConcrete::getS()const

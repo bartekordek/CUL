@@ -1,8 +1,7 @@
 #pragma once
 
 #include "CUL/IArgumentsPair.hpp"
-#include <string>
-#include <vector>
+#include "CUL/STD_vector.hpp"
 
 namespace CUL
 {
@@ -10,7 +9,10 @@ namespace CUL
     {
         PROGRAM_NAME = 0
     };
-
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 4820 )
+#endif
     class ArgumentsPairConcrete final: public IArgumentsPair
     {
     public:
@@ -27,7 +29,11 @@ namespace CUL
         void clearArgs();
 
         std::vector<char*> m_argumentsPtrs;
-        bool m_argumentsAreDummy = false;
         int m_argc = 0;
+        bool m_argumentsAreDummy = false;
+
     };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 }

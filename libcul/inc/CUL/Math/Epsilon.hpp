@@ -1,10 +1,16 @@
 #pragma once
+
 #include "Math.hpp"
-#include <type_traits>
+#include "CUL/STD_type_traits.hpp"
+
 namespace CUL
 {
     namespace Math
     {
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4820 )
+#endif
         template <typename Type>
         class Epsilon
         {
@@ -38,5 +44,8 @@ namespace CUL
         private:
             Type epsilon = static_cast<Type>( 0 );
         };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
     }
 }

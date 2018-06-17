@@ -1,8 +1,7 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
-
-#include <memory>
+#include "CUL/STD_memory.hpp"
 
 namespace CUL
 {

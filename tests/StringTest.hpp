@@ -1,12 +1,10 @@
 #pragma once
 #include "CUL/MyString.hpp"
+#include "Gtest.hpp"
 #if _MSC_VER
-__pragma(warning( push ))
-__pragma(warning( disable:4389 ))
-#endif
-#include "gtest/gtest.h"
-#if _MSC_VER
-__pragma(warning( pop ))
+#pragma warning( push )
+#pragma warning( disable: 4625 )
+#pragma warning( disable: 4626 )
 #endif
 class StringTests: public ::testing::Test
 {
@@ -26,5 +24,7 @@ protected:
     virtual void TearDown()
     {
     }
-
 };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif

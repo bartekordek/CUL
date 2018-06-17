@@ -1,6 +1,6 @@
 #include "CUL/ITimer.hpp"
 #include "TimerChrono.hpp"
-#include <thread>
+#include "Thread.hpp"
 
 using namespace CUL;
 

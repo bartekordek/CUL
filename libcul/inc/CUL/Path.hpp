@@ -1,6 +1,6 @@
 #pragma once
 #include <CUL/CUL.hpp>
-#include <string>
+#include "CUL/STD_string.hpp"
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4251)
@@ -9,26 +9,28 @@ namespace CUL
 {
     namespace FS
     {
+        using CBool = const bool;
+        using CstString = const std::string;
         class CULLib_API Path
         {
         public:
             Path();
             Path( const Path& path );
-            Path( const std::string& path );
+            Path( CstString& path );
             Path( const char* r );
             virtual ~Path();
 
             Path& operator=( const std::string& r );
             Path& operator=( const char* r );
 
-            const std::string& getPath()const;
-            const std::string& getExtension()const;
-            const std::string& getBaseName()const;
-            const std::string& getDir()const;
+            CstString& getPath()const;
+            CstString& getExtension()const;
+            CstString& getBaseName()const;
+            CstString& getDir()const;
 
             const bool exists()const;
 
-            static const std::string& getDirSeparator();
+            static CstString& getDirSeparator();
         protected:
         private:
             void preparePaths();
@@ -41,10 +43,10 @@ namespace CUL
             static std::string extensionSeparator;
         };
 
-        Path operator+( const Path& l, const std::string& r );
-        Path operator+( const Path& l, const Path& r );
+        Path CULLib_API operator+( const Path& l, const std::string& r );
+        Path CULLib_API operator+( const Path& l, const Path& r );
     }
 }
 #if _MSC_VER
-#pragma warning( push )
+#pragma warning( pop )
 #endif

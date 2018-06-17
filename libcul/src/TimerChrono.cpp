@@ -1,8 +1,7 @@
 #include "TimerChrono.hpp"
 #include "TimeConcrete.hpp"
-#include <chrono>
-#include <thread>
-#include <memory>
+#include "Thread.hpp"
+
 using namespace CUL;
 
 TimerChrono::TimerChrono( const bool run )
@@ -14,8 +13,26 @@ TimerChrono::TimerChrono( const bool run )
     }
 }
 
+TimerChrono::TimerChrono( const TimerChrono& tc ):
+    clock( tc.clock ),
+    time( new TimeConcrete( *static_cast<TimeConcrete*>( tc.time.get() ) ) )
+{
+
+}
+
 TimerChrono::~TimerChrono()
 {
+}
+
+TimerChrono& TimerChrono::operator=( const TimerChrono& rhv )
+{
+    if( &rhv != this )
+    {
+        this->clock = rhv.clock;
+        this->time.reset( new TimeConcrete( *static_cast<TimeConcrete*>( rhv.time.get() ) ) );
+        this->startPoint = rhv.startPoint;
+    }
+    return *this;
 }
 
 void TimerChrono::start()

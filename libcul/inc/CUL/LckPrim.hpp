@@ -1,9 +1,10 @@
 #pragma once
 #include <CUL/CUL.hpp>
-#include <mutex>
+#include <CUL/STD_mutex.hpp>
 #if _MSC_VER
-__pragma( warning( push ) )
-__pragma( warning( disable:4251 ) )
+#pragma warning( push )
+#pragma warning( disable: 4251 )
+#pragma warning( disable: 4820 )
 #endif
 namespace CUL
 {

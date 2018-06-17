@@ -1,12 +1,18 @@
 #pragma once
+
 #include "CUL/IFile.hpp"
 #include "CUL/Path.hpp"
-#include <vector>
-#include <memory>
+#include "CUL/STD_vector.hpp"
+#include "CUL/STD_memory.hpp"
+
 namespace CUL
 {
     namespace FS
     {
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 4820 )
+#endif
         class FileRegularImpl: public IFile
         {
         public:
@@ -20,11 +26,11 @@ namespace CUL
 
             const Path& getPath() const override;
 
-            const bool exists()const override;
-            const bool isBinary()const override;
+            CBool exists()const override;
+            CBool isBinary()const override;
 
-            void reload( const bool keepLineEndingCharacter = false ) override;
-            void load( const bool keepLineEndingCharacter = false ) override;
+            void reload( CBool keepLineEndingCharacter = false ) override;
+            void load( CBool keepLineEndingCharacter = false ) override;
             void unload() override;
 
             const std::string& firstLine()const override;
@@ -45,5 +51,8 @@ namespace CUL
             std::string m_cached;
             bool m_keepLineEndingCharacter = false;
         };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
     }
 }

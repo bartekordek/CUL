@@ -1,9 +1,15 @@
 #pragma once
 
 #include "CUL/MyString.hpp"
-#include "gtest/gtest.h"
 
-class NameTests: public ::testing::Test
+#include "Gtest.hpp"
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4625 )
+#pragma warning( disable: 4626 )
+#endif
+class NameTests:
+    public ::testing::Test
 {
 protected:
     NameTests()
@@ -23,3 +29,6 @@ protected:
     }
     CUL::MyString genericName = CUL::MyString( "Generic name." );
 };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif

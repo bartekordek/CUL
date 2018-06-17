@@ -10,9 +10,9 @@
     static const myBool True = 1;
  */
 
-#include <iostream>
-#include <iomanip>
-#include <vector>
+#include "CUL/STD_iostream.hpp"
+#include "CUL/STD_iomanip.hpp"
+#include "CUL/STD_vector.hpp"
 
 namespace CUL
 {

@@ -31,6 +31,10 @@ namespace CUL
         protected:
             void translationUnitIsNotEmpty();
         private:
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 4514 )
+#endif
             MultiPointFactory() 
             {
                 translationUnitIsNotEmpty();
@@ -38,4 +42,7 @@ namespace CUL
             virtual ~MultiPointFactory() {}
         };
     }
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 }

@@ -1,11 +1,20 @@
 #include "CSVFile.hpp"
-#include <fstream>
+#include "STD_fstream.hpp"
 
 using namespace CUL;
 using namespace FS;
 
-CSVFile::CSVFile( const std::string& fPath ):
-    ICSVFile( fPath ),
+CSVFile::CSVFile( const CSVFile & rhv ):
+    m_delimeter( rhv.m_delimeter ),
+    m_path( rhv.m_path ),
+    m_rows( rhv.m_rows ),
+    m_cached( rhv.m_cached ),
+    m_keepLineEndingCharacter( rhv.m_keepLineEndingCharacter )
+{
+
+}
+
+CSVFile::CSVFile( CstString& fPath ):
     m_path( fPath )
 {
 
@@ -16,7 +25,20 @@ CSVFile::~CSVFile()
 
 }
 
-IFile& CSVFile::operator=( const std::string& rPath )
+CSVFile& CSVFile::operator=( const CSVFile& rhv )
+{
+    if( &rhv != this )
+    {
+        m_delimeter = rhv.m_delimeter;
+        m_path = rhv.m_path;
+        m_rows = rhv.m_rows;
+        m_cached = rhv.m_cached;
+        m_keepLineEndingCharacter = rhv.m_keepLineEndingCharacter;
+    }
+    return *this;
+}
+
+CSVFile& CSVFile::operator=( CstString& rPath )
 {
     changePath( rPath );
     return *this;
@@ -43,12 +65,12 @@ cunt CSVFile::colsCount()const
     return static_cast<cunt>( this->m_rows[0].size() );
 }
 
-const std::string& CSVFile::getVal( cunt row, cunt col )const
+CstString& CSVFile::getVal( cunt row, cunt col )const
 {
     return this->m_rows[ row ][ col ];
 }
 
-void CSVFile::setVal( const std::string& val, cunt row, cunt col )
+void CSVFile::setVal( CstString& val, cunt row, cunt col )
 {
     this->m_rows[ row ][ col ] = val;
 }
@@ -63,19 +85,19 @@ const bool CSVFile::isBinary()const
     return false;//TODO
 }
 
-void CSVFile::setDelimeter( const std::string& delimeter )
+void CSVFile::setDelimeter( CstString& delimeter )
 {
     this->m_delimeter = delimeter;
 }
 
-void CSVFile::reload( const bool keepLineEndingCharacter )
+void CSVFile::reload( CBool keepLineEndingCharacter )
 {
     unload();
     load( keepLineEndingCharacter );
 }
 
 
-void CSVFile::load( const bool keepLineEndingCharacter )
+void CSVFile::load( CBool keepLineEndingCharacter )
 {
     this->m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
@@ -100,7 +122,7 @@ void CSVFile::load( const bool keepLineEndingCharacter )
     cacheFile();
 }
 
-void CSVFile::parseLine( const std::string& line )
+void CSVFile::parseLine( CstString& line )
 {
     Row inRow;
     auto lineCp = line;
@@ -119,12 +141,12 @@ void CSVFile::unload()
 {
 }
 
-const std::string& CSVFile::firstLine()const
+CstString& CSVFile::firstLine()const
 {
     return this->m_rows.front()[0];
 }
 
-const std::string& CSVFile::lastLine()const
+CstString& CSVFile::lastLine()const
 {
     return this->m_rows.back()[ this->m_rows.size() - 1 ];
 }
@@ -134,7 +156,7 @@ const Path& CSVFile::getPath()const
     return this->m_path;
 }
 
-const std::string& CSVFile::getAsOneString()const
+CstString& CSVFile::getAsOneString()const
 {
     return this->m_cached;
 }

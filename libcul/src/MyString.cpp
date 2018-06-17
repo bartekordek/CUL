@@ -1,5 +1,5 @@
 #include "CUL/MyString.hpp"
-#include <algorithm>
+#include "CUL/Algorithm.hpp"
 
 using namespace CUL;
 

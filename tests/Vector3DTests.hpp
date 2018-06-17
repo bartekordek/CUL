@@ -1,7 +1,11 @@
 #pragma once
 
-#include "gtest/gtest.h"
-
+#include "Gtest.hpp"
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4625 )
+#pragma warning( disable: 4626 )
+#endif
 class Vector3DTests: public ::testing::Test
 {
 public:
@@ -22,3 +26,6 @@ protected:
     {
     }
 };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif

@@ -2,9 +2,9 @@
 
 #include "CUL/Math/Axis.hpp"
 
-#include <vector>
-#include <algorithm>
-#include <memory>
+#include "CUL/STD_vector.hpp"
+#include "CUL/STD_memory.hpp"
+#include "CUL/Algorithm.hpp"
 
 namespace CUL
 {

@@ -1,10 +1,7 @@
 #include "FileRegularImpl.hpp"
 
-#define BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/path.hpp>
-
-#include <iostream>
+#include "BoostFilesystem.hpp"
+#include "CUL/STD_iostream.hpp"
 
 using namespace CUL;
 using namespace FS;

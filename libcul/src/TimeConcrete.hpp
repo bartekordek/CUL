@@ -5,8 +5,11 @@ namespace CUL
     class TimeConcrete: public ITime
     {
     public:
-        TimeConcrete();
+        TimeConcrete( void );
+        TimeConcrete( const TimeConcrete& tc );
         virtual ~TimeConcrete();
+
+        TimeConcrete& operator=( const TimeConcrete& rhv );
 
         void setTimeMs( const double ms ) override;
         void setTimeUs( const double us ) override;
