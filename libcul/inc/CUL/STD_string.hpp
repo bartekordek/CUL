@@ -16,3 +16,5 @@
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
+
+using CnstStr = const std::string;
