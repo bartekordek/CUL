@@ -88,6 +88,7 @@
     <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
     <ClInclude Include="inc\CUL\STD_cmath.hpp" />
     <ClInclude Include="inc\CUL\STD_cstdint.hpp" />
+    <ClInclude Include="inc\CUL\STD_cstring.hpp" />
     <ClInclude Include="inc\CUL\STD_functional.hpp" />
     <ClInclude Include="inc\CUL\STD_iomanip.hpp" />
     <ClInclude Include="inc\CUL\STD_iostream.hpp" />
