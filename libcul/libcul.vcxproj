@@ -34,6 +34,7 @@
     <ClCompile Include="src\IAngle.cpp" />
     <ClCompile Include="src\ICSVFile.cpp" />
     <ClCompile Include="src\IFile.cpp" />
+    <ClCompile Include="src\IName.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
     <ClCompile Include="src\ITime.cpp" />
     <ClCompile Include="src\ITimer.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="inc\CUL\FS.hpp" />
     <ClInclude Include="inc\CUL\IFile.hpp" />
     <ClInclude Include="inc\CUL\IMPORT_boost_asset.hpp" />
+    <ClInclude Include="inc\CUL\IName.hpp" />
     <ClInclude Include="inc\CUL\ITime.hpp" />
     <ClInclude Include="inc\CUL\ITimer.hpp" />
     <ClInclude Include="inc\CUL\LckPrim.hpp" />

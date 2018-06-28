@@ -105,6 +105,9 @@
     <ClCompile Include="src\FileFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IName.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -282,6 +285,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\STD_cstring.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\IName.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
