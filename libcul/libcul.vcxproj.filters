@@ -108,6 +108,15 @@
     <ClCompile Include="src\IName.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IThreadUtility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreadUtilityWindows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ThreadUtilityDummy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -289,6 +298,15 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\IName.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\IThreadUtility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ThreadUtilityWindows.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ThreadUtilityDummy.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

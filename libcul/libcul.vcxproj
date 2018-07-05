@@ -36,6 +36,7 @@
     <ClCompile Include="src\IFile.cpp" />
     <ClCompile Include="src\IName.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
+    <ClCompile Include="src\IThreadUtility.cpp" />
     <ClCompile Include="src\ITime.cpp" />
     <ClCompile Include="src\ITimer.cpp" />
     <ClCompile Include="src\Line.cpp" />
@@ -47,6 +48,8 @@
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
     <ClCompile Include="src\Thread.hpp" />
+    <ClCompile Include="src\ThreadUtilityDummy.cpp" />
+    <ClCompile Include="src\ThreadUtilityWindows.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
   </ItemGroup>
@@ -62,6 +65,7 @@
     <ClInclude Include="inc\CUL\IFile.hpp" />
     <ClInclude Include="inc\CUL\IMPORT_boost_asset.hpp" />
     <ClInclude Include="inc\CUL\IName.hpp" />
+    <ClInclude Include="inc\CUL\IThreadUtility.hpp" />
     <ClInclude Include="inc\CUL\ITime.hpp" />
     <ClInclude Include="inc\CUL\ITimer.hpp" />
     <ClInclude Include="inc\CUL\LckPrim.hpp" />
@@ -109,6 +113,8 @@
     <ClInclude Include="src\FileRegularImpl.hpp" />
     <ClInclude Include="src\STD_fstream.hpp" />
     <ClInclude Include="src\STDCodecvt.hpp" />
+    <ClInclude Include="src\ThreadUtilityDummy.hpp" />
+    <ClInclude Include="src\ThreadUtilityWindows.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />
   </ItemGroup>
