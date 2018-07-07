@@ -15,10 +15,21 @@ namespace CUL
 
         IThreadUtility& operator=( const IThreadUtility& val ) = delete;
 
-        static std::shared_ptr<IThreadUtility> getConcrete();
-
         virtual void setCurrentThreadName( CnstStr& name ) = 0;
 
+    protected:
+    private:
+    };
+
+    class CULLib_API IThreadUtilityFactory
+    {
+    public:
+        IThreadUtilityFactory() = delete;
+        IThreadUtilityFactory( const IThreadUtilityFactory& val ) = delete;
+        ~IThreadUtilityFactory() = delete;
+        IThreadUtilityFactory& operator=( const IThreadUtilityFactory& rhv ) = delete;
+
+        static std::shared_ptr<IThreadUtility> getConcrete();
 
     protected:
     private:

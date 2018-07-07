@@ -39,6 +39,11 @@ namespace CUL
             return this->value;
         }
 
+        const Type getValCopy()const
+        {
+            return this->value;
+        }
+
         void setVal( const Type& val )
         {
             std::lock_guard<std::mutex> lock( this->mtx );

@@ -9,10 +9,9 @@
 
 using namespace CUL;
 
-std::shared_ptr<IThreadUtility> IThreadUtility::getConcrete()
+std::shared_ptr<IThreadUtility> IThreadUtilityFactory::getConcrete()
 {
     std::shared_ptr<IThreadUtility> result;
-
 #ifdef _MSC_VER
     result.reset( new ThreadUtilityWindows() );
 #else
