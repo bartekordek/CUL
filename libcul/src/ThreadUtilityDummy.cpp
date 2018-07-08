@@ -11,11 +11,14 @@ ThreadUtilityDummy::~ThreadUtilityDummy()
 {
 
 }
-
-#pragma warning( push )  
-#pragma warning( disable: 4100 )  
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4100 )
+#endif
 void ThreadUtilityDummy::setCurrentThreadName( CnstStr& name )
 {
 
 }
-#pragma warning(pop)  
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif

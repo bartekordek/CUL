@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/IThreadUtility.hpp"
-
+#ifdef _MSC_VER
 namespace CUL
 {
     class ThreadUtilityWindows final :
@@ -20,3 +20,4 @@ namespace CUL
     private:
     };
 }
+#endif

@@ -1,5 +1,5 @@
 #include "ThreadUtilityWindows.hpp"
-
+#ifdef _MSC_VER
 #pragma warning( push )  
 #pragma warning( disable: 4668 5039 )  
 #include <windows.h>
@@ -48,3 +48,4 @@ void ThreadUtilityWindows::setCurrentThreadName( CnstStr& name )
     }
 #pragma warning(pop)  
 }
+#endif
