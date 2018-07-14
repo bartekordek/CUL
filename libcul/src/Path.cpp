@@ -14,7 +14,7 @@ std::string Path::directorySeparator = std::string( "/" );
 #endif
 std::string Path::extensionSeparator = std::string( "." );
 
-const std::string& Path::getDirSeparator()
+CstString& Path::getDirSeparator()
 {
     return extensionSeparator;
 }
@@ -32,7 +32,7 @@ Path::Path( const Path& path ):
 {
 }
 
-Path::Path( const std::string& path ):
+Path::Path( CstString& path ):
     fullPath(path)
 {
     preparePaths();
@@ -46,10 +46,10 @@ Path::Path( const char* r ):
 
 Path::~Path()
 {
-    
+
 }
 
-Path& Path::operator=( const std::string& path )
+Path& Path::operator=( CstString& path )
 {
     if( this->fullPath != path )
     {
@@ -69,22 +69,36 @@ Path& Path::operator=( const char* r )
     return *this;
 }
 
-const std::string& Path::getPath()const
+Path& Path::operator+( const Path& rhv )
+{
+    this->fullPath = this->fullPath + rhv.fullPath;
+    preparePaths();
+    return *this;
+}
+
+Path& Path::operator+( CstString& rhv )
+{
+    this->fullPath = this->fullPath + rhv;
+    preparePaths();
+    return *this;
+}
+
+CstString& Path::getPath()const
 {
     return this->fullPath;
 }
 
-const std::string& Path::getExtension()const
+CstString& Path::getExtension()const
 {
     return this->extension;
 }
 
-const std::string& Path::getBaseName()const
+CstString& Path::getBaseName()const
 {
     return this->baseName;
 }
 
-const std::string& Path::getDir()const
+CstString& Path::getDir()const
 {
     return this->dir;
 }

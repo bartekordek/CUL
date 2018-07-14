@@ -20,8 +20,10 @@ namespace CUL
             Path( const char* r );
             virtual ~Path();
 
-            Path& operator=( const std::string& r );
+            Path& operator=( CstString& r );
             Path& operator=( const char* r );
+            Path& operator+( const Path& rhv );
+            Path& operator+( CstString& rhv );
 
             CstString& getPath()const;
             CstString& getExtension()const;
@@ -43,7 +45,7 @@ namespace CUL
             static std::string extensionSeparator;
         };
 
-        Path CULLib_API operator+( const Path& l, const std::string& r );
+        Path CULLib_API operator+( const Path& l, CstString& r );
         Path CULLib_API operator+( const Path& l, const Path& r );
     }
 }
