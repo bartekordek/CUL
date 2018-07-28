@@ -1,6 +1,6 @@
 #pragma once
 
-#include <CUL/CUL.hpp>
+#include "CUL/CUL.hpp"
 #include "CUL/STD_string.hpp"
 
 #if _MSC_VER
@@ -26,10 +26,10 @@ namespace CUL
         const bool Contains( const char* inputString )const;
 
         MyString& Replace( const MyString& inWhat, const MyString& inFor );
-        const std::string toLower()const;
+        CnstStr toLower()const;
         static void toLowerS( std::string& inOutString );
         static void toUpperS( std::string& inOutString );
-        const std::string string()const;
+        CnstStr string()const;
 
     protected:
     private:
