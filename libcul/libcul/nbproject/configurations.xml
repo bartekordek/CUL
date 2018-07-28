@@ -87,6 +87,8 @@
       <itemPath>../src/IPivot.cpp</itemPath>
       <itemPath>../src/ITime.cpp</itemPath>
       <itemPath>../src/ITimer.cpp</itemPath>
+      <itemPath>../src/ImageIL.cpp</itemPath>
+      <itemPath>../src/ImageIL.hpp</itemPath>
       <itemPath>../src/Line.cpp</itemPath>
       <itemPath>../src/MultiPointFactory.cpp</itemPath>
       <itemPath>../src/MyString.cpp</itemPath>
@@ -306,6 +308,10 @@
       <item path="../src/ITime.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/ITimer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ImageIL.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ImageIL.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/Line.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -534,6 +540,10 @@
       <item path="../src/ITime.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="../src/ITimer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ImageIL.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="../src/ImageIL.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="../src/Line.cpp" ex="false" tool="1" flavor2="0">
       </item>

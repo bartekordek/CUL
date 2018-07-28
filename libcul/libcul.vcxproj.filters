@@ -117,6 +117,12 @@
     <ClCompile Include="src\ThreadUtilityDummy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IMageUtility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImageIL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\FileRegularImpl.hpp">
@@ -306,6 +312,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ThreadUtilityDummy.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\IImage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\IMageUtility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImageIL.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
