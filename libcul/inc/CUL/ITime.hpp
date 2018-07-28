@@ -1,5 +1,5 @@
 #pragma once
-#include <CUL/CUL.hpp>
+#include "CUL/CUL.hpp"
 namespace CUL
 {
     class CULLib_API ITime

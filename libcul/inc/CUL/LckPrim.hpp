@@ -1,6 +1,6 @@
 #pragma once
-#include <CUL/CUL.hpp>
-#include <CUL/STD_mutex.hpp>
+#include "CUL/CUL.hpp"
+#include "CUL/STD_mutex.hpp"
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4251 )
