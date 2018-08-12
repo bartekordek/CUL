@@ -111,6 +111,7 @@
     <ClInclude Include="inc\CUL\STD_type_traits.hpp" />
     <ClInclude Include="inc\CUL\STD_vector.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
+    <ClInclude Include="inc\CUL\UselessMacros.hpp" />
     <ClInclude Include="src\ArgumentsPairConcrete.hpp" />
     <ClInclude Include="src\BoostFilesystem.hpp" />
     <ClInclude Include="src\CSVFile.hpp" />
