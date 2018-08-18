@@ -15,7 +15,9 @@ TimerChrono::TimerChrono( const bool run )
 
 TimerChrono::TimerChrono( const TimerChrono& tc ):
     clock( tc.clock ),
-    time( new TimeConcrete( *static_cast<TimeConcrete*>( tc.time.get() ) ) )
+    time(
+    new TimeConcrete(
+    *static_cast<TimeConcrete*>( tc.time.get() ) ) )
 {
 
 }
@@ -29,7 +31,9 @@ TimerChrono& TimerChrono::operator=( const TimerChrono& rhv )
     if( &rhv != this )
     {
         this->clock = rhv.clock;
-        this->time.reset( new TimeConcrete( *static_cast<TimeConcrete*>( rhv.time.get() ) ) );
+        this->time.reset(
+            new TimeConcrete(
+            *static_cast<TimeConcrete*>( rhv.time.get() ) ) );
         this->startPoint = rhv.startPoint;
     }
     return *this;
@@ -52,7 +56,9 @@ void TimerChrono::reset()
 const ITime& TimerChrono::getElapsed() const
 {
     auto difference = this->clock.now() - startPoint;
-    auto us = std::chrono::duration_cast<std::chrono::microseconds>( difference ).count();
+    auto us =
+        std::chrono::duration_cast<std::chrono::microseconds>(
+        difference ).count();
     auto d_us = static_cast<double>( us );
     this->time->setTimeUs( d_us );
     return *this->time;

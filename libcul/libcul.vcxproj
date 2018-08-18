@@ -86,6 +86,7 @@
     <ClInclude Include="inc\CUL\Math\Matrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\MultiPoint.hpp" />
     <ClInclude Include="inc\CUL\Math\MultiPointFactory.hpp" />
+    <ClInclude Include="inc\CUL\Math\PosTable.hpp" />
     <ClInclude Include="inc\CUL\Math\Quaternion.hpp" />
     <ClInclude Include="inc\CUL\Math\Rectangle.hpp" />
     <ClInclude Include="inc\CUL\Math\Segment.hpp" />
