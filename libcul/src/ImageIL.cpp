@@ -68,7 +68,7 @@ void ImageIL::loadImageFrom( const FS::Path& path )
     success = ilConvertImage( IL_RGBA, IL_UNSIGNED_BYTE );
     Assert::simple( success, "Unable to convert: " + path.getPath() );
     this->m_data = ilGetData();
-    auto size = IL_IMAGE_WIDTH * IL_IMAGE_HEIGHT;
+    //auto size = IL_IMAGE_WIDTH * IL_IMAGE_HEIGHT;
 
 }
 #ifdef _MSC_VER
