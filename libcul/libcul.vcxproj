@@ -56,7 +56,7 @@
     <ClCompile Include="src\TimerChrono.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\CUL\Algorithm.hpp" />
+    <ClInclude Include="inc\CUL\STD_algorithm.hpp" />
     <ClInclude Include="inc\CUL\FileFactory.hpp" />
     <ClInclude Include="inc\CUL\IArgumentsPair.hpp" />
     <ClInclude Include="inc\CUL\Color.hpp" />
@@ -210,8 +210,10 @@
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
     </ClCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -223,6 +225,7 @@
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
       <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
@@ -239,8 +242,10 @@
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -251,6 +256,7 @@
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
       <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
@@ -268,6 +274,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -277,6 +284,7 @@
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile />
     </Link>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -298,6 +306,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -307,6 +316,7 @@
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile />
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

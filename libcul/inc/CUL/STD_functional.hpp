@@ -4,6 +4,7 @@
 #pragma warning( disable: 4371 )
 #pragma warning( disable: 4514 )
 #pragma warning( disable: 4626 )
+#pragma warning( disable: 4711 )
 #pragma warning( disable: 5027 )
 #endif
 #include <functional>

@@ -92,22 +92,22 @@ cfloat ColorS::getAF()const
 
 cuint8_t ColorS::getRUI()const
 {
-    return this->m_r * 255.0f;
+    return static_cast<cuint8_t>( this->m_r * 255.0f );
 }
 
 cuint8_t ColorS::getGUI()const
 {
-    return this->m_g * 255.0f;
+    return static_cast<cuint8_t>( this->m_g * 255.0f );
 }
 
 cuint8_t ColorS::getBUI()const
 {
-    return this->m_b * 255.0f;
+    return static_cast<cuint8_t>( this->m_b * 255.0f );
 }
 
 cuint8_t ColorS::getAUI()const
 {
-    return this->m_alpha * 255.0f;
+    return static_cast<cuint8_t>( this->m_alpha * 255.0f );
 }
 
 void ColorS::setRF( cfloat r )

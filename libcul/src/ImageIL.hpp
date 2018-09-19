@@ -4,6 +4,7 @@
 
 #if _MSC_VER
 #pragma warning( push, 0 )
+#pragma warning( disable: 4710 )
 #endif
 #include "IL/ilu.h"
 #ifdef _MSC_VER

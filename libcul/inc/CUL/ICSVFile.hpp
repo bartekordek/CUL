@@ -22,6 +22,7 @@ namespace CUL
             virtual const std::string& getVal( cunt row, cunt col )const = 0;
             virtual void setVal( const std::string& val, cunt row, cunt col ) = 0;
             virtual void setDelimeter( const std::string& delimeter ) = 0;
+            virtual void fileContainsQuotationMarks( const bool containsQuotationMarks ) = 0;
 
         protected:
         private:

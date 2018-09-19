@@ -4,7 +4,7 @@
 
 #include "CUL/STD_vector.hpp"
 #include "CUL/STD_memory.hpp"
-#include "CUL/Algorithm.hpp"
+#include "CUL/STD_algorithm.hpp"
 
 namespace CUL
 {

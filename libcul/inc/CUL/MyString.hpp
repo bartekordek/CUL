@@ -4,7 +4,8 @@
 #include "CUL/STD_string.hpp"
 
 #if _MSC_VER
-#pragma warning( disable : 4251)
+#pragma warning( disable: 4244 )
+#pragma warning( disable: 4251 )
 #endif
 
 namespace CUL

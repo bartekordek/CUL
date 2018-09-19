@@ -96,7 +96,6 @@ void CSVFile::reload( CBool keepLineEndingCharacter )
     load( keepLineEndingCharacter );
 }
 
-
 void CSVFile::load( CBool keepLineEndingCharacter )
 {
     this->m_keepLineEndingCharacter = keepLineEndingCharacter;
@@ -124,21 +123,46 @@ void CSVFile::load( CBool keepLineEndingCharacter )
 
 void CSVFile::parseLine( CstString& line )
 {
-    Row inRow;
-    auto lineCp = line;
+    Row inRow;//TODO: there is a problem with parsing.
+    auto lineCp = line;//huj
     auto delimeterPos = line.find( this->m_delimeter );
+    std::string cell;
+    size_t cellEnd;
+    size_t cellStart;
+    size_t newCellOffset;
     while( delimeterPos != std::string::npos )
     {
-        auto cell = lineCp.substr( 1, delimeterPos - 1 );
+        cellEnd = m_cellsContainQuotationMarks ?
+            delimeterPos - 2 : delimeterPos;
+
+        cellStart = m_cellsContainQuotationMarks ?
+            static_cast<size_t>( 1 ) : static_cast<size_t>(0);
+
+        newCellOffset = m_cellsContainQuotationMarks ?
+            static_cast<size_t>(3) : static_cast<size_t>(0);
+
+        cell = lineCp.substr( cellStart, cellEnd );
         inRow.push_back( cell );
-        lineCp = lineCp.substr( delimeterPos + 2 );
+        lineCp = lineCp.substr( cellEnd + newCellOffset );
         delimeterPos = lineCp.find( this->m_delimeter );
     }
+
+    if( m_cellsContainQuotationMarks )
+    {
+        cell = lineCp.substr( 1, lineCp.size() - 2 );
+    }
+    else
+    {
+        cell = lineCp.substr( 0, lineCp.size() );
+    }
+    inRow.push_back( cell );
+
     this->m_rows.push_back( inRow );
 }
 
 void CSVFile::unload()
 {
+    this->m_rows.clear();
 }
 
 CstString& CSVFile::firstLine()const
@@ -181,6 +205,11 @@ void CSVFile::cacheFile()
 cunt CSVFile::getLinesCount()const
 {
     return static_cast< cunt >( this->m_rows.size() );
+}
+
+void CSVFile::fileContainsQuotationMarks( const bool containsQuotationMarks )
+{
+    this->m_cellsContainQuotationMarks = containsQuotationMarks;
 }
 
 const char** CSVFile::getContent()const

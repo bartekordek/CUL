@@ -12,9 +12,9 @@ IFilePtr FileFactory::createRegularFile( const Path& path )
     return file;
 }
 
-IFilePtr FileFactory::createCSVFile( const Path& path )
+ICSVFilePtr FileFactory::createCSVFile( const Path& path )
 {
     auto csvFile = new CSVFile( path.getPath() );
-    IFilePtr file( csvFile );
+    ICSVFilePtr file( csvFile );
     return file;
 }

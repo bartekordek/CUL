@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CUL/UselessMacros.hpp"
 #include "CUL/Path.hpp"
 #include "CUL/ICSVFile.hpp"
 #include "CUL/STD_vector.hpp"
@@ -8,66 +9,67 @@
 using Row = std::vector<std::string>;
 using Rows = std::vector<Row>;
 
-namespace CUL
-{
-    namespace FS
-    {
+NAMESPACE_BEGIN( CUL )
+NAMESPACE_BEGIN( FS )
 #ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4820 )
 #endif
-        class CSVFile final:
-            public ICSVFile
-        {
-        public:
-            CSVFile( const CSVFile& rhv );
-            CSVFile( CstString& fPath );
-            ~CSVFile();
+class CSVFile final:
+    public ICSVFile
+{
+public:
+    CSVFile( const CSVFile& rhv );
+    CSVFile( CstString& fPath );
+    ~CSVFile();
 
-            CSVFile& operator=( const CSVFile& rhv );
-            CSVFile& operator=( CstString& rPath );
-            
-            void changePath( const Path& newPath ) override;
+    CSVFile& operator=( const CSVFile& rhv );
+    CSVFile& operator=( CstString& rPath );
 
-            const Path& getPath() const override;
+    void changePath( const Path& newPath ) override;
 
-            const bool checkIfFileIsAllRight()const override;
-            cunt rowsCount()const override;
-            cunt colsCount()const override;
-            CstString& getVal( cunt row, cunt col ) const override;
-            void setVal( CstString& val, cunt row, cunt col ) override;
+    const Path& getPath() const override;
 
-            CBool exists()const override;
-            CBool isBinary()const override;
+    const bool checkIfFileIsAllRight()const override;
+    cunt rowsCount()const override;
+    cunt colsCount()const override;
+    CstString& getVal( cunt row, cunt col ) const override;
+    void setVal( CstString& val, cunt row, cunt col ) override;
 
-            void reload( CBool keepLineEndingCharacter = false ) override;
-            void load( CBool keepLineEndingCharacter = false ) override;
-            void unload() override;
+    CBool exists()const override;
+    CBool isBinary()const override;
 
-            CstString& firstLine()const override;
-            CstString& lastLine()const override;
+    void reload( CBool keepLineEndingCharacter = false ) override;
+    void load( CBool keepLineEndingCharacter = false ) override;
+    void unload() override;
 
-            void setDelimeter( CstString& delimeter ) override;
+    CstString& firstLine()const override;
+    CstString& lastLine()const override;
 
-            CstString& getAsOneString()const override;
-            const char** getContent()const override;
+    void setDelimeter( CstString& delimeter ) override;
 
-            cunt getLinesCount()const override;
+    CstString& getAsOneString()const override;
+    const char** getContent()const override;
 
-        protected:
-        private:
-            CSVFile();
-            void parseLine( CstString& line );
-            void cacheFile();
+    cunt getLinesCount()const override;
 
-            std::string m_delimeter = ",";
-            Path m_path;
-            Rows m_rows;
-            std::string m_cached;
-            bool m_keepLineEndingCharacter = false;
-        };
+    void fileContainsQuotationMarks( const bool containsQuotationMarks ) override;
+
+protected:
+private:
+    CSVFile();
+    void parseLine( CstString& line );
+    void cacheFile();
+
+    std::string m_delimeter = ",";
+    bool m_cellsContainQuotationMarks = true;
+    Path m_path;
+    Rows m_rows;
+    std::string m_cached;
+    bool m_keepLineEndingCharacter = false;
+};
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-    }
-}
+NAMESPACE_END( FS )
+NAMESPACE_END( CUL )

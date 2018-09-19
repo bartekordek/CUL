@@ -1,7 +1,7 @@
 #include "ThreadUtilityWindows.hpp"
 #ifdef _MSC_VER
 #pragma warning( push )  
-#pragma warning( disable: 4668 5039 )  
+#pragma warning( disable: 4668 5039 )
 #include <windows.h>
 #pragma warning( pop )  
 
