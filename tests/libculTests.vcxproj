@@ -100,6 +100,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\build\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
@@ -120,6 +121,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\build\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
@@ -140,6 +142,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -162,6 +165,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -174,6 +178,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CSVFileTests.cpp" />
     <ClCompile Include="FilesystemTests.cpp" />
     <ClCompile Include="FileTest.cpp" />
     <ClCompile Include="main.cpp" />
@@ -184,6 +189,7 @@
     <ClCompile Include="Vector3DTests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CSVFileTests.hpp" />
     <ClInclude Include="FilesystemTests.hpp" />
     <ClInclude Include="FileTest.hpp" />
     <ClInclude Include="Gtest.hpp" />
