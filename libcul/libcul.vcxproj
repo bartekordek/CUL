@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -41,6 +41,11 @@
     <ClCompile Include="src\IThreadUtility.cpp" />
     <ClCompile Include="src\ITime.cpp" />
     <ClCompile Include="src\ITimer.cpp" />
+    <ClCompile Include="src\JSON\Array.cpp" />
+    <ClCompile Include="src\JSON\DataPair.cpp" />
+    <ClCompile Include="src\JSON\INode.cpp" />
+    <ClCompile Include="src\JSON\JSONFileConcrete.cpp" />
+    <ClCompile Include="src\JSON\Object.cpp" />
     <ClCompile Include="src\Line.cpp" />
     <ClCompile Include="src\MultiPointFactory.cpp" />
     <ClCompile Include="src\MyString.cpp" />
@@ -56,6 +61,13 @@
     <ClCompile Include="src\TimerChrono.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\CUL\JSON\Array.hpp" />
+    <ClInclude Include="inc\CUL\JSON\DataPair.hpp" />
+    <ClInclude Include="inc\CUL\JSON\IJSON.hpp" />
+    <ClInclude Include="inc\CUL\JSON\IJSONFile.hpp" />
+    <ClInclude Include="inc\CUL\JSON\INode.hpp" />
+    <ClInclude Include="inc\CUL\JSON\Object.hpp" />
+    <ClInclude Include="inc\CUL\JSON\IParent.hpp" />
     <ClInclude Include="inc\CUL\STD_algorithm.hpp" />
     <ClInclude Include="inc\CUL\FileFactory.hpp" />
     <ClInclude Include="inc\CUL\IArgumentsPair.hpp" />
@@ -118,6 +130,8 @@
     <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
     <ClInclude Include="src\ImageIL.hpp" />
+    <ClInclude Include="src\JSON\JSONFileConcrete.hpp" />
+    <ClInclude Include="src\JSON\RapidJSON.hpp" />
     <ClInclude Include="src\STD_fstream.hpp" />
     <ClInclude Include="src\STDCodecvt.hpp" />
     <ClInclude Include="src\ThreadUtilityDummy.hpp" />
@@ -206,12 +220,12 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
-      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDataBaseFileName>
       </ProgramDataBaseFileName>
     </ClCompile>
@@ -238,12 +252,12 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
-      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDataBaseFileName>
       </ProgramDataBaseFileName>
     </ClCompile>
@@ -270,11 +284,11 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;5045</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -302,11 +316,11 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost_1_67_0;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;5045</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

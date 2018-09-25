@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Gtest.hpp"
+#include "CUL/MyString.hpp"
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4625 )
@@ -26,7 +27,7 @@ protected:
     {
     }
 
-    std::string dummyFilePath = "../media/Dummy.txt";
+    CUL::MyString dummyFilePath = "../media/Dummy.txt";
 
 };
 #ifdef _MSC_VER

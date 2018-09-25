@@ -32,6 +32,12 @@ MyString& MyString::operator=( const char* someString )
     return *this;
 }
 
+MyString& MyString::operator=( const std::string& someString )
+{
+    std::string::operator=( someString );
+    return *this;
+}
+
 MyString& MyString::operator=( const MyString& someString )
 {
     if( &someString != this )
@@ -41,24 +47,36 @@ MyString& MyString::operator=( const MyString& someString )
     return *this;
 }
 
-const bool MyString::Contains( const MyString& inputString )const
+MyString& MyString::operator+=( const char * someString )
 {
-    return Contains( inputString.c_str() );
+    std::string::operator+=( someString );
+    return *this;
 }
 
-const bool MyString::Contains( const char* inputString )const
+MyString & MyString::operator+=( const std::string & someString )
 {
-    if( std::string::npos == std::string::find( inputString ) )
+    std::string::operator+=( someString );
+    return *this;
+}
+
+const bool MyString::contains( const MyString& inputString )const
+{
+    return contains( inputString.c_str() );
+}
+
+const bool MyString::contains( const char* inputString )const
+{
+    if( MyString::npos == MyString::find( inputString ) )
     {
         return false;
     }
     return true;
 }
 
-MyString& MyString::Replace( const MyString& inWhat, const MyString& inFor )
+MyString& MyString::replace( const MyString& inWhat, const MyString& inFor )
 {
-    auto inWhatPosition = std::string::find( inWhat.c_str() );
-    if( std::string::npos != inWhatPosition )
+    auto inWhatPosition = MyString::find( inWhat.c_str() );
+    if( MyString::npos != inWhatPosition )
     {
         std::string::replace( inWhatPosition, inWhat.length(), inFor.c_str() );
     }
@@ -109,8 +127,18 @@ const std::string MyString::string()const
     return static_cast<std::string>( *this );
 }
 
-MyString operator+( const MyString& string1, const MyString& string2 )
+MyString operator+( CnstMyStr& string1, CnstMyStr& string2 )
 {
     MyString string( string1.string() + string2.string() );
     return string;
+}
+
+MyString operator+( const char * lhv, CnstMyStr& rhv )
+{
+    return MyString( std::string( lhv ) + rhv.string() );
+}
+
+MyString operator+( const std::string& lhv, CnstMyStr& rhv )
+{
+    return MyString( lhv + rhv.string() );
 }

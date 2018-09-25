@@ -11,17 +11,17 @@ FileRegularImpl::FileRegularImpl()
 }
 
 FileRegularImpl::FileRegularImpl( const FileRegularImpl& file ):
-    path( file.path )
+    m_path( file.m_path )
 {
 }
 
-FileRegularImpl::FileRegularImpl( const std::string& filePath ):
-    path( filePath )
+FileRegularImpl::FileRegularImpl( const Path& filePath ):
+    m_path( filePath )
 {
 
 }
 
-IFile& FileRegularImpl::operator=( const std::string& rPath )
+IFile& FileRegularImpl::operator=( const Path& rPath )
 {
     changePath( rPath );
     return *this;
@@ -29,8 +29,7 @@ IFile& FileRegularImpl::operator=( const std::string& rPath )
 
 void FileRegularImpl::changePath( const Path& newPath )
 {
-    this->path = newPath;
-    reload();
+    this->m_path = newPath;
 }
 
 FileRegularImpl::~FileRegularImpl()
@@ -40,12 +39,12 @@ FileRegularImpl::~FileRegularImpl()
 
 const Path& FileRegularImpl::getPath()const
 {
-    return this->path;
+    return this->m_path;
 }
 
 const bool FileRegularImpl::exists()const
 {
-    return this->path.exists();
+    return this->m_path.exists();
 }
 
 const bool FileRegularImpl::isBinary()const
@@ -53,18 +52,19 @@ const bool FileRegularImpl::isBinary()const
     return true;//TODO: Implement
 }
 
-void FileRegularImpl::reload( const bool keepLineEndingCharacter )
+void FileRegularImpl::reload( CBool keepLineEndingCharacter )
 {
     unload();
     load( keepLineEndingCharacter );
 }
 
-void FileRegularImpl::load( const bool keepLineEndingCharacter )
+void FileRegularImpl::load( CBool keepLineEndingCharacter )
 {
+    this->rows.clear();
     this->m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
     infile.open( 
-        this->path.getPath(), 
+        this->m_path.getPath(), 
         std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
@@ -95,17 +95,17 @@ void FileRegularImpl::unload()
     this->m_cached = "";
 }
 
-const std::string& FileRegularImpl::firstLine()const
+CnstMyStr& FileRegularImpl::firstLine()const
 {
     return this->rows.front();
 }
 
-const std::string& FileRegularImpl::lastLine()const
+CnstMyStr& FileRegularImpl::lastLine()const
 {
     return this->rows.back();
 }
 
-const std::string& FileRegularImpl::getAsOneString()const
+CnstMyStr& FileRegularImpl::getAsOneString()const
 {
     return this->m_cached;
 }

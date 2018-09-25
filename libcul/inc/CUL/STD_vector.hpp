@@ -7,6 +7,7 @@
 #pragma warning( disable: 4571 )
 #pragma warning( disable: 4668 )
 #pragma warning( disable: 4820 )
+#pragma warning( disable: 5045 )
 #endif
 #include <vector>
 #ifdef _MSC_VER

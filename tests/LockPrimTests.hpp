@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/MyString.hpp"
-#include "gtest/gtest.h"
+#include "Gtest.hpp"
 
 class LockPrimTests:
     public ::testing::Test
@@ -10,6 +10,9 @@ protected:
     LockPrimTests()
     {
     }
+
+    LockPrimTests( const LockPrimTests& rhv ) = delete;
+    LockPrimTests& operator=( const LockPrimTests& rhv ) = delete;
 
     virtual ~LockPrimTests()
     {

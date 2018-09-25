@@ -1,20 +1,43 @@
 #include "CUL/FileFactory.hpp"
 #include "FileRegularImpl.hpp"
 #include "CSVFile.hpp"
+#include "JSON/JSONFileConcrete.hpp"
 
 using namespace CUL;
 using namespace FS;
 
-IFilePtr FileFactory::createRegularFile( const Path& path )
+IFile* FileFactory::createRegularFile( const Path& path )
 {
-    auto fr = new FileRegularImpl( path.getPath() );
-    std::shared_ptr<IFile> file( fr );
+    auto file = createRegularFile();
+    file->changePath( path );
     return file;
 }
 
-ICSVFilePtr FileFactory::createCSVFile( const Path& path )
+IFile* FileFactory::createRegularFile()
 {
-    auto csvFile = new CSVFile( path.getPath() );
-    ICSVFilePtr file( csvFile );
-    return file;
+    return  new FileRegularImpl();
+}
+
+ICSVFile* FileFactory::createCSVFile( const Path& path )
+{
+    auto csvFile = createCSVFile();
+    csvFile->changePath( path );
+    return csvFile;
+}
+
+ICSVFile* FileFactory::createCSVFile()
+{
+    return new CSVFile();
+}
+
+JSON::IJSONFile* FileFactory::createJSONFile( const Path& path )
+{
+    auto result = createJSONFile();
+    result->changePath( path );
+    return result;
+}
+
+JSON::IJSONFile* FileFactory::createJSONFile()
+{
+    return new JSON::JSONFileConcrete();
 }

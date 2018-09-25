@@ -1,14 +1,14 @@
 #pragma once
 
 #include <CUL/CUL.hpp>
-#include "CUL/STD_string.hpp"
+#include "CUL/MyString.hpp"
 
 namespace CUL
 {
     class CULLib_API Assert
     {
     public:
-        static void simple( const bool val, const std::string& msg = std::string( "" ) );
+        static void simple( const bool val, CnstMyStr& msg = MyString( "" ) );
     protected:
     private:
     };

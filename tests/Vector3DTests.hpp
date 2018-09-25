@@ -5,6 +5,7 @@
 #pragma warning( push )
 #pragma warning( disable: 4625 )
 #pragma warning( disable: 4626 )
+#pragma warning( disable: 5045 )
 #endif
 class Vector3DTests: public ::testing::Test
 {

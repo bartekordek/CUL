@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -181,6 +181,8 @@
     <ClCompile Include="CSVFileTests.cpp" />
     <ClCompile Include="FilesystemTests.cpp" />
     <ClCompile Include="FileTest.cpp" />
+    <ClCompile Include="JSONTests.cpp" />
+    <ClCompile Include="LockPrimTests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NameTests.cpp" />
     <ClCompile Include="PivotTests.cpp" />
@@ -194,6 +196,8 @@
     <ClInclude Include="FileTest.hpp" />
     <ClInclude Include="Gtest.hpp" />
     <ClInclude Include="IteratorTests.hpp" />
+    <ClInclude Include="JSONTests.hpp" />
+    <ClInclude Include="LockPrimTests.hpp" />
     <ClInclude Include="NameTests.hpp" />
     <ClInclude Include="PivotTests.hpp" />
     <ClInclude Include="StringTest.hpp" />

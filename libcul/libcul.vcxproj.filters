@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -15,6 +15,12 @@
     </Filter>
     <Filter Include="Header Files\Math">
       <UniqueIdentifier>{2f459a17-021d-4c92-95f3-421a1a266f95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\JSON">
+      <UniqueIdentifier>{f07b4290-d409-4436-bdbb-2aa01628839d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\JSON">
+      <UniqueIdentifier>{df4e57d1-8fdd-42d4-b50e-a61d70bbd120}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +128,21 @@
     </ClCompile>
     <ClCompile Include="src\ImageIL.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSON\Object.cpp">
+      <Filter>Source Files\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSON\INode.cpp">
+      <Filter>Source Files\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSON\DataPair.cpp">
+      <Filter>Source Files\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSON\Array.cpp">
+      <Filter>Source Files\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="src\JSON\JSONFileConcrete.cpp">
+      <Filter>Source Files\JSON</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +349,33 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\STD_algorithm.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\JSON\IJSON.hpp">
+      <Filter>Header Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\JSON\INode.hpp">
+      <Filter>Header Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\JSON\Object.hpp">
+      <Filter>Header Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\JSON\DataPair.hpp">
+      <Filter>Header Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\JSON\Array.hpp">
+      <Filter>Header Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\JSON\IJSONFile.hpp">
+      <Filter>Header Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="src\JSON\JSONFileConcrete.hpp">
+      <Filter>Source Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="src\JSON\RapidJSON.hpp">
+      <Filter>Source Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\JSON\IParent.hpp">
+      <Filter>Source Files\JSON</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

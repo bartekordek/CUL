@@ -59,7 +59,7 @@ ImageIL& ImageIL::operator=( const FS::Path& path )
 #endif
 void ImageIL::loadImageFrom( const FS::Path& path )
 {
-    Assert::simple( path.exists(), "Path does not exist: " + path.getPath() );
+    Assert::simple( path.exists(), CnstMyStr( "Path does not exist: " ) + path.getPath() );
 
     ILuint imgID = 0;
     ilGenImages( 1, &imgID );

@@ -4,6 +4,10 @@
 using namespace CUL;
 using namespace FS;
 
+CSVFile::CSVFile( void )
+{
+}
+
 CSVFile::CSVFile( const CSVFile & rhv ):
     m_delimeter( rhv.m_delimeter ),
     m_path( rhv.m_path ),
@@ -14,7 +18,7 @@ CSVFile::CSVFile( const CSVFile & rhv ):
 
 }
 
-CSVFile::CSVFile( CstString& fPath ):
+CSVFile::CSVFile( CnstMyStr& fPath ):
     m_path( fPath )
 {
 
@@ -38,7 +42,7 @@ CSVFile& CSVFile::operator=( const CSVFile& rhv )
     return *this;
 }
 
-CSVFile& CSVFile::operator=( CstString& rPath )
+CSVFile& CSVFile::operator=( CnstMyStr& rPath )
 {
     changePath( rPath );
     return *this;
@@ -65,12 +69,12 @@ cunt CSVFile::colsCount()const
     return static_cast<cunt>( this->m_rows[0].size() );
 }
 
-CstString& CSVFile::getVal( cunt row, cunt col )const
+CnstMyStr& CSVFile::getVal( cunt row, cunt col )const
 {
     return this->m_rows[ row ][ col ];
 }
 
-void CSVFile::setVal( CstString& val, cunt row, cunt col )
+void CSVFile::setVal( CnstMyStr& val, cunt row, cunt col )
 {
     this->m_rows[ row ][ col ] = val;
 }
@@ -85,7 +89,7 @@ const bool CSVFile::isBinary()const
     return false;//TODO
 }
 
-void CSVFile::setDelimeter( CstString& delimeter )
+void CSVFile::setDelimeter( CnstMyStr& delimeter )
 {
     this->m_delimeter = delimeter;
 }
@@ -121,7 +125,7 @@ void CSVFile::load( CBool keepLineEndingCharacter )
     cacheFile();
 }
 
-void CSVFile::parseLine( CstString& line )
+void CSVFile::parseLine( CnstMyStr& line )
 {
     Row inRow;//TODO: there is a problem with parsing.
     auto lineCp = line;//huj
@@ -165,12 +169,12 @@ void CSVFile::unload()
     this->m_rows.clear();
 }
 
-CstString& CSVFile::firstLine()const
+CnstMyStr& CSVFile::firstLine()const
 {
     return this->m_rows.front()[0];
 }
 
-CstString& CSVFile::lastLine()const
+CnstMyStr& CSVFile::lastLine()const
 {
     return this->m_rows.back()[ this->m_rows.size() - 1 ];
 }
@@ -180,7 +184,7 @@ const Path& CSVFile::getPath()const
     return this->m_path;
 }
 
-CstString& CSVFile::getAsOneString()const
+CnstMyStr& CSVFile::getAsOneString()const
 {
     return this->m_cached;
 }

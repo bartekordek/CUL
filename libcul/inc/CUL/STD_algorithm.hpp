@@ -5,6 +5,7 @@
 #pragma warning( disable: 4242 )
 #pragma warning( disable: 4365 )
 #pragma warning( disable: 4514 )
+#pragma warning( disable: 5045 )
 #endif
 #include <algorithm>
 #ifdef _MSC_VER
