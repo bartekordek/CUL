@@ -33,6 +33,7 @@ public:
     void increase() override;
     const double getCurrentFps()const override;
     const double getAverageFps()const override;
+    void setSampleSize( unsigned short sampleSize ) override;
 
 protected:
 private:
@@ -46,8 +47,7 @@ private:
     //creation to separate class, to check if thread was created and is runing.
     std::atomic<unsigned> framesCount = { 0 };
     std::atomic<unsigned> lastFrameValue = { 0 };
-    boost::circular_buffer<unsigned> samples;
-    unsigned int sampleSize = 10;
+    boost::circular_buffer<unsigned> m_samples;
     std::atomic<double> averageFps = { 0.0 };
 };
 

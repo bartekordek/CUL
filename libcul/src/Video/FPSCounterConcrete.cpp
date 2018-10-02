@@ -5,7 +5,7 @@ using namespace Video;
 
 FPSCounterConcrete::FPSCounterConcrete()
 {
-    this->samples.set_capacity( this->bufferSize );
+    this->m_samples.set_capacity( this->bufferSize );
     this->timer.reset( CUL::TimerFactory::getChronoTimer() );
 }
 
@@ -47,13 +47,18 @@ const double FPSCounterConcrete::getAverageFps() const
     return this->averageFps;
 }
 
+void FPSCounterConcrete::setSampleSize( unsigned short sampleSize )
+{
+    this->m_samples.resize( sampleSize );
+}
+
 void FPSCounterConcrete::counterLoop()
 {
     while( this->m_isRunning )
     {
         this->timer->sleepSeconds( 1 );
         this->lastFrameValue.store( this->framesCount );
-        this->samples.push_front( this->lastFrameValue );
+        this->m_samples.push_front( this->lastFrameValue );
         this->averageFps = calculateAverageFps();
         this->framesCount = 0;
     }
@@ -61,19 +66,17 @@ void FPSCounterConcrete::counterLoop()
 
 const double FPSCounterConcrete::calculateAverageFps()const
 {
-    if( 0 == this->samples.size() )
+    if( 0 == this->m_samples.size() )
     {
         return 0.0;
     }
-    auto sampleSizeRealVal = static_cast<unsigned int>( this->samples.size() );
-    double sampleSizeReal = this->sampleSize < sampleSizeRealVal ? this->sampleSize : sampleSizeRealVal;
 
     double sum = 0.0;
-    for( unsigned int i = 0; i < sampleSizeReal; ++i )
+    for( auto sampleVal: this->m_samples )
     {
-        sum += this->samples[i];
+        sum += sampleVal;
     }
 
-    auto result = sum / sampleSizeReal;
+    auto result = sum / m_samples.size();
     return result;
 }
