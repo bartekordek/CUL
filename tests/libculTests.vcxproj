@@ -181,6 +181,7 @@
     <ClCompile Include="CSVFileTests.cpp" />
     <ClCompile Include="FilesystemTests.cpp" />
     <ClCompile Include="FileTest.cpp" />
+    <ClCompile Include="FrameCounterTests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NameTests.cpp" />
     <ClCompile Include="PivotTests.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="CSVFileTests.hpp" />
     <ClInclude Include="FilesystemTests.hpp" />
     <ClInclude Include="FileTest.hpp" />
+    <ClInclude Include="FrameCounterTests.hpp" />
     <ClInclude Include="Gtest.hpp" />
     <ClInclude Include="IteratorTests.hpp" />
     <ClInclude Include="NameTests.hpp" />

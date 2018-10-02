@@ -16,6 +16,12 @@
     <Filter Include="Header Files\Math">
       <UniqueIdentifier>{2f459a17-021d-4c92-95f3-421a1a266f95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Video">
+      <UniqueIdentifier>{c12762d4-c298-4a31-b0c8-cb87c4e0b500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Video">
+      <UniqueIdentifier>{8ad4288b-eef4-4344-aa23-feff27922e67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IFile.cpp">
@@ -122,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="src\ImageIL.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Video\FPSCounterConcrete.cpp">
+      <Filter>Source Files\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Video\IFPSCounter.cpp">
+      <Filter>Source Files\Video</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +340,18 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\STD_algorithm.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Video\IFPSCounter.hpp">
+      <Filter>Header Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Video\FPSCounterConcrete.hpp">
+      <Filter>Source Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\STD_atomic.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoostCircularBuffer.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
