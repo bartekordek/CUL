@@ -15,7 +15,7 @@ namespace CUL
     {
     public:
         MyString();
-        explicit MyString( const char* inputString );
+        MyString( const char* inputString );
         MyString( const MyString& inputString );
         explicit MyString( const std::string& inputString );
         virtual ~MyString();
