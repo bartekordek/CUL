@@ -49,6 +49,7 @@
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
+    <ClCompile Include="src\String\MyStringImpl.cpp" />
     <ClCompile Include="src\Thread.hpp" />
     <ClCompile Include="src\ThreadUtilityDummy.cpp" />
     <ClCompile Include="src\ThreadUtilityWindows.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="src\ImageIL.hpp" />
     <ClInclude Include="src\STD_fstream.hpp" />
     <ClInclude Include="src\STDCodecvt.hpp" />
+    <ClInclude Include="src\String\MyStringImpl.hpp" />
     <ClInclude Include="src\ThreadUtilityDummy.hpp" />
     <ClInclude Include="src\ThreadUtilityWindows.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />

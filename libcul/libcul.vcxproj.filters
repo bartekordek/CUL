@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Video">
       <UniqueIdentifier>{8ad4288b-eef4-4344-aa23-feff27922e67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\String">
+      <UniqueIdentifier>{420fe99b-42e4-4fac-9e6c-4b2f73d0b1c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IFile.cpp">
@@ -134,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="src\Video\IFPSCounter.cpp">
       <Filter>Source Files\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="src\String\MyStringImpl.cpp">
+      <Filter>Source Files\String</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="src\BoostCircularBuffer.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\String\MyStringImpl.hpp">
+      <Filter>Source Files\String</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

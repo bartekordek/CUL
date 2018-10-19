@@ -127,18 +127,15 @@ void CSVFile::parseLine( CstString& line )
     auto lineCp = line;//huj
     auto delimeterPos = line.find( this->m_delimeter );
     std::string cell;
-    size_t cellEnd;
-    size_t cellStart;
-    size_t newCellOffset;
     while( delimeterPos != std::string::npos )
     {
-        cellEnd = m_cellsContainQuotationMarks ?
+        size_t cellEnd = m_cellsContainQuotationMarks ?
             delimeterPos - 2 : delimeterPos;
 
-        cellStart = m_cellsContainQuotationMarks ?
+        size_t cellStart = m_cellsContainQuotationMarks ?
             static_cast<size_t>( 1 ) : static_cast<size_t>(0);
 
-        newCellOffset = m_cellsContainQuotationMarks ?
+        size_t newCellOffset = m_cellsContainQuotationMarks ?
             static_cast<size_t>(3) : static_cast<size_t>(0);
 
         cell = lineCp.substr( cellStart, cellEnd );
