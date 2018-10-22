@@ -18,7 +18,6 @@ FileRegularImpl::FileRegularImpl( const FileRegularImpl& file ):
 FileRegularImpl::FileRegularImpl( const std::string& filePath ):
     path( filePath )
 {
-
 }
 
 IFile& FileRegularImpl::operator=( const std::string& rPath )
@@ -117,8 +116,6 @@ void FileRegularImpl::cacheFile()
     {
         this->m_cached += line;
         this->m_cached += "\n";
-
-        
         this->m_rowsAsChars.push_back( const_cast<char*>( line.c_str() ) );
     }
 }

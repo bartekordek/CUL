@@ -4,55 +4,55 @@
 #include "CUL/Path.hpp"
 #include "CUL/STD_vector.hpp"
 #include "CUL/STD_memory.hpp"
+#include "CUL/UselessMacros.hpp"
 
-namespace CUL
-{
-    namespace FS
-    {
+NAMESPACE_BEGIN( CUL )
+NAMESPACE_BEGIN( FS )
 #ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4820 )
 #endif
-        class FileRegularImpl: public IFile
-        {
-        public:
-            FileRegularImpl();
-            FileRegularImpl( const FileRegularImpl& file );
-            FileRegularImpl( const std::string& path );
-            virtual ~FileRegularImpl();
+class FileRegularImpl:
+    public IFile
+{
+public:
+    FileRegularImpl();
+    FileRegularImpl( const FileRegularImpl& file );
+    FileRegularImpl( const std::string& path );
+    virtual ~FileRegularImpl();
 
-            IFile& operator=( const std::string& rPath );
-            void changePath( const Path& newPath ) override;
+    IFile& operator=( const std::string& rPath );
+    void changePath( const Path& newPath ) override;
 
-            const Path& getPath() const override;
+    const Path& getPath() const override;
 
-            CBool exists()const override;
-            CBool isBinary()const override;
+    CBool exists()const override;
+    CBool isBinary()const override;
 
-            void reload( CBool keepLineEndingCharacter = false ) override;
-            void load( CBool keepLineEndingCharacter = false ) override;
-            void unload() override;
+    void reload( CBool keepLineEndingCharacter = false ) override;
+    void load( CBool keepLineEndingCharacter = false ) override;
+    void unload() override;
 
-            const std::string& firstLine()const override;
-            const std::string& lastLine()const override;
+    const std::string& firstLine()const override;
+    const std::string& lastLine()const override;
 
-            const std::string& getAsOneString()const override;
-            const char** getContent()const override;
+    const std::string& getAsOneString()const override;
+    const char** getContent()const override;
 
-            cunt getLinesCount()const override;
+    cunt getLinesCount()const override;
 
-        protected:
-        private:
-            void cacheFile();
+protected:
+private:
+    void cacheFile();
 
-            Path path;
-            std::vector<std::string> rows;
-            std::vector<char*> m_rowsAsChars;
-            std::string m_cached;
-            bool m_keepLineEndingCharacter = false;
-        };
+    Path path;
+    std::vector<std::string> rows;
+    std::vector<char*> m_rowsAsChars;
+    std::string m_cached;
+    bool m_keepLineEndingCharacter = false;
+};
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-    }
-}
+NAMESPACE_END( FS )
+NAMESPACE_END( CUL )

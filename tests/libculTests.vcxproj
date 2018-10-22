@@ -98,7 +98,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
@@ -119,7 +119,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
@@ -140,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
@@ -163,7 +163,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>

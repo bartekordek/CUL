@@ -1,10 +1,10 @@
-#!/bin/bash -xe
+#!/bin/bash
 ROOT_DIR=..
 #PREPROCESOR=""
 SUPRESS="--suppress=information:SDL_surface.h --suppress=information:gtest/gtest.h"
 SETTINGS="--enable=all --std=c++11 --suppress=missingIncludeSystem $SUPRESS"
-CPP_FILES=`find $ROOT_DIR -name '*.cpp' | tr '\n' ' '`
-HEADERS_LIST=`find $ROOT_DIR -name '*.hpp*'`
+CPP_FILES=`find $ROOT_DIR -path ../deps -prune -o -name '*.cpp' | tr '\n' ' '`
+HEADERS_LIST=`find $ROOT_DIR  -path ../deps -prune -o -name '*.hpp*'`
 HEADERS=$(dirname ${HEADERS_LIST})
 HEADERS=`for i in \`echo $HEADERS\`; do
 	echo $i
