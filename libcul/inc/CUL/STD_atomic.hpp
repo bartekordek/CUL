@@ -5,9 +5,10 @@
 #pragma warning( disable: 4242 )
 #pragma warning( disable: 4365 )
 #pragma warning( disable: 4514 )
-#pragma warning( disable: 5045 )
+#pragma warning( disable: 4820 )
+#pragma warning( disable: 5039 )
 #endif
-#include <algorithm>
+#include <atomic>
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif

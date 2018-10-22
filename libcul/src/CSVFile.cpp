@@ -7,7 +7,6 @@ using namespace FS;
 CSVFile::CSVFile( void )
 {
 }
-
 CSVFile::CSVFile( const CSVFile & rhv ):
     m_delimeter( rhv.m_delimeter ),
     m_path( rhv.m_path ),
@@ -105,7 +104,7 @@ void CSVFile::load( CBool keepLineEndingCharacter )
     this->m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
     infile.open(
-        this->m_path.getPath(),
+        this->m_path.getPath().cStr(),
         std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
@@ -129,35 +128,32 @@ void CSVFile::parseLine( CnstMyStr& line )
 {
     Row inRow;//TODO: there is a problem with parsing.
     auto lineCp = line;//huj
-    auto delimeterPos = line.find( this->m_delimeter );
+    auto delimeterPos = line.string().find( this->m_delimeter.string() );
     std::string cell;
-    size_t cellEnd;
-    size_t cellStart;
-    size_t newCellOffset;
     while( delimeterPos != std::string::npos )
     {
-        cellEnd = m_cellsContainQuotationMarks ?
+        size_t cellEnd = m_cellsContainQuotationMarks ?
             delimeterPos - 2 : delimeterPos;
 
-        cellStart = m_cellsContainQuotationMarks ?
+        size_t cellStart = m_cellsContainQuotationMarks ?
             static_cast<size_t>( 1 ) : static_cast<size_t>(0);
 
-        newCellOffset = m_cellsContainQuotationMarks ?
+        size_t newCellOffset = m_cellsContainQuotationMarks ?
             static_cast<size_t>(3) : static_cast<size_t>(0);
 
-        cell = lineCp.substr( cellStart, cellEnd );
+        cell = lineCp.string().substr( cellStart, cellEnd );
         inRow.push_back( cell );
-        lineCp = lineCp.substr( cellEnd + newCellOffset );
-        delimeterPos = lineCp.find( this->m_delimeter );
+        lineCp = lineCp.string().substr( cellEnd + newCellOffset );
+        delimeterPos = lineCp.string().find( this->m_delimeter.string() );
     }
 
     if( m_cellsContainQuotationMarks )
     {
-        cell = lineCp.substr( 1, lineCp.size() - 2 );
+        cell = lineCp.string().substr( 1, lineCp.string().size() - 2 );
     }
     else
     {
-        cell = lineCp.substr( 0, lineCp.size() );
+        cell = lineCp.string().substr( 0, lineCp.string().size() );
     }
     inRow.push_back( cell );
 
@@ -194,7 +190,7 @@ void CSVFile::cacheFile()
     this->m_cached = "";
     for( const auto& row : this->m_rows )
     {
-        std::string line;
+        MyString line;
         for( const auto& cell: row )
         {
             line += cell;

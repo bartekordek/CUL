@@ -35,8 +35,5 @@ tests/libculTests/dist
 tests/libculTests/nbproject/Makefile-*
 tests/libculTests/nbproject/Package*
 /libcul/libcul/nbproject/Package*
-.vs/*
-<<<<<<< HEAD
+.vs
 intermediate
-=======
->>>>>>> 75e538c... WIP

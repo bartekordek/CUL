@@ -54,11 +54,14 @@
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
+    <ClCompile Include="src\String\MyStringImpl.cpp" />
     <ClCompile Include="src\Thread.hpp" />
     <ClCompile Include="src\ThreadUtilityDummy.cpp" />
     <ClCompile Include="src\ThreadUtilityWindows.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
+    <ClCompile Include="src\Video\FPSCounterConcrete.cpp" />
+    <ClCompile Include="src\Video\IFPSCounter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\CUL\JSON\Array.hpp" />
@@ -68,6 +71,8 @@
     <ClInclude Include="inc\CUL\JSON\INode.hpp" />
     <ClInclude Include="inc\CUL\JSON\Object.hpp" />
     <ClInclude Include="inc\CUL\JSON\IParent.hpp" />
+    <ClInclude Include="inc\CUL\List\IList.hpp" />
+    <ClInclude Include="inc\CUL\Network\IHttpRequest.hpp" />
     <ClInclude Include="inc\CUL\STD_algorithm.hpp" />
     <ClInclude Include="inc\CUL\FileFactory.hpp" />
     <ClInclude Include="inc\CUL\IArgumentsPair.hpp" />
@@ -109,6 +114,7 @@
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Path.hpp" />
     <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
+    <ClInclude Include="inc\CUL\STD_atomic.hpp" />
     <ClInclude Include="inc\CUL\STD_cmath.hpp" />
     <ClInclude Include="inc\CUL\STD_cstdint.hpp" />
     <ClInclude Include="inc\CUL\STD_cstring.hpp" />
@@ -125,7 +131,9 @@
     <ClInclude Include="inc\CUL\STD_vector.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
     <ClInclude Include="inc\CUL\UselessMacros.hpp" />
+    <ClInclude Include="inc\CUL\Video\IFPSCounter.hpp" />
     <ClInclude Include="src\ArgumentsPairConcrete.hpp" />
+    <ClInclude Include="src\BoostCircularBuffer.hpp" />
     <ClInclude Include="src\BoostFilesystem.hpp" />
     <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
@@ -134,10 +142,12 @@
     <ClInclude Include="src\JSON\RapidJSON.hpp" />
     <ClInclude Include="src\STD_fstream.hpp" />
     <ClInclude Include="src\STDCodecvt.hpp" />
+    <ClInclude Include="src\String\MyStringImpl.hpp" />
     <ClInclude Include="src\ThreadUtilityDummy.hpp" />
     <ClInclude Include="src\ThreadUtilityWindows.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />
+    <ClInclude Include="src\Video\FPSCounterConcrete.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.git\config" />

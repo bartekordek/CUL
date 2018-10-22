@@ -4,11 +4,10 @@
 #include "CUL/Path.hpp"
 #include "CUL/STD_vector.hpp"
 #include "CUL/STD_memory.hpp"
+#include "CUL/UselessMacros.hpp"
 
-namespace CUL
-{
-    namespace FS
-    {
+NAMESPACE_BEGIN( CUL )
+NAMESPACE_BEGIN( FS )
 #ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4820 )
@@ -54,5 +53,5 @@ namespace CUL
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-    }
-}
+NAMESPACE_END( FS )
+NAMESPACE_END( CUL )

@@ -22,6 +22,21 @@
     <Filter Include="Source Files\JSON">
       <UniqueIdentifier>{df4e57d1-8fdd-42d4-b50e-a61d70bbd120}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\String">
+      <UniqueIdentifier>{420fe99b-42e4-4fac-9e6c-4b2f73d0b1c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Video">
+      <UniqueIdentifier>{0312cd81-90dc-4b39-8d0d-dd3a58987c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Video">
+      <UniqueIdentifier>{41b35e6b-4202-41f5-bbba-407c169e35b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Network">
+      <UniqueIdentifier>{4b6d07b0-cb6c-405e-bf44-7136164ed8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\List">
+      <UniqueIdentifier>{750a461e-806f-481b-aeeb-d58aa4d9b669}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\IFile.cpp">
@@ -143,6 +158,15 @@
     </ClCompile>
     <ClCompile Include="src\JSON\JSONFileConcrete.cpp">
       <Filter>Source Files\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="src\String\MyStringImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Video\FPSCounterConcrete.cpp">
+      <Filter>Source Files\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Video\IFPSCounter.cpp">
+      <Filter>Source Files\Video</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +400,27 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\JSON\IParent.hpp">
       <Filter>Source Files\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\STD_atomic.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BoostCircularBuffer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\String\MyStringImpl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Video\IFPSCounter.hpp">
+      <Filter>Header Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Video\FPSCounterConcrete.hpp">
+      <Filter>Source Files\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Network\IHttpRequest.hpp">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\List\IList.hpp">
+      <Filter>Header Files\List</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

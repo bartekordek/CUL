@@ -12,10 +12,8 @@ NAMESPACE_BEGIN( FS )
 #pragma warning( push )
 #pragma warning( disable: 4820 )
 #endif
-
 using Row = std::vector<MyString>;
 using Rows = std::vector<Row>;
-
 class CSVFile final:
     public ICSVFile
 {

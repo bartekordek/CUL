@@ -92,7 +92,7 @@ INode* JSONFileConcrete::getRoot() const
 
 void JSONFileConcrete::parse()
 {
-    auto documentContents = this->m_fileContents->getAsOneString().c_str();
+    auto documentContents = this->m_fileContents->getAsOneString().cStr();
     m_document.Parse( documentContents );
     auto errorCode = m_document.GetParseError();
     if( rapidjson::ParseErrorCode::kParseErrorNone != errorCode )

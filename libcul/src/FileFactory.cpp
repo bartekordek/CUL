@@ -3,8 +3,11 @@
 #include "CSVFile.hpp"
 #include "JSON/JSONFileConcrete.hpp"
 
-using namespace CUL;
-using namespace FS;
+using IFile = CUL::FS::IFile;
+using Path = CUL::FS::Path;
+using FileFactory = CUL::FS::FileFactory;
+using ICSVFile = CUL::FS::ICSVFile;
+using IJSONFile = CUL::JSON::IJSONFile;
 
 IFile* FileFactory::createRegularFile( const Path& path )
 {
@@ -30,14 +33,14 @@ ICSVFile* FileFactory::createCSVFile()
     return new CSVFile();
 }
 
-JSON::IJSONFile* FileFactory::createJSONFile( const Path& path )
+IJSONFile* FileFactory::createJSONFile( const Path& path )
 {
     auto result = createJSONFile();
     result->changePath( path );
     return result;
 }
 
-JSON::IJSONFile* FileFactory::createJSONFile()
+IJSONFile* FileFactory::createJSONFile()
 {
     return new JSON::JSONFileConcrete();
 }

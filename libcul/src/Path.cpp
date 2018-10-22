@@ -105,7 +105,7 @@ CnstMyStr& Path::getDir()const
 
 void Path::preparePaths()
 {
-    boost::filesystem::path bPath( this->fullPath.c_str() );
+    boost::filesystem::path bPath( this->fullPath.cStr() );
 #if defined CUL_WINDOWS
     this->baseName = ws2s( bPath.stem().c_str() );
     this->extension = ws2s( bPath.extension().c_str() );
@@ -127,7 +127,7 @@ MyString ws2s( const std::wstring& wstr )
 
 const bool Path::exists() const
 {
-    const bool result = boost::filesystem::is_regular_file( this->fullPath.c_str() );
+    const bool result = boost::filesystem::is_regular_file( this->fullPath.cStr() );
     return result;
 }
 /*
@@ -141,4 +141,5 @@ Path operator+( const Path& l, const Path& r )
 {
     Path result( l.getPath() + r.getPath() );
     return result;
-}*/
+}
+*/

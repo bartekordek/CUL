@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 15 for Windows Desktop
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libculTests", "tests\libculTests.vcxproj", "{6B7FF520-98CF-4132-813C-0F205C22152F}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -39,6 +39,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {28A71E22-B121-4886-AF9C-D02BFF70CBF0}
+		SolutionGuid = {C7D52CAC-911B-47DF-BA76-91AF52BDCCA5}
 	EndGlobalSection
 EndGlobal

@@ -33,9 +33,10 @@ BOOST_LIB := $(HOME_BOOST)/$(BUILD_ROOT)
 BOOST_IMP_LIB := $(BOOST_LIB)/libboost_filesystem-gcc54-mt-x64-1_66.a $(BOOST_LIB)/libboost_system-gcc54-mt-x64-1_66.a
 DEVIL_HOME := $(HOME_DEPS)/DevIL
 DEVIL_INC := $(DEVIL_HOME)/include
-DEVIL_LIB := $(DEVIL_HOME)/Build-Linux/x64/libIL.so
-DEVIL_LIB += $(DEVIL_HOME)/Build-Linux/x64/libILU.so
-DEVIL_LIB += $(DEVIL_HOME)/Build-Linux/x64/libILUT.so
+DEVIL_LIB_PATH := $(DEVIL_HOME)/Build-Linux/x$(ARCH)
+DEVIL_LIB := $(DEVIL_LIB_PATH)/libIL.so
+DEVIL_LIB += $(DEVIL_LIB_PATH)/libILU.so
+DEVIL_LIB += $(DEVIL_LIB_PATH)/libILUT.so
 
 HEADER_INC = -I inc -I $(HOME_BOOST) -I $(DEVIL_INC)
 IMPORT_LIBS_DEBUG = $(BOOST_IMP_LIB) $(DEVIL_LIB)

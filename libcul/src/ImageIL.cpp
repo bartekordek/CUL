@@ -64,7 +64,7 @@ void ImageIL::loadImageFrom( const FS::Path& path )
     ILuint imgID = 0;
     ilGenImages( 1, &imgID );
     ilBindImage( imgID );
-    ILboolean success = ilLoadImage( path.getPath().c_str() );
+    ILboolean success = ilLoadImage( path.getPath().cStr() );
     Assert::simple( success, "Unable to load: " + path.getPath() );
     success = ilConvertImage( IL_RGBA, IL_UNSIGNED_BYTE );
     Assert::simple( success, "Unable to convert: " + path.getPath() );

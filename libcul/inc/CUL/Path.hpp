@@ -1,6 +1,6 @@
 #pragma once
 #include "CUL/CUL.hpp"
-#include "MyString.hpp"
+#include "CUL/MyString.hpp"
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4251)

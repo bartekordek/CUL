@@ -15,75 +15,75 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3DTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FileTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NameTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StringTests.cpp">
+    <ClCompile Include="CSVFileTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FilesystemTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimeTests.cpp">
+    <ClCompile Include="FileTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PivotTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVFileTests.cpp">
+    <ClCompile Include="FrameCounterTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JSONTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LockPrimTests.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NameTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PivotTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3DTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IteratorTests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3DTests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileTest.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NameTests.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringTest.hpp">
+    <ClInclude Include="CSVFileTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FilesystemTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimeTests.hpp">
+    <ClInclude Include="FileTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PivotTests.hpp">
+    <ClInclude Include="FrameCounterTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Gtest.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVFileTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JSONTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LockPrimTests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NameTests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PivotTests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringTest.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeTests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3DTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,93 +1,204 @@
 #include "CUL/MyString.hpp"
+#include "String/MyStringImpl.hpp"
 #include "CUL/STD_algorithm.hpp"
 
 using namespace CUL;
 
-MyString::MyString(): std::string( "" )
+MyString::MyString():
+    m_impl( new MyStringImpl() )
 {
 }
 
-MyString::MyString( const char* inputString ):std::string( inputString )
+MyString::MyString( const char* inputString ) :
+    m_impl( new MyStringImpl( inputString ) )
 {
 }
 
-MyString::MyString( const MyString& inputString ):std::string( inputString )
+MyString::MyString( const MyString& inputString ):
+    m_impl( new MyStringImpl( *inputString.m_impl ) )
 {
 }
 
-MyString::MyString( const std::string& inputString ):std::string( inputString )
+MyString::MyString( const std::string& inputString ):
+    m_impl( new MyStringImpl( inputString ) )
+{
+}
+
+MyString::MyString( const double val ):
+    m_impl( new MyStringImpl( val ) )
+{
+}
+
+MyString::MyString( const float val ):
+    m_impl( new MyStringImpl( val ) )
+{
+}
+
+MyString::MyString( const bool val ):
+    m_impl( new MyStringImpl( val ) )
+{
+}
+
+MyString::MyString( const int val ):
+    m_impl( new MyStringImpl( val ) )
+{
+}
+
+MyString::MyString( const unsigned val ):
+    m_impl( new MyStringImpl( val ) )
 {
 }
 
 MyString::~MyString()
 {
+    delete this->m_impl;
+    this->m_impl = nullptr;
 }
 
 MyString& MyString::operator=( const char* someString )
 {
-    if( 0 != std::string::compare( someString ) )
-    {
-        std::string::operator=( someString );
-    }
+    *this->m_impl = someString;
     return *this;
 }
 
-MyString& MyString::operator=( const std::string& someString )
+MyString & MyString::operator=( const std::string & someString )
 {
-    std::string::operator=( someString );
+    *this->m_impl = someString;
     return *this;
 }
 
 MyString& MyString::operator=( const MyString& someString )
 {
-    if( &someString != this )
-    {
-        std::string::operator=( someString );
-    }
+    *this->m_impl = *someString.m_impl;
     return *this;
 }
 
-MyString& MyString::operator+=( const char * someString )
+MyString& MyString::operator=( const double val )
 {
-    std::string::operator+=( someString );
+    *this->m_impl = val;
     return *this;
 }
 
-MyString & MyString::operator+=( const std::string & someString )
+MyString& MyString::operator=( const float val )
 {
-    std::string::operator+=( someString );
+    *this->m_impl = val;
     return *this;
 }
 
-const bool MyString::contains( const MyString& inputString )const
+MyString& MyString::operator=( const bool val )
 {
-    return contains( inputString.c_str() );
-}
-
-const bool MyString::contains( const char* inputString )const
-{
-    if( MyString::npos == MyString::find( inputString ) )
-    {
-        return false;
-    }
-    return true;
-}
-
-MyString& MyString::replace( const MyString& inWhat, const MyString& inFor )
-{
-    auto inWhatPosition = MyString::find( inWhat.c_str() );
-    if( MyString::npos != inWhatPosition )
-    {
-        std::string::replace( inWhatPosition, inWhat.length(), inFor.c_str() );
-    }
+    *this->m_impl = val;
     return *this;
 }
 
-const std::string MyString::toLower()const
+MyString& MyString::operator=( const int val )
 {
-    std::string result = static_cast<std::string>( *this );
-    toLowerS( result );
+    *this->m_impl = val;
+    return *this;
+}
+
+MyString& MyString::operator=( const unsigned val )
+{
+    *this->m_impl = val;
+    return *this;
+}
+
+MyString MyString::operator+( const MyString & rhv )
+{
+    MyString result = *this;
+    *result.m_impl += *rhv.m_impl;
     return result;
+}
+
+MyString& MyString::operator+=( const MyString & rhv )
+{
+    *this->m_impl += *rhv.m_impl;
+    return *this;
+}
+
+const bool MyString::operator!=( const char * rhv ) const
+{
+    return !this->operator==( rhv );
+}
+
+const bool MyString::operator!=( const std::string & rhv ) const
+{
+    return !this->operator==( rhv );
+}
+
+const bool MyString::operator!=( const MyString & rhv ) const
+{
+    return !this->operator==( rhv );
+}
+
+const bool MyString::operator==( const char * rhv ) const
+{
+    return *this->m_impl == rhv;
+}
+
+const bool MyString::operator==( const std::string & rhv ) const
+{
+    return *this->m_impl == rhv;
+}
+
+const bool MyString::operator==( const MyString& rhv ) const
+{
+    return *this->m_impl == *rhv.m_impl;
+}
+
+void MyString::toLower( void )
+{
+    this->m_impl->toLower();
+}
+
+void MyString::toUpper( void )
+{
+    this->m_impl->toUpper();
+}
+
+const bool MyString::contains( const MyString& inputString ) const
+{
+    return this->m_impl->contains( inputString );
+}
+
+const bool MyString::contains( const char* inputString ) const
+{
+    return this->m_impl->contains( inputString );
+}
+
+void MyString::replace( const MyString& inWhat, const MyString& inFor )
+{
+    this->m_impl->replace( inWhat, inFor );
+}
+
+CnstStr& MyString::string() const
+{
+    return this->m_impl->string();
+}
+
+std::string& MyString::string()
+{
+    return this->m_impl->string();
+}
+
+const char* MyString::cStr()const
+{
+    return this->m_impl->cStr();
+}
+
+const Length MyString::length( void ) const
+{
+    return this->m_impl->length();
+}
+
+const Length MyString::Capacity( void ) const
+{
+    return this->m_impl->capacity();
+}
+
+void MyString::clear( void )
+{
+    this->m_impl->clear();
 }
 
 void MyString::toLowerS( std::string& inOutString )
@@ -122,23 +233,13 @@ void MyString::toUpperS( std::string& inOutString )
 #endif
 }
 
-const std::string MyString::string()const
+CnstMyStr CULLib_API CUL::operator+( CnstMyStr& lhv, CnstMyStr rhv )
 {
-    return static_cast<std::string>( *this );
+    CnstMyStr result( lhv.string() + rhv.string() );
+    return result;
 }
 
-MyString operator+( CnstMyStr& string1, CnstMyStr& string2 )
+const bool CUL::operator==( const char* lhv, const CUL::MyString& rhv )
 {
-    MyString string( string1.string() + string2.string() );
-    return string;
-}
-
-MyString operator+( const char * lhv, CnstMyStr& rhv )
-{
-    return MyString( std::string( lhv ) + rhv.string() );
-}
-
-MyString operator+( const std::string& lhv, CnstMyStr& rhv )
-{
-    return MyString( lhv + rhv.string() );
+    return rhv == lhv;
 }

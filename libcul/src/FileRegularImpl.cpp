@@ -64,7 +64,7 @@ void FileRegularImpl::load( CBool keepLineEndingCharacter )
     this->m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
     infile.open( 
-        this->m_path.getPath(), 
+        this->m_path.getPath().cStr(), 
         std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
@@ -117,9 +117,7 @@ void FileRegularImpl::cacheFile()
     {
         this->m_cached += line;
         this->m_cached += "\n";
-
-        
-        this->m_rowsAsChars.push_back( const_cast<char*>( line.c_str() ) );
+        this->m_rowsAsChars.push_back( const_cast<char*>( line.cStr() ) );
     }
 }
 
