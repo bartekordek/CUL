@@ -1,11 +1,10 @@
+#include "CUL/IFile.hpp"
 #include "CUL/JSON/IJSONFile.hpp"
 #include "CUL/JSON/Object.hpp"
 #include "RapidJSON.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( JSON )
-
-class FS::IFile;
 
 using JValue = rapidjson::Value;
 
