@@ -7,6 +7,11 @@ Array::Array( void )
 {
 }
 
+Array::Array( CnstMyStr& name ):
+    INode( name )
+{
+}
+
 Array::~Array( void )
 {
 }
@@ -33,7 +38,7 @@ INode* Array::getValue( CnstMyStr& valName )
     return nullptr;
 }
 
-const ChildrenNodes& Array::getAllValues()
+const ChildrenNodes& Array::getAllValues()const
 {
     return INode::getChildren();
 }

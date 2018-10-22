@@ -11,12 +11,13 @@ class CULLib_API Array final:
 {
 public:
     Array( void );
+    Array( CnstMyStr& name );
     ~Array( void );
 
     const ElementType getType()const override;
     void addValue( INode* node );
     INode* getValue( CnstMyStr& valName );
-    const ChildrenNodes& getAllValues();
+    const ChildrenNodes& getAllValues()const;
 
 protected:
 private:

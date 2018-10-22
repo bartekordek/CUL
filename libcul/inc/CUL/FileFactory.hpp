@@ -15,13 +15,13 @@ using IJSONFilePtr = std::shared_ptr<JSON::IJSONFile>;
 class CULLib_API FileFactory
 {
 public:
-    static IFile* createRegularFile();
-    static ICSVFile* createCSVFile();
-    static JSON::IJSONFile* createJSONFile();
+    static IFile* createRegularFileRawPtr();
+    static ICSVFile* createCSVFileRawPtr();
+    static JSON::IJSONFile* createJSONFileRawPtr();
 
-    static IFile* createRegularFile( const Path& path );
-    static ICSVFile* createCSVFile( const Path& path );
-    static JSON::IJSONFile* createJSONFile( const Path& path );
+    static IFile* createRegularFileRawPtr( const Path& path );
+    static ICSVFile* createCSVFileRawPtr( const Path& path );
+    static JSON::IJSONFile* createJSONFileRawPtr( const Path& path );
 protected:
 private:
 };

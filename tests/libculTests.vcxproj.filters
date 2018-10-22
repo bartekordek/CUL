@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="TestFiles">
+      <UniqueIdentifier>{5cd4fb04-48db-4b60-bfbd-7a0b4bd555d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CSVFileTests.cpp">
@@ -86,5 +89,20 @@
     <ClInclude Include="Vector3DTests.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\runTestsDir\Info.txt">
+      <Filter>TestFiles</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\runTestsDir\test.json">
+      <Filter>TestFiles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\runTestsDir\test_detail.xml">
+      <Filter>TestFiles</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

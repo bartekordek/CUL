@@ -60,7 +60,7 @@ public:
 
     virtual const char* cStr( void )const;
     virtual const Length length( void ) const;
-    virtual const Length Capacity( void ) const;
+    virtual const Length capacity( void ) const;
     void clear( void );
 
     static void toLowerS( std::string& inOutString );

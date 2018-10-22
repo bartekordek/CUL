@@ -8,7 +8,7 @@ using namespace CUL;
 using namespace JSON;
 
 JSONFileConcrete::JSONFileConcrete( void ):
-    m_fileContents( FS::FileFactory::createRegularFile() )
+    m_fileContents( FS::FileFactory::createRegularFileRawPtr() )
 {
 }
 
@@ -119,7 +119,7 @@ void JSONFileConcrete::parse( CnstMyStr& valueName, const JValue& parentValue, I
     }
     else if( parentValue.IsArray() )
     {
-        auto array = new Array();
+        auto array = new Array( valueName );
         for( auto& element : parentValue.GetArray() )
         {
             parse( "", element, array );

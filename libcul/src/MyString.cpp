@@ -2,7 +2,9 @@
 #include "String/MyStringImpl.hpp"
 #include "CUL/STD_algorithm.hpp"
 
-using namespace CUL;
+using MyString = CUL::MyString;
+using Length = CUL::Length;
+using CnstMyStr = CUL::CnstMyStr;
 
 MyString::MyString():
     m_impl( new MyStringImpl() )
@@ -191,7 +193,7 @@ const Length MyString::length( void ) const
     return this->m_impl->length();
 }
 
-const Length MyString::Capacity( void ) const
+const Length MyString::capacity( void ) const
 {
     return this->m_impl->capacity();
 }
@@ -233,7 +235,7 @@ void MyString::toUpperS( std::string& inOutString )
 #endif
 }
 
-CnstMyStr CULLib_API CUL::operator+( CnstMyStr& lhv, CnstMyStr rhv )
+CnstMyStr CUL::operator+( CnstMyStr& lhv, CnstMyStr rhv )
 {
     CnstMyStr result( lhv.string() + rhv.string() );
     return result;

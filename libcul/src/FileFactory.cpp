@@ -9,38 +9,38 @@ using FileFactory = CUL::FS::FileFactory;
 using ICSVFile = CUL::FS::ICSVFile;
 using IJSONFile = CUL::JSON::IJSONFile;
 
-IFile* FileFactory::createRegularFile( const Path& path )
+IFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
-    auto file = createRegularFile();
+    auto file = createRegularFileRawPtr();
     file->changePath( path );
     return file;
 }
 
-IFile* FileFactory::createRegularFile()
+IFile* FileFactory::createRegularFileRawPtr()
 {
     return  new FileRegularImpl();
 }
 
-ICSVFile* FileFactory::createCSVFile( const Path& path )
+ICSVFile* FileFactory::createCSVFileRawPtr( const Path& path )
 {
-    auto csvFile = createCSVFile();
+    auto csvFile = createCSVFileRawPtr();
     csvFile->changePath( path );
     return csvFile;
 }
 
-ICSVFile* FileFactory::createCSVFile()
+ICSVFile* FileFactory::createCSVFileRawPtr()
 {
     return new CSVFile();
 }
 
-IJSONFile* FileFactory::createJSONFile( const Path& path )
+IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
 {
-    auto result = createJSONFile();
+    auto result = createJSONFileRawPtr();
     result->changePath( path );
     return result;
 }
 
-IJSONFile* FileFactory::createJSONFile()
+IJSONFile* FileFactory::createJSONFileRawPtr()
 {
     return new JSON::JSONFileConcrete();
 }

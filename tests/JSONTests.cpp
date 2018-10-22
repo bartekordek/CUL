@@ -113,16 +113,74 @@ TEST_F( JSONTests, arrayFindValueCorrectness )
 
 TEST_F( JSONTests, fileLoadTest )
 {
-    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFile( jsonTestFileName ) );
+    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
     GTEST_ASSERT_EQ( true, jsonFilePtr->exists() );
     jsonFilePtr->load();
 }
 
 TEST_F( JSONTests, getRootElement )
 {
-    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFile( jsonTestFileName ) );
+    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
     GTEST_ASSERT_EQ( "root", rootElement->getName() );
+}
+
+TEST_F( JSONTests, findProperty )
+{
+    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    jsonFilePtr->load();
+    auto rootElement = jsonFilePtr->getRoot();
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
+    GTEST_ASSERT_EQ( "root", rootElement->getName() );
+
+    auto age = rootElement->getChild( "age" );
+    GTEST_ASSERT_NE( nullptr, age );
+
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::VALUE, age->getType() );
+    auto dp = static_cast< const CUL::JSON::DataPair* >( age );
+    GTEST_ASSERT_EQ( "99", dp->getVal() );
+}
+
+TEST_F( JSONTests, arraySize )
+{
+    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    jsonFilePtr->load();
+    auto rootElement = jsonFilePtr->getRoot();
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
+    GTEST_ASSERT_EQ( "root", rootElement->getName() );
+
+    auto messages = rootElement->getChild( "messages" );
+    GTEST_ASSERT_NE( nullptr, messages );
+
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
+    auto array = static_cast< const CUL::JSON::Array* >( messages );
+    GTEST_ASSERT_EQ( 3, array->getAllValues().size() );
+}
+
+TEST_F( JSONTests, arrayCorrectness )
+{
+    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    jsonFilePtr->load();
+    auto rootElement = jsonFilePtr->getRoot();
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
+    GTEST_ASSERT_EQ( "root", rootElement->getName() );
+
+    auto messages = rootElement->getChild( "messages" );
+    GTEST_ASSERT_NE( nullptr, messages );
+
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
+    auto array = static_cast< const CUL::JSON::Array* >( messages );
+    GTEST_ASSERT_EQ( 3, array->getAllValues().size() );
+
+    unsigned int i = 1;
+    for( const auto& msg: array->getChildren() )
+    {
+        GTEST_ASSERT_EQ( CUL::JSON::ElementType::VALUE, msg->getType() );
+        auto dp = static_cast< const CUL::JSON::DataPair* >( msg );
+        auto testVal = CUL::MyString( "msg " ) + i++;
+        auto& actualVal = dp->getVal();
+        GTEST_ASSERT_EQ( testVal, actualVal );
+    }
 }

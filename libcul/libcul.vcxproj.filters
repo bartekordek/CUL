@@ -407,9 +407,6 @@
     <ClInclude Include="src\BoostCircularBuffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\String\MyStringImpl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Video\IFPSCounter.hpp">
       <Filter>Header Files\Video</Filter>
     </ClInclude>
@@ -421,6 +418,9 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\List\IList.hpp">
       <Filter>Header Files\List</Filter>
+    </ClInclude>
+    <ClInclude Include="src\String\MyStringImpl.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
