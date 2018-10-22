@@ -73,7 +73,7 @@ private:
 
 using CnstMyStr = const MyString;
 
-CnstMyStr CULLib_API operator+( CnstMyStr& lhv, CnstMyStr rhv );
+CnstMyStr CULLib_API operator+( CnstMyStr& lhv, CnstMyStr& rhv );
 const bool CULLib_API operator==( const char* lhv, const CUL::MyString& rhv );
 
 NAMESPACE_END( CUL )

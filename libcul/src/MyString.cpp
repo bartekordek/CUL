@@ -235,7 +235,7 @@ void MyString::toUpperS( std::string& inOutString )
 #endif
 }
 
-CnstMyStr CUL::operator+( CnstMyStr& lhv, CnstMyStr rhv )
+CnstMyStr CUL::operator+( CnstMyStr& lhv, CnstMyStr& rhv )
 {
     CnstMyStr result( lhv.string() + rhv.string() );
     return result;
