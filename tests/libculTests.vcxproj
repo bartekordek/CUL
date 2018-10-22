@@ -18,6 +18,42 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CSVFileTests.cpp" />
+    <ClCompile Include="FilesystemTests.cpp" />
+    <ClCompile Include="FileTest.cpp" />
+    <ClCompile Include="FrameCounterTests.cpp" />
+    <ClCompile Include="JSONTests.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="NameTests.cpp" />
+    <ClCompile Include="PivotTests.cpp" />
+    <ClCompile Include="StringTests.cpp" />
+    <ClCompile Include="TimeTests.cpp" />
+    <ClCompile Include="Vector3DTests.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CSVFileTests.hpp" />
+    <ClInclude Include="FilesystemTests.hpp" />
+    <ClInclude Include="FileTest.hpp" />
+    <ClInclude Include="FrameCounterTests.hpp" />
+    <ClInclude Include="Gtest.hpp" />
+    <ClInclude Include="JSONTests.hpp" />
+    <ClInclude Include="LockPrimTests.hpp" />
+    <ClInclude Include="NameTests.hpp" />
+    <ClInclude Include="PivotTests.hpp" />
+    <ClInclude Include="StringTest.hpp" />
+    <ClInclude Include="TimeTests.hpp" />
+    <ClInclude Include="Vector3DTests.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\runTestsDir\Info.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\runTestsDir\test.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\runTestsDir\test_detail.xml" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6b7ff520-98cf-4132-813c-0f205c22152f}</ProjectGuid>
     <RootNamespace>Tests</RootNamespace>
@@ -98,7 +134,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
@@ -119,7 +155,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir)..\deps\gtest\googletest\include;$(ProjectDir)..\libcul\inc</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUL_EXPORT;_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
     </ClCompile>
@@ -177,31 +213,6 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="CSVFileTests.cpp" />
-    <ClCompile Include="FilesystemTests.cpp" />
-    <ClCompile Include="FileTest.cpp" />
-    <ClCompile Include="FrameCounterTests.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="NameTests.cpp" />
-    <ClCompile Include="PivotTests.cpp" />
-    <ClCompile Include="StringTests.cpp" />
-    <ClCompile Include="TimeTests.cpp" />
-    <ClCompile Include="Vector3DTests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CSVFileTests.hpp" />
-    <ClInclude Include="FilesystemTests.hpp" />
-    <ClInclude Include="FileTest.hpp" />
-    <ClInclude Include="FrameCounterTests.hpp" />
-    <ClInclude Include="Gtest.hpp" />
-    <ClInclude Include="IteratorTests.hpp" />
-    <ClInclude Include="NameTests.hpp" />
-    <ClInclude Include="PivotTests.hpp" />
-    <ClInclude Include="StringTest.hpp" />
-    <ClInclude Include="TimeTests.hpp" />
-    <ClInclude Include="Vector3DTests.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

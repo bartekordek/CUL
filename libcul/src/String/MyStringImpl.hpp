@@ -27,6 +27,9 @@ public:
     MyStringImpl& operator=( const int val );
     MyStringImpl& operator=( const unsigned val );
 
+    MyStringImpl operator+( const MyStringImpl& rhv );
+    MyStringImpl& operator+=( const MyStringImpl& rhv );
+
     const bool operator==( const char* rhv ) const;
     const bool operator==( const std::string& rhv ) const;
     const bool operator==( const MyStringImpl& rhv ) const;
@@ -38,7 +41,7 @@ public:
     void replace( const MyString & inWhat, const MyString & inFor );
     CnstStr& string( void ) const;
     std::string& string( void );
-    const char* cStr( void );
+    const char* cStr( void )const;
     const Length length( void ) const;
     const Length capacity( void ) const;
     void clear( void );

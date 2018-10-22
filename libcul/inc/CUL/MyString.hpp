@@ -10,7 +10,6 @@
 #endif
 
 NAMESPACE_BEGIN( CUL )
-
 using Length = unsigned int;
 
 class MyStringImpl;
@@ -37,6 +36,13 @@ public:
     MyString& operator=( const int val );
     MyString& operator=( const unsigned val );
 
+    MyString operator+( const MyString& rhv );
+    MyString& operator+=( const MyString& rhv );
+
+    const bool operator!=( const char* rhv ) const;
+    const bool operator!=( const std::string& rhv ) const;
+    const bool operator!=( const MyString& rhv ) const;
+
     const bool operator==( const char* rhv ) const;
     const bool operator==( const std::string& rhv ) const;
     const bool operator==( const MyString& rhv ) const;
@@ -52,9 +58,9 @@ public:
     virtual CnstStr& string( void )const;
     virtual std::string& string( void );
 
-    virtual const char* cStr( void );
+    virtual const char* cStr( void )const;
     virtual const Length length( void ) const;
-    virtual const Length Capacity( void ) const;
+    virtual const Length capacity( void ) const;
     void clear( void );
 
     static void toLowerS( std::string& inOutString );
@@ -65,6 +71,9 @@ private:
     MyStringImpl* m_impl = nullptr;
 };
 
+using CnstMyStr = const MyString;
+
+CnstMyStr CULLib_API operator+( CnstMyStr& lhv, CnstMyStr& rhv );
 const bool CULLib_API operator==( const char* lhv, const CUL::MyString& rhv );
 
 NAMESPACE_END( CUL )

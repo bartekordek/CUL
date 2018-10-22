@@ -4,10 +4,7 @@
 #include "CUL/Path.hpp"
 #include "CUL/ICSVFile.hpp"
 #include "CUL/STD_vector.hpp"
-#include "CUL/STD_string.hpp"
-
-using Row = std::vector<std::string>;
-using Rows = std::vector<Row>;
+#include "CUL/MyString.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
@@ -15,16 +12,19 @@ NAMESPACE_BEGIN( FS )
 #pragma warning( push )
 #pragma warning( disable: 4820 )
 #endif
+using Row = std::vector<MyString>;
+using Rows = std::vector<Row>;
 class CSVFile final:
     public ICSVFile
 {
 public:
+    CSVFile( void );
     CSVFile( const CSVFile& rhv );
-    CSVFile( CstString& fPath );
-    ~CSVFile();
+    CSVFile( CnstMyStr& fPath );
+    ~CSVFile( void );
 
     CSVFile& operator=( const CSVFile& rhv );
-    CSVFile& operator=( CstString& rPath );
+    CSVFile& operator=( CnstMyStr& rPath );
 
     void changePath( const Path& newPath ) override;
 
@@ -33,8 +33,8 @@ public:
     const bool checkIfFileIsAllRight()const override;
     cunt rowsCount()const override;
     cunt colsCount()const override;
-    CstString& getVal( cunt row, cunt col ) const override;
-    void setVal( CstString& val, cunt row, cunt col ) override;
+    CnstMyStr& getVal( cunt row, cunt col ) const override;
+    void setVal( CnstMyStr& val, cunt row, cunt col ) override;
 
     CBool exists()const override;
     CBool isBinary()const override;
@@ -43,12 +43,12 @@ public:
     void load( CBool keepLineEndingCharacter = false ) override;
     void unload() override;
 
-    CstString& firstLine()const override;
-    CstString& lastLine()const override;
+    CnstMyStr& firstLine()const override;
+    CnstMyStr& lastLine()const override;
 
-    void setDelimeter( CstString& delimeter ) override;
+    void setDelimeter( CnstMyStr& delimeter ) override;
 
-    CstString& getAsOneString()const override;
+    CnstMyStr& getAsOneString()const override;
     const char** getContent()const override;
 
     cunt getLinesCount()const override;
@@ -57,15 +57,14 @@ public:
 
 protected:
 private:
-    CSVFile();
-    void parseLine( CstString& line );
+    void parseLine( CnstMyStr& line );
     void cacheFile();
 
-    std::string m_delimeter = ",";
+    MyString m_delimeter = ",";
     bool m_cellsContainQuotationMarks = true;
     Path m_path;
     Rows m_rows;
-    std::string m_cached;
+    MyString m_cached;
     bool m_keepLineEndingCharacter = false;
 };
 #ifdef _MSC_VER

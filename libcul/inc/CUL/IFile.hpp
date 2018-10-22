@@ -1,45 +1,47 @@
 #pragma once
-#include "CUL.hpp"
-#include "Path.hpp"
+
+#include "CUL/CUL.hpp"
+#include "CUL/Path.hpp"
 #include "CUL/STD_memory.hpp"
+#include "CUL/UselessMacros.hpp"
 
 using cunt = const unsigned int;
 
-namespace CUL
+NAMESPACE_BEGIN( CUL )
+NAMESPACE_BEGIN( FS )
+
+class CULLib_API IFile
 {
-    namespace FS
-    {
-        class CULLib_API IFile
-        {
-        public:
-            IFile( void );
-            IFile( CstString& fPath ) = delete;
-            IFile( const IFile& file ) = delete;
-            virtual ~IFile();
+public:
+    IFile( void );
+    IFile( CnstMyStr& fPath ) = delete;
+    IFile( const IFile& file ) = delete;
+    virtual ~IFile();
 
-            IFile& operator=( CstString& rPath ) = delete;
+    IFile& operator=( CnstMyStr& rPath ) = delete;
 
-            virtual const Path& getPath()const = 0;
+    virtual const Path& getPath()const = 0;
 
-            virtual CBool exists()const = 0;
-            virtual CBool isBinary()const = 0;
+    virtual CBool exists()const = 0;
+    virtual CBool isBinary()const = 0;
 
-            virtual void changePath( const Path& newPath ) = 0;
+    virtual void changePath( const Path& newPath ) = 0;
 
-            virtual void reload( CBool keepLineEndingCharacter = false ) = 0;
-            virtual void load( CBool keepLineEndingCharacter = false ) = 0;
-            virtual void unload() = 0;
+    virtual void reload( CBool keepLineEndingCharacter = false ) = 0;
+    virtual void load( CBool keepLineEndingCharacter = false ) = 0;
+    virtual void unload() = 0;
 
-            virtual CstString& firstLine()const = 0;
-            virtual CstString& lastLine()const = 0;
+    virtual CnstMyStr& firstLine()const = 0;
+    virtual CnstMyStr& lastLine()const = 0;
 
-            virtual CstString& getAsOneString()const = 0;
-            virtual const char** getContent()const = 0;
+    virtual CnstMyStr& getAsOneString()const = 0;
+    virtual const char** getContent()const = 0;
 
-            virtual cunt getLinesCount()const = 0;
+    virtual cunt getLinesCount()const = 0;
 
-        protected:
-        private:
-        };
-    }
-}
+protected:
+private:
+};
+
+NAMESPACE_END( FS )
+NAMESPACE_END( CUL )

@@ -93,6 +93,19 @@ MyStringImpl& MyStringImpl::operator=( const unsigned val )
     return *this;
 }
 
+MyStringImpl MyStringImpl::operator+( const MyStringImpl& rhv )
+{
+    MyStringImpl result = *this;
+    result += rhv;
+    return result;
+}
+
+MyStringImpl& MyStringImpl::operator+=( const MyStringImpl& rhv )
+{
+    this->m_value += rhv.m_value;
+    return *this;
+}
+
 const bool MyStringImpl::operator==( const char * rhv ) const
 {
     return this->m_value == rhv;
@@ -147,7 +160,7 @@ std::string& MyStringImpl::string()
     return this->m_value;
 }
 
-const char* MyStringImpl::cStr()
+const char* MyStringImpl::cStr()const
 {
     return this->m_value.c_str();
 }

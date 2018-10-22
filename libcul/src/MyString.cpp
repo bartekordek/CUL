@@ -2,7 +2,9 @@
 #include "String/MyStringImpl.hpp"
 #include "CUL/STD_algorithm.hpp"
 
-using namespace CUL;
+using MyString = CUL::MyString;
+using Length = CUL::Length;
+using CnstMyStr = CUL::CnstMyStr;
 
 MyString::MyString():
     m_impl( new MyStringImpl() )
@@ -103,6 +105,34 @@ MyString& MyString::operator=( const unsigned val )
     return *this;
 }
 
+MyString MyString::operator+( const MyString & rhv )
+{
+    MyString result = *this;
+    *result.m_impl += *rhv.m_impl;
+    return result;
+}
+
+MyString& MyString::operator+=( const MyString & rhv )
+{
+    *this->m_impl += *rhv.m_impl;
+    return *this;
+}
+
+const bool MyString::operator!=( const char * rhv ) const
+{
+    return !this->operator==( rhv );
+}
+
+const bool MyString::operator!=( const std::string & rhv ) const
+{
+    return !this->operator==( rhv );
+}
+
+const bool MyString::operator!=( const MyString & rhv ) const
+{
+    return !this->operator==( rhv );
+}
+
 const bool MyString::operator==( const char * rhv ) const
 {
     return *this->m_impl == rhv;
@@ -153,7 +183,7 @@ std::string& MyString::string()
     return this->m_impl->string();
 }
 
-const char* MyString::cStr()
+const char* MyString::cStr()const
 {
     return this->m_impl->cStr();
 }
@@ -163,7 +193,7 @@ const Length MyString::length( void ) const
     return this->m_impl->length();
 }
 
-const Length MyString::Capacity( void ) const
+const Length MyString::capacity( void ) const
 {
     return this->m_impl->capacity();
 }
@@ -203,6 +233,12 @@ void MyString::toUpperS( std::string& inOutString )
 #if _MSC_VER
     __pragma(warning( pop ))
 #endif
+}
+
+CnstMyStr CUL::operator+( CnstMyStr& lhv, CnstMyStr& rhv )
+{
+    CnstMyStr result( lhv.string() + rhv.string() );
+    return result;
 }
 
 const bool CUL::operator==( const char* lhv, const CUL::MyString& rhv )
