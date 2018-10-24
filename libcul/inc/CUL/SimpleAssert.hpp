@@ -1,15 +1,17 @@
 #pragma once
 
-#include <CUL/CUL.hpp>
+#include "CUL/CUL.hpp"
 #include "CUL/STD_string.hpp"
+#include "CUL/UselessMacros.hpp"
 
-namespace CUL
+NAMESPACE_BEGIN( CUL )
+
+class CULLib_API Assert
 {
-    class CULLib_API Assert
-    {
-    public:
-        static void simple( const bool val, const std::string& msg = std::string( "" ) );
-    protected:
-    private:
-    };
-}
+public:
+    static void simple( const bool val, const std::string& msg = std::string( "" ) );
+protected:
+private:
+};
+
+NAMESPACE_END( CUL )

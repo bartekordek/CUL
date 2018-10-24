@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/UselessMacros.hpp"
-#include "Math.hpp"
+#include "CUL/Math/Math.hpp"
 #include "CUL/STD_type_traits.hpp"
 
 NAMESPACE_BEGIN( CUL )

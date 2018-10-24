@@ -42,12 +42,11 @@
     <ClCompile Include="src\ITime.cpp" />
     <ClCompile Include="src\ITimer.cpp" />
     <ClCompile Include="src\Line.cpp" />
-    <ClCompile Include="src\MultiPointFactory.cpp" />
+    <ClCompile Include="src\Math\Axis.cpp" />
     <ClCompile Include="src\MyString.cpp" />
     <ClCompile Include="src\Named.cpp" />
     <ClCompile Include="src\Path.cpp" />
     <ClCompile Include="src\Quaternion.cpp" />
-    <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
     <ClCompile Include="src\Thread.hpp" />
     <ClCompile Include="src\ThreadUtilityDummy.cpp" />
@@ -58,6 +57,7 @@
     <ClCompile Include="src\Video\IFPSCounter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\CUL\Math\Triangle.hpp" />
     <ClInclude Include="inc\CUL\STD_algorithm.hpp" />
     <ClInclude Include="inc\CUL\FileFactory.hpp" />
     <ClInclude Include="inc\CUL\IArgumentsPair.hpp" />
@@ -82,16 +82,12 @@
     <ClInclude Include="inc\CUL\Math\IAngle.hpp" />
     <ClInclude Include="inc\CUL\Math\IPivot.hpp" />
     <ClInclude Include="inc\CUL\Math\IPivotObserver.hpp" />
-    <ClInclude Include="inc\CUL\Math\IVector.hpp" />
     <ClInclude Include="inc\CUL\Math\Line.hpp" />
     <ClInclude Include="inc\CUL\Math\Math.hpp" />
     <ClInclude Include="inc\CUL\Math\Matrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\MultiPoint.hpp" />
-    <ClInclude Include="inc\CUL\Math\MultiPointFactory.hpp" />
     <ClInclude Include="inc\CUL\Math\PosTable.hpp" />
     <ClInclude Include="inc\CUL\Math\Quaternion.hpp" />
-    <ClInclude Include="inc\CUL\Math\Rectangle.hpp" />
-    <ClInclude Include="inc\CUL\Math\Segment.hpp" />
     <ClInclude Include="inc\CUL\Math\SquareMatrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\Vector3D.hpp" />
     <ClInclude Include="inc\CUL\Math\Vector3DFactory.hpp" />
@@ -99,6 +95,7 @@
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Path.hpp" />
     <ClInclude Include="inc\CUL\SimpleAssert.hpp" />
+    <ClInclude Include="inc\CUL\STD_array.hpp" />
     <ClInclude Include="inc\CUL\STD_atomic.hpp" />
     <ClInclude Include="inc\CUL\STD_cmath.hpp" />
     <ClInclude Include="inc\CUL\STD_cstdint.hpp" />
@@ -122,6 +119,7 @@
     <ClInclude Include="src\BoostFilesystem.hpp" />
     <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\FileRegularImpl.hpp" />
+    <ClInclude Include="src\GUARD_windows.hpp" />
     <ClInclude Include="src\ImageIL.hpp" />
     <ClInclude Include="src\STD_fstream.hpp" />
     <ClInclude Include="src\STDCodecvt.hpp" />

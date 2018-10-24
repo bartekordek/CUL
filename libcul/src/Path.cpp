@@ -5,14 +5,14 @@
 using namespace CUL;
 using namespace FS;
 
-std::string ws2s( const std::wstring& wstr );
+MyString ws2s( const std::wstring& wstr );
 
 #ifdef _WIN32
-std::string Path::directorySeparator = std::string( "\\" );
+MyString Path::directorySeparator = MyString( "\\" );
 #else
 std::string Path::directorySeparator = std::string( "/" );
 #endif
-std::string Path::extensionSeparator = std::string( "." );
+MyString Path::extensionSeparator = MyString( "." );
 
 CstString& Path::getDirSeparator()
 {
@@ -53,7 +53,7 @@ Path& Path::operator=( CstString& path )
 {
     if( this->fullPath != path )
     {
-        this->fullPath = path;
+        this->fullPath = path.c_str();
         preparePaths();
     }
     return *this;
@@ -78,7 +78,7 @@ Path& Path::operator+( const Path& rhv )
 
 Path& Path::operator+( CstString& rhv )
 {
-    this->fullPath = this->fullPath + rhv;
+    this->fullPath = this->fullPath + CUL::MyString( rhv );
     preparePaths();
     return *this;
 }
@@ -105,11 +105,13 @@ CstString& Path::getDir()const
 
 void Path::preparePaths()
 {
-    boost::filesystem::path bPath( this->fullPath );
+    boost::filesystem::path bPath( this->fullPath.string() );
 #if defined CUL_WINDOWS
-    this->baseName = ws2s( bPath.stem().c_str() );
-    this->extension = ws2s( bPath.extension().c_str() );
-    this->dir = ws2s( bPath.parent_path().c_str() );
+    this->baseName = ws2s( bPath.stem().c_str() ).c_str();
+    this->extension = ws2s( bPath.extension().c_str() ).c_str();
+    this->dir = ws2s( bPath.parent_path().c_str() ).c_str();
+#elif defined
+
 #else
     this->baseName = bPath.stem().c_str();
     this->extension = bPath.extension().c_str();
@@ -117,17 +119,17 @@ void Path::preparePaths()
 #endif
 }
 
-std::string ws2s( const std::wstring& wstr )
+MyString ws2s( const std::wstring& wstr )
 {
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
 
-    return converterX.to_bytes( wstr );
+    return MyString( converterX.to_bytes( wstr ) );
 }
 
 const bool Path::exists() const
 {
-    const bool result = boost::filesystem::is_regular_file( this->fullPath );
+    const bool result = boost::filesystem::is_regular_file( this->fullPath.string() );
     return result;
 }
 

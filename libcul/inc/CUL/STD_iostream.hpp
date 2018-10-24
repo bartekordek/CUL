@@ -11,6 +11,7 @@
 #pragma warning( disable: 4820 )
 #pragma warning( disable: 5026 )
 #pragma warning( disable: 5027 )
+#pragma warning( disable: 5045 )
 #endif
 #include <iostream>
 #ifdef _MSC_VER

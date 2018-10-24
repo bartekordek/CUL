@@ -1,5 +1,5 @@
 #include "ArgumentsPairConcrete.hpp"
-#include <cstring>
+#include "CUL/STD_cstring.hpp"
 
 using namespace CUL;
 

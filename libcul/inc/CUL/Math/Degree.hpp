@@ -4,7 +4,8 @@ namespace CUL
 {
     namespace Math
     {
-        class CULLib_API Degree: public IAngle
+        class CULLib_API Degree:
+            public IAngle
         {
         public:
             Degree();

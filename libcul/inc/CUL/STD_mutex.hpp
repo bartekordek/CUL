@@ -9,6 +9,7 @@
 #pragma warning( disable: 4820 )
 #pragma warning( disable: 5027 )
 #pragma warning( disable: 5039 )
+#pragma warning( disable: 5045 )
 #endif
 #include <mutex>
 #ifdef _MSC_VER

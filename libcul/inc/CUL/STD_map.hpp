@@ -8,6 +8,7 @@
 #pragma warning( disable: 4626 )
 #pragma warning( disable: 4820 )
 #pragma warning( disable: 5027 )
+#pragma warning( disable: 5045 )
 #endif
 #include <map>
 #ifdef _MSC_VER

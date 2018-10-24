@@ -1,9 +1,10 @@
 #include "CUL/MyString.hpp"
 #include "CUL/STD_algorithm.hpp"
 
-using namespace CUL;
+using MyString = CUL::MyString;
 
-MyString::MyString(): std::string( "" )
+MyString::MyString():
+    std::string( "" )
 {
 }
 
@@ -109,7 +110,7 @@ const std::string MyString::string()const
     return static_cast<std::string>( *this );
 }
 
-MyString operator+( const MyString& string1, const MyString& string2 )
+MyString CUL::operator+( const MyString& string1, const MyString& string2 )
 {
     MyString string( string1.string() + string2.string() );
     return string;
