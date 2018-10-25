@@ -1,20 +1,46 @@
 #include "CUL/FileFactory.hpp"
 #include "FileRegularImpl.hpp"
 #include "CSVFile.hpp"
+#include "JSON/JSONFileConcrete.hpp"
 
-using namespace CUL;
-using namespace FS;
+using IFile = CUL::FS::IFile;
+using Path = CUL::FS::Path;
+using FileFactory = CUL::FS::FileFactory;
+using ICSVFile = CUL::FS::ICSVFile;
+using IJSONFile = CUL::JSON::IJSONFile;
 
-IFilePtr FileFactory::createRegularFile( const Path& path )
+IFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
-    auto fr = new FileRegularImpl( path.getPath() );
-    std::shared_ptr<IFile> file( fr );
+    auto file = createRegularFileRawPtr();
+    file->changePath( path );
     return file;
 }
 
-ICSVFilePtr FileFactory::createCSVFile( const Path& path )
+IFile* FileFactory::createRegularFileRawPtr()
 {
-    auto csvFile = new CSVFile( path.getPath() );
-    ICSVFilePtr file( csvFile );
-    return file;
+    return  new FileRegularImpl();
+}
+
+ICSVFile* FileFactory::createCSVFileRawPtr( const Path& path )
+{
+    auto csvFile = createCSVFileRawPtr();
+    csvFile->changePath( path );
+    return csvFile;
+}
+
+ICSVFile* FileFactory::createCSVFileRawPtr()
+{
+    return new CSVFile();
+}
+
+IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
+{
+    auto result = createJSONFileRawPtr();
+    result->changePath( path );
+    return result;
+}
+
+IJSONFile* FileFactory::createJSONFileRawPtr()
+{
+    return new JSON::JSONFileConcrete();
 }

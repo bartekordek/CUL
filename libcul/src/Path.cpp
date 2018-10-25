@@ -10,11 +10,11 @@ MyString ws2s( const std::wstring& wstr );
 #ifdef _WIN32
 MyString Path::directorySeparator = MyString( "\\" );
 #else
-std::string Path::directorySeparator = std::string( "/" );
+MyString Path::directorySeparator = MyString( "/" );
 #endif
 MyString Path::extensionSeparator = MyString( "." );
 
-CstString& Path::getDirSeparator()
+CnstMyStr& Path::getDirSeparator()
 {
     return extensionSeparator;
 }
@@ -32,7 +32,7 @@ Path::Path( const Path& path ):
 {
 }
 
-Path::Path( CstString& path ):
+Path::Path( CnstMyStr& path ):
     fullPath(path)
 {
     preparePaths();
@@ -49,11 +49,11 @@ Path::~Path()
 
 }
 
-Path& Path::operator=( CstString& path )
+Path& Path::operator=( CnstMyStr& path )
 {
     if( this->fullPath != path )
     {
-        this->fullPath = path.c_str();
+        this->fullPath = path;
         preparePaths();
     }
     return *this;
@@ -69,49 +69,47 @@ Path& Path::operator=( const char* r )
     return *this;
 }
 
-Path& Path::operator+( const Path& rhv )
+Path& Path::operator+=( const Path& rhv )
 {
     this->fullPath = this->fullPath + rhv.fullPath;
     preparePaths();
     return *this;
 }
 
-Path& Path::operator+( CstString& rhv )
+Path& Path::operator+=( CnstMyStr& rhv )
 {
-    this->fullPath = this->fullPath + CUL::MyString( rhv );
+    this->fullPath = this->fullPath + rhv;
     preparePaths();
     return *this;
 }
 
-CstString& Path::getPath()const
+CnstMyStr& Path::getPath()const
 {
     return this->fullPath;
 }
 
-CstString& Path::getExtension()const
+CnstMyStr& Path::getExtension()const
 {
     return this->extension;
 }
 
-CstString& Path::getBaseName()const
+CnstMyStr& Path::getBaseName()const
 {
     return this->baseName;
 }
 
-CstString& Path::getDir()const
+CnstMyStr& Path::getDir()const
 {
     return this->dir;
 }
 
 void Path::preparePaths()
 {
-    boost::filesystem::path bPath( this->fullPath.string() );
+    boost::filesystem::path bPath( this->fullPath.cStr() );
 #if defined CUL_WINDOWS
-    this->baseName = ws2s( bPath.stem().c_str() ).c_str();
-    this->extension = ws2s( bPath.extension().c_str() ).c_str();
-    this->dir = ws2s( bPath.parent_path().c_str() ).c_str();
-#elif defined
-
+    this->baseName = ws2s( bPath.stem().c_str() );
+    this->extension = ws2s( bPath.extension().c_str() );
+    this->dir = ws2s( bPath.parent_path().c_str() );
 #else
     this->baseName = bPath.stem().c_str();
     this->extension = bPath.extension().c_str();
@@ -124,16 +122,16 @@ MyString ws2s( const std::wstring& wstr )
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
 
-    return MyString( converterX.to_bytes( wstr ) );
+    return converterX.to_bytes( wstr );
 }
 
 const bool Path::exists() const
 {
-    const bool result = boost::filesystem::is_regular_file( this->fullPath.string() );
+    const bool result = boost::filesystem::is_regular_file( this->fullPath.cStr() );
     return result;
 }
-
-Path operator+( const Path& l, const std::string& r )
+/*
+Path CUL::FS::operator+( const Path& l, CnstMyStr& r )
 {
     Path result( l.getPath() + r );
     return result;
@@ -144,3 +142,4 @@ Path operator+( const Path& l, const Path& r )
     Path result( l.getPath() + r.getPath() );
     return result;
 }
+*/

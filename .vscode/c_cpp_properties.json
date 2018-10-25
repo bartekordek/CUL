@@ -9,7 +9,10 @@
             "limitSymbolsToIncludedHeaders": true
         },
         "includePath": [
-            "${workspaceFolder}/**"
+            "${workspaceFolder}/libcul/inc",
+            "${workspaceFolder}/libcul/src/",
+            "${workspaceFolder}/libcul/src/JSON",
+            "${workspaceFolder}/deps/rapidjson/include/"
         ],
         "defines": [
             "_DEBUG",

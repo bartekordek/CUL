@@ -5,11 +5,11 @@
 
 using namespace CUL;
 
-void Assert::simple( const bool val, const std::string& msg )
+void Assert::simple( const bool val, CnstMyStr& msg )
 {
     if( 0 == val )
     {
-        std::cerr << msg << "\n";
-        BOOST_ASSERT_MSG( val, msg.c_str() );
+        std::cerr << msg.string() << "\n";
+        BOOST_ASSERT_MSG( val, msg.cStr() );
     }
 }

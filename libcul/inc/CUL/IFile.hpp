@@ -1,4 +1,5 @@
 #pragma once
+
 #include "CUL/CUL.hpp"
 #include "CUL/Path.hpp"
 #include "CUL/STD_memory.hpp"
@@ -13,11 +14,11 @@ class CULLib_API IFile
 {
 public:
     IFile( void );
-    IFile( CstString& fPath ) = delete;
+    IFile( CnstMyStr& fPath ) = delete;
     IFile( const IFile& file ) = delete;
     virtual ~IFile();
 
-    IFile& operator=( CstString& rPath ) = delete;
+    IFile& operator=( CnstMyStr& rPath ) = delete;
 
     virtual const Path& getPath()const = 0;
 
@@ -30,10 +31,10 @@ public:
     virtual void load( CBool keepLineEndingCharacter = false ) = 0;
     virtual void unload() = 0;
 
-    virtual CstString& firstLine()const = 0;
-    virtual CstString& lastLine()const = 0;
+    virtual CnstMyStr& firstLine()const = 0;
+    virtual CnstMyStr& lastLine()const = 0;
 
-    virtual CstString& getAsOneString()const = 0;
+    virtual CnstMyStr& getAsOneString()const = 0;
     virtual const char** getContent()const = 0;
 
     virtual cunt getLinesCount()const = 0;
