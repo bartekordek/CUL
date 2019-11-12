@@ -1,0 +1,57 @@
+#pragma once
+
+#include "CUL/Filesystem/IFile.hpp"
+#include "CUL/Filesystem/Path.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
+#include "CUL/UselessMacros.hpp"
+
+NAMESPACE_BEGIN( CUL )
+NAMESPACE_BEGIN( FS )
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 4820 )
+#endif
+        class FileRegularImpl: public IFile
+        {
+        public:
+            FileRegularImpl();
+            FileRegularImpl( const FileRegularImpl& file );
+            FileRegularImpl( const Path& path );
+            virtual ~FileRegularImpl();
+
+            IFile& operator=( const Path& rPath );
+            void changePath( const Path& newPath ) override;
+
+            const Path& getPath() const override;
+
+            CBool exists()const override;
+            CBool isBinary()const override;
+
+            void reload( CBool keepLineEndingCharacter = false ) override;
+            void load( CBool keepLineEndingCharacter = false ) override;
+            void unload() override;
+
+            CnstMyStr& firstLine()const override;
+            CnstMyStr& lastLine()const override;
+
+            CnstMyStr& getAsOneString()const override;
+            const char** getContent()const override;
+
+            cunt getLinesCount()const override;
+
+        protected:
+        private:
+            void cacheFile();
+
+            Path m_path;
+            std::vector<MyString> rows;
+            std::vector<char*> m_rowsAsChars;
+            MyString m_cached;
+            bool m_keepLineEndingCharacter = false;
+        };
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
+NAMESPACE_END( FS )
+NAMESPACE_END( CUL )
