@@ -181,6 +181,7 @@
     <ClInclude Include="src\Graphics\RawImageConcrete.hpp" />
     <ClInclude Include="src\ImageIL.hpp" />
     <ClInclude Include="src\IMPORT_boost_assert.hpp" />
+    <ClInclude Include="src\IMPORT_devil.hpp" />
     <ClInclude Include="src\JSON\JSONFileConcrete.hpp" />
     <ClInclude Include="src\JSON\ImportRapidJSON.hpp" />
     <ClInclude Include="src\Log\IMPORT_spdlog.hpp" />

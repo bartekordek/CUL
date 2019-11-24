@@ -596,6 +596,9 @@
     <ClInclude Include="inc\CUL\GenericUtils\LckPrim.hpp">
       <Filter>Header Files\GenericUtils</Filter>
     </ClInclude>
+    <ClInclude Include="src\IMPORT_devil.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.git\config" />
