@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/UselessMacros.hpp"
+#include "CUL/GenericUtils/LckPrim.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
@@ -20,12 +21,6 @@ public:
 
     }
 
-    virtual ~DumbPtr()
-    {
-        delete m_ptr;
-        m_ptr = nullptr;
-    }
-
     Type& operator*()
     {
         return *m_ptr;
@@ -43,7 +38,8 @@ public:
 
     DumbPtr<Type>& operator=( const Type* rhv )
     {
-        this->m_ptr = const_cast<Type*>( rhv );
+        m_ptr = const_cast<Type*>( rhv );
+        m_destroyed = false;
         return *this;
     }
 
@@ -73,11 +69,28 @@ public:
         return m_ptr;
     }
 
+    virtual ~DumbPtr()
+    {
+        release();
+    }
+
+    void release()
+    {
+        delete m_ptr;
+        m_ptr = nullptr;
+    }
+
+    const bool isReleased()
+    {
+        return m_destroyed;
+    }
+
 private:
     DumbPtr( const DumbPtr& value ) = delete;
     DumbPtr& operator=( const DumbPtr& value ) = delete;
 
     Type* m_ptr = nullptr;
+    LckBool m_destroyed = false;
 };
 
 NAMESPACE_END( GUTILS )
