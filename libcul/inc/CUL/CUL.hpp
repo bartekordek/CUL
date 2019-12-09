@@ -30,3 +30,5 @@
 #pragma comment(lib, "libcul.a")
 #endif
 */
+
+using Cbool = const bool;
