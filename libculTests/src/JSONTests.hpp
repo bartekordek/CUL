@@ -1,6 +1,6 @@
 #pragma once
 #include "Gtest.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4625 )
@@ -15,7 +15,7 @@ protected:
     static void SetUpTestCase();
     static void TearDownTestCase();
 
-    CUL::MyString jsonTestFileName = { "test.json" };
+    CUL::String jsonTestFileName = { "test.json" };
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

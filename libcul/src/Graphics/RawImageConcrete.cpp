@@ -15,14 +15,14 @@ RawImageConcrete::RawImageConcrete()
 
 RawImageConcrete::~RawImageConcrete()
 {
-    if( this->m_data )
+    if( m_data )
     {
-        ilDeleteImages( 1, &this->m_iluId );
-        this->m_data = nullptr;
+        ilDeleteImages( 1, &m_iluId );
+        m_data = nullptr;
     }
 }
 
-void RawImageConcrete::loadFromFile( CUL::CnstMyStr& path )
+void RawImageConcrete::loadFromFile( CUL::CsStr& path )
 {
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "RawImageConcrete::loadFromFile" );
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "Path = " + path );
@@ -36,8 +36,8 @@ void RawImageConcrete::loadFromFile( CUL::CnstMyStr& path )
 
     ilClearColour( 255, 255, 255, 000 );
 
-    ilGenImages( 1, &this->m_iluId );
-    ilBindImage( this->m_iluId );
+    ilGenImages( 1, &m_iluId );
+    ilBindImage( m_iluId );
     ILboolean success = ilLoadImage( path.cStr() );
 
     if( IL_TRUE != success )
@@ -65,22 +65,22 @@ void RawImageConcrete::loadFromFile( CUL::CnstMyStr& path )
     auto imgWidth = ( unsigned int ) ilGetInteger( IL_IMAGE_WIDTH );
     auto imgHeight = ( unsigned int ) ilGetInteger( IL_IMAGE_HEIGHT );
 
-    this->m_size.setXYZ( imgWidth, imgHeight, 0 );
+    m_size.setXYZ( imgWidth, imgHeight, 0 );
     auto dataPtr = ilGetData();
-    this->m_data = static_cast< RawDataPtr >( dataPtr );
+    m_data = static_cast< RawDataPtr >( dataPtr );
 }
 
 cunt RawImageConcrete::getID() const
 {
-    return this->m_fileId;
+    return m_fileId;
 }
 
 const Math::Vector3Du& RawImageConcrete::getSize() const
 {
-    return this->m_size;
+    return m_size;
 }
 
 RawDataPtr RawImageConcrete::getData() const
 {
-    return this->m_data;
+    return m_data;
 }

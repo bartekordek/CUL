@@ -3,16 +3,16 @@
 using namespace CUL;
 using namespace JSON;
 
-Object::Object( void )
+Object::Object()
 {
 }
 
-Object::Object( CnstMyStr& name ):
+Object::Object( CsStr& name ):
     INode( name )
 {
 }
 
-Object::~Object( void )
+Object::~Object()
 {
 }
 

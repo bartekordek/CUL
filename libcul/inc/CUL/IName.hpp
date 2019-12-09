@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 namespace CUL
 {
@@ -9,18 +9,18 @@ namespace CUL
     {
     public:
         CULLib_API IName();
-        CULLib_API IName( CnstMyStr& name );
+        CULLib_API IName( CsStr& name );
         CULLib_API IName( const IName& val );
         CULLib_API virtual ~IName();
 
         CULLib_API IName& operator=( const IName& rhv );
 
-        CULLib_API CnstMyStr& getName()const;
-        CULLib_API void setName( CnstMyStr& name );
+        CULLib_API CsStr& getName()const;
+        CULLib_API void setName( CsStr& name );
 
     protected:
     private:
-        MyString m_name;
+        String m_name;
 
     };
 }

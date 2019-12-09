@@ -6,10 +6,10 @@ using namespace CUL;
 
 TimerChrono::TimerChrono( const bool run )
 {
-    this->time.reset( new TimeConcrete() );
+    time.reset( new TimeConcrete() );
     if( run )
     {
-        this->reset();
+        reset();
     }
 }
 
@@ -30,18 +30,18 @@ TimerChrono& TimerChrono::operator=( const TimerChrono& rhv )
 {
     if( &rhv != this )
     {
-        this->clock = rhv.clock;
-        this->time.reset(
+        clock = rhv.clock;
+        time.reset(
             new TimeConcrete(
             *static_cast<TimeConcrete*>( rhv.time.get() ) ) );
-        this->startPoint = rhv.startPoint;
+        startPoint = rhv.startPoint;
     }
     return *this;
 }
 
 void TimerChrono::start()
 {
-    this->reset();
+    reset();
 }
 
 void TimerChrono::stop()
@@ -50,16 +50,16 @@ void TimerChrono::stop()
 
 void TimerChrono::reset()
 {
-    this->startPoint = this->clock.now();
+    startPoint = clock.now();
 }
 
 const ITime& TimerChrono::getElapsed() const
 {
-    auto difference = this->clock.now() - startPoint;
+    auto difference = clock.now() - startPoint;
     auto us =
         std::chrono::duration_cast<std::chrono::microseconds>(
         difference ).count();
     auto d_us = static_cast<double>( us );
-    this->time->setTimeUs( d_us );
-    return *this->time;
+    time->setTimeUs( d_us );
+    return *time;
 }

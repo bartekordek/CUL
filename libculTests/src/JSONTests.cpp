@@ -48,7 +48,7 @@ TEST_F( JSONTests, addObject )
 TEST_F( JSONTests, getSetDataPair )
 {
     JSON::DataPair dataPair;
-    MyString val( "some val" );
+    String val( "some val" );
     dataPair.setVal( val );
     GTEST_ASSERT_EQ( val, dataPair.getVal() );
 }
@@ -58,7 +58,7 @@ TEST_F( JSONTests, nestDataPairInObject )
     JSON::Object object;
     auto child = new JSON::DataPair();
     object.addChild( child );
-    MyString val( "some val" );
+    String val( "some val" );
     child->setVal( val );
     GTEST_ASSERT_EQ(
         1,
@@ -179,7 +179,7 @@ TEST_F( JSONTests, arrayCorrectness )
     {
         GTEST_ASSERT_EQ( CUL::JSON::ElementType::VALUE, msg->getType() );
         auto dp = static_cast< const CUL::JSON::DataPair* >( msg );
-        auto testVal = CUL::MyString( "msg " ) + i++;
+        auto testVal = CUL::String( "msg " ) + i++;
         auto& actualVal = dp->getVal();
         GTEST_ASSERT_EQ( testVal, actualVal );
     }

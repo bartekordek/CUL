@@ -25,20 +25,20 @@ TriangleRectangularSimple2D& TriangleRectangularSimple2D::operator=( const Trian
 {
     if( this != &rhv )
     {
-        this->m_opposite = rhv.m_opposite;
-        this->m_adjacent = rhv.m_adjacent;
-        this->m_hypotenuse = rhv.m_hypotenuse;
-        this->m_angle = rhv.m_angle;
+        m_opposite = rhv.m_opposite;
+        m_adjacent = rhv.m_adjacent;
+        m_hypotenuse = rhv.m_hypotenuse;
+        m_angle = rhv.m_angle;
     }
     return *this;
 }
 
 void TriangleRectangularSimple2D::setOpposite( const double value )
 {
-    this->m_opposite = value;
-    if( this->isLessThanEpislon( this->m_adjacent ) )
+    m_opposite = value;
+    if( isLessThanEpislon( m_adjacent ) )
     {
-        this->m_hypotenuse = this->m_opposite;
+        m_hypotenuse = m_opposite;
     }
     calculateQuarter();
     calculateAngle();
@@ -46,10 +46,10 @@ void TriangleRectangularSimple2D::setOpposite( const double value )
 
 void TriangleRectangularSimple2D::setAdjacent( const double value )
 {
-    this->m_adjacent = value;
-    if( this->isLessThanEpislon( this->m_opposite ) )
+    m_adjacent = value;
+    if( isLessThanEpislon( m_opposite ) )
     {
-        this->m_hypotenuse = this->m_adjacent;
+        m_hypotenuse = m_adjacent;
     }
     calculateQuarter();
     calculateAngle();
@@ -57,53 +57,53 @@ void TriangleRectangularSimple2D::setAdjacent( const double value )
 
 void TriangleRectangularSimple2D::setHypotenuse( const double value )
 {
-    const auto ratio = value / this->m_hypotenuse;
-    this->m_hypotenuse = value;
-    this->m_adjacent *= ratio;
-    this->m_opposite *= ratio;
+    const auto ratio = value / m_hypotenuse;
+    m_hypotenuse = value;
+    m_adjacent *= ratio;
+    m_opposite *= ratio;
     calculateQuarter();
     calculateAngle();
 }
 
 const double TriangleRectangularSimple2D::getOpposite( void )
 {
-    return this->m_opposite;
+    return m_opposite;
 }
 
 const double TriangleRectangularSimple2D::getAdjacent( void )
 {
-    return this->m_adjacent;
+    return m_adjacent;
 }
 
 const double TriangleRectangularSimple2D::getHypotenuse( void )
 {
-    return this->m_hypotenuse;
+    return m_hypotenuse;
 }
 
 const double TriangleRectangularSimple2D::calculateOpposite( void )
 {
-    const auto sq = this->m_hypotenuse * this->m_hypotenuse - this->m_adjacent * this->m_adjacent;
-    this->m_opposite = std::sqrt( sq );
-    return this->m_opposite;
+    const auto sq = m_hypotenuse * m_hypotenuse - m_adjacent * m_adjacent;
+    m_opposite = std::sqrt( sq );
+    return m_opposite;
 }
 
 const double TriangleRectangularSimple2D::calculateAdjacent( void )
 {
-    const auto sq = this->m_hypotenuse * this->m_hypotenuse - this->m_opposite * this->m_opposite;
-    this->m_adjacent = std::sqrt( sq );
-    return this->m_adjacent;
+    const auto sq = m_hypotenuse * m_hypotenuse - m_opposite * m_opposite;
+    m_adjacent = std::sqrt( sq );
+    return m_adjacent;
 }
 
 const double TriangleRectangularSimple2D::calculateHypotenuse( void )
 {
-    const auto sq = this->m_opposite * this->m_opposite + this->m_adjacent * this->m_adjacent;
-    this->m_hypotenuse = std::sqrt( sq );
-    return this->m_hypotenuse;
+    const auto sq = m_opposite * m_opposite + m_adjacent * m_adjacent;
+    m_hypotenuse = std::sqrt( sq );
+    return m_hypotenuse;
 }
 
 const Angle& TriangleRectangularSimple2D::getAngle( void ) const
 {
-    return this->m_angle;
+    return m_angle;
 }
 
 #ifdef _MSC_VER
@@ -116,54 +116,54 @@ const Angle& TriangleRectangularSimple2D::getAngle( void ) const
 #endif
 void TriangleRectangularSimple2D::calculateAngle( void )
 {
-    if( std::abs( this->m_adjacent ) < getEpsilon() )
+    if( std::abs( m_adjacent ) < getEpsilon() )
     {
-        const auto height = this->m_opposite;
-        if( this->isLessThanEpislon( height ) )
+        const auto height = m_opposite;
+        if( isLessThanEpislon( height ) )
         {
-            this->m_angle.setValue( 0 );
+            m_angle.setValue( 0 );
         }
         else if( height > 0 )
         {
-            this->m_angle.setValue( 90, Angle::Type::DEGREE );
+            m_angle.setValue( 90, Angle::Type::DEGREE );
         }
         else
         {
-            this->m_angle.setValue( 270, Angle::Type::DEGREE );
+            m_angle.setValue( 270, Angle::Type::DEGREE );
         }
     }
     else
     {
         if( std::abs( m_opposite ) < getEpsilon() )
         {
-            const auto width = std::max( this->m_adjacent, this->m_hypotenuse );
+            const auto width = std::max( m_adjacent, m_hypotenuse );
             if( width > 0 )
             {
-                this->m_angle.setValue( 0 );
+                m_angle.setValue( 0 );
             }
             else
             {
-                this->m_angle.setValue( 180, Angle::Type::DEGREE );
+                m_angle.setValue( 180, Angle::Type::DEGREE );
             }
         }
         else
         {
-            const auto tangensAlpha = this->m_opposite / this->m_adjacent;
+            const auto tangensAlpha = m_opposite / m_adjacent;
             const auto alphaRad = std::atan( tangensAlpha );
-            if( 2 == this->m_quarter )
+            if( 2 == m_quarter )
             {
                 const auto alphaDeg = radian2degree( alphaRad );
-                this->m_angle.setValue( 180 + alphaDeg, Angle::Type::DEGREE );
+                m_angle.setValue( 180 + alphaDeg, Angle::Type::DEGREE );
             }
-            else if ( 3 == this->m_quarter )
+            else if ( 3 == m_quarter )
             {
                 const auto alphaDeg = radian2degree( alphaRad );
-                this->m_angle.setValue( 180 + alphaDeg, Angle::Type::DEGREE );
+                m_angle.setValue( 180 + alphaDeg, Angle::Type::DEGREE );
             }
-            else if( 4 == this->m_quarter )
+            else if( 4 == m_quarter )
             {
                 const auto alphaDeg = radian2degree( alphaRad );
-                this->m_angle.setValue( 360 + alphaDeg, Angle::Type::DEGREE );
+                m_angle.setValue( 360 + alphaDeg, Angle::Type::DEGREE );
             }
             else
             {
@@ -182,22 +182,22 @@ void TriangleRectangularSimple2D::calculateQuarter( void )
     {
         if( m_opposite >= 0 )
         {
-            this->m_quarter = 1;
+            m_quarter = 1;
         }
         else
         {
-            this->m_quarter = 4;
+            m_quarter = 4;
         }
     }
     else
     {
         if( m_opposite >= 0 )
         {
-            this->m_quarter = 2;
+            m_quarter = 2;
         }
         else
         {
-            this->m_quarter = 3;
+            m_quarter = 3;
         }
     }
 }

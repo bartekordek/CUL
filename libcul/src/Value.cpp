@@ -20,8 +20,8 @@ Value::~Value( void )
 
 Value& Value::operator=( const double valueIn )
 {
-    this->m_value = valueIn;
-    this->m_toBeCalculated = false;
+    m_value = valueIn;
+    m_toBeCalculated = false;
     return *this;
 }
 
@@ -43,13 +43,13 @@ Value Value::operator+( const Value& rhv )
 
 Value& Value::operator+=( const Value& rhv )
 {
-    this->m_value += rhv.m_value;
+    m_value += rhv.m_value;
     return *this;
 }
 
 Value& Value::operator*=( const Value& rhv )
 {
-    this->m_value *= rhv.m_value;
+    m_value *= rhv.m_value;
     return *this;
 }
 
@@ -63,7 +63,7 @@ Value Value::operator-( const Value& rhv )
 
 Value& Value::operator-=( const Value& rhv )
 {
-    this->m_value -= rhv.m_value;
+    m_value -= rhv.m_value;
     return *this;
 }
 
@@ -77,16 +77,16 @@ Value Value::operator/( const Value& rhv )
 
 Value& Value::operator/=( const Value& rhv )
 {
-    this->m_value /= rhv.m_value;
+    m_value /= rhv.m_value;
     return *this;
 }
 
 const double Value::getValue( void ) const
 {
-    return this->m_value;
+    return m_value;
 }
 
 const bool Value::toBeCalculated( void ) const
 {
-    return this->m_toBeCalculated;
+    return m_toBeCalculated;
 }

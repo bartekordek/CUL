@@ -5,13 +5,13 @@ using namespace Video;
 
 void IFPSObservable::addFPSCounter( IFPSCounter* counter )
 {
-    this->m_fpsCounter = counter;
+    m_fpsCounter = counter;
 }
 
 void IFPSObservable::frameHasEnded()
 {
-    if( this->m_fpsCounter )
+    if( m_fpsCounter )
     {
-        this->m_fpsCounter->increase();
+        m_fpsCounter->increase();
     }
 }

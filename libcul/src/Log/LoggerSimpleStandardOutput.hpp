@@ -17,7 +17,7 @@ public:
     ~LoggerSimpleStandardOutput();
 
     void log(
-        const MyString& text,
+        const String& text,
         const Severity severity = Severity::INFO ) override;
 
 protected:

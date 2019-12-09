@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( LOG )
@@ -22,7 +22,7 @@ public:
     virtual ~ILogger() = default;
 
     virtual void log(
-        const MyString& text,
+        const String& text,
         const Severity severity = Severity::INFO ) = 0;
 
     static ILogger* createSimpleStandardOutputLogger();

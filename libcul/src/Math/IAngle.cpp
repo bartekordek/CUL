@@ -275,15 +275,15 @@ void Angle::decrement()
 
 Angle& Angle::operator-=( const double value )
 {
-    if( Type::RADIAN == this->m_type )
+    if( Type::RADIAN == m_type )
     {
-        this->m_valueRad -= value;
-        this->m_valueDeg = radian2degree( this->m_valueRad );
+        m_valueRad -= value;
+        m_valueDeg = radian2degree( m_valueRad );
     }
     else
     {
-        this->m_valueDeg -= value;
-        this->m_valueRad = degree2radian( this->m_valueDeg );
+        m_valueDeg -= value;
+        m_valueRad = degree2radian( m_valueDeg );
     }
     return *this;
 }
@@ -297,13 +297,13 @@ void Angle::setValue( const double value, const Type type )
 {
     if( Type::RADIAN == type )
     {
-        this->m_valueRad = value;
-        this->m_valueDeg = radian2degree( value );
+        m_valueRad = value;
+        m_valueDeg = radian2degree( value );
     }
     else
     {
-        this->m_valueDeg = value;
-        this->m_valueRad = degree2radian( value );
+        m_valueDeg = value;
+        m_valueRad = degree2radian( value );
     }
     m_type = type;
 }
@@ -312,18 +312,18 @@ const double Angle::getValueD( const Type type ) const
 {
     if( Type::RADIAN == type )
     {
-        return this->m_valueRad;
+        return m_valueRad;
     }
-    return this->m_valueDeg;
+    return m_valueDeg;
 }
 
 const float Angle::getValueF(const Type type) const
 {
     if (Type::RADIAN == type)
     {
-        return static_cast<float>( this->m_valueRad );
+        return static_cast<float>( m_valueRad );
     }
-    return static_cast<float>( this->m_valueDeg );
+    return static_cast<float>( m_valueDeg );
 }
 
 

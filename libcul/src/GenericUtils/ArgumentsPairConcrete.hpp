@@ -2,7 +2,7 @@
 
 #include "CUL/GenericUtils/IArgumentsPair.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
@@ -31,7 +31,7 @@ protected:
 private:
     void clearArgs();
 
-    std::vector<MyString> m_argumentsPtrs;
+    std::vector<String> m_argumentsPtrs;
     char* m_valBegining = nullptr;
     char** m_valBeginingTable = nullptr;
     int m_argc = 0;

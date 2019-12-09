@@ -17,7 +17,7 @@ CSVFile::CSVFile( const CSVFile & rhv ):
 
 }
 
-CSVFile::CSVFile( CnstMyStr& fPath ):
+CSVFile::CSVFile( CsStr& fPath ):
     m_path( fPath )
 {
 
@@ -41,7 +41,7 @@ CSVFile& CSVFile::operator=( const CSVFile& rhv )
     return *this;
 }
 
-CSVFile& CSVFile::operator=( CnstMyStr& rPath )
+CSVFile& CSVFile::operator=( CsStr& rPath )
 {
     changePath( rPath );
     return *this;
@@ -49,7 +49,7 @@ CSVFile& CSVFile::operator=( CnstMyStr& rPath )
 
 void CSVFile::changePath( const Path& newPath )
 {
-    this->m_path = newPath;
+    m_path = newPath;
     reload();
 }
 
@@ -60,27 +60,27 @@ const bool CSVFile::checkIfFileIsAllRight()const
 
 cunt CSVFile::rowsCount()const
 {
-    return static_cast<cunt>( this->m_rows.size() );
+    return static_cast<cunt>( m_rows.size() );
 }
 
 cunt CSVFile::colsCount()const
 {
-    return static_cast<cunt>( this->m_rows[0].size() );
+    return static_cast<cunt>( m_rows[0].size() );
 }
 
-CnstMyStr& CSVFile::getVal( cunt row, cunt col )const
+CsStr& CSVFile::getVal( cunt row, cunt col )const
 {
-    return this->m_rows[ row ][ col ];
+    return m_rows[ row ][ col ];
 }
 
-void CSVFile::setVal( CnstMyStr& val, cunt row, cunt col )
+void CSVFile::setVal( CsStr& val, cunt row, cunt col )
 {
-    this->m_rows[ row ][ col ] = val;
+    m_rows[ row ][ col ] = val;
 }
 
 const bool CSVFile::exists()const
 {
-    return this->m_path.exists();
+    return m_path.exists();
 }
 
 const bool CSVFile::isBinary()const
@@ -88,9 +88,9 @@ const bool CSVFile::isBinary()const
     return false;//TODO
 }
 
-void CSVFile::setDelimeter( CnstMyStr& delimeter )
+void CSVFile::setDelimeter( CsStr& delimeter )
 {
-    this->m_delimeter = delimeter;
+    m_delimeter = delimeter;
 }
 
 void CSVFile::reload( CBool keepLineEndingCharacter )
@@ -101,10 +101,10 @@ void CSVFile::reload( CBool keepLineEndingCharacter )
 
 void CSVFile::load( CBool keepLineEndingCharacter )
 {
-    this->m_keepLineEndingCharacter = keepLineEndingCharacter;
+    m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
     infile.open(
-        this->m_path.getPath().cStr(),
+        m_path.getPath().cStr(),
         std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
@@ -124,11 +124,11 @@ void CSVFile::load( CBool keepLineEndingCharacter )
     cacheFile();
 }
 
-void CSVFile::parseLine( CnstMyStr& line )
+void CSVFile::parseLine( CsStr& line )
 {
     Row inRow;//TODO: there is a problem with parsing.
     auto lineCp = line;//huj
-    auto delimeterPos = line.string().find( this->m_delimeter.string() );
+    auto delimeterPos = line.string().find( m_delimeter.string() );
     std::string cell;
     while( delimeterPos != std::string::npos )
     {
@@ -144,7 +144,7 @@ void CSVFile::parseLine( CnstMyStr& line )
         cell = lineCp.string().substr( cellStart, cellEnd );
         inRow.push_back( cell );
         lineCp = lineCp.string().substr( cellEnd + newCellOffset );
-        delimeterPos = lineCp.string().find( this->m_delimeter.string() );
+        delimeterPos = lineCp.string().find( m_delimeter.string() );
     }
 
     if( m_cellsContainQuotationMarks )
@@ -157,59 +157,59 @@ void CSVFile::parseLine( CnstMyStr& line )
     }
     inRow.push_back( cell );
 
-    this->m_rows.push_back( inRow );
+    m_rows.push_back( inRow );
 }
 
 void CSVFile::unload()
 {
-    this->m_rows.clear();
+    m_rows.clear();
 }
 
-CnstMyStr& CSVFile::firstLine()const
+CsStr& CSVFile::firstLine()const
 {
-    return this->m_rows.front()[0];
+    return m_rows.front()[0];
 }
 
-CnstMyStr& CSVFile::lastLine()const
+CsStr& CSVFile::lastLine()const
 {
-    return this->m_rows.back()[ this->m_rows.size() - 1 ];
+    return m_rows.back()[ m_rows.size() - 1 ];
 }
 
 const Path& CSVFile::getPath()const
 {
-    return this->m_path;
+    return m_path;
 }
 
-CnstMyStr& CSVFile::getAsOneString()const
+CsStr& CSVFile::getAsOneString()const
 {
-    return this->m_cached;
+    return m_cached;
 }
 
 void CSVFile::cacheFile()
 {
-    this->m_cached = "";
-    for( const auto& row : this->m_rows )
+    m_cached = "";
+    for( const auto& row : m_rows )
     {
-        MyString line;
+        String line;
         for( const auto& cell: row )
         {
             line += cell;
-            line += this->m_delimeter;
+            line += m_delimeter;
         }
 
-        this->m_cached += line;
-        this->m_cached += "\n";
+        m_cached += line;
+        m_cached += "\n";
     }
 }
 
 cunt CSVFile::getLinesCount()const
 {
-    return static_cast< cunt >( this->m_rows.size() );
+    return static_cast< cunt >( m_rows.size() );
 }
 
 void CSVFile::fileContainsQuotationMarks( const bool containsQuotationMarks )
 {
-    this->m_cellsContainQuotationMarks = containsQuotationMarks;
+    m_cellsContainQuotationMarks = containsQuotationMarks;
 }
 
 const char** CSVFile::getContent()const

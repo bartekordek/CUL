@@ -3,7 +3,7 @@
 #include "CUL/UselessMacros.hpp"
 #include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( JSON )
@@ -19,7 +19,7 @@ public:
     virtual ~IParent( void ) = default;
 
     virtual const ChildrenNodes& getChildren() const = 0;
-    virtual const INode* getChild( CnstMyStr& childName ) const = 0;
+    virtual const INode* getChild( CsStr& childName ) const = 0;
     virtual void addChild( INode* node ) = 0;
 
 protected:

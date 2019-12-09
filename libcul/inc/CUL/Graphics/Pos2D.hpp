@@ -38,36 +38,36 @@ public:
     {
         if( this != &rhv )
         {
-            this->m_x = rhv.m_x;
-            this->m_y = rhv.m_y;
+            m_x = rhv.m_x;
+            m_y = rhv.m_y;
         }
         return *this;
     }
 
     const Type getX(void)const
     {
-        return this->m_x;
+        return m_x;
     }
 
     const Type getY(void)const
     {
-        return this->m_y;
+        return m_y;
     }
 
     void setX(const Type val)
     {
-        this->m_x = val;
+        m_x = val;
     }
 
     void setY(const Type val)
     {
-        this->m_y = val;
+        m_y = val;
     }
 
     void setXY(const Type x, const Type y)
     {
-        this->m_x = x;
-        this->m_y = y;
+        m_x = x;
+        m_y = y;
     }
 
 protected:

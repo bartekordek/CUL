@@ -2,7 +2,7 @@
 
 #include "CUL/UselessMacros.hpp"
 #include "CUL/STL_IMPORTS/STD_filesystem.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
@@ -15,7 +15,7 @@ using FsPath = std::filesystem::path;
 using DirectoryIterator = std::filesystem::directory_iterator;
 #endif
 
-CUL::MyString ws2s( const std::wstring& wstr );
+CUL::String ws2s( const std::wstring& wstr );
 
 NAMESPACE_END( FS )
 NAMESPACE_END( CUL )

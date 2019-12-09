@@ -21,7 +21,7 @@ public:
         const bool isFloatPoint = std::is_same<Type, float>::value || std::is_same<Type, double>::value;
         if(isFloatPoint)
         {
-            this->epsilon = static_cast<Type>( 0.0000000001 );
+            epsilon = static_cast<Type>( 0.0000000001 );
         }
     }
 
@@ -29,12 +29,12 @@ public:
 
     void setEpsilon( const double epislon )
     {
-        this->epsilon = epislon;
+        epsilon = epislon;
     }
 
     const Type getEpsilon()const
     {
-        return this->epsilon;
+        return epsilon;
     }
 
     template <typename SomeOtherType>

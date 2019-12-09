@@ -1,15 +1,16 @@
 #pragma once
 
 #include <CUL/CUL.hpp>
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
-namespace CUL
+NAMESPACE_BEGIN( CUL )
+
+class CULLib_API Assert
 {
-    class CULLib_API Assert
-    {
-    public:
-        static void simple( const bool val, CnstMyStr& msg = MyString( "" ) );
-    protected:
-    private:
-    };
-}
+public:
+    static void simple( Cbool val, CsStr& msg = String( "" ) );
+protected:
+private:
+};
+
+NAMESPACE_END( CUL )

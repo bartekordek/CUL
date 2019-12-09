@@ -29,7 +29,7 @@ namespace CUL
 
             Quaternion inverse()const
             {
-                return this->conjugate() * 1 / squareNorm();
+                return conjugate() * 1 / squareNorm();
             }
 
             const Type squareNorm()const
@@ -41,10 +41,10 @@ namespace CUL
             {
                 if( this != &quaternion )
                 {
-                    this->s = quaternion.s;
-                    this->x = quaternion.x;
-                    this->y = quaternion.y;
-                    this->z = quaternion.z;
+                    s = quaternion.s;
+                    x = quaternion.x;
+                    y = quaternion.y;
+                    z = quaternion.z;
                 }
                 return *this;
             }
@@ -52,20 +52,20 @@ namespace CUL
             Quaternion operator+( const Quaternion& quaternion )
             {
                 Quaternion result;
-                result.s = this->s + quaternion.s;
-                result.x = this->x + quaternion.x;
-                result.y = this->y + quaternion.y;
-                result.z = this->z + quaternion.z;
+                result.s = s + quaternion.s;
+                result.x = x + quaternion.x;
+                result.y = y + quaternion.y;
+                result.z = z + quaternion.z;
                 return result;
             }
 
             Quaternion operator-( const Quaternion& quaternion )
             {
                 Quaternion result;
-                result.s = this->s - quaternion.s;
-                result.x = this->x - quaternion.x;
-                result.y = this->y - quaternion.y;
-                result.z = this->z - quaternion.z;
+                result.s = s - quaternion.s;
+                result.x = x - quaternion.x;
+                result.y = y - quaternion.y;
+                result.z = z - quaternion.z;
                 return result;
             }
 
@@ -93,10 +93,10 @@ namespace CUL
             Quaternion operator*( const Type scalar )
             {
                 Quaternion result;
-                //result.a = this->a * scalar;
-                //result.x = this->x * scalar;
-                //result.y = this->y * scalar;
-                //result.z = this->z * scalar;
+                //result.a = a * scalar;
+                //result.x = x * scalar;
+                //result.y = y * scalar;
+                //result.z = z * scalar;
                 return result;
             }
 
@@ -110,43 +110,43 @@ namespace CUL
             Quaternion conjugate()const
             {
                 Quaternion result;
-                result.s = this->s;
-                result.x = -this->x;
-                result.y = -this->y;
-                result.z = -this->z;
+                result.s = s;
+                result.x = -x;
+                result.y = -y;
+                result.z = -z;
                 return result;
             }
 
             void set( const Type s, const Type x, const Type y, const Type z )
             {
-                this->s = s;
-                this->x = x;
-                this->y = y;
-                this->z = z;
+                s = s;
+                x = x;
+                y = y;
+                z = z;
                 calculateNorm();
             }
 
             void setS( const Type s )
             {
-                this->s = s;
+                s = s;
                 calculateNorm();
             }
 
             void setX( const Type x )
             {
-                this->x = x;
+                x = x;
                 calculateNorm();
             }
 
             void setY( const Type y )
             {
-                this->y = y;
+                y = y;
                 calculateNorm();
             }
 
             void setZ( const Type z )
             {
-                this->z = z;
+                z = z;
                 calculateNorm();
             }
 

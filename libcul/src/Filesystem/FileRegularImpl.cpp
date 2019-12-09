@@ -98,17 +98,17 @@ void FileRegularImpl::unload()
     m_cached = "";
 }
 
-CnstMyStr& FileRegularImpl::firstLine()const
+CsStr& FileRegularImpl::firstLine()const
 {
     return rows.front();
 }
 
-CnstMyStr& FileRegularImpl::lastLine()const
+CsStr& FileRegularImpl::lastLine()const
 {
     return rows.back();
 }
 
-CnstMyStr& FileRegularImpl::getAsOneString()const
+CsStr& FileRegularImpl::getAsOneString()const
 {
     return m_cached;
 }

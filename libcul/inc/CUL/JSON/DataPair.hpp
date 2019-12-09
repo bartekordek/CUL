@@ -10,11 +10,11 @@ class CULLib_API DataPair final:
 {
 public:
     DataPair( void );
-    DataPair( CnstMyStr& name, CnstMyStr& value );
+    DataPair( CsStr& name, CsStr& value );
     ~DataPair( void );
 
-    CnstMyStr& getVal()const;
-    void setVal( CnstMyStr& val );
+    CsStr& getVal()const;
+    void setVal( CsStr& val );
 
     //INode
     const ElementType getType()const override;
@@ -22,7 +22,7 @@ public:
 
 protected:
 private:
-    MyString m_value;
+    String m_value;
 
 };
 

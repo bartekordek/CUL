@@ -8,25 +8,24 @@ DataPair::DataPair( void )
 
 }
 
-DataPair::DataPair( CnstMyStr& name, CnstMyStr& value ):
+DataPair::DataPair( CsStr& name, CsStr& value ):
     INode( name ),
     m_value( value )
 {
 }
 
-DataPair::~DataPair( void )
+DataPair::~DataPair()
 {
-
 }
 
-CnstMyStr& DataPair::getVal() const
+CsStr& DataPair::getVal() const
 {
-    return this->m_value;
+    return m_value;
 }
 
-void DataPair::setVal( CnstMyStr& val )
+void DataPair::setVal( CsStr& val )
 {
-    this->m_value = val;
+    m_value = val;
 }
 
 const ElementType DataPair::getType() const

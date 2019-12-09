@@ -7,7 +7,7 @@ Array::Array( void )
 {
 }
 
-Array::Array( CnstMyStr& name ):
+Array::Array( CsStr& name ):
     INode( name )
 {
 }
@@ -26,7 +26,7 @@ void Array::addValue( INode* node )
     INode::addChild( node );
 }
 
-INode* Array::getValue( CnstMyStr& valName )
+INode* Array::getValue( CsStr& valName )
 {
     for( auto& val: INode::getChildren() )
     {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/Graphics/IRawImage.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #include "Graphics/IMPORT_Devil.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -14,7 +14,7 @@ public:
     RawImageConcrete( void );
     ~RawImageConcrete( void );
 
-    void loadFromFile( CUL::CnstMyStr& path );
+    void loadFromFile( CUL::CsStr& path );
 
     cunt getID()const override;
     const Math::Vector3Du& getSize()const override;

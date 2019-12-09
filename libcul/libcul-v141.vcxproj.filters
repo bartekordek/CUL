@@ -78,9 +78,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\MyString.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Named.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -152,9 +149,6 @@
     </ClCompile>
     <ClCompile Include="src\JSON\JSONFileConcrete.cpp">
       <Filter>Source Files\JSON</Filter>
-    </ClCompile>
-    <ClCompile Include="src\String\MyStringImpl.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Video\FPSCounterConcrete.cpp">
       <Filter>Source Files\Video</Filter>
@@ -245,6 +239,12 @@
     </ClCompile>
     <ClCompile Include="src\GenericUtils\IArgumentsPair.cpp">
       <Filter>Source Files\GenericUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\String\String.cpp">
+      <Filter>Source Files\String</Filter>
+    </ClCompile>
+    <ClCompile Include="src\String\StringImpl.cpp">
+      <Filter>Source Files\String</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -343,9 +343,6 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\List\IList.hpp">
       <Filter>Header Files\List</Filter>
-    </ClInclude>
-    <ClInclude Include="src\String\MyStringImpl.hpp">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Triangle.hpp">
       <Filter>Header Files\Math</Filter>
@@ -512,9 +509,6 @@
     <ClInclude Include="inc\CUL\ITimer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\MyString.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Named.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -598,6 +592,12 @@
     </ClInclude>
     <ClInclude Include="src\IMPORT_devil.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\String.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\String\StringImpl.hpp">
+      <Filter>Source Files\String</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

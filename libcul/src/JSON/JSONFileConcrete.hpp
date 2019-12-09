@@ -14,16 +14,17 @@ using JValue = rapidjson::Value;
 #pragma warning( push )
 #pragma warning( disable: 4820 )
 #endif
-class JSONFileConcrete:
+class JSONFileConcrete final:
     public IJSONFile
 {
 public:
-    JSONFileConcrete( void );
-    JSONFileConcrete( const JSONFileConcrete& rhv ) = delete;
-    ~JSONFileConcrete( void );
+    JSONFileConcrete();
+    ~JSONFileConcrete();
 
-    JSONFileConcrete& operator=( const JSONFileConcrete& rhv ) = delete;
-
+protected:
+private:
+    void parse();
+    void parse( CsStr& valueName, const JValue& parentValue, INode* parentNode = nullptr );
     const FS::Path& getPath()const override;
 
     CBool exists()const override;
@@ -35,24 +36,23 @@ public:
     void load( CBool keepLineEndingCharacter = false ) override;
     void unload() override;
 
-    CnstMyStr& firstLine()const override;
-    CnstMyStr& lastLine()const override;
+    CsStr& firstLine()const override;
+    CsStr& lastLine()const override;
 
-    CnstMyStr& getAsOneString()const override;
+    CsStr& getAsOneString()const override;
     const char** getContent()const override;
 
     cunt getLinesCount()const override;
 
-    INode* getRoot()const override;
-
-protected:
-private:
-    void parse();
-    void parse( CnstMyStr& valueName, const JValue& parentValue, INode* parentNode = nullptr );
+    INode* getRoot() const override;
 
     rapidjson::Document m_document;
     INode* m_root = nullptr;
     FS::IFile* m_fileContents = nullptr;
+
+private: // Deleted
+    JSONFileConcrete( const JSONFileConcrete& rhv ) = delete;
+    JSONFileConcrete& operator=( const JSONFileConcrete& rhv ) = delete;
 
 };
 #ifdef _MSC_VER

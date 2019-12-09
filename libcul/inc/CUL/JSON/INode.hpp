@@ -20,23 +20,23 @@ class CULLib_API INode:
 {
 public:
     INode( void ) = default;
-    INode( CnstMyStr& name );
+    INode( CsStr& name );
     virtual ~INode( void ) = default;
 
-    CnstMyStr& getName() const;
-    void setName( CnstMyStr& name );
+    CsStr& getName() const;
+    void setName( CsStr& name );
     const bool operator==( const INode& rhv ) const;
-    const bool operator==( CnstMyStr& rhv ) const;
+    const bool operator==( CsStr& rhv ) const;
 
     virtual const ElementType getType()const = 0;
 
     const ChildrenNodes& getChildren()const override;
-    const INode* getChild( CnstMyStr& childName ) const override;
+    const INode* getChild( CsStr& childName ) const override;
     void addChild( INode* node ) override;
 
 protected:
 private:
-    MyString m_name;
+    String m_name;
     ChildrenNodes m_children;
 
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include "CUL/CUL.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4251)
@@ -13,44 +13,44 @@ class CULLib_API Path
 public:
     Path();
     Path( const Path& path );
-    Path( CnstMyStr& path );
+    Path( CsStr& path );
     Path( const char* r );
     virtual ~Path();
 
-    Path& operator=( CnstMyStr& r );
+    Path& operator=( CsStr& r );
     Path& operator=( const char* r );
     Path& operator+=( const Path& rhv );
-    Path& operator+=( CnstMyStr& rhv );
+    Path& operator+=( CsStr& rhv );
 
     Path operator+( const Path& rhv );
-	Path operator+( CnstMyStr& rhv );
+	Path operator+( CsStr& rhv );
 	Path operator+( const char* rhv );
 
-    CnstMyStr& getPath()const;
-    CnstMyStr& getExtension()const;
-    CnstMyStr& getBaseName()const;
-    CnstMyStr& getDir()const;
+    CsStr& getPath()const;
+    CsStr& getExtension()const;
+    CsStr& getBaseName()const;
+    CsStr& getDir()const;
 
     const bool operator==( const Path& rhv ) const;
 
-    operator CnstMyStr() const;
+    operator CsStr() const;
 
     const bool exists()const;
 
-    static CnstMyStr& getDirSeparator();
+    static CsStr& getDirSeparator();
 
 protected:
 private:
     void preparePaths();
     void normalizePaths();
-    void normalizePath( MyString& path );
+    void normalizePath( String& path );
 
-    MyString m_fullPath;
-    MyString m_extension;
-    MyString m_baseName;
-    MyString m_dir;
+    String m_fullPath;
+    String m_extension;
+    String m_baseName;
+    String m_dir;
 
-    static MyString extensionSeparator;
+    static String extensionSeparator;
 };
 
 const bool CULLib_API operator<( const Path& lhv, const Path& rhv );

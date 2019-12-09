@@ -1,4 +1,4 @@
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #include "StringTest.hpp"
 
 void StringTests::SetUpTestCase()
@@ -11,47 +11,47 @@ void StringTests::TearDownTestCase()
 
 TEST_F( StringTests, lower )
 {
-    CUL::MyString string( "someString" );
+    CUL::String string( "someString" );
     string.toLower();
     ASSERT_EQ( string, "somestring" );
 }
 
 TEST_F( StringTests, upper )
 {
-    CUL::MyString string( "someString" );
+    CUL::String string( "someString" );
     string.toUpper();
     ASSERT_EQ( string, "SOMESTRING" );
 }
 
 TEST_F( StringTests, containsTrue )
 {
-    CUL::MyString string( "someString" );
+    CUL::String string( "someString" );
     ASSERT_EQ( true, string.contains( "some" ) );
 }
 
 TEST_F( StringTests, containsFalse )
 {
-    CUL::MyString string( "someString" );
+    CUL::String string( "someString" );
     ASSERT_EQ( false, string.contains( "xD" ) );
 }
 
 TEST_F( StringTests, replace )
 {
-    CUL::MyString string( "someString" );
+    CUL::String string( "someString" );
     string.replace( "some", "WAT" );
     ASSERT_EQ( "WATString", string );
 }
 
 TEST_F( StringTests, clear )
 {
-    CUL::MyString string( "someString" );
+    CUL::String string( "someString" );
     string.clear();
     ASSERT_EQ( "", string );
 }
 
 TEST_F( StringTests, assigmentOperator )
 {
-    CUL::MyString string = true;
+    CUL::String string = true;
     ASSERT_EQ( "1", string );
 
     string = 10;

@@ -20,10 +20,10 @@ LoggerSimpleStandardOutput::~LoggerSimpleStandardOutput()
 #endif
 
 void LoggerSimpleStandardOutput::log(
-    const MyString& text,
+    const String& text,
     const Severity severity )
 {
-    std::lock_guard<std::mutex> logGuard( this->m_logMtx );
+    std::lock_guard<std::mutex> logGuard( m_logMtx );
     const auto& message = text.cStr();
     switch( severity )
     {

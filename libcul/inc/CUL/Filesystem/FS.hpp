@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/Filesystem/Path.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #include "CUL/UselessMacros.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 
@@ -15,7 +15,7 @@ class CULLib_API FSApi
 public:
     FSApi();
     virtual ~FSApi();
-    static MyString getCurrentDir();
+    static String getCurrentDir();
     static const FileList getFilesUnderDirectory( const Path& directory );
 protected:
 private:

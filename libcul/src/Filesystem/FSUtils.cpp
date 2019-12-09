@@ -14,9 +14,9 @@ using namespace CUL::FS;
 #pragma warning( disable: 4996 )
 #endif
 
-CUL::MyString CUL::FS::ws2s( const std::wstring& input )
+CUL::String CUL::FS::ws2s( const std::wstring& input )
 {
-    MyString result;
+    String result;
     auto outputSize = input.length() + 1;
     auto outputString = new char[outputSize];
 

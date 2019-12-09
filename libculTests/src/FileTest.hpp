@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Gtest.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4625 )
@@ -27,8 +27,8 @@ protected:
     {
     }
 
-    CUL::MyString dummyFilePath = "../media/Dummy.txt";
-    CUL::MyString dummyImage = "../media/pikaczu.png";
+    CUL::String dummyFilePath = "../media/Dummy.txt";
+    CUL::String dummyImage = "../media/pikaczu.png";
 
 };
 #ifdef _MSC_VER

@@ -2,7 +2,7 @@
 
 namespace CUL
 {
-    Name::Name(const MyString& name): mName(name)
+    Name::Name(const String& name): mName(name)
     {
     }
 
@@ -14,12 +14,12 @@ namespace CUL
     {
     }
 
-    void Name::setName( const MyString& name )
+    void Name::setName( const String& name )
     {
         mName = name;
     }
 
-    const MyString& Name::GetName()const
+    const String& Name::GetName()const
     {
         return mName;
     }
@@ -28,7 +28,7 @@ namespace CUL
     {
         if( this != &name )
         {
-            this->mName = name.mName;
+            mName = name.mName;
         }
         return *this;
     }

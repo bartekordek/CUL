@@ -42,36 +42,36 @@ public:
 
     const Type getRow()const
     {
-        return this->m_row;
+        return m_row;
     }
 
     const Type getCol()const
     {
-        return this->m_col;
+        return m_col;
     }
 
     void setRow( const Type row )
     {
-        this->m_row = row;
+        m_row = row;
     }
 
     void setCol( const Type col )
     {
-        this->m_col = col;
+        m_col = col;
     }
 
     void setBoth( const Type& row, const Type& col )
     {
-        this->m_row = row;
-        this->m_col = col;
+        m_row = row;
+        m_col = col;
     }
 
     const bool operator==( const PosTable<Type>& rhv ) const
     {
         if( &rhv != this )
         {
-            if( false == Epsilon<Type>::equals( this->m_row, rhv.m_row ) ||
-                false == Epsilon<Type>::equals( this->m_col, rhv.m_col ) )
+            if( false == Epsilon<Type>::equals( m_row, rhv.m_row ) ||
+                false == Epsilon<Type>::equals( m_col, rhv.m_col ) )
             {
                 return false;
             }
@@ -83,8 +83,8 @@ public:
     {
         if( &rhv != this )
         {
-            this->m_row = rhv.m_row;
-            this->m_col = rhv.m_col;
+            m_row = rhv.m_row;
+            m_col = rhv.m_col;
         }
         return *this;
     }
@@ -96,8 +96,8 @@ public:
 
     PosTable<Type>& operator+=( const PosTable<Type>& rhv )
     {
-        this->m_row += rhv.m_row;
-        this->m_col += rhv.m_col;
+        m_row += rhv.m_row;
+        m_col += rhv.m_col;
         return *this;
     }
 
@@ -110,8 +110,8 @@ public:
 
     PosTable<Type>& operator-=( const PosTable<Type>& rhv )
     {
-        this->m_row -= rhv.m_row;
-        this->m_col -= rhv.m_col;
+        m_row -= rhv.m_row;
+        m_col -= rhv.m_col;
         return *this;
     }
 

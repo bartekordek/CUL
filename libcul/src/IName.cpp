@@ -6,7 +6,7 @@ CUL::IName::IName()
 {
 }
 
-CUL::IName::IName( CnstMyStr& name ):
+CUL::IName::IName( CsStr& name ):
     m_name( name )
 {
 }
@@ -24,17 +24,17 @@ IName & CUL::IName::operator=( const IName& rhv )
 {
     if( &rhv != this )
     {
-        this->m_name = rhv.m_name;
+        m_name = rhv.m_name;
     }
     return *this;
 }
 
-CnstMyStr& CUL::IName::getName() const
+CsStr& CUL::IName::getName() const
 {
-    return this->m_name;
+    return m_name;
 }
 
-void CUL::IName::setName( CnstMyStr& name )
+void CUL::IName::setName( CsStr& name )
 {
-    this->m_name = name;
+    m_name = name;
 }

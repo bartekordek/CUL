@@ -5,7 +5,7 @@
 #include "ThreadUtilityDummy.hpp"
 #endif
 
-void CUL::ThreadUtils::setCurrentThreadName( CnstMyStr& name )
+void CUL::ThreadUtils::setCurrentThreadName( CsStr& name )
 {
 #ifdef _MSC_VER
     CUL::ThreadUtils::setCurrentThreadNameWin( name );

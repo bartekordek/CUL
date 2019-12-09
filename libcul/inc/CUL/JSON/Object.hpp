@@ -10,7 +10,7 @@ class CULLib_API Object final:
 {
 public:
     Object( void );
-    Object( CnstMyStr& name );
+    Object( CsStr& name );
     ~Object( void );
 
     //INode

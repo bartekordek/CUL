@@ -22,25 +22,25 @@ SystemFontsWindows::~SystemFontsWindows()
 
 const FontFilesPaths& SystemFontsWindows::getFontFilesPaths()
 {
-    return this->m_fontFilesList;
+    return m_fontFilesList;
 }
 
 void SystemFontsWindows::addSearchPath( const FS::Path& dir )
 {
-    this->m_defaultDirsWithFonts.insert( dir );
+    m_defaultDirsWithFonts.insert( dir );
 }
 
 void SystemFontsWindows::updateFontFilesList()
 {
     getWindowsPath();
-    for( const auto& dir: this->m_defaultDirsWithFonts )
+    for( const auto& dir: m_defaultDirsWithFonts )
     {
         const auto files = FS::FSApi::getFilesUnderDirectory( dir );
         for( const auto& file: files )
         {
             if( file.getExtension() == ".ttf" )
             {
-                this->m_fontFilesList.insert( file );
+                m_fontFilesList.insert( file );
             }
         }
     }
@@ -123,12 +123,12 @@ void SystemFontsWindows::getWindowsPath()
     PVOID buffer;
     DWORD cjBuffer = 0;
 
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::MyString( hf ) );
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::MyString( chuj ) );
+    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::String( hf ) );
+    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::String( chuj ) );
 
     FS::Path windowsPath( windir );
     FS::Path windowsFonts = windowsPath + "/Fonts";
-    this->m_defaultDirsWithFonts.insert( windowsFonts );
+    m_defaultDirsWithFonts.insert( windowsFonts );
 }
 #pragma warning( pop )
 #endif

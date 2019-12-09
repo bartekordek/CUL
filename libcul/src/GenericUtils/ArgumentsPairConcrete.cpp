@@ -54,7 +54,7 @@ char** CUL::GUTILS::ArgumentsPairConcrete::getArgsVal()
 void ArgumentsPairConcrete::createDummyArgs()
 {
     clearArgs();
-    this->m_argumentsAreDummy = true;
+    m_argumentsAreDummy = true;
     auto line1 = new char[ 20 ];
 #ifdef _MSC_VER
 #pragma warning( push )

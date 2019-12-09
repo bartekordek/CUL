@@ -15,7 +15,7 @@ FSApi::~FSApi()
 {
 }
 
-MyString FSApi::getCurrentDir()
+String FSApi::getCurrentDir()
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     auto currentDir = std::experimental::filesystem::current_path();
@@ -36,7 +36,7 @@ const FileList FSApi::getFilesUnderDirectory( const Path& directory )
     {
         if( isRegularFile( it->path().c_str() ) )
         {
-            MyString filePath = it->path().string();
+            String filePath = it->path().string();
             result.insert( filePath );
         }
     }

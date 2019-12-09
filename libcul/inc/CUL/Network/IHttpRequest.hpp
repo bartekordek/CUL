@@ -2,7 +2,7 @@
 
 #include "CUL/CUL.hpp"
 #include "CUL/UselessMacros.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Network )
@@ -13,13 +13,13 @@ public:
     IHttpRequest();
     virtual ~IHttpRequest();
 
-    virtual void setConnectionAddres( CnstMyStr& adddress ) = 0;
+    virtual void setConnectionAddres( CsStr& adddress ) = 0;
 
     virtual void connect() = 0;
 
-    virtual void get( CnstMyStr& command ) = 0;
+    virtual void get( CsStr& command ) = 0;
 
-    virtual CnstMyStr getError() = 0;
+    virtual CsStr getError() = 0;
 
 protected:
 private:

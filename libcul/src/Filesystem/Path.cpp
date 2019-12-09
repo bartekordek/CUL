@@ -4,9 +4,9 @@
 using namespace CUL;
 using namespace FS;
 
-MyString Path::extensionSeparator = MyString( "." );
+String Path::extensionSeparator = String( "." );
 
-CnstMyStr& Path::getDirSeparator()
+CsStr& Path::getDirSeparator()
 {
     return extensionSeparator;
 }
@@ -25,7 +25,7 @@ Path::Path( const Path& path ):
     normalizePaths();
 }
 
-Path::Path( CnstMyStr& path ):
+Path::Path( CsStr& path ):
     m_fullPath(path)
 {
     preparePaths();
@@ -43,11 +43,11 @@ Path::~Path()
 
 }
 
-Path& Path::operator=( CnstMyStr& path )
+Path& Path::operator=( CsStr& path )
 {
-    if( this->m_fullPath != path )
+    if( m_fullPath != path )
     {
-        this->m_fullPath = path;
+        m_fullPath = path;
         preparePaths();
     }
     return *this;
@@ -55,9 +55,9 @@ Path& Path::operator=( CnstMyStr& path )
 
 Path& Path::operator=( const char* r )
 {
-    if ( this->m_fullPath != r )
+    if ( m_fullPath != r )
     {
-        this->m_fullPath = r;
+        m_fullPath = r;
         preparePaths();
     }
     return *this;
@@ -65,14 +65,14 @@ Path& Path::operator=( const char* r )
 
 Path& Path::operator+=( const Path& rhv )
 {
-    this->m_fullPath += rhv.m_fullPath;
+    m_fullPath += rhv.m_fullPath;
     preparePaths();
     return *this;
 }
 
-Path& Path::operator+=( CnstMyStr& rhv )
+Path& Path::operator+=( CsStr& rhv )
 {
-    this->m_fullPath = this->m_fullPath + rhv;
+    m_fullPath = m_fullPath + rhv;
     preparePaths();
     return *this;
 }
@@ -84,7 +84,7 @@ Path Path::operator+( const Path & rhv )
     return result;
 }
 
-Path Path::operator+( CnstMyStr& rhv )
+Path Path::operator+( CsStr& rhv )
 {
 	Path result = *this;
 	result += rhv;
@@ -98,32 +98,32 @@ Path Path::operator+( const char* rhv )
 	return result;
 }
 
-CnstMyStr& Path::getPath()const
+CsStr& Path::getPath()const
 {
-    return this->m_fullPath;
+    return m_fullPath;
 }
 
-CnstMyStr& Path::getExtension()const
+CsStr& Path::getExtension()const
 {
-    return this->m_extension;
+    return m_extension;
 }
 
-CnstMyStr& Path::getBaseName()const
+CsStr& Path::getBaseName()const
 {
-    return this->m_baseName;
+    return m_baseName;
 }
 
-CnstMyStr& Path::getDir()const
+CsStr& Path::getDir()const
 {
-    return this->m_dir;
+    return m_dir;
 }
 
 const bool Path::operator==( const Path& rhv ) const
 {
-    return this->m_fullPath == rhv.m_fullPath;
+    return m_fullPath == rhv.m_fullPath;
 }
 
-Path::operator CnstMyStr() const
+Path::operator CsStr() const
 {
     return m_fullPath;
 }
@@ -149,14 +149,14 @@ void Path::normalizePaths()
     normalizePath( m_dir );
 }
 
-void Path::normalizePath( MyString& path )
+void Path::normalizePath( String& path )
 {
     path.replace( "\\", "/" );
 }
 
 const bool Path::exists() const
 {
-    const bool result = std::experimental::filesystem::is_regular_file( this->m_fullPath.cStr() );
+    const bool result = std::experimental::filesystem::is_regular_file( m_fullPath.cStr() );
     return result;
 }
 

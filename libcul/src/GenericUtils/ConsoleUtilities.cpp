@@ -27,7 +27,7 @@ void ConsoleUtilities::printInputParameters()
     auto argv = m_args->getArgsVal();
     for( int i = 0; i < argc; ++i )
     {
-        CUL::MyString logInfo = "ARG[" + CUL::MyString( i ) + "] = " + argv[ i ];
+        CUL::String logInfo = "ARG[" + CUL::String( i ) + "] = " + argv[ i ];
         CUL::LOG::LOG_CONTAINER::getLogger()->log( logInfo );
     }
 }

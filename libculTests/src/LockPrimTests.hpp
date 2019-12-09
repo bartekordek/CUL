@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #include "Gtest.hpp"
 
 class LockPrimTests:

@@ -23,63 +23,63 @@ Position3DDMutexed::Position3DDMutexed( const Position3DDMutexed& val ):
 
 Position3DDMutexed::~Position3DDMutexed()
 {
-    delete this->m_impl;
-    this->m_impl = nullptr;
+    delete m_impl;
+    m_impl = nullptr;
 }
 
 Position3DDMutexed& Position3DDMutexed::operator=( const Position3DDMutexed& val )
 {
     if( this != &val )
     {
-        *this->m_impl = *val.m_impl;
+        *m_impl = *val.m_impl;
     }
     return *this;
 }
 
 Position3DDMutexed& Position3DDMutexed::operator=( const Math::Vector3Dd& vec )
 {
-    this->m_impl->setXYZ( vec.getX(), vec.getY(), vec.getZ() );
+    m_impl->setXYZ( vec.getX(), vec.getY(), vec.getZ() );
     return *this;
 }
 
 void Position3DDMutexed::setX( CDbl val )
 {
-    this->m_impl->setX( val );
+    m_impl->setX( val );
 }
 
 void Position3DDMutexed::setY( CDbl val )
 {
-    this->m_impl->setY( val );
+    m_impl->setY( val );
 }
 
 void Position3DDMutexed::setZ( CDbl val )
 {
-    this->m_impl->setZ( val );
+    m_impl->setZ( val );
 }
 
 void Position3DDMutexed::setXYZ( CDbl x, CDbl y, CDbl z )
 {
-    this->m_impl->setXYZ( x, y, z );
+    m_impl->setXYZ( x, y, z );
 }
 
 CDbl Position3DDMutexed::getX() const
 {
-    return this->m_impl->getX();
+    return m_impl->getX();
 }
 
 CDbl Position3DDMutexed::getY() const
 {
-    return this->m_impl->getY();
+    return m_impl->getY();
 }
 
 CDbl Position3DDMutexed::getZ() const
 {
-    return this->m_impl->getZ();
+    return m_impl->getZ();
 }
 
 Position3DDMutexed& Position3DDMutexed::operator+=( const Position3DDMutexed& val )
 {
-    *this->m_impl += *val.m_impl;
+    *m_impl += *val.m_impl;
     return *this;
 }
 
@@ -92,7 +92,7 @@ Position3DDMutexed Position3DDMutexed::operator+( const Position3DDMutexed& val 
 
 Position3DDMutexed& Position3DDMutexed::operator-=( const Position3DDMutexed& val )
 {
-    *this->m_impl -= *val.m_impl;
+    *m_impl -= *val.m_impl;
     return *this;
 }
 
@@ -105,7 +105,7 @@ Position3DDMutexed Position3DDMutexed::operator-( const Position3DDMutexed& val 
 
 Position3DDMutexed& Position3DDMutexed::operator*=( const Position3DDMutexed & val )
 {
-    *this->m_impl *= *val.m_impl;
+    *m_impl *= *val.m_impl;
     return *this;
 }
 
@@ -118,7 +118,7 @@ Position3DDMutexed Position3DDMutexed::operator*( const Position3DDMutexed & val
 
 Position3DDMutexed& Position3DDMutexed::operator/=( const Position3DDMutexed & val )
 {
-    *this->m_impl /= *val.m_impl;
+    *m_impl /= *val.m_impl;
     return *this;
 }
 
@@ -131,7 +131,7 @@ Position3DDMutexed Position3DDMutexed::operator/( const Position3DDMutexed & val
 
 Position3DDMutexed& Position3DDMutexed::operator+=( CDbl val )
 {
-    *this->m_impl -= val;
+    *m_impl -= val;
     return *this;
 }
 
@@ -144,7 +144,7 @@ Position3DDMutexed Position3DDMutexed::operator+( CDbl val )
 
 Position3DDMutexed& Position3DDMutexed::operator-=( CDbl val )
 {
-    *this->m_impl -= val;
+    *m_impl -= val;
     return *this;
 }
 

@@ -33,7 +33,7 @@ public:
 
         const short value()const
         {
-            return this->m_value;
+            return m_value;
         }
 
     private:

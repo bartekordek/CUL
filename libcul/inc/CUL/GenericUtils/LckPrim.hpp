@@ -39,7 +39,7 @@ public:
     const Type& getVal()const
     {
         std::lock_guard<std::mutex> lock( mtx );
-        return this->value;
+        return value;
     }
 
     const Type getValCopy()const
@@ -71,8 +71,8 @@ public:
     Type& operator--()
     {
         std::lock_guard<std::mutex> lock( mtx );
-        --this->value;
-        return this->value;
+        --value;
+        return value;
     }
 
     Type operator--( int )
@@ -85,7 +85,7 @@ public:
 
     const bool operator==( const LckPrim<Type>& val )
     {
-        std::lock_guard<std::mutex> lock( this->mtx );
+        std::lock_guard<std::mutex> lock( mtx );
         return value == val.value;
     }
 

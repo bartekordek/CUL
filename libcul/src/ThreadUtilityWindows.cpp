@@ -15,7 +15,7 @@ typedef struct tagTHREADNAME_INFO
 } THREADNAME_INFO;
 #pragma warning( pop ) 
 
-void CUL::ThreadUtils::setCurrentThreadNameWin( CnstMyStr& name )
+void CUL::ThreadUtils::setCurrentThreadNameWin( CsStr& name )
 {
     DWORD dwID = GetCurrentThreadId();
     THREADNAME_INFO info;
@@ -34,7 +34,7 @@ void CUL::ThreadUtils::setCurrentThreadNameWin( CnstMyStr& name )
 #pragma warning(pop)  
 }
 #else
-void CUL::ThreadUtils::setCurrentThreadNameWin( CnstMyStr& name )
+void CUL::ThreadUtils::setCurrentThreadNameWin( CsStr& name )
 {
 }
 #endif

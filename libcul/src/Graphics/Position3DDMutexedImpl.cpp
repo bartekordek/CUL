@@ -16,10 +16,10 @@ Position3DDMutexedImpl::Position3DDMutexedImpl( CDbl x, CDbl y, CDbl z ):
 
 Position3DDMutexedImpl::Position3DDMutexedImpl( const Position3DDMutexedImpl& val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x = val.m_x;
-    this->m_y = val.m_y;
-    this->m_z = val.m_z;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x = val.m_x;
+    m_y = val.m_y;
+    m_z = val.m_z;
 }
 
 Position3DDMutexedImpl::~Position3DDMutexedImpl()
@@ -30,64 +30,64 @@ Position3DDMutexedImpl& Position3DDMutexedImpl::operator=( const Position3DDMute
 {
     if( this != &val )
     {
-        std::lock_guard<std::mutex> lock( this->m_valMtx );
-        this->m_x = val.m_x;
-        this->m_y = val.m_y;
-        this->m_z = val.m_z;
+        std::lock_guard<std::mutex> lock( m_valMtx );
+        m_x = val.m_x;
+        m_y = val.m_y;
+        m_z = val.m_z;
     }
     return *this;
 }
 
 void Position3DDMutexedImpl::setX( CDbl val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x = val;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x = val;
 }
 
 void Position3DDMutexedImpl::setY( CDbl val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_y = val;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_y = val;
 }
 
 void Position3DDMutexedImpl::setZ( CDbl val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_z = val;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_z = val;
 }
 
 void Position3DDMutexedImpl::setXYZ( CDbl x, CDbl y, CDbl z )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x = x;
-    this->m_y = y;
-    this->m_z = z;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x = x;
+    m_y = y;
+    m_z = z;
 }
 
 CDbl Position3DDMutexedImpl::getX() const
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
+    std::lock_guard<std::mutex> lock( m_valMtx );
     return m_x;
 }
 
 CDbl Position3DDMutexedImpl::getY() const
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
+    std::lock_guard<std::mutex> lock( m_valMtx );
     return m_y;
 }
 
 CDbl Position3DDMutexedImpl::getZ() const
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
+    std::lock_guard<std::mutex> lock( m_valMtx );
     return m_z;
 }
 
 Position3DDMutexedImpl& Position3DDMutexedImpl::operator+=( const Position3DDMutexedImpl& val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x += val.m_x;
-    this->m_y += val.m_y;
-    this->m_z += val.m_z;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x += val.m_x;
+    m_y += val.m_y;
+    m_z += val.m_z;
     return *this;
 }
 
@@ -100,10 +100,10 @@ Position3DDMutexedImpl Position3DDMutexedImpl::operator+( const Position3DDMutex
 
 Position3DDMutexedImpl& Position3DDMutexedImpl::operator-=( const Position3DDMutexedImpl& val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x -= val.m_x;
-    this->m_y -= val.m_y;
-    this->m_z -= val.m_z;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x -= val.m_x;
+    m_y -= val.m_y;
+    m_z -= val.m_z;
     return *this;
 }
 
@@ -116,10 +116,10 @@ Position3DDMutexedImpl Position3DDMutexedImpl::operator-( const Position3DDMutex
 
 Position3DDMutexedImpl & Position3DDMutexedImpl::operator*=( const Position3DDMutexedImpl & val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x *= val.m_x;
-    this->m_y *= val.m_y;
-    this->m_z *= val.m_z;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x *= val.m_x;
+    m_y *= val.m_y;
+    m_z *= val.m_z;
     return *this;
 }
 
@@ -132,10 +132,10 @@ Position3DDMutexedImpl Position3DDMutexedImpl::operator*( const Position3DDMutex
 
 Position3DDMutexedImpl& Position3DDMutexedImpl::operator/=( const Position3DDMutexedImpl & val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x /= val.m_x;
-    this->m_y /= val.m_y;
-    this->m_z /= val.m_z;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x /= val.m_x;
+    m_y /= val.m_y;
+    m_z /= val.m_z;
     return *this;
 }
 
@@ -148,10 +148,10 @@ Position3DDMutexedImpl Position3DDMutexedImpl::operator/( const Position3DDMutex
 
 Position3DDMutexedImpl& Position3DDMutexedImpl::operator+=( CDbl val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x += val;
-    this->m_y += val;
-    this->m_z += val;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x += val;
+    m_y += val;
+    m_z += val;
     return *this;
 }
 
@@ -164,10 +164,10 @@ Position3DDMutexedImpl Position3DDMutexedImpl::operator+( CDbl val )
 
 Position3DDMutexedImpl& Position3DDMutexedImpl::operator-=( CDbl val )
 {
-    std::lock_guard<std::mutex> lock( this->m_valMtx );
-    this->m_x -= val;
-    this->m_y -= val;
-    this->m_z -= val;
+    std::lock_guard<std::mutex> lock( m_valMtx );
+    m_x -= val;
+    m_y -= val;
+    m_z -= val;
     return *this;
 }
 

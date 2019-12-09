@@ -32,10 +32,10 @@ NAMESPACE_BEGIN( FS )
             void load( CBool keepLineEndingCharacter = false ) override;
             void unload() override;
 
-            CnstMyStr& firstLine()const override;
-            CnstMyStr& lastLine()const override;
+            CsStr& firstLine()const override;
+            CsStr& lastLine()const override;
 
-            CnstMyStr& getAsOneString()const override;
+            CsStr& getAsOneString()const override;
             const char** getContent()const override;
 
             cunt getLinesCount()const override;
@@ -45,9 +45,9 @@ NAMESPACE_BEGIN( FS )
             void cacheFile();
 
             Path m_path;
-            std::vector<MyString> rows;
+            std::vector<String> rows;
             std::vector<char*> m_rowsAsChars;
-            MyString m_cached;
+            String m_cached;
             bool m_keepLineEndingCharacter = false;
         };
 #ifdef _MSC_VER

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 #include "Gtest.hpp"
 #if _MSC_VER
@@ -27,7 +27,7 @@ protected:
     virtual void TearDown()
     {
     }
-    CUL::MyString genericName = CUL::MyString( "Generic name." );
+    CUL::String genericName = CUL::String( "Generic name." );
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

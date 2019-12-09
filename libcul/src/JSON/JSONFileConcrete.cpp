@@ -14,85 +14,85 @@ JSONFileConcrete::JSONFileConcrete():
 
 JSONFileConcrete::~JSONFileConcrete()
 {
-    delete this->m_root;
-    this->m_root = nullptr;
+    delete m_root;
+    m_root = nullptr;
 
-    delete this->m_fileContents;
-    this->m_fileContents = nullptr;
+    delete m_fileContents;
+    m_fileContents = nullptr;
 }
 
 const FS::Path& JSONFileConcrete::getPath() const
 {
-    return this->m_fileContents->getPath();
+    return m_fileContents->getPath();
 }
 
 CBool JSONFileConcrete::exists() const
 {
-    return this->m_fileContents->exists();
+    return m_fileContents->exists();
 }
 
 CBool JSONFileConcrete::isBinary() const
 {
-    return this->m_fileContents->isBinary();
+    return m_fileContents->isBinary();
 }
 
 void JSONFileConcrete::changePath( const FS::Path& newPath )
 {
-    this->m_fileContents->changePath( newPath );
+    m_fileContents->changePath( newPath );
 }
 
 void JSONFileConcrete::reload( CBool keepLineEndingCharacter )
 {
-    this->m_fileContents->reload( keepLineEndingCharacter );
+    m_fileContents->reload( keepLineEndingCharacter );
     parse();
 }
 
 void JSONFileConcrete::load( CBool keepLineEndingCharacter )
 {
-    this->m_fileContents->load( keepLineEndingCharacter );
+    m_fileContents->load( keepLineEndingCharacter );
     parse();
 }
 
 void JSONFileConcrete::unload()
 {
-    this->m_fileContents->unload();
-    delete this->m_root;
-    this->m_root = nullptr;
+    m_fileContents->unload();
+    delete m_root;
+    m_root = nullptr;
 }
 
-CnstMyStr& JSONFileConcrete::firstLine() const
+CsStr& JSONFileConcrete::firstLine() const
 {
-    return this->m_fileContents->firstLine();
+    return m_fileContents->firstLine();
 }
 
-CnstMyStr& JSONFileConcrete::lastLine() const
+CsStr& JSONFileConcrete::lastLine() const
 {
-    return this->m_fileContents->lastLine();
+    return m_fileContents->lastLine();
 }
 
-CnstMyStr& JSONFileConcrete::getAsOneString() const
+CsStr& JSONFileConcrete::getAsOneString() const
 {
-    return this->m_fileContents->getAsOneString();
+    return m_fileContents->getAsOneString();
 }
 
 const char** JSONFileConcrete::getContent() const
 {
-    return this->m_fileContents->getContent();
+    return m_fileContents->getContent();
 }
 
 cunt JSONFileConcrete::getLinesCount() const
 {
-    return this->m_fileContents->getLinesCount();
+    return m_fileContents->getLinesCount();
 }
 
 INode* JSONFileConcrete::getRoot() const
 {
-    return this->m_root;
+    return m_root;
 }
 
 void JSONFileConcrete::parse()
 {
-    auto documentContents = this->m_fileContents->getAsOneString().cStr();
+    auto documentContents = m_fileContents->getAsOneString().cStr();
     m_document.Parse( documentContents );
     auto errorCode = m_document.GetParseError();
     if( rapidjson::ParseErrorCode::kParseErrorNone != errorCode )
@@ -104,7 +104,10 @@ void JSONFileConcrete::parse()
     parse( "root", m_document );
 }
 
-void JSONFileConcrete::parse( CnstMyStr& valueName, const JValue& parentValue, INode* parentNode )
+void JSONFileConcrete::parse(
+    CsStr& valueName,
+    const JValue& parentValue,
+    INode* parentNode )
 {
     INode* obj = nullptr;
     if( parentValue.IsObject() )
@@ -113,7 +116,7 @@ void JSONFileConcrete::parse( CnstMyStr& valueName, const JValue& parentValue, I
         for( auto& member : parentValue.GetObject() )
         {
             const rapidjson::Value& childValue = member.value;
-            CnstMyStr memberName = member.name.GetString();
+            CsStr memberName = member.name.GetString();
             parse( memberName, childValue, obj );
         }
     }
@@ -164,7 +167,7 @@ void JSONFileConcrete::parse( CnstMyStr& valueName, const JValue& parentValue, I
 
     if( nullptr == parentNode )
     {
-        this->m_root = obj;
+        m_root = obj;
     }
     else
     {

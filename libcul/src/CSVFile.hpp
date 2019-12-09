@@ -4,7 +4,7 @@
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/ICSVFile.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
@@ -12,7 +12,7 @@ NAMESPACE_BEGIN( FS )
 #pragma warning( push )
 #pragma warning( disable: 4820 )
 #endif
-using Row = std::vector<MyString>;
+using Row = std::vector<String>;
 using Rows = std::vector<Row>;
 class CSVFile final:
     public ICSVFile
@@ -20,11 +20,11 @@ class CSVFile final:
 public:
     CSVFile( void );
     CSVFile( const CSVFile& rhv );
-    CSVFile( CnstMyStr& fPath );
+    CSVFile( CsStr& fPath );
     ~CSVFile( void );
 
     CSVFile& operator=( const CSVFile& rhv );
-    CSVFile& operator=( CnstMyStr& rPath );
+    CSVFile& operator=( CsStr& rPath );
 
     void changePath( const Path& newPath ) override;
 
@@ -33,8 +33,8 @@ public:
     const bool checkIfFileIsAllRight()const override;
     cunt rowsCount()const override;
     cunt colsCount()const override;
-    CnstMyStr& getVal( cunt row, cunt col ) const override;
-    void setVal( CnstMyStr& val, cunt row, cunt col ) override;
+    CsStr& getVal( cunt row, cunt col ) const override;
+    void setVal( CsStr& val, cunt row, cunt col ) override;
 
     CBool exists()const override;
     CBool isBinary()const override;
@@ -43,12 +43,12 @@ public:
     void load( CBool keepLineEndingCharacter = false ) override;
     void unload() override;
 
-    CnstMyStr& firstLine()const override;
-    CnstMyStr& lastLine()const override;
+    CsStr& firstLine()const override;
+    CsStr& lastLine()const override;
 
-    void setDelimeter( CnstMyStr& delimeter ) override;
+    void setDelimeter( CsStr& delimeter ) override;
 
-    CnstMyStr& getAsOneString()const override;
+    CsStr& getAsOneString()const override;
     const char** getContent()const override;
 
     cunt getLinesCount()const override;
@@ -57,14 +57,14 @@ public:
 
 protected:
 private:
-    void parseLine( CnstMyStr& line );
+    void parseLine( CsStr& line );
     void cacheFile();
 
-    MyString m_delimeter = ",";
+    String m_delimeter = ",";
     bool m_cellsContainQuotationMarks = true;
     Path m_path;
     Rows m_rows;
-    MyString m_cached;
+    String m_cached;
     bool m_keepLineEndingCharacter = false;
 };
 #ifdef _MSC_VER

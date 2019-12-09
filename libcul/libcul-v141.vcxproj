@@ -47,6 +47,8 @@
     <ClCompile Include="src\IName.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
     <ClCompile Include="src\Log\ILogger.cpp" />
+    <ClCompile Include="src\String\String.cpp" />
+    <ClCompile Include="src\String\StringImpl.cpp" />
     <ClCompile Include="src\ThreadUtils.cpp" />
     <ClCompile Include="src\ITime.cpp" />
     <ClCompile Include="src\ITimer.cpp" />
@@ -60,13 +62,11 @@
     <ClCompile Include="src\Math\IAngle.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\Math\TriangleRectangularSimple2D.cpp" />
-    <ClCompile Include="src\MyString.cpp" />
     <ClCompile Include="src\Named.cpp" />
     <ClCompile Include="src\OSUtils\ISystemFonts.cpp" />
     <ClCompile Include="src\OSUtils\SystemFontsWindows.cpp" />
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
-    <ClCompile Include="src\String\MyStringImpl.cpp" />
     <ClCompile Include="src\ThreadUtilityDummy.cpp" />
     <ClCompile Include="src\ThreadUtilityWindows.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
@@ -123,7 +123,6 @@
     <ClInclude Include="inc\CUL\Log\ILogger.hpp" />
     <ClInclude Include="inc\CUL\Math\RotationType.hpp" />
     <ClInclude Include="inc\CUL\Math\TriangleRectangularSimple2D.hpp" />
-    <ClInclude Include="inc\CUL\MyString.hpp" />
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Network\IHttpRequest.hpp" />
     <ClInclude Include="inc\CUL\Math\Triangle.hpp" />
@@ -165,6 +164,7 @@
     <ClInclude Include="inc\CUL\Math\Quaternion.hpp" />
     <ClInclude Include="inc\CUL\Math\SquareMatrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\Vector3D.hpp" />
+    <ClInclude Include="inc\CUL\String.hpp" />
     <ClInclude Include="inc\CUL\ThreadUtils.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
     <ClInclude Include="inc\CUL\UselessMacros.hpp" />
@@ -188,7 +188,7 @@
     <ClInclude Include="src\Log\LoggerSimpleStandardOutput.hpp" />
     <ClInclude Include="src\OSUtils\SystemFontsWindows.hpp" />
     <ClInclude Include="src\STDCodecvt.hpp" />
-    <ClInclude Include="src\String\MyStringImpl.hpp" />
+    <ClInclude Include="src\String\StringImpl.hpp" />
     <ClInclude Include="src\ThreadUtilityDummy.hpp" />
     <ClInclude Include="src\ThreadUtilityWindows.hpp" />
     <ClInclude Include="src\TimeConcrete.hpp" />

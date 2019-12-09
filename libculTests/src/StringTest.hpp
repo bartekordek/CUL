@@ -1,5 +1,5 @@
 #pragma once
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 #include "Gtest.hpp"
 #if _MSC_VER
 #pragma warning( push )

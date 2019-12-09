@@ -1,23 +1,23 @@
 #pragma once
 #include "CUL/CUL.hpp"
-#include "CUL/MyString.hpp"
+#include "CUL/String.hpp"
 namespace CUL
 {
     class CULLib_API Name
     {
     public:
-        explicit Name( const CUL::MyString& name = CUL::MyString("") );
+        explicit Name( const CUL::String& name = CUL::String("") );
         explicit Name( const Name& name );
         virtual ~Name();
 
-        void setName( const CUL::MyString& name );
-        const CUL::MyString& GetName()const;
+        void setName( const CUL::String& name );
+        const CUL::String& GetName()const;
 
         Name& operator=( const Name& name );
 
     protected:
     private:
-        MyString mName;
+        String mName;
 
     };
 }

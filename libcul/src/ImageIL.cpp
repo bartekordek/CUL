@@ -14,7 +14,7 @@
 
 using namespace CUL;
 
-ImageIL::ImageIL( void )
+ImageIL::ImageIL()
 {
 }
 
@@ -29,7 +29,7 @@ ImageIL::ImageIL( const ImageIL& val )
 #pragma warning( pop )
 #endif
 
-ImageIL::~ImageIL( void )
+ImageIL::~ImageIL()
 {
 }
 
@@ -37,7 +37,7 @@ ImageIL& ImageIL::operator=( const ImageIL& rhv )
 {
     if( this != &rhv )
     {
-        this->m_data = rhv.m_data;
+        m_data = rhv.m_data;
     }
     return *this;
 }
@@ -50,12 +50,12 @@ ImageIL& ImageIL::operator=( const FS::Path& path )
 
 const DataType* ImageIL::getData()const
 {
-    return this->m_data;
+    return m_data;
 }
 
 const FS::Path& ImageIL::getPath()const
 {
-    return this->m_path;
+    return m_path;
 }
 
 //TODO: After implementation remove guards.
@@ -64,9 +64,10 @@ const FS::Path& ImageIL::getPath()const
 #pragma warning( disable: 4100 )
 #pragma warning( disable: 4189 )
 #endif
+
 void ImageIL::loadImageFrom( const FS::Path& path )
 {
-    Assert::simple( path.exists(), CnstMyStr( "Path does not exist: " ) + path.getPath() );
+    Assert::simple( path.exists(), CsStr( "Path does not exist: " ) + path.getPath() );
 
     ILuint imgID = 0;
     ilGenImages( 1, &imgID );
@@ -75,10 +76,11 @@ void ImageIL::loadImageFrom( const FS::Path& path )
     Assert::simple( IL_TRUE == success, "Unable to load: " + path.getPath() );
     success = ilConvertImage( IL_RGBA, IL_UNSIGNED_BYTE );
     Assert::simple( IL_TRUE == success, "Unable to convert: " + path.getPath() );
-    this->m_data = ilGetData();
+    m_data = ilGetData();
     //auto size = IL_IMAGE_WIDTH * IL_IMAGE_HEIGHT;
-    this->m_path = path;
+    m_path = path;
 }
+
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
