@@ -32,6 +32,13 @@ Path::Path( CsStr& path ):
     normalizePaths();
 }
 
+Path::Path( const std::string& path ):
+    m_fullPath( path )
+{
+    preparePaths();
+    normalizePaths();
+}
+
 Path::Path( const char* r ):
     m_fullPath( r )
 {
@@ -63,6 +70,16 @@ Path& Path::operator=( const char* r )
     return *this;
 }
 
+Path& Path::operator=( const std::string & rhv )
+{
+    if( m_fullPath != rhv )
+    {
+        m_fullPath = rhv;
+        preparePaths();
+    }
+    return *this;
+}
+
 Path& Path::operator+=( const Path& rhv )
 {
     m_fullPath += rhv.m_fullPath;
@@ -71,6 +88,13 @@ Path& Path::operator+=( const Path& rhv )
 }
 
 Path& Path::operator+=( CsStr& rhv )
+{
+    m_fullPath = m_fullPath + rhv;
+    preparePaths();
+    return *this;
+}
+
+Path& Path::operator+=( const std::string& rhv )
 {
     m_fullPath = m_fullPath + rhv;
     preparePaths();

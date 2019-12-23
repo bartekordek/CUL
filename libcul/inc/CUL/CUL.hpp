@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CUL/UselessMacros.hpp"
+
 #if _WIN32
 #define CUL_WINDOWS
 #define CUL_EXPORT
@@ -31,4 +33,11 @@
 #endif
 */
 
+
+
+NAMESPACE_BEGIN( CUL )
+
 using Cbool = const bool;
+using Cunt = const unsigned int;
+
+NAMESPACE_END( CUL )

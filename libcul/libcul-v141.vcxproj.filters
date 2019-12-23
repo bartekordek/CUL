@@ -129,12 +129,6 @@
     <ClCompile Include="src\ThreadUtilityDummy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IMageUtility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImageIL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\JSON\Object.cpp">
       <Filter>Source Files\JSON</Filter>
     </ClCompile>
@@ -246,6 +240,24 @@
     <ClCompile Include="src\String\StringImpl.cpp">
       <Filter>Source Files\String</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\DevilImageLoader.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\IImageLoader.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Size3DDMutexed.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ImageDevil.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="inc\CUL\Graphics\IImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TimerChrono.hpp">
@@ -297,9 +309,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ThreadUtilityDummy.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImageIL.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\PosTable.hpp">
@@ -530,9 +539,6 @@
     <ClInclude Include="inc\CUL\Graphics\IImage.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\Graphics\IMageUtility.hpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Graphics\IObject.hpp">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -598,6 +604,18 @@
     </ClInclude>
     <ClInclude Include="src\String\StringImpl.hpp">
       <Filter>Source Files\String</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\DevilImageLoader.hpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Size3DDMutexedImpl.hpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Graphics\IImageLoader.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageDevil.hpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

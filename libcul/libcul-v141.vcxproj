@@ -19,10 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="inc\CUL\Graphics\IImage.cpp" />
     <ClCompile Include="src\Filesystem\FSUtils.cpp" />
     <ClCompile Include="src\GenericUtils\ArgumentsPairConcrete.cpp" />
     <ClCompile Include="src\GenericUtils\ConsoleUtilities.cpp" />
     <ClCompile Include="src\GenericUtils\IArgumentsPair.cpp" />
+    <ClCompile Include="src\Graphics\DevilImageLoader.cpp" />
+    <ClCompile Include="src\Graphics\IImageLoader.cpp" />
+    <ClCompile Include="src\Graphics\ImageDevil.cpp" />
+    <ClCompile Include="src\Graphics\Size3DDMutexed.cpp" />
+    <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp" />
     <ClCompile Include="src\Log\ILogContainer.cpp" />
     <ClCompile Include="src\Log\LoggerSimpleStandardOutput.cpp" />
     <ClCompile Include="src\STD_chrono.hpp" />
@@ -42,8 +48,6 @@
     <ClCompile Include="src\FileCompileTest.cpp" />
     <ClCompile Include="src\Frustum.cpp" />
     <ClCompile Include="src\ICSVFile.cpp" />
-    <ClCompile Include="src\ImageIL.cpp" />
-    <ClCompile Include="src\IMageUtility.cpp" />
     <ClCompile Include="src\IName.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
     <ClCompile Include="src\Log\ILogger.cpp" />
@@ -91,7 +95,7 @@
     <ClInclude Include="inc\CUL\GenericUtils\SimpleAssert.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Color.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IImage.hpp" />
-    <ClInclude Include="inc\CUL\Graphics\IMageUtility.hpp" />
+    <ClInclude Include="inc\CUL\Graphics\IImageLoader.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IObject.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IObjectRegister.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IPosition3DD.hpp" />
@@ -176,10 +180,12 @@
     <ClInclude Include="src\Filesystem\FileRegularImpl.hpp" />
     <ClInclude Include="src\Filesystem\FSUtils.hpp" />
     <ClInclude Include="src\GenericUtils\ArgumentsPairConcrete.hpp" />
+    <ClInclude Include="src\Graphics\DevilImageLoader.hpp" />
+    <ClInclude Include="src\Graphics\ImageDevil.hpp" />
     <ClInclude Include="src\Graphics\IMPORT_Devil.hpp" />
     <ClInclude Include="src\Graphics\Position3DDMutexedImpl.hpp" />
     <ClInclude Include="src\Graphics\RawImageConcrete.hpp" />
-    <ClInclude Include="src\ImageIL.hpp" />
+    <ClInclude Include="src\Graphics\Size3DDMutexedImpl.hpp" />
     <ClInclude Include="src\IMPORT_boost_assert.hpp" />
     <ClInclude Include="src\IMPORT_devil.hpp" />
     <ClInclude Include="src\JSON\JSONFileConcrete.hpp" />

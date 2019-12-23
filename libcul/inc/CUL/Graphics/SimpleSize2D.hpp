@@ -13,5 +13,7 @@ struct SimpleSize2D
     Type height = static_cast<Type>( 0 );
 };
 
+using SSize2Dui = SimpleSize2D<unsigned>;
+
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )

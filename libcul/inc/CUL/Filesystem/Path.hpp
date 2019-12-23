@@ -14,17 +14,20 @@ public:
     Path();
     Path( const Path& path );
     Path( CsStr& path );
+    Path( const std::string& path );
     Path( const char* r );
     virtual ~Path();
 
     Path& operator=( CsStr& r );
     Path& operator=( const char* r );
+    Path& operator=( const std::string& rhv );
     Path& operator+=( const Path& rhv );
     Path& operator+=( CsStr& rhv );
+    Path& operator+=( const std::string& rhv );
 
     Path operator+( const Path& rhv );
-	Path operator+( CsStr& rhv );
-	Path operator+( const char* rhv );
+    Path operator+( CsStr& rhv );
+    Path operator+( const char* rhv );
 
     CsStr& getPath()const;
     CsStr& getExtension()const;

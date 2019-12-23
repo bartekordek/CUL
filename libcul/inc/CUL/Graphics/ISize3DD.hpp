@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/UselessMacros.hpp"
+#include "CUL/CUL.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
