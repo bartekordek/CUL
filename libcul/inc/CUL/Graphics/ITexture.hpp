@@ -20,8 +20,8 @@ public:
 
     ITexture& operator=( const ITexture& rhv ) = delete;
 
-    virtual const Vector3Dd& getSize()const = 0;
-    virtual const Path& getPath()const = 0;
+    virtual const Vector3Dd& getSize() const = 0;
+    virtual const Path& getPath() const = 0;
 
 protected:
 private:

@@ -25,8 +25,8 @@ public:
     Value operator/( const Value& rhv );
     Value& operator/=( const Value& rhv );
 
-    const double getValue( void )const;
-    const bool toBeCalculated( void )const;
+    const double getValue( void ) const;
+    const bool toBeCalculated( void ) const;
 
 protected:
 private:

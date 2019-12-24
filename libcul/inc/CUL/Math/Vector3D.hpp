@@ -67,7 +67,7 @@ public:
 
     virtual ~Vector3D() = default;
 
-    const Type& operator[]( const AxisCarthesian axis )const
+    const Type& operator[]( const AxisCarthesian axis ) const
     {
         return m_vals.at( axis );
     }
@@ -77,19 +77,19 @@ public:
         return m_vals[ ac2Size( axis ) ];
     }
 
-    const Type operator[]( const unsigned axis )const = delete;
+    const Type operator[]( const unsigned axis ) const = delete;
 
-    const Type getX()const
+    const Type getX() const
     {
         return operator[]( AxisCarthesian::X );
     }
 
-    const Type getY()const
+    const Type getY() const
     {
         return operator[]( AxisCarthesian::Y );
     }
 
-    const Type getZ()const
+    const Type getZ() const
     {
         return operator[]( AxisCarthesian::Z );
     }
@@ -126,12 +126,12 @@ public:
         m_width = object.m_width;
     }
 
-    const Angle& getAngle( const RotationType rt )const
+    const Angle& getAngle( const RotationType rt ) const
     {
         return m_rotationTraingles.at( rt ).getAngle();
     }
 
-    const ST& getTriangle( const RotationType rt )const
+    const ST& getTriangle( const RotationType rt ) const
     {
         return m_rotationTraingles.at( rt );
     }
@@ -163,7 +163,7 @@ public:
         return !operator==( r );
     }
 
-    const bool operator==( const Vector3D& ivector )const
+    const bool operator==( const Vector3D& ivector ) const
     {
         if(
             Epsilon<Type>::equals( getX(), ivector.getX() ) &&
@@ -175,7 +175,7 @@ public:
         return false;
     }
 
-    Vector3D<Type> operator*( const Vector3D<Type>& t )const
+    Vector3D<Type> operator*( const Vector3D<Type>& t ) const
     {
         Vector3D<Type> result( *this );
         auto index = static_cast< AxisCarthesian >( 0 );
@@ -187,7 +187,7 @@ public:
         return result;
     }
 
-    Vector3D<Type> operator-( const Vector3D<Type>& t )const
+    Vector3D<Type> operator-( const Vector3D<Type>& t ) const
     {
         Vector3D<Type> result;
         result.getX() = getX() - t.getX();
@@ -204,7 +204,7 @@ public:
         return *this;
     }
 
-    Vector3D<Type> operator*( const Type& t )const
+    Vector3D<Type> operator*( const Type& t ) const
     {
         Vector3D<Type> result;
         result.getX() = getX() * t;
@@ -264,7 +264,7 @@ public:
         return *this;
     }
 
-    Vector3D<Type> operator/( const Vector3D<Type>& t )const
+    Vector3D<Type> operator/( const Vector3D<Type>& t ) const
     {
         Vector3D<Type> result( *this );
         result /= t;
@@ -282,7 +282,7 @@ public:
         return *this;
     }
 
-    Vector3D<Type> operator/( const Type& t )const
+    Vector3D<Type> operator/( const Type& t ) const
     {
         Vector3D<Type> result( *this );
         for( unsigned i = 0; i < 3; ++i )
@@ -301,7 +301,7 @@ public:
         return *this;
     }
 
-    const Type dotProdcut( const Vector3D<Type>& right )const
+    const Type dotProdcut( const Vector3D<Type>& right ) const
     {
         const Type xx = getX() * right.getX();
         const Type yy = getY() * right.getY();
@@ -309,7 +309,7 @@ public:
         return xx * yy * zz;
     }
 
-    const Vector3D<Type> crossProducti( const Vector3D<Type>& right )const
+    const Vector3D<Type> crossProducti( const Vector3D<Type>& right ) const
     {
         const auto& v1 = *this;
         const auto& v2 = right;
@@ -345,12 +345,12 @@ public:
         }
     }
 
-    const Type getAxis( const AxisCarthesian axis )const
+    const Type getAxis( const AxisCarthesian axis ) const
     {
         return m_vals.at(axis);
     }
 
-    const Type getAxis( const Axis axis )const
+    const Type getAxis( const Axis axis ) const
     {
         return m_vals.at( Util::normal2Carthesian( axis ) );
     }
@@ -367,12 +367,12 @@ public:
         return *this;
     }
 
-    const Type min( const Vector3D<Type>& p2, const Axis axis )const
+    const Type min( const Vector3D<Type>& p2, const Axis axis ) const
     {
         return Util::min( getAxis( axis ), p2.getAxis( axis ) );
     }
 
-    const Type max( const Vector3D<Type>& p2, const Axis axis )const
+    const Type max( const Vector3D<Type>& p2, const Axis axis ) const
     {
         return Util::max( getAxis( axis ), p2.getAxis( axis ) );
     }

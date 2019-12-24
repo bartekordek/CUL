@@ -13,7 +13,7 @@ NAMESPACE_BEGIN( CUL )
 using Length = unsigned int;
 
 class StringImpl;
-class CULLib_API String
+class CULLib_API String final
 {
 public:
     String();
@@ -26,7 +26,7 @@ public:
     String( const bool val );
     String( const int val );
     String( const unsigned val );
-    virtual ~String();
+    ~String();
 
     String& operator=( const char* someString );
     String& operator=( const unsigned char* someString );
@@ -50,22 +50,25 @@ public:
     const bool operator==( const std::string& rhv ) const;
     const bool operator==( const String& rhv ) const;
 
-    virtual void toLower();
-    virtual void toUpper();
+    operator const std::string() const;
+    operator const std::string&() const;
 
-    virtual const bool contains( const String& inputString )const;
-    virtual const bool contains( const char* inputString )const;
+    void toLower();
+    void toUpper();
 
-    virtual void replace( const String& inWhat, const String& inFor );
+    const bool contains( const String& inputString ) const;
+    const bool contains( const char* inputString ) const;
 
-    virtual const std::string& string()const;
-    virtual std::string& string();
+    void replace( const String& inWhat, const String& inFor );
 
-    virtual const char* cStr()const;
-    virtual const Length length() const;
-    virtual const Length capacity() const;
+    const std::string& string() const;
+    std::string& string();
+
+    const char* cStr() const;
+    const Length length() const;
+    const Length capacity() const;
     void clear();
-    const bool empty()const;
+    const bool empty() const;
 
     static void toLowerS( std::string& inOutString );
     static void toUpperS( std::string& inOutString );

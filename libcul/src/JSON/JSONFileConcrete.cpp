@@ -80,7 +80,7 @@ const char** JSONFileConcrete::getContent() const
     return m_fileContents->getContent();
 }
 
-cunt JSONFileConcrete::getLinesCount() const
+Cunt JSONFileConcrete::getLinesCount() const
 {
     return m_fileContents->getLinesCount();
 }

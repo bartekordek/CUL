@@ -14,7 +14,7 @@ public:
     virtual void start() = 0;
     virtual void stop() = 0;
     virtual void reset() = 0;
-    virtual const ITime& getElapsed()const = 0;
+    virtual const ITime& getElapsed() const = 0;
 
     static void sleepSeconds( const unsigned int seconds );
     static void sleepMiliSeconds( const unsigned int mSeconds );

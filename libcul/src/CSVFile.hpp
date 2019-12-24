@@ -18,10 +18,10 @@ class CSVFile final:
     public ICSVFile
 {
 public:
-    CSVFile( void );
+    CSVFile();
     CSVFile( const CSVFile& rhv );
     CSVFile( CsStr& fPath );
-    ~CSVFile( void );
+    ~CSVFile();
 
     CSVFile& operator=( const CSVFile& rhv );
     CSVFile& operator=( CsStr& rPath );
@@ -30,28 +30,28 @@ public:
 
     const Path& getPath() const override;
 
-    const bool checkIfFileIsAllRight()const override;
-    cunt rowsCount()const override;
-    cunt colsCount()const override;
-    CsStr& getVal( cunt row, cunt col ) const override;
-    void setVal( CsStr& val, cunt row, cunt col ) override;
+    const bool checkIfFileIsAllRight() const override;
+    Cunt rowsCount() const override;
+    Cunt colsCount() const override;
+    CsStr& getVal( Cunt row, Cunt col ) const override;
+    void setVal( CsStr& val, Cunt row, Cunt col ) override;
 
-    CBool exists()const override;
-    CBool isBinary()const override;
+    CBool exists() const override;
+    CBool isBinary() const override;
 
     void reload( CBool keepLineEndingCharacter = false ) override;
     void load( CBool keepLineEndingCharacter = false ) override;
     void unload() override;
 
-    CsStr& firstLine()const override;
-    CsStr& lastLine()const override;
+    CsStr& firstLine() const override;
+    CsStr& lastLine() const override;
 
     void setDelimeter( CsStr& delimeter ) override;
 
-    CsStr& getAsOneString()const override;
-    const char** getContent()const override;
+    CsStr& getAsOneString() const override;
+    const char** getContent() const override;
 
-    cunt getLinesCount()const override;
+    Cunt getLinesCount() const override;
 
     void fileContainsQuotationMarks( const bool containsQuotationMarks ) override;
 

@@ -13,7 +13,7 @@ public:
     virtual ~Name();
 
     void setName( const CUL::String& name );
-    const CUL::String& GetName()const;
+    const CUL::String& GetName() const;
 
     Name& operator=( const Name& name );
 

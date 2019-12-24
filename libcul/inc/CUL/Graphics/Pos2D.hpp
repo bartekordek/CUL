@@ -44,12 +44,12 @@ public:
         return *this;
     }
 
-    const Type getX(void)const
+    const Type getX(void) const
     {
         return m_x;
     }
 
-    const Type getY(void)const
+    const Type getY(void) const
     {
         return m_y;
     }

@@ -24,7 +24,7 @@ public:
     void start() override;
     void stop() override;
     void reset() override;
-    const ITime& getElapsed()const override;
+    const ITime& getElapsed() const override;
 
 protected:
 private:

@@ -74,7 +74,7 @@ void FPSCounterConcrete::counterLoop()
     }
 }
 
-const double FPSCounterConcrete::calculateAverageFps()const
+const double FPSCounterConcrete::calculateAverageFps() const
 {
     if( 0 == m_samples.size() )
     {

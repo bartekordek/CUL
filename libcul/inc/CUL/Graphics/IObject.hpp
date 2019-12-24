@@ -27,22 +27,22 @@ public:
     virtual void setZ( CDbl val ) = 0;
     virtual void move( const Position3DDMutexed& moveVect ) = 0;
 
-    virtual const Position3DDMutexed& getScale()const = 0;
+    virtual const Position3DDMutexed& getScale() const = 0;
     virtual void setScale( const CUL::Math::Vector3Dd& scale ) = 0;
 
-    virtual const Position3DDMutexed& getPosition()const = 0;
-    virtual const Position3DDMutexed& getRenderPosition()const = 0;
-    virtual const Position3DDMutexed& getSizeReal()const = 0;
-    virtual const Position3DDMutexed& getSizeAbs()const = 0;
+    virtual const Position3DDMutexed& getPosition() const = 0;
+    virtual const Position3DDMutexed& getRenderPosition() const = 0;
+    virtual const Position3DDMutexed& getSizeReal() const = 0;
+    virtual const Position3DDMutexed& getSizeAbs() const = 0;
 
-    virtual const Type getType()const = 0;
-    virtual const bool operator==( const IObject& right )const;
+    virtual const Type getType() const = 0;
+    virtual const bool operator==( const IObject& right ) const;
 
     virtual void rotate(
         const Math::Angle& angle,
         CRT = RT::YAW ) = 0;
     virtual const Math::Angle& getAngle(
-        CRT = RT::YAW )const = 0;
+        CRT = RT::YAW ) const = 0;
 
 protected:
 private:

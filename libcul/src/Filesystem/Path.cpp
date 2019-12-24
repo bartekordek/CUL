@@ -122,22 +122,22 @@ Path Path::operator+( const char* rhv )
 	return result;
 }
 
-CsStr& Path::getPath()const
+CsStr& Path::getPath() const
 {
     return m_fullPath;
 }
 
-CsStr& Path::getExtension()const
+CsStr& Path::getExtension() const
 {
     return m_extension;
 }
 
-CsStr& Path::getBaseName()const
+CsStr& Path::getBaseName() const
 {
     return m_baseName;
 }
 
-CsStr& Path::getDir()const
+CsStr& Path::getDir() const
 {
     return m_dir;
 }

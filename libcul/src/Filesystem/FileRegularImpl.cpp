@@ -38,17 +38,17 @@ FileRegularImpl::~FileRegularImpl()
 
 }
 
-const Path& FileRegularImpl::getPath()const
+const Path& FileRegularImpl::getPath() const
 {
     return m_path;
 }
 
-const bool FileRegularImpl::exists()const
+const bool FileRegularImpl::exists() const
 {
     return m_path.exists();
 }
 
-const bool FileRegularImpl::isBinary()const
+const bool FileRegularImpl::isBinary() const
 {
     return true;//TODO: Implement
 }
@@ -98,17 +98,17 @@ void FileRegularImpl::unload()
     m_cached = "";
 }
 
-CsStr& FileRegularImpl::firstLine()const
+CsStr& FileRegularImpl::firstLine() const
 {
     return rows.front();
 }
 
-CsStr& FileRegularImpl::lastLine()const
+CsStr& FileRegularImpl::lastLine() const
 {
     return rows.back();
 }
 
-CsStr& FileRegularImpl::getAsOneString()const
+CsStr& FileRegularImpl::getAsOneString() const
 {
     return m_cached;
 }
@@ -124,12 +124,12 @@ void FileRegularImpl::cacheFile()
     }
 }
 
-cunt FileRegularImpl::getLinesCount()const
+Cunt FileRegularImpl::getLinesCount() const
 {
-    return static_cast< cunt >( rows.size() );
+    return static_cast< Cunt >( rows.size() );
 }
 
-const char** FileRegularImpl::getContent()const
+const char** FileRegularImpl::getContent() const
 {
     return const_cast<const char**>( &m_rowsAsChars[ 0 ] );
 }

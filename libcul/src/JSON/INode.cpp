@@ -50,7 +50,7 @@ struct isChild
     String m_value;
     isChild( CsStr& val ): m_value( val ) {}
 
-    const bool operator()( const NodePtr& nodePtr )const
+    const bool operator()( const NodePtr& nodePtr ) const
     {
         return nodePtr->operator==( m_value );
     }

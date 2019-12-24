@@ -16,7 +16,7 @@ public:
 
     IJSONFile& operator=( const IJSONFile& rhv ) = delete;
 
-    virtual INode* getRoot()const = 0;
+    virtual INode* getRoot() const = 0;
 
 
 protected:

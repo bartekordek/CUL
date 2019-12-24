@@ -164,6 +164,16 @@ const bool StringImpl::operator==( const StringImpl & rhv ) const
     return m_value == rhv.m_value;
 }
 
+StringImpl::operator const std::string() const
+{
+    return m_value;
+}
+
+StringImpl::operator const std::string&() const
+{
+    return m_value;
+}
+
 const bool StringImpl::operator<( const StringImpl & rhv ) const
 {
     return m_value < rhv.m_value;
@@ -209,7 +219,7 @@ std::string& StringImpl::string()
     return m_value;
 }
 
-const char* StringImpl::cStr()const
+const char* StringImpl::cStr() const
 {
     return m_value.c_str();
 }

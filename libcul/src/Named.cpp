@@ -21,7 +21,7 @@ void Name::setName( const String& name )
     mName = name;
 }
 
-const String& Name::GetName()const
+const String& Name::GetName() const
 {
     return mName;
 }

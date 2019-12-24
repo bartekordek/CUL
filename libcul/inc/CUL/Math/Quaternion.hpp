@@ -27,12 +27,12 @@ namespace CUL
                 //const double normalizeCoefficient = 
             }
 
-            Quaternion inverse()const
+            Quaternion inverse() const
             {
                 return conjugate() * 1 / squareNorm();
             }
 
-            const Type squareNorm()const
+            const Type squareNorm() const
             {
                 return norm * norm;
             }
@@ -107,7 +107,7 @@ namespace CUL
                 return ( ( qa.s == qb.s ) && ( qa.x == qb.x ) && ( qa.y == qb.y ) && ( qa.z == qb.z ) );
             }
 
-            Quaternion conjugate()const
+            Quaternion conjugate() const
             {
                 Quaternion result;
                 result.s = s;
@@ -150,22 +150,22 @@ namespace CUL
                 calculateNorm();
             }
 
-            const Type GetS()const
+            const Type GetS() const
             {
                 return s;
             }
 
-            const Type GetX()const
+            const Type GetX() const
             {
                 return x;
             }
 
-            const Type GetY()const
+            const Type GetY() const
             {
                 return y;
             }
 
-            const Type GetZ()const
+            const Type GetZ() const
             {
                 return z;
             }

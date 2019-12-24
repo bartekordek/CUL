@@ -84,7 +84,7 @@ public:
         return getValue( rowIndex, colIndex );
     }
 
-    const Type& operator()( const unsigned rowIndex, const unsigned colIndex )const
+    const Type& operator()( const unsigned rowIndex, const unsigned colIndex ) const
     {
         return getValue( rowIndex, colIndex );
     }
@@ -101,7 +101,7 @@ public:
         getValue( rowIndex, colIndex ) = value;
     }
 
-    const unsigned int getColumnCount()const
+    const unsigned int getColumnCount() const
     {
         if( 0 == values.size() )
         {
@@ -110,7 +110,7 @@ public:
         return static_cast<unsigned int>( values[0].size() );
     }
 
-    const unsigned int getRowsCount()const
+    const unsigned int getRowsCount() const
     {
         return static_cast<unsigned int>( values.size() );
     }
@@ -190,7 +190,7 @@ public:
         }
     }
 
-    const bool elementExist( const unsigned row, const unsigned col )const
+    const bool elementExist( const unsigned row, const unsigned col ) const
     {
         if( getRowsCount() <= row || getColumnCount() <= col )
         {
@@ -199,7 +199,7 @@ public:
         return true;
     }
 
-    const bool isZero()const
+    const bool isZero() const
     {
         const Type zeroValue = static_cast<Type>( 0 );
 
@@ -216,7 +216,7 @@ public:
         return true;
     }
 
-    void print()const
+    void print() const
     {
         for( const std::vector<Type>& row: values )
         {
@@ -236,7 +236,7 @@ public:
     }
 
 protected:
-    const bool columnIsEmpty( const unsigned int columnIndex )const
+    const bool columnIsEmpty( const unsigned int columnIndex ) const
     {
         if( getRowsCount() == 0 && columnIndex >= getColumnCount() )
         {
@@ -253,7 +253,7 @@ protected:
         return true;
     }
 
-    const bool rowIsEmpty( const unsigned int rowIndex )const
+    const bool rowIsEmpty( const unsigned int rowIndex ) const
     {
         if( rowIndex >= getRowsCount() )
         {
@@ -271,7 +271,7 @@ protected:
         return true;
     }
 
-    std::vector< std::vector<Type> > copyValues()const
+    std::vector< std::vector<Type> > copyValues() const
     {
         std::vector< std::vector<Type> > result;
         result = values;
@@ -311,7 +311,7 @@ private:
         return values[rowIndex][columnIndex];
     }
 
-    const Type& getValue( const unsigned int rowIndex, const unsigned int columnIndex )const
+    const Type& getValue( const unsigned int rowIndex, const unsigned int columnIndex ) const
     {
         return values[rowIndex][columnIndex];
     }

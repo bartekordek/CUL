@@ -13,11 +13,11 @@ public:
     DataPair( CsStr& name, CsStr& value );
     ~DataPair( void );
 
-    CsStr& getVal()const;
+    CsStr& getVal() const;
     void setVal( CsStr& val );
 
     //INode
-    const ElementType getType()const override;
+    const ElementType getType() const override;
     //INode
 
 protected:

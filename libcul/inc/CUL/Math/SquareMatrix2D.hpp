@@ -57,12 +57,12 @@ namespace CUL
                 return *this;
             }
 
-            const unsigned int getSize()const
+            const unsigned int getSize() const
             {
                 return Matrix2D<Type>::getColumnCount();
             }
 
-            const Type& det()const
+            const Type& det() const
             {
                 return static_cast<Type>( 0 );//TODO
             }

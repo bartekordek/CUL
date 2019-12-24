@@ -31,7 +31,7 @@ public:
             return m_value != rhs.m_value;
         }
 
-        const short value()const
+        const short value() const
         {
             return m_value;
         }

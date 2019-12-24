@@ -165,6 +165,16 @@ const bool String::operator==( const String& rhv ) const
     return *m_impl == *rhv.m_impl;
 }
 
+String::operator const std::string() const
+{
+    return *m_impl;
+}
+
+String::operator const std::string& () const
+{
+    return *m_impl;
+}
+
 void String::toLower()
 {
     m_impl->toLower();
@@ -200,7 +210,7 @@ std::string& String::string()
     return m_impl->string();
 }
 
-const char* String::cStr()const
+const char* String::cStr() const
 {
     return m_impl->cStr();
 }

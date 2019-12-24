@@ -28,9 +28,9 @@ public:
     const bool operator==( const INode& rhv ) const;
     const bool operator==( CsStr& rhv ) const;
 
-    virtual const ElementType getType()const = 0;
+    virtual const ElementType getType() const = 0;
 
-    const ChildrenNodes& getChildren()const override;
+    const ChildrenNodes& getChildren() const override;
     const INode* getChild( CsStr& childName ) const override;
     void addChild( INode* node ) override;
 

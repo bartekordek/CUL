@@ -38,7 +38,7 @@ INode* Array::getValue( CsStr& valName )
     return nullptr;
 }
 
-const ChildrenNodes& Array::getAllValues()const
+const ChildrenNodes& Array::getAllValues() const
 {
     return INode::getChildren();
 }

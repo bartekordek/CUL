@@ -53,37 +53,37 @@ void CSVFile::changePath( const Path& newPath )
     reload();
 }
 
-const bool CSVFile::checkIfFileIsAllRight()const
+const bool CSVFile::checkIfFileIsAllRight() const
 {
     return true;//TODO
 }
 
-cunt CSVFile::rowsCount()const
+Cunt CSVFile::rowsCount() const
 {
-    return static_cast<cunt>( m_rows.size() );
+    return static_cast<Cunt>( m_rows.size() );
 }
 
-cunt CSVFile::colsCount()const
+Cunt CSVFile::colsCount() const
 {
-    return static_cast<cunt>( m_rows[0].size() );
+    return static_cast<Cunt>( m_rows[0].size() );
 }
 
-CsStr& CSVFile::getVal( cunt row, cunt col )const
+CsStr& CSVFile::getVal( Cunt row, Cunt col ) const
 {
     return m_rows[ row ][ col ];
 }
 
-void CSVFile::setVal( CsStr& val, cunt row, cunt col )
+void CSVFile::setVal( CsStr& val, Cunt row, Cunt col )
 {
     m_rows[ row ][ col ] = val;
 }
 
-const bool CSVFile::exists()const
+const bool CSVFile::exists() const
 {
     return m_path.exists();
 }
 
-const bool CSVFile::isBinary()const
+const bool CSVFile::isBinary() const
 {
     return false;//TODO
 }
@@ -165,22 +165,22 @@ void CSVFile::unload()
     m_rows.clear();
 }
 
-CsStr& CSVFile::firstLine()const
+CsStr& CSVFile::firstLine() const
 {
     return m_rows.front()[0];
 }
 
-CsStr& CSVFile::lastLine()const
+CsStr& CSVFile::lastLine() const
 {
     return m_rows.back()[ m_rows.size() - 1 ];
 }
 
-const Path& CSVFile::getPath()const
+const Path& CSVFile::getPath() const
 {
     return m_path;
 }
 
-CsStr& CSVFile::getAsOneString()const
+CsStr& CSVFile::getAsOneString() const
 {
     return m_cached;
 }
@@ -202,9 +202,9 @@ void CSVFile::cacheFile()
     }
 }
 
-cunt CSVFile::getLinesCount()const
+Cunt CSVFile::getLinesCount() const
 {
-    return static_cast< cunt >( m_rows.size() );
+    return static_cast< Cunt >( m_rows.size() );
 }
 
 void CSVFile::fileContainsQuotationMarks( const bool containsQuotationMarks )
@@ -212,7 +212,7 @@ void CSVFile::fileContainsQuotationMarks( const bool containsQuotationMarks )
     m_cellsContainQuotationMarks = containsQuotationMarks;
 }
 
-const char** CSVFile::getContent()const
+const char** CSVFile::getContent() const
 {
     return nullptr;//TODO
 }

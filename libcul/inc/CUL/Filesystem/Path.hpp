@@ -29,16 +29,16 @@ public:
     Path operator+( CsStr& rhv );
     Path operator+( const char* rhv );
 
-    CsStr& getPath()const;
-    CsStr& getExtension()const;
-    CsStr& getBaseName()const;
-    CsStr& getDir()const;
+    CsStr& getPath() const;
+    CsStr& getExtension() const;
+    CsStr& getBaseName() const;
+    CsStr& getDir() const;
 
     const bool operator==( const Path& rhv ) const;
 
     operator CsStr() const;
 
-    const bool exists()const;
+    const bool exists() const;
 
     static CsStr& getDirSeparator();
 

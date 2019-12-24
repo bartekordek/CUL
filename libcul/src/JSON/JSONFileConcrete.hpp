@@ -25,10 +25,10 @@ protected:
 private:
     void parse();
     void parse( CsStr& valueName, const JValue& parentValue, INode* parentNode = nullptr );
-    const FS::Path& getPath()const override;
+    const FS::Path& getPath() const override;
 
-    CBool exists()const override;
-    CBool isBinary()const override;
+    CBool exists() const override;
+    CBool isBinary() const override;
 
     void changePath( const FS::Path& newPath ) override;
 
@@ -36,13 +36,13 @@ private:
     void load( CBool keepLineEndingCharacter = false ) override;
     void unload() override;
 
-    CsStr& firstLine()const override;
-    CsStr& lastLine()const override;
+    CsStr& firstLine() const override;
+    CsStr& lastLine() const override;
 
-    CsStr& getAsOneString()const override;
-    const char** getContent()const override;
+    CsStr& getAsOneString() const override;
+    const char** getContent() const override;
 
-    cunt getLinesCount()const override;
+    Cunt getLinesCount() const override;
 
     INode* getRoot() const override;
 

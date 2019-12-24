@@ -16,9 +16,9 @@ public:
 
     void loadFromFile( CUL::CsStr& path );
 
-    cunt getID()const override;
-    const Math::Vector3Du& getSize()const override;
-    RawDataPtr getData()const override;
+    Cunt getID() const override;
+    const Math::Vector3Du& getSize() const override;
+    RawDataPtr getData() const override;
 
 protected:
 private:

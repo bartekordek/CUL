@@ -62,17 +62,17 @@ public:
     {
     }
 
-    const Vector3D<Type>& getSize()const
+    const Vector3D<Type>& getSize() const
     {
         return m_dimensions;
     }
 
-    const Type getDimension( const AxisCarthesian type )const
+    const Type getDimension( const AxisCarthesian type ) const
     {
         return m_dimensions[ type ];
     }
 
-    const Type getDimension( const Axis type )const
+    const Type getDimension( const Axis type ) const
     {
         return m_dimensions[ static_cast<AxisCarthesian>( type ) ];
     }

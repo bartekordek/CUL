@@ -40,12 +40,12 @@ public:
 
     }
 
-    const Type getRow()const
+    const Type getRow() const
     {
         return m_row;
     }
 
-    const Type getCol()const
+    const Type getCol() const
     {
         return m_col;
     }

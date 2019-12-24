@@ -27,12 +27,12 @@ public:
     {
     }
 
-    const Type distance( const std::shared_ptr<MultiPoint<Type>>& p )const
+    const Type distance( const std::shared_ptr<MultiPoint<Type>>& p ) const
     {
         return distance( *p );
     }
 
-    const Type distance( const MultiPoint<Type>& p )const
+    const Type distance( const MultiPoint<Type>& p ) const
     {
         const unsigned AxisCount = std::min( axisValue.size(), p.axisValue.size() );
         Type distanceSquare = static_cast<Type>( 0.0 );
@@ -47,7 +47,7 @@ public:
         return static_cast<Type>( sqrt( distanceSquare ) );
     }
 
-    const MultiPoint<Type> operator+( const MultiPoint<Type>& p )const
+    const MultiPoint<Type> operator+( const MultiPoint<Type>& p ) const
     {
         const unsigned AxisCount = std::max( axisValue.size(), p.axisValue.size() );
         const unsigned lowerAxisCount = std::min( axisValue.size(), p.axisValue.size() );
@@ -59,7 +59,7 @@ public:
         return result;
     }
 
-    MultiPoint<Type> operator-( const MultiPoint<Type>& p )const
+    MultiPoint<Type> operator-( const MultiPoint<Type>& p ) const
     {
         const unsigned AxisCount = std::max( axisValue.size(), p.axisValue.size() );
         const unsigned lowerAxisCount = std::min( axisValue.size(), p.axisValue.size() );
@@ -71,7 +71,7 @@ public:
         return result;
     }
 
-    MultiPoint<Type> relativeDistance( const MultiPoint<Type>& right )const
+    MultiPoint<Type> relativeDistance( const MultiPoint<Type>& right ) const
     {
         const unsigned int axisCount = axisValue.size();
         const unsigned int pAxisCount = right.axisValue.size();
@@ -99,7 +99,7 @@ public:
         return *this;
     }
 
-    MultiPoint<Type> operator*( const MultiPoint<Type>& p )const
+    MultiPoint<Type> operator*( const MultiPoint<Type>& p ) const
     {
         const unsigned AxisCount = std::max( axisValue.size(), p.axisValue.size() );
         const unsigned lowerAxisCount = std::min( axisValue.size(), p.axisValue.size() );
@@ -113,7 +113,7 @@ public:
         return result;
     }
 
-    const bool operator==( const MultiPoint<Type>& p )const
+    const bool operator==( const MultiPoint<Type>& p ) const
     {
         if( this == &p )
         {
@@ -141,17 +141,17 @@ public:
         axisValue.resize( count );
     }
 
-    const unsigned int getAxisCount()const
+    const unsigned int getAxisCount() const
     {
         return axisValue.size();
     }
 
-    const Type getValue( const Axis axisIndex )const
+    const Type getValue( const Axis axisIndex ) const
     {
         return axisValue.at( static_cast<unsigned int>( axisIndex ) );
     }
 
-    const Type getValue( const unsigned int axisIndex )const
+    const Type getValue( const unsigned int axisIndex ) const
     {
         return axisValue.at( static_cast<unsigned int>( axisIndex ) );
     }
@@ -166,7 +166,7 @@ public:
         axisValue.at( static_cast<unsigned int>( axisIndex ) ) = value;
     }
 
-    const Type distanceToZeroZero()const
+    const Type distanceToZeroZero() const
     {
         Type distanceToZeroZero = static_cast<Type>( 0.0 );
         for( auto& axisValue : axisValue )

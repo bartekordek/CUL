@@ -36,13 +36,13 @@ public:
     {
     }
 
-    const Type& getVal()const
+    const Type& getVal() const
     {
         std::lock_guard<std::mutex> lock( mtx );
         return value;
     }
 
-    const Type getValCopy()const
+    const Type getValCopy() const
     {
         return value;
     }

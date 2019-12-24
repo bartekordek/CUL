@@ -70,42 +70,42 @@ ColorS& ColorS::operator=( const ColorE color )
     return *this;
 }
 
-cfloat ColorS::getRF()const
+cfloat ColorS::getRF() const
 {
     return m_r;
 }
 
-cfloat ColorS::getGF()const
+cfloat ColorS::getGF() const
 {
     return m_g;
 }
 
-cfloat ColorS::getBF()const
+cfloat ColorS::getBF() const
 {
     return m_b;
 }
 
-cfloat ColorS::getAF()const
+cfloat ColorS::getAF() const
 {
     return m_alpha;
 }
 
-cuint8_t ColorS::getRUI()const
+cuint8_t ColorS::getRUI() const
 {
     return static_cast<cuint8_t>( m_r * 255.0f );
 }
 
-cuint8_t ColorS::getGUI()const
+cuint8_t ColorS::getGUI() const
 {
     return static_cast<cuint8_t>( m_g * 255.0f );
 }
 
-cuint8_t ColorS::getBUI()const
+cuint8_t ColorS::getBUI() const
 {
     return static_cast<cuint8_t>( m_b * 255.0f );
 }
 
-cuint8_t ColorS::getAUI()const
+cuint8_t ColorS::getAUI() const
 {
     return static_cast<cuint8_t>( m_alpha * 255.0f );
 }

@@ -14,7 +14,7 @@ public:
     ~Object( void );
 
     //INode
-    const ElementType getType()const override;
+    const ElementType getType() const override;
     //INode
 
 protected:

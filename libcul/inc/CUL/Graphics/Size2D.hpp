@@ -60,12 +60,12 @@ public:
         m_height = height;
     }
 
-    const Type getWidth()const
+    const Type getWidth() const
     {
         return m_width;
     }
 
-    const Type getHeight()const
+    const Type getHeight() const
     {
         return m_height;
     }

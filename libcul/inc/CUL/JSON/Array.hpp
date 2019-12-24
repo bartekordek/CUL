@@ -14,10 +14,10 @@ public:
     Array( CsStr& name );
     ~Array( void );
 
-    const ElementType getType()const override;
+    const ElementType getType() const override;
     void addValue( INode* node );
     INode* getValue( CsStr& valName );
-    const ChildrenNodes& getAllValues()const;
+    const ChildrenNodes& getAllValues() const;
 
 protected:
 private:

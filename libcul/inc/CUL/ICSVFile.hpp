@@ -16,11 +16,11 @@ namespace CUL
 
             ICSVFile& operator=( const ICSVFile& rhv ) = delete;
 
-            virtual const bool checkIfFileIsAllRight()const = 0;
-            virtual cunt rowsCount()const = 0;
-            virtual cunt colsCount()const = 0;
-            virtual CsStr& getVal( cunt row, cunt col )const = 0;
-            virtual void setVal( CsStr& val, cunt row, cunt col ) = 0;
+            virtual const bool checkIfFileIsAllRight() const = 0;
+            virtual Cunt rowsCount() const = 0;
+            virtual Cunt colsCount() const = 0;
+            virtual CsStr& getVal( Cunt row, Cunt col ) const = 0;
+            virtual void setVal( CsStr& val, Cunt row, Cunt col ) = 0;
             virtual void setDelimeter( CsStr& delimeter ) = 0;
             virtual void fileContainsQuotationMarks( const bool containsQuotationMarks ) = 0;
 

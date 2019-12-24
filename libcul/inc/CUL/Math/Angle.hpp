@@ -24,9 +24,9 @@ public:
     Angle( const int value, const Type type = Type::RADIAN );
     virtual ~Angle();
 
-    const double getValueD( const Type type = Type::RADIAN )const;
-    const float getValueF(const Type type = Type::RADIAN)const;
-    const int getValueI( const Type type = Type::RADIAN )const;
+    const double getValueD( const Type type = Type::RADIAN ) const;
+    const float getValueF(const Type type = Type::RADIAN) const;
+    const int getValueI( const Type type = Type::RADIAN ) const;
 
     void setValue( const double value, const Type type = Type::RADIAN );
     void setValue( const unsigned int value, const Type type = Type::RADIAN );
@@ -36,7 +36,7 @@ public:
     void setIncrementValue( const int value );
     void setIncrementValue( const double value );
 
-    const Type getCurrentType()const;
+    const Type getCurrentType() const;
     void setCurrentType( const Type type );
 
     Angle& operator+=( const unsigned int val );

@@ -15,7 +15,7 @@ namespace CUL
 
         CULLib_API IName& operator=( const IName& rhv );
 
-        CULLib_API CsStr& getName()const;
+        CULLib_API CsStr& getName() const;
         CULLib_API void setName( CsStr& name );
 
     protected:

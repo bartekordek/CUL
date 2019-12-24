@@ -31,7 +31,7 @@ public:
         return m_ptr;
     }
 
-    const Type* operator->()const
+    const Type* operator->() const
     {
         return m_ptr;
     }

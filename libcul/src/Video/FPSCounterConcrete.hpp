@@ -31,15 +31,15 @@ public:
     void start() override;
     void stop() override;
     void increase() override;
-    const double getCurrentFps()const override;
-    const double getAverageFps()const override;
+    const double getCurrentFps() const override;
+    const double getAverageFps() const override;
     void setSampleSize( unsigned short sampleSize ) override;
     void setMeasurePeriod( const unsigned periodMs ) override;
 
 protected:
 private:
     void counterLoop();
-    const double calculateAverageFps()const;
+    const double calculateAverageFps() const;
     const double normalizeToSleepTime( const double fpsCount ) const;
     unsigned int bufferSize = 4;
 

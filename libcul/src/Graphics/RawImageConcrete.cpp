@@ -70,7 +70,7 @@ void RawImageConcrete::loadFromFile( CUL::CsStr& path )
     m_data = static_cast< RawDataPtr >( dataPtr );
 }
 
-cunt RawImageConcrete::getID() const
+Cunt RawImageConcrete::getID() const
 {
     return m_fileId;
 }

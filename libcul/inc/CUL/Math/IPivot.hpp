@@ -53,7 +53,7 @@ public:
         const PivotType type = PivotType::NORMALIZED ) = 0;
 
     virtual const Position3DDMutexed& getPivot(
-        const PivotType type = PivotType::NORMALIZED )const = 0;
+        const PivotType type = PivotType::NORMALIZED ) const = 0;
 
 protected:
 private:

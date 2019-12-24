@@ -5,7 +5,7 @@
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/UselessMacros.hpp"
 
-using cunt = const unsigned int;
+using Cunt = const unsigned int;
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
@@ -20,10 +20,10 @@ public:
 
     IFile& operator=( CsStr& rPath ) = delete;
 
-    virtual const Path& getPath()const = 0;
+    virtual const Path& getPath() const = 0;
 
-    virtual CBool exists()const = 0;
-    virtual CBool isBinary()const = 0;
+    virtual CBool exists() const = 0;
+    virtual CBool isBinary() const = 0;
 
     virtual void changePath( const Path& newPath ) = 0;
 
@@ -31,13 +31,13 @@ public:
     virtual void load( CBool keepLineEndingCharacter = false ) = 0;
     virtual void unload() = 0;
 
-    virtual CsStr& firstLine()const = 0;
-    virtual CsStr& lastLine()const = 0;
+    virtual CsStr& firstLine() const = 0;
+    virtual CsStr& lastLine() const = 0;
 
-    virtual CsStr& getAsOneString()const = 0;
-    virtual const char** getContent()const = 0;
+    virtual CsStr& getAsOneString() const = 0;
+    virtual const char** getContent() const = 0;
 
-    virtual cunt getLinesCount()const = 0;
+    virtual Cunt getLinesCount() const = 0;
 
 protected:
 private:

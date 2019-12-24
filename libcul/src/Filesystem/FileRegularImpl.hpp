@@ -25,20 +25,20 @@ NAMESPACE_BEGIN( FS )
 
             const Path& getPath() const override;
 
-            CBool exists()const override;
-            CBool isBinary()const override;
+            CBool exists() const override;
+            CBool isBinary() const override;
 
             void reload( CBool keepLineEndingCharacter = false ) override;
             void load( CBool keepLineEndingCharacter = false ) override;
             void unload() override;
 
-            CsStr& firstLine()const override;
-            CsStr& lastLine()const override;
+            CsStr& firstLine() const override;
+            CsStr& lastLine() const override;
 
-            CsStr& getAsOneString()const override;
-            const char** getContent()const override;
+            CsStr& getAsOneString() const override;
+            const char** getContent() const override;
 
-            cunt getLinesCount()const override;
+            Cunt getLinesCount() const override;
 
         protected:
         private:
