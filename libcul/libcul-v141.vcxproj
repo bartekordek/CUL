@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="inc\CUL\Graphics\IImage.cpp" />
     <ClCompile Include="src\Filesystem\FSUtils.cpp" />
     <ClCompile Include="src\GenericUtils\ArgumentsPairConcrete.cpp" />
     <ClCompile Include="src\GenericUtils\ConsoleUtilities.cpp" />
     <ClCompile Include="src\GenericUtils\IArgumentsPair.cpp" />
     <ClCompile Include="src\Graphics\DevilImageLoader.cpp" />
+    <ClCompile Include="src\Graphics\IImage.cpp" />
     <ClCompile Include="src\Graphics\IImageLoader.cpp" />
     <ClCompile Include="src\Graphics\ImageDevil.cpp" />
     <ClCompile Include="src\Graphics\Size3DDMutexed.cpp" />
@@ -75,7 +75,6 @@
     <ClCompile Include="src\ThreadUtilityWindows.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
-    <ClCompile Include="src\Value.cpp" />
     <ClCompile Include="src\Video\FPSCounterConcrete.cpp" />
     <ClCompile Include="src\Video\IFPSCounter.cpp" />
     <ClCompile Include="src\Video\IFPSObservable.cpp" />
@@ -172,7 +171,6 @@
     <ClInclude Include="inc\CUL\ThreadUtils.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
     <ClInclude Include="inc\CUL\UselessMacros.hpp" />
-    <ClInclude Include="inc\CUL\Value.hpp" />
     <ClInclude Include="inc\CUL\Video\IFPSCounter.hpp" />
     <ClInclude Include="inc\CUL\Video\IFPSObservable.hpp" />
     <ClInclude Include="inc\CUL\Windows\INCLUDE_dwrite.hpp" />
@@ -203,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.git\config" />
+    <None Include="libcul-v141.ruleset" />
     <None Include="Makefile" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -261,24 +260,36 @@
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -291,9 +302,10 @@
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -312,8 +324,13 @@
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -326,9 +343,10 @@
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -346,8 +364,13 @@
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -361,10 +384,11 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <DebugInformationFormat>None</DebugInformationFormat>
       <SupportJustMyCode>true</SupportJustMyCode>
       <ProgramDataBaseFileName />
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -385,8 +409,13 @@
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -400,10 +429,11 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <DebugInformationFormat>None</DebugInformationFormat>
       <SupportJustMyCode>true</SupportJustMyCode>
       <ProgramDataBaseFileName />
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -423,8 +453,13 @@
       </Command>
     </PreLinkEvent>
     <PreBuildEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

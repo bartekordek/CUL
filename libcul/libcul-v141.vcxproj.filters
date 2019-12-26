@@ -174,9 +174,6 @@
     <ClCompile Include="src\Math\TriangleRectangularSimple2D.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="src\Value.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Math\Math.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
@@ -255,8 +252,8 @@
     <ClCompile Include="src\Graphics\ImageDevil.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="inc\CUL\Graphics\IImage.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Graphics\IImage.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -530,9 +527,6 @@
     <ClInclude Include="inc\CUL\UselessMacros.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\Value.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Filesystem\FSUtils.hpp">
       <Filter>Source Files\Filesystem</Filter>
     </ClInclude>
@@ -621,5 +615,6 @@
   <ItemGroup>
     <None Include="..\.git\config" />
     <None Include="Makefile" />
+    <None Include="libcul-v141.ruleset" />
   </ItemGroup>
 </Project>
