@@ -14,7 +14,9 @@ struct CULLib_API ImageInfo
 {
     ImageInfo();
     ImageInfo( const ImageInfo& arg );
+    ImageInfo( ImageInfo&& arg );
     ImageInfo& operator=( const ImageInfo& rhv );
+    ImageInfo& operator=( ImageInfo&& rhv );
 
     Path path;
     SSize2Dui size;
@@ -24,19 +26,21 @@ struct CULLib_API ImageInfo
 class CULLib_API IImage
 {
 public:
-    IImage() = default;
+    explicit IImage();
 
     virtual const DataType* getData() const = 0;
     virtual const ImageInfo& getImageInfo() const = 0;
 
-    virtual ~IImage() = default;
+    virtual ~IImage();
 
 protected:
 private:
 
 private: // Deleted
+    IImage( IImage&& arg ) = delete;
     IImage( const IImage& value ) = delete;
     IImage& operator=( const IImage& rhv ) = delete;
+    IImage& operator=( IImage&& rhv ) = delete;
 
 };
 

@@ -6,13 +6,13 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
-class Position3DDMutexedImpl
+class Position3DDMutexedImpl final
 {
 public:
     Position3DDMutexedImpl();
     Position3DDMutexedImpl( CDbl x, CDbl y, CDbl z );
     Position3DDMutexedImpl( const Position3DDMutexedImpl& val );
-    virtual ~Position3DDMutexedImpl();
+    ~Position3DDMutexedImpl();
     Position3DDMutexedImpl& operator=( const Position3DDMutexedImpl& val );
 
     void setX( CDbl val );

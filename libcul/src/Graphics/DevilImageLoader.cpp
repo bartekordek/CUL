@@ -35,7 +35,7 @@ IImage* DevilImageLoader::loadImage( const Path& path )
     ilBindImage( imgID );
 
     ILboolean success = ilLoadImage( path.getPath().cStr() );
-    ILenum ilError = ilGetError();
+    const ILenum ilError = ilGetError();
     if( ilError != IL_NO_ERROR )
     {
         auto errorIluAsString = iluErrorString( ilError );
@@ -48,11 +48,11 @@ IImage* DevilImageLoader::loadImage( const Path& path )
     imageInfo.colorFormat = "RGBA";
     CUL::Assert::simple( success == IL_TRUE, "ILU/ILUT error, cannot convert image." );
 
-    auto imgWidth = static_cast<unsigned>( ilGetInteger( IL_IMAGE_WIDTH ) );
-    auto imgHeight = static_cast<unsigned>( ilGetInteger( IL_IMAGE_HEIGHT ) );
+    const auto imgWidth = static_cast<unsigned>( ilGetInteger( IL_IMAGE_WIDTH ) );
+    const auto imgHeight = static_cast<unsigned>( ilGetInteger( IL_IMAGE_HEIGHT ) );
 
-    auto roundedUpWidth = roundUpToPowerOfTwo( imgWidth );
-    auto roundedUpHeight = roundUpToPowerOfTwo( imgHeight );
+    const auto roundedUpWidth = roundUpToPowerOfTwo( imgWidth );
+    const auto roundedUpHeight = roundUpToPowerOfTwo( imgHeight );
 
     if( imgWidth != roundedUpWidth || imgHeight != roundedUpHeight )
     {
@@ -72,7 +72,7 @@ IImage* DevilImageLoader::loadImage( const Path& path )
     iluImage->setPath( path );
     iluImage->setImageInfo( imageInfo );
 
-    m_fileList[ path.getPath() ] = iluImage;
+    m_fileList[path.getPath()] = std::unique_ptr<IImage>( iluImage );
 
     ilDeleteImages( 1, &imgID );
 
@@ -86,7 +86,6 @@ void DevilImageLoader::deleteImage( const Path& path )
     auto it = m_fileList.find( path.getPath() );
     if( it != m_fileList.end() )
     {
-        delete it->second;
         m_fileList.erase( it );
     }
 }
@@ -98,7 +97,7 @@ IImage* DevilImageLoader::findImage( const Path& path )
     auto it = m_fileList.find( path.getPath() );
     if( it != m_fileList.end() )
     {
-        result = it->second;
+        result = it->second.get();
     }
 
     return result;
@@ -106,7 +105,7 @@ IImage* DevilImageLoader::findImage( const Path& path )
 
 void checkForIluErrors()
 {
-    ILenum ilError = ilGetError();
+    const ILenum ilError = ilGetError();
     if( ilError != IL_NO_ERROR )
     {
         auto errorIluAsString = iluErrorString( ilError );

@@ -2,6 +2,7 @@
 
 #include "CUL/Graphics/IPosition3DD.hpp"
 #include "CUL/Math/Vector3D.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -50,7 +51,7 @@ public:
 
 protected:
 private:
-    Position3DDMutexedImpl* m_impl = nullptr;
+    std::unique_ptr<Position3DDMutexedImpl> m_impl;
 
 };
 

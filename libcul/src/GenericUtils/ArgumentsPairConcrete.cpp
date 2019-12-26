@@ -1,8 +1,7 @@
 #include "ArgumentsPairConcrete.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
 
-using namespace CUL;
-using namespace GUTILS;
+using namespace CUL::GUTILS;
 
 ArgumentsPairConcrete::ArgumentsPairConcrete()
 {

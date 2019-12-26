@@ -1,7 +1,7 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 
-#include "boost/assert.hpp"
+#include "IMPORT_boost_assert.hpp"
 
 using namespace CUL;
 

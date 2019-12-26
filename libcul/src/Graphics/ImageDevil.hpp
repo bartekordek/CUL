@@ -18,7 +18,7 @@ public:
     const ImageInfo& getImageInfo() const override;
 
     void setPath( const Path& path );
-    void setData( ILubyte* data, Cunt width, Cunt height );
+    void setData( const ILubyte* data, Cunt width, Cunt height );
     void setImageInfo( const ImageInfo& ii );
 
     ~ImageDevil();

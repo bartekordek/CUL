@@ -6,7 +6,6 @@
 
 using namespace CUL::FS;
 
-
 // Disabled _CRT_SECURE_NO_WARNINGS
 // NOTE: TODO: find a better solution.
 #ifdef _MSC_VER
@@ -17,8 +16,8 @@ using namespace CUL::FS;
 CUL::String CUL::FS::ws2s( const std::wstring& input )
 {
     String result;
-    auto outputSize = input.length() + 1;
-    auto outputString = new char[outputSize];
+    const auto outputSize = input.length() + 1;
+    const auto outputString = new char[outputSize];
 
     wcstombs( outputString, input.c_str(), outputSize );
 

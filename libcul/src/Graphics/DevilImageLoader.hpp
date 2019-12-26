@@ -2,6 +2,7 @@
 
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/STL_IMPORTS/STD_map.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -20,7 +21,7 @@ public:
 protected:
 
 private:
-    using FileList = std::map<String, IImage*>;
+    using FileList = std::map<String, std::unique_ptr<IImage>>;
     FileList m_fileList;
 
 private: // Deleted

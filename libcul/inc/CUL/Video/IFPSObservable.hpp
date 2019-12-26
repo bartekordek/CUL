@@ -8,16 +8,19 @@ NAMESPACE_BEGIN( Video )
 class CULLib_API IFPSObservable
 {
 public:
-    IFPSObservable() = default;
-    virtual ~IFPSObservable() = default;
+    IFPSObservable();
 
     void addFPSCounter( IFPSCounter* counter );
     void frameHasEnded();
 
+    virtual ~IFPSObservable();
+
 protected:
 private:
     IFPSObservable( const IFPSObservable& instance ) = delete;
+    IFPSObservable( IFPSObservable&& instance ) = delete;
     IFPSObservable& operator=( const IFPSObservable& instance ) = delete;
+    IFPSObservable& operator=( IFPSObservable&& instance ) = delete;
 
     IFPSCounter* m_fpsCounter = nullptr;
 

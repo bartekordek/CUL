@@ -23,8 +23,8 @@ ConsoleUtilities::~ConsoleUtilities()
 void ConsoleUtilities::printInputParameters()
 {
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "ConsoleUtilities::printInputParameters()" );
-    auto argc = *m_args->getArgCount();
-    auto argv = m_args->getArgsVal();
+    const auto argc = *m_args->getArgCount();
+    const auto argv = m_args->getArgsVal();
     for( int i = 0; i < argc; ++i )
     {
         CUL::String logInfo = "ARG[" + CUL::String( i ) + "] = " + argv[ i ];

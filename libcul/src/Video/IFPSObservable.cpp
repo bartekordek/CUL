@@ -1,7 +1,11 @@
 #include "CUL/Video/IFPSObservable.hpp"
 
-using namespace CUL;
-using namespace Video;
+using namespace CUL::Video;
+
+IFPSObservable::IFPSObservable()
+{
+
+}
 
 void IFPSObservable::addFPSCounter( IFPSCounter* counter )
 {
@@ -14,4 +18,9 @@ void IFPSObservable::frameHasEnded()
     {
         m_fpsCounter->increase();
     }
+}
+
+IFPSObservable::~IFPSObservable()
+{
+
 }

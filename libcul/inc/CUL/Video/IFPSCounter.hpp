@@ -21,6 +21,12 @@ public:
 
     virtual void start() = 0;
     virtual void stop() = 0;
+
+protected:
+private:
+    IFPSCounter( const IFPSCounter& arg ) = delete;
+    IFPSCounter& operator=( const IFPSCounter& rhv ) = delete;
+
 };
 
 class CULLib_API FPSCounterFactory
@@ -29,6 +35,10 @@ public:
     static IFPSCounter* getConcreteFPSCounter();
 protected:
 private:
+    FPSCounterFactory() = delete;
+    FPSCounterFactory( const FPSCounterFactory& arg ) = delete;
+    FPSCounterFactory& operator=( const FPSCounterFactory& rhv ) = delete;
+    ~FPSCounterFactory() = delete;
 };
 
 NAMESPACE_END( Video )

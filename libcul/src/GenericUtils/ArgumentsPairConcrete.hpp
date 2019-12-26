@@ -22,13 +22,12 @@ public:
     ArgumentsPairConcrete();
     ~ArgumentsPairConcrete();
 
+protected:
+private:
     void setArgs( const int argc, char** argv ) override;
     int* getArgCount() override;
     char** getArgsVal() override;
     void createDummyArgs() override;
-
-protected:
-private:
     void clearArgs();
 
     std::vector<String> m_argumentsPtrs;
@@ -36,6 +35,12 @@ private:
     char** m_valBeginingTable = nullptr;
     int m_argc = 0;
     bool m_argumentsAreDummy = false;
+
+private: // Deleted.
+    ArgumentsPairConcrete( ArgumentsPairConcrete&& arg ) = delete;
+    ArgumentsPairConcrete( const ArgumentsPairConcrete& value ) = delete;
+    ArgumentsPairConcrete& operator=( const ArgumentsPairConcrete& rhv ) = delete;
+    ArgumentsPairConcrete& operator=( ArgumentsPairConcrete&& rhv ) = delete;
 
 };
 #ifdef _MSC_VER

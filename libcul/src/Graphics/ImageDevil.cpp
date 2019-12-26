@@ -22,13 +22,16 @@ void ImageDevil::setPath( const Path& path )
     m_imageInfo.path = path;
 }
 
-void ImageDevil::setData( ILubyte* data, Cunt width, Cunt height )
+void ImageDevil::setData( const ILubyte* data, Cunt width, Cunt height )
 {
     releaseImage();
 
-    auto textureSize = width * height;
+    const auto textureSize = static_cast<size_t>( width * height );
     m_data = new DataType[ textureSize ];
-    memcpy( m_data, data, textureSize * 4 );
+    memcpy(
+        m_data,
+        data,
+        static_cast<size_t>( textureSize * 4 ) );
 }
 
 void ImageDevil::setImageInfo( const ImageInfo& ii )

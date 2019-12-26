@@ -18,15 +18,13 @@ NAMESPACE_BEGIN( Video )
 #pragma warning( disable: 4820 )
 #endif
 
-class FPSCounterConcrete:
+class FPSCounterConcrete final:
     public IFPSCounter
 {
 public:
     FPSCounterConcrete();
-    FPSCounterConcrete( const FPSCounterConcrete& rhv ) = delete;
-    virtual ~FPSCounterConcrete();
 
-    FPSCounterConcrete& operator=( const FPSCounterConcrete& rhv ) = delete;
+    ~FPSCounterConcrete();
 
     void start() override;
     void stop() override;
@@ -52,6 +50,12 @@ private:
     boost::circular_buffer<unsigned> m_samples;
     std::atomic<double> m_averageFps = { 0.0 };
     std::atomic<unsigned> m_sleepTimeMs = { 1000 };
+
+private: // Deleted.
+    FPSCounterConcrete( FPSCounterConcrete&& arg ) = delete;
+    FPSCounterConcrete( const FPSCounterConcrete& value ) = delete;
+    FPSCounterConcrete& operator=( const FPSCounterConcrete& rhv ) = delete;
+    FPSCounterConcrete& operator=( FPSCounterConcrete&& rhv ) = delete;
 };
 
 #ifdef _MSC_VER
