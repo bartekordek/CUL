@@ -611,6 +611,12 @@
     <ClInclude Include="src\Graphics\ImageDevil.hpp">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_utility.hpp">
+      <Filter>Header Files\STL_IMPORTS</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Graphics\Pos3D.hpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.git\config" />
