@@ -7,7 +7,7 @@
 using namespace CUL::Graphics;
 
 void checkForIluErrors();
-const unsigned roundUpToPowerOfTwo( unsigned value );
+Cunt roundUpToPowerOfTwo( unsigned value );
 
 DevilImageLoader::DevilImageLoader()
 {
@@ -65,7 +65,7 @@ IImage* DevilImageLoader::loadImage( const Path& path )
             static_cast<ILuint>( roundedUpHeight ),
             1 );
     }
-    auto iluImage = new ImageDevil();
+    const auto iluImage = new ImageDevil();
     imageInfo.size.width = roundedUpWidth;
     imageInfo.size.height = roundedUpHeight;
     iluImage->setData( ilGetData(), roundedUpWidth, roundedUpHeight );
@@ -113,7 +113,7 @@ void checkForIluErrors()
     }
 }
 
-const unsigned int roundUpToPowerOfTwo( unsigned value )
+Cunt roundUpToPowerOfTwo( unsigned value )
 {
     if( value != 0 )
     {

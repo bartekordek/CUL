@@ -20,48 +20,48 @@ public:
     };
 
     Angle();
-    Angle( const double value, const Type type = Type::RADIAN );
-    Angle( const int value, const Type type = Type::RADIAN );
+    Angle( Cdouble value, const Type type = Type::RADIAN );
+    Angle( Cint value, const Type type = Type::RADIAN );
     virtual ~Angle();
 
-    const double getValueD( const Type type = Type::RADIAN ) const;
-    const float getValueF(const Type type = Type::RADIAN) const;
-    const int getValueI( const Type type = Type::RADIAN ) const;
+    Cdouble getValueD( const Type type = Type::RADIAN ) const;
+    Cfloat getValueF(const Type type = Type::RADIAN) const;
+    Cint getValueI( const Type type = Type::RADIAN ) const;
 
-    void setValue( const double value, const Type type = Type::RADIAN );
-    void setValue( const unsigned int value, const Type type = Type::RADIAN );
-    void setValue( const int value, const Type type = Type::RADIAN );
+    void setValue( Cdouble value, const Type type = Type::RADIAN );
+    void setValue( Cunt value, const Type type = Type::RADIAN );
+    void setValue( Cint value, const Type type = Type::RADIAN );
 
-    void setIncrementValue( const unsigned int value );
-    void setIncrementValue( const int value );
-    void setIncrementValue( const double value );
+    void setIncrementValue( Cunt value );
+    void setIncrementValue( Cint value );
+    void setIncrementValue( Cdouble value );
 
     const Type getCurrentType() const;
     void setCurrentType( const Type type );
 
-    Angle& operator+=( const unsigned int val );
-    Angle& operator+=( const int val );
-    Angle& operator+=( const double val );
+    Angle& operator+=( Cunt val );
+    Angle& operator+=( Cint val );
+    Angle& operator+=( Cdouble val );
 
-    Angle& operator-=( const unsigned int val );
-    Angle& operator-=( const int val );
-    Angle& operator-=( const double val );
+    Angle& operator-=( Cunt val );
+    Angle& operator-=( Cint val );
+    Angle& operator-=( Cdouble val );
 
-    Angle operator/( const double val );
-    Angle operator/( const int val );
-    Angle operator/( const unsigned int val );
+    Angle operator/( Cdouble val );
+    Angle operator/( Cint val );
+    Angle operator/( Cunt val );
 
-    Angle& operator/=( const double val );
-    Angle& operator/=( const int val );
-    Angle& operator/=( const unsigned int val );
+    Angle& operator/=( Cdouble val );
+    Angle& operator/=( Cint val );
+    Angle& operator/=( Cunt val );
 
-    Angle& operator*=( const double val );
-    Angle& operator*=( const int val );
-    Angle& operator*=( const unsigned int val );
+    Angle& operator*=( Cdouble val );
+    Angle& operator*=( Cint val );
+    Angle& operator*=( Cunt val );
 
-    Angle operator*( const double val );
-    Angle operator*( const int val );
-    Angle operator*( const unsigned int val );
+    Angle operator*( Cdouble val );
+    Angle operator*( Cint val );
+    Angle operator*( Cunt val );
 
     Angle& operator++();
     Angle& operator--();
@@ -69,15 +69,15 @@ public:
     Angle operator++( int );
     Angle operator--( int );
 
-    operator const double() const;
-    operator const int() const;
+    operator Cdouble() const;
+    operator Cint() const;
 
 protected:
 private:
-    void add( const double value );
-    void subtrackt( const double value );
-    void multiply( const double value );
-    void divide( const double value );
+    void add( Cdouble value );
+    void subtrackt( Cdouble value );
+    void multiply( Cdouble value );
+    void divide( Cdouble value );
     void increment();
     void decrement();
 
@@ -90,11 +90,11 @@ private:
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-CULLib_API const double radian2degree( const double radian );
-CULLib_API const double degree2radian( const double degree );
+CULLib_API Cdouble radian2degree( Cdouble radian );
+CULLib_API Cdouble degree2radian( Cdouble degree );
 
-CULLib_API const float radian2degree( const float radian );
-CULLib_API const float degree2radian( const float degree );
+CULLib_API Cfloat radian2degree( Cfloat radian );
+CULLib_API Cfloat degree2radian( Cfloat degree );
 
 NAMESPACE_END( Math )
 NAMESPACE_END( CUL )
