@@ -39,5 +39,8 @@ NAMESPACE_BEGIN( CUL )
 
 using Cbool = const bool;
 using Cunt = const unsigned int;
+using Cint = const int;
+using Cdouble = const double;
+using Cfloat = const float;
 
 NAMESPACE_END( CUL )
