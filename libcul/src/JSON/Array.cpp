@@ -3,7 +3,7 @@
 using namespace CUL;
 using namespace JSON;
 
-Array::Array( void )
+Array::Array()
 {
 }
 
@@ -12,7 +12,7 @@ Array::Array( CsStr& name ):
 {
 }
 
-Array::~Array( void )
+Array::~Array()
 {
 }
 

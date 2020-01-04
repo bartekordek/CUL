@@ -5,8 +5,8 @@ class TriangleTests:
     public testing::Test
 {
 protected:
-    TriangleTests( void );
-    virtual ~TriangleTests( void );
+    TriangleTests();
+    virtual ~TriangleTests();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

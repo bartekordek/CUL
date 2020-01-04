@@ -8,7 +8,7 @@
 class TimeTests: public ::testing::Test
 {
 protected:
-    TimeTests( void );
+    TimeTests();
     virtual ~TimeTests();
 
     static void SetUpTestCase();

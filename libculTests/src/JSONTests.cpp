@@ -7,12 +7,12 @@
 using namespace CUL;
 using JFIlePtr = CUL::JSON::IJSONFile;
 
-JSONTests::JSONTests( void )
+JSONTests::JSONTests()
 {
 
 }
 
-JSONTests::~JSONTests( void )
+JSONTests::~JSONTests()
 {
 
 }

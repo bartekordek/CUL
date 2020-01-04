@@ -9,8 +9,8 @@
 class JSONTests: public ::testing::Test
 {
 protected:
-    JSONTests( void );
-    virtual ~JSONTests( void );
+    JSONTests();
+    virtual ~JSONTests();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

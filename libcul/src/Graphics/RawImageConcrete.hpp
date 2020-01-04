@@ -11,8 +11,8 @@ class RawImageConcrete final:
     public IRawImage
 {
 public:
-    RawImageConcrete( void );
-    ~RawImageConcrete( void );
+    RawImageConcrete();
+    ~RawImageConcrete();
 
     void loadFromFile( CUL::CsStr& path );
 

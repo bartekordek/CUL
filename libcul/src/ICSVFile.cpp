@@ -1,14 +1,13 @@
 #include "CUL/ICSVFile.hpp"
 
-using namespace CUL;
-using namespace FS;
+using namespace CUL::FS;
 
-ICSVFile::ICSVFile( void )
+ICSVFile::ICSVFile()
 {
 
 }
 
-ICSVFile::~ICSVFile( void )
+ICSVFile::~ICSVFile()
 {
 
 }

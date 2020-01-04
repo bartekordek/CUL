@@ -10,9 +10,9 @@ class CULLib_API IJSONFile:
     public FS::IFile
 {
 public:
-    IJSONFile( void ) = default;
+    IJSONFile() = default;
     IJSONFile( const IJSONFile& rhv ) = delete;
-    virtual ~IJSONFile( void ) = default;
+    virtual ~IJSONFile() = default;
 
     IJSONFile& operator=( const IJSONFile& rhv ) = delete;
 

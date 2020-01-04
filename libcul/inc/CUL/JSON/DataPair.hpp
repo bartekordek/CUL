@@ -9,9 +9,9 @@ class CULLib_API DataPair final:
     public INode
 {
 public:
-    DataPair( void );
+    DataPair();
     DataPair( CsStr& name, CsStr& value );
-    ~DataPair( void );
+    ~DataPair();
 
     CsStr& getVal() const;
     void setVal( CsStr& val );

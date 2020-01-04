@@ -6,8 +6,8 @@ class UtilsTest:
     public testing::Test
 {
 protected:
-    UtilsTest( void );
-    virtual ~UtilsTest( void );
+    UtilsTest();
+    virtual ~UtilsTest();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

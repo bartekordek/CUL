@@ -3,7 +3,7 @@
 using namespace CUL;
 using namespace FS;
 
-IFile::IFile( void )
+IFile::IFile()
 {
 }
 

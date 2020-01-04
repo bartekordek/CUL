@@ -179,12 +179,12 @@ const bool StringImpl::operator<( const StringImpl & rhv ) const
     return m_value < rhv.m_value;
 }
 
-void StringImpl::toLower( void )
+void StringImpl::toLower()
 {
     String::toLowerS( m_value );
 }
 
-void StringImpl::toUpper( void )
+void StringImpl::toUpper()
 {
     String::toUpperS( m_value );
 }
@@ -229,12 +229,12 @@ const Length StringImpl::length() const
     return static_cast< Length >( m_value.length() );
 }
 
-const Length StringImpl::capacity( void ) const
+const Length StringImpl::capacity() const
 {
     return static_cast< Length >( m_value.capacity() );
 }
 
-void StringImpl::clear( void )
+void StringImpl::clear()
 {
     m_value.clear();
 }

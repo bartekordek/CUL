@@ -9,8 +9,8 @@
 class FrameCounterTests: public ::testing::Test
 {
 protected:
-    FrameCounterTests( void );
-    virtual ~FrameCounterTests( void );
+    FrameCounterTests();
+    virtual ~FrameCounterTests();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

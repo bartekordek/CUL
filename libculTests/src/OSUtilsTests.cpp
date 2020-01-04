@@ -4,11 +4,11 @@
 
 using ISystemFonts = CUL::OSUtils::ISystemFonts;
 
-OSUtilsTests::OSUtilsTests( void )
+OSUtilsTests::OSUtilsTests()
 {
 }
 
-OSUtilsTests::~OSUtilsTests( void )
+OSUtilsTests::~OSUtilsTests()
 {
 }
 

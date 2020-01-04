@@ -6,11 +6,11 @@ using TriangleRectangularSimple2D = CUL::Math::TriangleRectangularSimple2D;
 using AngleTypes = CUL::Math::Angle::Type;
 using AxisTypes = CUL::Math::AxisCarthesian;
 
-TriangleTests::TriangleTests( void )
+TriangleTests::TriangleTests()
 {
 }
 
-TriangleTests::~TriangleTests( void )
+TriangleTests::~TriangleTests()
 {
 }
 

@@ -9,8 +9,8 @@ class SimpleStandardOutputLoggerTests:
     public ::testing::Test
 {
 protected:
-    SimpleStandardOutputLoggerTests( void );
-    virtual ~SimpleStandardOutputLoggerTests( void );
+    SimpleStandardOutputLoggerTests();
+    virtual ~SimpleStandardOutputLoggerTests();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

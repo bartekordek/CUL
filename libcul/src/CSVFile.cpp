@@ -4,7 +4,7 @@
 using namespace CUL;
 using namespace FS;
 
-CSVFile::CSVFile( void )
+CSVFile::CSVFile()
 {
 }
 CSVFile::CSVFile( const CSVFile & rhv ):

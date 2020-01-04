@@ -2,7 +2,7 @@
 
 using namespace CUL;
 
-TimeConcrete::TimeConcrete( void )
+TimeConcrete::TimeConcrete()
 {
 }
 

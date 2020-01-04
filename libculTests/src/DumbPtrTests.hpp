@@ -9,8 +9,8 @@ class DumbPtrTests:
     public ::testing::Test
 {
 protected:
-    DumbPtrTests( void );
-    virtual ~DumbPtrTests( void );
+    DumbPtrTests();
+    virtual ~DumbPtrTests();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

@@ -1,12 +1,12 @@
 #include "SimpleStandardOutputLoggerTests.hpp"
 #include "CUL/Log/ILogger.hpp"
 
-SimpleStandardOutputLoggerTests::SimpleStandardOutputLoggerTests( void )
+SimpleStandardOutputLoggerTests::SimpleStandardOutputLoggerTests()
 {
 
 }
 
-SimpleStandardOutputLoggerTests::~SimpleStandardOutputLoggerTests( void )
+SimpleStandardOutputLoggerTests::~SimpleStandardOutputLoggerTests()
 {
 
 }

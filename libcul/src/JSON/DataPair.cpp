@@ -3,7 +3,7 @@
 using namespace CUL;
 using namespace JSON;
 
-DataPair::DataPair( void )
+DataPair::DataPair()
 {
 
 }

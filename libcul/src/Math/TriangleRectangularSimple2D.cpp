@@ -5,7 +5,7 @@
 using namespace CUL;
 using namespace Math;
 
-TriangleRectangularSimple2D::TriangleRectangularSimple2D( void )
+TriangleRectangularSimple2D::TriangleRectangularSimple2D()
 {
 }
 
@@ -17,7 +17,7 @@ TriangleRectangularSimple2D::TriangleRectangularSimple2D( const TriangleRectangu
 {
 }
 
-TriangleRectangularSimple2D::~TriangleRectangularSimple2D( void )
+TriangleRectangularSimple2D::~TriangleRectangularSimple2D()
 {
 }
 
@@ -65,43 +65,43 @@ void TriangleRectangularSimple2D::setHypotenuse( const double value )
     calculateAngle();
 }
 
-const double TriangleRectangularSimple2D::getOpposite( void )
+const double TriangleRectangularSimple2D::getOpposite()
 {
     return m_opposite;
 }
 
-const double TriangleRectangularSimple2D::getAdjacent( void )
+const double TriangleRectangularSimple2D::getAdjacent()
 {
     return m_adjacent;
 }
 
-const double TriangleRectangularSimple2D::getHypotenuse( void )
+const double TriangleRectangularSimple2D::getHypotenuse()
 {
     return m_hypotenuse;
 }
 
-const double TriangleRectangularSimple2D::calculateOpposite( void )
+const double TriangleRectangularSimple2D::calculateOpposite()
 {
     const auto sq = m_hypotenuse * m_hypotenuse - m_adjacent * m_adjacent;
     m_opposite = std::sqrt( sq );
     return m_opposite;
 }
 
-const double TriangleRectangularSimple2D::calculateAdjacent( void )
+const double TriangleRectangularSimple2D::calculateAdjacent()
 {
     const auto sq = m_hypotenuse * m_hypotenuse - m_opposite * m_opposite;
     m_adjacent = std::sqrt( sq );
     return m_adjacent;
 }
 
-const double TriangleRectangularSimple2D::calculateHypotenuse( void )
+const double TriangleRectangularSimple2D::calculateHypotenuse()
 {
     const auto sq = m_opposite * m_opposite + m_adjacent * m_adjacent;
     m_hypotenuse = std::sqrt( sq );
     return m_hypotenuse;
 }
 
-const Angle& TriangleRectangularSimple2D::getAngle( void ) const
+const Angle& TriangleRectangularSimple2D::getAngle() const
 {
     return m_angle;
 }
@@ -114,7 +114,7 @@ const Angle& TriangleRectangularSimple2D::getAngle( void ) const
 #pragma warning( push )
 #pragma warning( disable: 5045 )
 #endif
-void TriangleRectangularSimple2D::calculateAngle( void )
+void TriangleRectangularSimple2D::calculateAngle()
 {
     if( std::abs( m_adjacent ) < getEpsilon() )
     {
@@ -176,7 +176,7 @@ void TriangleRectangularSimple2D::calculateAngle( void )
 #pragma warning( pop )
 #endif
 
-void TriangleRectangularSimple2D::calculateQuarter( void )
+void TriangleRectangularSimple2D::calculateQuarter()
 {
     if( m_adjacent >= 0 )
     {

@@ -4,7 +4,7 @@
 
 using namespace CUL;
 
-TimeTests::TimeTests( void )
+TimeTests::TimeTests()
 {
 }
 

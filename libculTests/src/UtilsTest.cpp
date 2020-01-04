@@ -5,11 +5,11 @@
 
 const int someBigValue = 1000;
 
-UtilsTest::UtilsTest( void )
+UtilsTest::UtilsTest()
 {
 }
 
-UtilsTest::~UtilsTest( void )
+UtilsTest::~UtilsTest()
 {
 }
 

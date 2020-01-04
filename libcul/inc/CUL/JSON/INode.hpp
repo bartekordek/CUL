@@ -19,9 +19,9 @@ class CULLib_API INode:
     public IParent
 {
 public:
-    INode( void ) = default;
+    INode() = default;
     INode( CsStr& name );
-    virtual ~INode( void ) = default;
+    virtual ~INode() = default;
 
     CsStr& getName() const;
     void setName( CsStr& name );

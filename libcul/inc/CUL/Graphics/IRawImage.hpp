@@ -12,8 +12,8 @@ using RawDataPtr = unsigned char*;
 class CULLib_API IRawImage
 {
 public:
-    IRawImage( void ) = default;
-    virtual ~IRawImage( void ) = default;
+    IRawImage() = default;
+    virtual ~IRawImage() = default;
     virtual Cunt getID() const = 0;
     virtual const Math::Vector3Du& getSize() const = 0;
     virtual RawDataPtr getData() const = 0;

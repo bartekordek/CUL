@@ -5,12 +5,12 @@
 using namespace CUL;
 using namespace Video;
 
-FrameCounterTests::FrameCounterTests( void )
+FrameCounterTests::FrameCounterTests()
 {
 
 }
 
-FrameCounterTests::~FrameCounterTests( void )
+FrameCounterTests::~FrameCounterTests()
 {
 
 }

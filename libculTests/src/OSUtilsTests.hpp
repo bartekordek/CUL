@@ -6,8 +6,8 @@ class OSUtilsTests:
     public testing::Test
 {
 protected:
-    OSUtilsTests( void );
-    virtual ~OSUtilsTests( void );
+    OSUtilsTests();
+    virtual ~OSUtilsTests();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

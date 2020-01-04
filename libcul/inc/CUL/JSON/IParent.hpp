@@ -15,8 +15,8 @@ using ChildrenNodes = std::vector<NodePtr>;
 class CULLib_API IParent
 {
 public:
-    IParent( void ) = default;
-    virtual ~IParent( void ) = default;
+    IParent() = default;
+    virtual ~IParent() = default;
 
     virtual const ChildrenNodes& getChildren() const = 0;
     virtual const INode* getChild( CsStr& childName ) const = 0;

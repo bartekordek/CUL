@@ -42,17 +42,17 @@ public:
 
     const bool operator<( const StringImpl& rhv ) const;
 
-    void toLower( void );
-    void toUpper( void );
+    void toLower();
+    void toUpper();
     const bool contains( const String & inputString ) const;
     const bool contains( const char * inputString ) const;
     void replace( const String& inWhat, const String& inFor );
-    const std::string& string( void ) const;
-    std::string& string( void );
-    const char* cStr( void ) const;
-    const Length length( void ) const;
-    const Length capacity( void ) const;
-    void clear( void );
+    const std::string& string() const;
+    std::string& string();
+    const char* cStr() const;
+    const Length length() const;
+    const Length capacity() const;
+    void clear();
     const bool empty() const;
 
 protected:

@@ -16,9 +16,9 @@ class CULLib_API TriangleRectangularSimple2D:
     public Epsilon<double>
 {
 public:
-    TriangleRectangularSimple2D( void );
+    TriangleRectangularSimple2D();
     TriangleRectangularSimple2D( const TriangleRectangularSimple2D& value );
-    virtual ~TriangleRectangularSimple2D( void );
+    virtual ~TriangleRectangularSimple2D();
 
     TriangleRectangularSimple2D& operator=( const TriangleRectangularSimple2D& rhv );
 
@@ -26,20 +26,20 @@ public:
     void setAdjacent( const double value );
     void setHypotenuse( const double value );
 
-    const double getOpposite( void );
-    const double getAdjacent( void );
-    const double getHypotenuse( void );
+    const double getOpposite();
+    const double getAdjacent();
+    const double getHypotenuse();
 
-    const double calculateOpposite( void );
-    const double calculateAdjacent( void );
-    const double calculateHypotenuse( void );
+    const double calculateOpposite();
+    const double calculateAdjacent();
+    const double calculateHypotenuse();
 
-    const Angle& getAngle( void ) const;
+    const Angle& getAngle() const;
 
 protected:
 private:
-    void calculateQuarter( void );
-    void calculateAngle( void );
+    void calculateQuarter();
+    void calculateAngle();
 
     double m_opposite = 0.0;
     double m_adjacent = 0.0;

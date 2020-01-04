@@ -8,8 +8,8 @@
 class CSVFileTests: public ::testing::Test
 {
 protected:
-    CSVFileTests( void );
-    virtual ~CSVFileTests( void );
+    CSVFileTests();
+    virtual ~CSVFileTests();
 
     static void SetUpTestCase();
     static void TearDownTestCase();

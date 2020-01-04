@@ -9,9 +9,9 @@ class CULLib_API Object final:
     public INode
 {
 public:
-    Object( void );
+    Object();
     Object( CsStr& name );
-    ~Object( void );
+    ~Object();
 
     //INode
     const ElementType getType() const override;

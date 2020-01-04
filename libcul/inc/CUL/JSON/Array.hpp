@@ -10,9 +10,9 @@ class CULLib_API Array final:
     public INode
 {
 public:
-    Array( void );
+    Array();
     Array( CsStr& name );
-    ~Array( void );
+    ~Array();
 
     const ElementType getType() const override;
     void addValue( INode* node );

@@ -11,7 +11,7 @@ NAMESPACE_BEGIN(CUL)
 class TimeConcrete: public ITime
 {
 public:
-    TimeConcrete( void );
+    TimeConcrete();
     TimeConcrete( const TimeConcrete& tc );
     virtual ~TimeConcrete();
 
