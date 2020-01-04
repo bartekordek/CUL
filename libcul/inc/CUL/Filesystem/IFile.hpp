@@ -6,6 +6,7 @@
 #include "CUL/UselessMacros.hpp"
 
 using Cunt = const unsigned int;
+using Cbool = const bool;
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
@@ -13,12 +14,7 @@ NAMESPACE_BEGIN( FS )
 class CULLib_API IFile
 {
 public:
-    IFile( void );
-    IFile( CsStr& fPath ) = delete;
-    IFile( const IFile& file ) = delete;
-    virtual ~IFile();
-
-    IFile& operator=( CsStr& rPath ) = delete;
+    IFile();
 
     virtual const Path& getPath() const = 0;
 
@@ -39,8 +35,19 @@ public:
 
     virtual Cunt getLinesCount() const = 0;
 
+    virtual ~IFile();
+
 protected:
 private:
+
+private: // Deleted:
+    IFile( CsStr& fPath ) = delete;
+    IFile( const IFile& file ) = delete;
+    IFile( IFile&& file ) = delete;
+    IFile& operator=( CsStr& rPath ) = delete;
+    IFile& operator=( const IFile& file ) = delete;
+    IFile& operator=( IFile&& file ) = delete;
+
 };
 
 NAMESPACE_END( FS )

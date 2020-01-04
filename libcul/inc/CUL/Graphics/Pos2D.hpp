@@ -22,7 +22,7 @@ public:
 
     }
 
-    Pos2D(const Type x, const Type y):
+    Pos2D( const Type x, const Type y ):
         m_x( x ),
         m_y( y )
     {
@@ -44,27 +44,27 @@ public:
         return *this;
     }
 
-    const Type getX(void) const
+    const Type getX() const
     {
         return m_x;
     }
 
-    const Type getY(void) const
+    const Type getY() const
     {
         return m_y;
     }
 
-    void setX(const Type val)
+    void setX( const Type val )
     {
         m_x = val;
     }
 
-    void setY(const Type val)
+    void setY( const Type val )
     {
         m_y = val;
     }
 
-    void setXY(const Type x, const Type y)
+    void setXY( const Type x, const Type y )
     {
         m_x = x;
         m_y = y;

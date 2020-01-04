@@ -4,28 +4,11 @@
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 
-using namespace CUL;
-using namespace FS;
+using namespace CUL::FS;
+using CsStr = const CUL::String;
 
 FileRegularImpl::FileRegularImpl()
 {
-}
-
-FileRegularImpl::FileRegularImpl( const FileRegularImpl& file ):
-    m_path( file.m_path )
-{
-}
-
-FileRegularImpl::FileRegularImpl( const Path& filePath ):
-    m_path( filePath )
-{
-
-}
-
-IFile& FileRegularImpl::operator=( const Path& rPath )
-{
-    changePath( rPath );
-    return *this;
 }
 
 void FileRegularImpl::changePath( const Path& newPath )
@@ -53,13 +36,13 @@ const bool FileRegularImpl::isBinary() const
     return true;//TODO: Implement
 }
 
-void FileRegularImpl::reload( CBool keepLineEndingCharacter )
+void FileRegularImpl::reload( Cbool keepLineEndingCharacter )
 {
     unload();
     load( keepLineEndingCharacter );
 }
 
-void FileRegularImpl::load( CBool keepLineEndingCharacter )
+void FileRegularImpl::load( Cbool keepLineEndingCharacter )
 {
     CUL::Assert::simple( exists(), "Cannot open the file: " + m_path.getPath() );
 
