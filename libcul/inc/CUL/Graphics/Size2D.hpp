@@ -69,6 +69,11 @@ public:
         return m_height;
     }
 
+    const Type getRatio() const
+    {
+        return m_width / m_height;
+    }
+
 protected:
 private:
     Type m_width = static_cast< Type >( 0 );

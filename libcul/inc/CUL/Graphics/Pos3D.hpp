@@ -65,6 +65,21 @@ public:
         return *this;
     }
 
+    const Type& getX() const
+    {
+        return x;
+    }
+
+    const Type& getY() const
+    {
+        return y;
+    }
+
+    const Type& getZ() const
+    {
+        return z;
+    }
+
     virtual ~Pos3D()
     {
 
