@@ -70,3 +70,12 @@
 [submodule "deps/boost/type_traits"]
 	path = deps/boost/type_traits
 	url = git@github.com:boostorg/type_traits.git
+[submodule "deps/boost/variant"]
+	path = deps/boost/variant
+	url = git@github.com:boostorg/variant.git
+[submodule "deps/boost/type_index"]
+	path = deps/boost/type_index
+	url = https://github.com/boostorg/type_index.git
+[submodule "deps/boost/container_hash"]
+	path = deps/boost/container_hash
+	url = git@github.com:boostorg/container_hash.git
