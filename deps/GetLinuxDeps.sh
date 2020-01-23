@@ -1,6 +1,9 @@
 #!/bin/bash
 
-sudo apt-get install libpng-dev -y
+sudo apt install libpng-dev -y
+sudo apt install libdevil-dev -y
+
+exit
 
 GTEST_BUILD_PATH=Build-Linux
 cd googletest;
