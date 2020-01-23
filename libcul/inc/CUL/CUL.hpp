@@ -33,8 +33,6 @@
 #endif
 */
 
-
-
 NAMESPACE_BEGIN( CUL )
 
 using Cbool = const bool;
@@ -42,5 +40,6 @@ using Cunt = const unsigned int;
 using Cint = const int;
 using Cdouble = const double;
 using Cfloat = const float;
+using Cint64 = const long int;
 
 NAMESPACE_END( CUL )
