@@ -7,22 +7,20 @@ using namespace Graphics;
 Position3DDMutexed::Position3DDMutexed():
     m_impl( std::make_unique< Position3DDMutexedImpl>( Position3DDMutexedImpl() ) )
 {
-
 }
 
 Position3DDMutexed::Position3DDMutexed( CDbl x, CDbl y, CDbl z ):
     m_impl(
-        std::make_unique< Position3DDMutexedImpl>(
-            Position3DDMutexedImpl( x, y, z ) ) )
+    std::make_unique< Position3DDMutexedImpl>(
+    Position3DDMutexedImpl( x, y, z ) ) )
 {
 }
 
 Position3DDMutexed::Position3DDMutexed( const Position3DDMutexed& val ):
     m_impl(
-        std::make_unique< Position3DDMutexedImpl>(
-            Position3DDMutexedImpl( *val.m_impl ) ) )
+    std::make_unique< Position3DDMutexedImpl>(
+    Position3DDMutexedImpl( *val.m_impl ) ) )
 {
-
 }
 
 Position3DDMutexed::~Position3DDMutexed()

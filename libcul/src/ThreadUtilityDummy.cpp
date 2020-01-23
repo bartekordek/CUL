@@ -2,5 +2,4 @@
 
 void CUL::ThreadUtils::setCurrentThreadNameDummy( CUL::CsStr& )
 {
-
 }

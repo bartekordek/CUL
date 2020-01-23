@@ -41,7 +41,6 @@ private: // Deleted.
     ArgumentsPairConcrete( const ArgumentsPairConcrete& value ) = delete;
     ArgumentsPairConcrete& operator=( const ArgumentsPairConcrete& rhv ) = delete;
     ArgumentsPairConcrete& operator=( ArgumentsPairConcrete&& rhv ) = delete;
-
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

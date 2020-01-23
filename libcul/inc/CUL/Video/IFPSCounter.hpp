@@ -26,7 +26,6 @@ protected:
 private:
     IFPSCounter( const IFPSCounter& arg ) = delete;
     IFPSCounter& operator=( const IFPSCounter& rhv ) = delete;
-
 };
 
 class CULLib_API FPSCounterFactory

@@ -11,26 +11,22 @@ class CULLib_API Size2D
 public:
     Size2D()
     {
-
     }
 
     Size2D( const Size2D& s2 ):
         m_width( s2.m_width ),
         m_height( s2.m_height )
     {
-
     }
 
     Size2D( const Type width, const Type height ):
         m_width( width ),
         m_height( height )
     {
-
     }
 
     virtual ~Size2D()
     {
-
     }
 
     Size2D& operator=( const Size2D& rhv )
@@ -76,9 +72,8 @@ public:
 
 protected:
 private:
-    Type m_width = static_cast< Type >( 0 );
-    Type m_height = static_cast< Type >( 0 );
-
+    Type m_width = static_cast<Type>( 0 );
+    Type m_height = static_cast<Type>( 0 );
 };
 
 using Size2Du = Size2D<unsigned>;

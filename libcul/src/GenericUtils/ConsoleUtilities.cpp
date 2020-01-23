@@ -9,12 +9,10 @@ using namespace GUTILS;
 ConsoleUtilities::ConsoleUtilities():
     m_args( new ArgumentsPairConcrete() )
 {
-
 }
 
 ConsoleUtilities::~ConsoleUtilities()
 {
-
 }
 #ifdef _MSC_VER
 #pragma warning( push, 0 )
@@ -27,7 +25,7 @@ void ConsoleUtilities::printInputParameters()
     const auto argv = m_args->getArgsVal();
     for( int i = 0; i < argc; ++i )
     {
-        CUL::String logInfo = "ARG[" + CUL::String( i ) + "] = " + argv[ i ];
+        CUL::String logInfo = "ARG[" + CUL::String( i ) + "] = " + argv[i];
         CUL::LOG::LOG_CONTAINER::getLogger()->log( logInfo );
     }
 }

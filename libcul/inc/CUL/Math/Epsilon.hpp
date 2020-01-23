@@ -19,7 +19,7 @@ public:
     Epsilon()
     {
         const bool isFloatPoint = std::is_same<Type, float>::value || std::is_same<Type, double>::value;
-        if(isFloatPoint)
+        if( isFloatPoint )
         {
             epsilon = static_cast<Type>( 0.0000000001 );
         }

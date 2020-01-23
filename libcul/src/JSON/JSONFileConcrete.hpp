@@ -2,7 +2,6 @@
 
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/JSON/IJSONFile.hpp"
-#include "CUL/JSON/Object.hpp"
 #include "ImportRapidJSON.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -24,7 +23,8 @@ public:
 protected:
 private:
     void parse();
-    void parse( CsStr& valueName, const JValue& parentValue, INode* parentNode = nullptr );
+    INode* parse(
+        const JValue& parentValue );
     const FS::Path& getPath() const override;
 
     CBool exists() const override;
@@ -53,7 +53,6 @@ private:
 private: // Deleted
     JSONFileConcrete( const JSONFileConcrete& rhv ) = delete;
     JSONFileConcrete& operator=( const JSONFileConcrete& rhv ) = delete;
-
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

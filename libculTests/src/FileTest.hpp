@@ -29,7 +29,6 @@ protected:
 
     CUL::String dummyFilePath = "../media/Dummy.txt";
     CUL::String dummyImage = "../media/pikaczu.png";
-
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

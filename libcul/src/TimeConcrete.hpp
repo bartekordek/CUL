@@ -2,7 +2,7 @@
 
 #include "CUL/ITime.hpp"
 
-NAMESPACE_BEGIN(CUL)
+NAMESPACE_BEGIN( CUL )
 
 #if _MSC_VER
 #pragma warning( push )
@@ -33,4 +33,4 @@ private:
 #pragma warning( pop )
 #endif
 
-NAMESPACE_END(CUL)
+NAMESPACE_END( CUL )

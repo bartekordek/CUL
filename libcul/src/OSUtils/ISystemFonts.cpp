@@ -10,7 +10,7 @@ using ISystemFonts = OSUtils::ISystemFonts;
 ISystemFonts* OSUtils::getUtil()
 {
 #if _WIN32
-	using SystemFontsWindows = OSUtils::SystemFontsWindows;
+    using SystemFontsWindows = OSUtils::SystemFontsWindows;
     return new SystemFontsWindows();
 #else
     return nullptr; //TODO

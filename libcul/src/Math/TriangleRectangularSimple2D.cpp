@@ -155,7 +155,7 @@ void TriangleRectangularSimple2D::calculateAngle()
                 const auto alphaDeg = radian2degree( alphaRad );
                 m_angle.setValue( 180 + alphaDeg, Angle::Type::DEGREE );
             }
-            else if ( 3 == m_quarter )
+            else if( 3 == m_quarter )
             {
                 const auto alphaDeg = radian2degree( alphaRad );
                 m_angle.setValue( 180 + alphaDeg, Angle::Type::DEGREE );

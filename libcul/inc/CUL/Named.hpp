@@ -8,7 +8,7 @@ NAMESPACE_BEGIN( CUL )
 class CULLib_API Name
 {
 public:
-    explicit Name( const CUL::String& name = CUL::String("") );
+    explicit Name( const CUL::String& name = CUL::String( "" ) );
     explicit Name( const Name& name );
     virtual ~Name();
 
@@ -20,7 +20,6 @@ public:
 protected:
 private:
     String mName;
-
 };
 
 NAMESPACE_END( CUL )

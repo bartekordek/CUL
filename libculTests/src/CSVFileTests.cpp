@@ -7,12 +7,10 @@ using CSVFilePtr = CUL::FS::ICSVFile;
 
 CSVFileTests::CSVFileTests()
 {
-
 }
 
 CSVFileTests::~CSVFileTests()
 {
-
 }
 
 void CSVFileTests::SetUpTestCase()

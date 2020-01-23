@@ -28,7 +28,6 @@ private:
     ILuint m_iluId = 0;
 
     static bool s_ilInitialized;
-
 };
 
 NAMESPACE_END( Graphics )

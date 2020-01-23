@@ -39,14 +39,14 @@
     <ClCompile Include="src\Vector3DTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\runTestsDir\Info.txt" />
+    <Text Include="..\runDir\Info.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\runTestsDir\test.json" />
+    <None Include="..\runDir\test.json" />
     <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\runTestsDir\test_detail.xml" />
+    <Xml Include="..\runDir\test_detail.xml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AngleTests.hpp" />
@@ -67,6 +67,9 @@
     <ClInclude Include="src\TriangleTests.hpp" />
     <ClInclude Include="src\UtilsTest.hpp" />
     <ClInclude Include="src\Vector3DTests.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\runDir\arrowTransparent.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6b7ff520-98cf-4132-813c-0f205c22152f}</ProjectGuid>
@@ -123,21 +126,25 @@
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -159,6 +166,9 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -180,6 +190,9 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -203,6 +216,9 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -226,6 +242,9 @@
       <OutputFile>$(TargetPath)</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
+    <CustomBuildStep>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

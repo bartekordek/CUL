@@ -15,7 +15,7 @@ using Size = unsigned;
 #pragma warning( push )
 #pragma warning( disable: 4574 )
 #endif
-#ifdef ERROR 
+#ifdef ERROR
 #undef ERROR
 #endif
 #ifdef _MSC_VER

@@ -11,47 +11,47 @@ String::String():
 {
 }
 
-String::String( const char* inputString ):
+String::String( const char* inputString ) :
     m_impl( new StringImpl( inputString ) )
 {
 }
 
-String::String( const unsigned char* inputString ):
+String::String( const unsigned char* inputString ) :
     m_impl( new StringImpl( inputString ) )
 {
 }
 
-String::String( const String& inputString ):
+String::String( const String& inputString ) :
     m_impl( new StringImpl( *inputString.m_impl ) )
 {
 }
 
-String::String( const std::string& inputString ):
+String::String( const std::string& inputString ) :
     m_impl( new StringImpl( inputString ) )
 {
 }
 
-String::String( const double val ):
+String::String( const double val ) :
     m_impl( new StringImpl( val ) )
 {
 }
 
-String::String( const float val ):
+String::String( const float val ) :
     m_impl( new StringImpl( val ) )
 {
 }
 
-String::String( const bool val ):
+String::String( const bool val ) :
     m_impl( new StringImpl( val ) )
 {
 }
 
-String::String( const int val ):
+String::String( const int val ) :
     m_impl( new StringImpl( val ) )
 {
 }
 
-String::String( const unsigned val ):
+String::String( const unsigned val ) :
     m_impl( new StringImpl( val ) )
 {
 }
@@ -167,7 +167,7 @@ const bool String::operator==( const String& rhv ) const
 
 String::operator const std::string() const
 {
-    return *m_impl;
+    return m_impl->string();
 }
 
 String::operator const std::string& () const
@@ -238,32 +238,32 @@ const bool String::empty() const
 void String::toLowerS( std::string& inOutString )
 {
 #if _MSC_VER
-    __pragma(warning( push )) \
-    __pragma(warning( disable:4244 ))
+    __pragma( warning( push ) ) \
+        __pragma( warning( disable:4244 ) )
 #endif
-    std::transform(
+        std::transform(
         inOutString.begin(),
         inOutString.end(),
         inOutString.begin(),
-            ::tolower );
+        ::tolower );
 #if _MSC_VER
-    __pragma(warning( pop ))
+    __pragma( warning( pop ) )
 #endif
 }
 
 void String::toUpperS( std::string& inOutString )
 {
 #if _MSC_VER
-    __pragma(warning( push )) \
-    __pragma(warning( disable:4244 ))
+    __pragma( warning( push ) ) \
+        __pragma( warning( disable:4244 ) )
 #endif
-    std::transform(
+        std::transform(
         inOutString.begin(),
         inOutString.end(),
         inOutString.begin(),
         ::toupper );
 #if _MSC_VER
-    __pragma(warning( pop ))
+    __pragma( warning( pop ) )
 #endif
 }
 

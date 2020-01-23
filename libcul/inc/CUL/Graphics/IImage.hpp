@@ -41,7 +41,6 @@ private: // Deleted
     IImage( const IImage& value ) = delete;
     IImage& operator=( const IImage& rhv ) = delete;
     IImage& operator=( IImage&& rhv ) = delete;
-
 };
 
 NAMESPACE_END( Graphics )

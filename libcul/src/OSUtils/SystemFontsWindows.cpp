@@ -33,10 +33,10 @@ void SystemFontsWindows::addSearchPath( const FS::Path& dir )
 void SystemFontsWindows::updateFontFilesList()
 {
     getWindowsPath();
-    for( const auto& dir: m_defaultDirsWithFonts )
+    for( const auto& dir : m_defaultDirsWithFonts )
     {
         const auto files = FS::FSApi::getFilesUnderDirectory( dir );
-        for( const auto& file: files )
+        for( const auto& file : files )
         {
             if( file.getExtension() == ".ttf" )
             {
@@ -53,7 +53,7 @@ CHOOSEFONT ShowSelectFont()
     LOGFONT* lf = new LOGFONT;
     HDC hdc = GetDC( hwnd );
 
-    HFONT hlf = ( HFONT ) GetCurrentObject( hdc, OBJ_FONT );
+    HFONT hlf = (HFONT) GetCurrentObject( hdc, OBJ_FONT );
     GetObject( hlf, sizeof( LOGFONT ), lf );
     cf.Flags = CF_EFFECTS | CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS;
     cf.hwndOwner = hwnd;
@@ -75,8 +75,8 @@ bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
         const size_t size = ::GetFontData( hdc, 0, 0, NULL, 0 );
         if( size > 0 )
         {
-            char* buffer = new char[ size ];
-            if( ::GetFontData( 
+            char* buffer = new char[size];
+            if( ::GetFontData(
                 hdc,
                 0,
                 0,
@@ -84,7 +84,7 @@ bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
                 static_cast<DWORD>( size ) ) == static_cast<DWORD>( size ) )
             {
                 data.resize( size );
-                memcpy( &data[ 0 ], buffer, size );
+                memcpy( &data[0], buffer, size );
                 result = true;
             }
             delete[] buffer;
@@ -98,7 +98,7 @@ bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
 #pragma warning( disable: 4700 )
 void SystemFontsWindows::getWindowsPath()
 {
-    TCHAR windir[ MAX_PATH ];
+    TCHAR windir[MAX_PATH];
     GetWindowsDirectory( windir, MAX_PATH );
     auto g_hfFont = GetStockObject( DEFAULT_GUI_FONT );
     CHOOSEFONT cf = { sizeof( CHOOSEFONT ) };

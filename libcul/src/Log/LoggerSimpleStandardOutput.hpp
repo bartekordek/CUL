@@ -29,7 +29,6 @@ private:
 
     std::queue<LogEntry> m_logslist;
     std::mutex m_logMtx;
-
 };
 
 NAMESPACE_END( LOG )

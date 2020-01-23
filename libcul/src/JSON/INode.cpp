@@ -4,9 +4,224 @@
 using namespace CUL;
 using namespace JSON;
 
-INode::INode( CsStr& name ):
+INode::INode()
+{
+}
+
+//INode::INode( const INode& arg ):
+//    m_name( arg.m_name ),
+//    m_type( arg.m_type )
+//{
+//    if( ElementType::OBJECT == m_type )
+//    {
+//        m_node = arg.m_node;
+//    }
+//    else if( ElementType::ARRAY == m_type )
+//    {
+//        m_array = arg.m_array;
+//    }
+//    else if( ElementType::BOOL == m_type )
+//    {
+//        m_bool = arg.m_bool;
+//    }
+//    else if( ElementType::DOUBLE == m_type )
+//    {
+//        m_double = arg.m_double;
+//    }
+//    else if( ElementType::FLOAT == m_type )
+//    {
+//        m_float = arg.m_float;
+//    }
+//    else if( ElementType::INT == m_type )
+//    {
+//        m_int = arg.m_int;
+//    }
+//    else if( ElementType::INT64 == m_type )
+//    {
+//        m_int64 = arg.m_int64;
+//    }
+//    else if( ElementType::STRING == m_type )
+//    {
+//        m_string = arg.m_string;
+//    }
+//}
+//
+//INode::INode( INode&& arg ):
+//    m_name( std::move( arg.m_name ) ),
+//    m_type( arg.m_type )
+//{
+//    if( ElementType::OBJECT == m_type )
+//    {
+//        m_node = std::move( arg.m_node );
+//    }
+//    else if( ElementType::ARRAY == m_type )
+//    {
+//        m_array = std::move( arg.m_array );
+//    }
+//    else if( ElementType::BOOL == m_type )
+//    {
+//        m_bool = arg.m_bool;
+//    }
+//    else if( ElementType::DOUBLE == m_type )
+//    {
+//        m_double = arg.m_double;
+//    }
+//    else if( ElementType::FLOAT == m_type )
+//    {
+//        m_float = arg.m_float;
+//    }
+//    else if( ElementType::INT == m_type )
+//    {
+//        m_int = arg.m_int;
+//    }
+//    else if( ElementType::INT64 == m_type )
+//    {
+//        m_int64 = arg.m_int64;
+//    }
+//    else if( ElementType::STRING == m_type )
+//    {
+//        m_string = std::move( arg.m_string );
+//    }
+//}
+//
+//INode& INode::operator=(
+//    const INode& rhv
+//    )
+//{
+//    if( this != &rhv )
+//    {
+//        m_type = rhv.m_type;
+//        m_name = rhv.m_name;
+//        if( ElementType::OBJECT == m_type )
+//        {
+//            m_node = rhv.m_node;
+//        }
+//        else if( ElementType::ARRAY == m_type )
+//        {
+//            m_array = rhv.m_array;
+//        }
+//        else if( ElementType::BOOL == m_type )
+//        {
+//            m_bool = rhv.m_bool;
+//        }
+//        else if( ElementType::DOUBLE == m_type )
+//        {
+//            m_double = rhv.m_double;
+//        }
+//        else if( ElementType::FLOAT == m_type )
+//        {
+//            m_float = rhv.m_float;
+//        }
+//        else if( ElementType::INT == m_type )
+//        {
+//            m_int = rhv.m_int;
+//        }
+//        else if( ElementType::INT64 == m_type )
+//        {
+//            m_int64 = rhv.m_int64;
+//        }
+//        else if( ElementType::STRING == m_type )
+//        {
+//            m_string = rhv.m_string;
+//        }
+//    }
+//    return *this;
+//}
+//
+//INode& INode::operator=( INode&& rhv )
+//{
+//    if( this != &rhv )
+//    {
+//        m_type = rhv.m_type;
+//        m_name = std::move( rhv.m_name);
+//        if( ElementType::OBJECT == m_type )
+//        {
+//            m_node = std::move( rhv.m_node );
+//        }
+//        else if( ElementType::ARRAY == m_type )
+//        {
+//            m_array = std::move( rhv.m_array );
+//        }
+//        else if( ElementType::BOOL == m_type )
+//        {
+//            m_bool = rhv.m_bool;
+//        }
+//        else if( ElementType::DOUBLE == m_type )
+//        {
+//            m_double = rhv.m_double;
+//        }
+//        else if( ElementType::FLOAT == m_type )
+//        {
+//            m_float = rhv.m_float;
+//        }
+//        else if( ElementType::INT == m_type )
+//        {
+//            m_int = rhv.m_int;
+//        }
+//        else if( ElementType::INT64 == m_type )
+//        {
+//            m_int64 = rhv.m_int64;
+//        }
+//        else if( ElementType::STRING == m_type )
+//        {
+//            m_string = std::move( rhv.m_string );
+//        }
+//    }
+//    return *this;
+//}
+
+INode::INode( const String& name, INode* value ):
     m_name( name )
 {
+    setValue( value );
+}
+
+INode::INode( const String& name, const ChildrenNodes& value ):
+    m_name( name )
+{
+    setValue( value );
+}
+
+INode::INode( const String& name, Cbool value ):
+    m_name( name )
+{
+    setValue( value );
+}
+
+INode::INode( const String& name, Cdouble value ):
+    m_name( name )
+{
+    setValue( value );
+}
+
+INode::INode( const String& name, Cfloat value ):
+    m_name( name )
+{
+    setValue( value );
+}
+
+INode::INode( const String& name, Cint value ):
+    m_name( name )
+{
+    setValue( value );
+}
+
+INode::INode( const String& name, Cint64 value ):
+    m_name( name )
+{
+    setValue( value );
+}
+
+INode::INode( const String& name, const char* value ):
+    m_name( name )
+{
+    setValue( value );
+}
+
+INode::INode( const String& name, CsStr& value ):
+    m_name( name )
+{
+    setValue( value );
 }
 
 CsStr& INode::getName() const
@@ -19,7 +234,9 @@ void INode::setName( CsStr& name )
     m_name = name;
 }
 
-const bool INode::operator==( const INode& rhv ) const
+Cbool INode::operator==(
+    const INode& rhv
+    ) const
 {
     if( this != &rhv )
     {
@@ -31,7 +248,7 @@ const bool INode::operator==( const INode& rhv ) const
     return true;
 }
 
-const bool INode::operator==( CsStr& rhv ) const
+Cbool INode::operator==( CsStr& rhv ) const
 {
     if( m_name == rhv )
     {
@@ -40,46 +257,157 @@ const bool INode::operator==( CsStr& rhv ) const
     return false;
 }
 
-const bool operator==( INode* lhv, CsStr& rhv )
+void INode::setValue( INode* val )
+{
+    m_node = val;
+    m_type = ElementType::OBJECT;
+}
+
+void INode::setValue( const ChildrenNodes& value )
+{
+    m_array = value;
+    m_type = ElementType::ARRAY;
+}
+
+void INode::setValue( Cbool value )
+{
+    m_bool = value;
+    m_type = ElementType::BOOL;
+}
+
+void INode::setValue( Cdouble value )
+{
+    m_double = value;
+    m_type = ElementType::DOUBLE;
+}
+
+void INode::setValue( Cfloat value )
+{
+    m_float = value;
+    m_type = ElementType::FLOAT;
+}
+
+void INode::setValue( Cint value )
+{
+    m_int = value;
+    m_type = ElementType::INT;
+}
+
+void INode::setValue( Cint64 value )
+{
+    m_int64 = value;
+    m_type = ElementType::INT64;
+}
+
+void INode::setValue( const char* value )
+{
+    m_string = value;
+    m_type = ElementType::STRING;
+}
+
+void INode::setValue( CsStr& value )
+{
+    m_string = value;
+    m_type = ElementType::STRING;
+}
+
+const ElementType INode::getType() const
+{
+    return m_type;
+}
+
+const INode* INode::getObject() const
+{
+    return m_node;
+}
+
+const ChildrenNodes& INode::getArray() const
+{
+    return m_array;
+}
+
+ChildrenNodes& INode::getArray()
+{
+    return m_array;
+}
+
+Cbool operator==( INode* lhv, CsStr& rhv )
 {
     return lhv->operator==( rhv );
 }
 
-struct isChild
+//struct isChild
+//{
+//    String m_value;
+//    isChild( CsStr& val ): m_value( val )
+//    {
+//    }
+//
+//    Cbool operator()( const NodePtr& nodePtr ) const
+//    {
+//        return nodePtr->operator==( m_value );
+//    }
+//};
+
+Cbool INode::getBool() const
 {
-    String m_value;
-    isChild( CsStr& val ): m_value( val ) {}
+    return m_bool;
+}
 
-    const bool operator()( const NodePtr& nodePtr ) const
-    {
-        return nodePtr->operator==( m_value );
-    }
-};
-
-
-const INode* INode::getChild( CsStr& childName ) const
+Cdouble INode::getDouble() const
 {
-    auto it = std::find_if(
-        m_children.begin(),
-        m_children.end(),
-        isChild( childName ) );
-    if( it != m_children.end() )
-    {
-        return *it;
-    }
+    return m_double;
+}
 
+Cfloat INode::getFloat() const
+{
+    return m_float;
+}
+
+Cint INode::getInt() const
+{
+    return m_int;
+}
+
+Cint64 INode::getInt64() const
+{
+    return m_int64;
+}
+
+CsStr& INode::getString() const
+{
+    return m_string;
+}
+
+INode* INode::findChild( const String& name )
+{
+    if( ElementType::ARRAY == m_type )
+    {
+        auto it = std::find_if( m_array.begin(), m_array.end(), [name]( INode* node )
+        {
+            return node->getName() == name;
+        } );
+        if( it != m_array.end() )
+        {
+            return *it;
+        }
+    }
     return nullptr;
 }
 
-void INode::addChild( INode* node )
+INode::~INode()
 {
-    m_children.push_back( node );
+    if( ElementType::OBJECT == m_type )
+    {
+        delete m_node;
+        m_node = nullptr;
+    }
+    else if( ElementType::ARRAY == m_type )
+    {
+        for( const auto& child: m_array )
+        {
+            delete child;
+        }
+        m_array.clear();
+    }
 }
-
-
-const ChildrenNodes& INode::getChildren() const
-{
-    return m_children;
-}
-
-

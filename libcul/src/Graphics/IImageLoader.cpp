@@ -6,7 +6,6 @@ NAMESPACE_BEGIN( Graphics )
 
 IImageLoader::IImageLoader()
 {
-
 }
 
 IImageLoader* IImageLoader::createConcrete()
@@ -19,7 +18,6 @@ IImageLoader* IImageLoader::createConcrete()
 
 IImageLoader::~IImageLoader()
 {
-
 }
 
 NAMESPACE_END( Graphics )

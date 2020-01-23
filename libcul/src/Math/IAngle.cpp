@@ -6,7 +6,6 @@ using Type = CUL::Math::Angle::Type;
 
 Angle::Angle()
 {
-
 }
 
 Angle::Angle( const double value, const Type type )
@@ -21,12 +20,11 @@ Angle::Angle( const int value, const Type type )
 
 Angle::~Angle()
 {
-
 }
 
 const int Angle::getValueI( const Type type ) const
 {
-    return static_cast< int >( getValueD( type ) );
+    return static_cast<int>( getValueD( type ) );
 }
 
 void Angle::setValue( const int value, const Type type )
@@ -317,15 +315,14 @@ const double Angle::getValueD( const Type type ) const
     return m_valueDeg;
 }
 
-const float Angle::getValueF(const Type type) const
+const float Angle::getValueF( const Type type ) const
 {
-    if (Type::RADIAN == type)
+    if( Type::RADIAN == type )
     {
         return static_cast<float>( m_valueRad );
     }
     return static_cast<float>( m_valueDeg );
 }
-
 
 // ASUMPTION!
 // We are returning radian.
@@ -352,10 +349,10 @@ const double CUL::Math::degree2radian( const double degree )
 
 const float CUL::Math::radian2degree( const float radian )
 {
-	return radian * 180.0f / static_cast<float>( CUL::Math::Util::Constants::PI );
+    return radian * 180.0f / static_cast<float>( CUL::Math::Util::Constants::PI );
 }
 
 const float CUL::Math::degree2radian( const float degree )
 {
-	return degree * CUL::Math::Util::Constants::PI / 180.0f;
+    return degree * CUL::Math::Util::Constants::PI / 180.0f;
 }

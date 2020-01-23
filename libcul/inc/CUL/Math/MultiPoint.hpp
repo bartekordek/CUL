@@ -171,7 +171,7 @@ public:
         Type distanceToZeroZero = static_cast<Type>( 0.0 );
         for( auto& axisValue : axisValue )
         {
-            distanceToZeroZero += axisValue*axisValue;
+            distanceToZeroZero += axisValue * axisValue;
         }
         return sqrt( distanceToZeroZero );
     }

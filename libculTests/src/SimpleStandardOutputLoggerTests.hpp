@@ -14,7 +14,6 @@ protected:
 
     static void SetUpTestCase();
     static void TearDownTestCase();
-
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

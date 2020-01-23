@@ -5,19 +5,18 @@
 
 namespace CUL
 {
-    class ThreadWrapperImpl;
-    class CULLib_API ThreadWrapper
-    {
-    public:
-        ThreadWrapper();
-        virtual ~ThreadWrapper();
+class ThreadWrapperImpl;
+class CULLib_API ThreadWrapper
+{
+public:
+    ThreadWrapper();
+    virtual ~ThreadWrapper();
 
-        void run();
-        void waitForCOmpletion();
+    void run();
+    void waitForCOmpletion();
 
-    protected:
-    private:
-        std::unique_ptr<ThreadWrapperImpl> m_impl;
-
-    };
+protected:
+private:
+    std::unique_ptr<ThreadWrapperImpl> m_impl;
+};
 }

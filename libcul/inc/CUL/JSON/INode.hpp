@@ -1,45 +1,194 @@
 #pragma once
 
-#include "CUL/JSON/IParent.hpp"
-#include "CUL/UselessMacros.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/String.hpp"
+//#include "CUL/JSON/DataValue.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( JSON )
-
+//
 enum class ElementType: short
 {
-    NULLVAL = 0,
+    NONE = 0,
     OBJECT,
     ARRAY,
-    VALUE
+    BOOL,
+    DOUBLE,
+    FLOAT,
+    INT,
+    INT64,
+    STRING
 };
 
-class CULLib_API INode:
-    public IParent
+class CULLib_API INode;
+using NodePtr = std::unique_ptr<INode>;
+using ChildrenNodes = std::vector<INode*>;
+
+//#if _MSC_VER
+//#pragma warning( push )
+//#pragma warning( disable: 4582 )
+//#pragma warning( disable: 4583 )
+//#pragma warning( disable: 4626 )
+//#endif
+//union CULLib_API DataUnion
+//{
+//    DataUnion():
+//        u_string( "" )
+//    {
+//
+//    }
+//
+//    DataUnion( const DataUnion& ):
+//        u_object( nullptr )
+//    {
+//
+//    }
+//
+//    DataUnion& operator=( const DataUnion& )
+//    {
+//        return *this;
+//    }
+//
+//    DataUnion( INode* val ):
+//        u_object( val )
+//    {
+//
+//    }
+//    INode* u_object = nullptr;
+//
+//    DataUnion( const ChildrenNodes& val ):
+//        u_array( val )
+//    {
+//
+//    }
+//    ChildrenNodes u_array;
+//
+//    DataUnion( const bool val ):
+//        u_bool( val )
+//    {
+//
+//    }
+//    bool u_bool;
+//
+//    DataUnion( const double val ):
+//        u_double( val )
+//    {
+//
+//    }
+//    double u_double;
+//
+//    DataUnion( const float val ):
+//        u_float( val )
+//    {
+//
+//    }
+//    float u_float;
+//
+//    DataUnion( const int val ):
+//        u_int( val )
+//    {
+//
+//    }
+//    int u_int;
+//
+//    DataUnion( const int64_t val ):
+//        u_int64( val )
+//    {
+//
+//    }
+//    int64_t u_int64;
+//
+//    DataUnion( const String& val ):
+//        u_string( val )
+//    {
+//
+//    }
+//    String u_string;
+//
+//    ~DataUnion()
+//    {
+//
+//    }
+//};
+//#ifdef _MSC_VER
+//#pragma warning( pop )
+//#endif
+
+
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4820 )
+#endif
+
+class INodeImpl;
+class CULLib_API INode final
 {
 public:
-    INode() = default;
-    INode( CsStr& name );
-    virtual ~INode() = default;
+    INode();
+    explicit INode( const String& name, INode* val );
+    explicit INode( const String& name, const ChildrenNodes& value );
+    explicit INode( const String& name, Cbool value );
+    explicit INode( const String& name, Cdouble value );
+    explicit INode( const String& name, Cfloat value );
+    explicit INode( const String& name, Cint value );
+    explicit INode( const String& name, Cint64 value );
+    explicit INode( const String& name, const char* value );
+    explicit INode( const String& name, CsStr& value );
 
     CsStr& getName() const;
     void setName( CsStr& name );
-    const bool operator==( const INode& rhv ) const;
-    const bool operator==( CsStr& rhv ) const;
+    Cbool operator==( const INode& rhv ) const;
+    Cbool operator==( CsStr& rhv ) const;
 
-    virtual const ElementType getType() const = 0;
+    void setValue( INode* val );
+    void setValue( const ChildrenNodes& value );
+    void setValue( Cbool value );
+    void setValue( Cdouble value );
+    void setValue( Cfloat value );
+    void setValue( Cint value );
+    void setValue( Cint64 value );
+    void setValue( const char* value );
+    void setValue( CsStr& value );
 
-    const ChildrenNodes& getChildren() const override;
-    const INode* getChild( CsStr& childName ) const override;
-    void addChild( INode* node ) override;
+    const ElementType getType() const;
+    const INode* getObject() const;
+    const ChildrenNodes& getArray() const;
+    ChildrenNodes& getArray();
+    Cbool getBool() const;
+    Cdouble getDouble() const;
+    Cfloat getFloat() const;
+    Cint getInt() const;
+    Cint64 getInt64() const;
+    CsStr& getString() const;
 
+    INode* findChild( const String& name );
+
+    ~INode();
 protected:
 private:
+    // I am ready for being laugh at to use this, erm, data structure.
     String m_name;
-    ChildrenNodes m_children;
+    ElementType m_type = ElementType::NONE;
+    INode* m_node = nullptr;
+    ChildrenNodes m_array;
+    bool m_bool = false;
+    double m_double = 0.0;
+    float m_float = 0.0f;
+    int m_int = 0;
+    int64_t m_int64 = 1;
+    String m_string;
 
+    INode( const INode& arg ) = delete;
+    INode( INode&& arg ) = delete;
+
+    INode& operator=( const INode& rhv ) = delete;
+    INode& operator=( INode&& node ) = delete;
 };
+
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 
 NAMESPACE_END( JSON )
 NAMESPACE_END( CUL )

@@ -3,7 +3,6 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/String.hpp"
 
-
 using namespace CUL::Graphics;
 
 void checkForIluErrors();

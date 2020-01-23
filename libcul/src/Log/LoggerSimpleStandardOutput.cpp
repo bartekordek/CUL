@@ -27,16 +27,16 @@ void LoggerSimpleStandardOutput::log(
     const auto& message = text.cStr();
     switch( severity )
     {
-        case Severity::CRITICAL:
+    case Severity::CRITICAL:
         spdlog::critical( message );
         break;
-        case Severity::ERROR:
+    case Severity::ERROR:
         spdlog::error( message );
         break;
-        case Severity::WARN:
+    case Severity::WARN:
         spdlog::warn( message );
         break;
-        case Severity::INFO:
+    case Severity::INFO:
         spdlog::info( message );
     }
 }

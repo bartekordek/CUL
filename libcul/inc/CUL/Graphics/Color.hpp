@@ -62,7 +62,6 @@ private:
     float m_g = 0.0f;
     float m_b = 0.0f;
     float m_alpha = 0.0f;
-
 };
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )

@@ -5,7 +5,6 @@
 using namespace CUL;
 using namespace Math;
 
-
 AngleTests::AngleTests()
 {
 }

@@ -8,7 +8,6 @@ ITimer::ITimer()
 {
 }
 
-
 ITimer::~ITimer()
 {
 }

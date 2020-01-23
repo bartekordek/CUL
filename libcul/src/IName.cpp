@@ -11,7 +11,7 @@ CUL::IName::IName( CsStr& name ):
 {
 }
 
-CUL::IName::IName( const IName & val ):
+CUL::IName::IName( const IName & val ) :
     m_name( val.m_name )
 {
 }

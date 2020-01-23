@@ -49,11 +49,7 @@ private:
     double m_width = 0.0;
     double m_height = 0.0;
     double m_depth = 0.0;
-
 };
-
-
-
 
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )

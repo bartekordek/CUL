@@ -25,5 +25,4 @@ protected:
     virtual void TearDown()
     {
     }
-
 };

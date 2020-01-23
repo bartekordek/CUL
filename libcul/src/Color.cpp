@@ -4,7 +4,6 @@ using namespace CUL::Graphics;
 
 ColorS::ColorS()
 {
-
 }
 
 ColorS::ColorS(
@@ -12,17 +11,15 @@ ColorS::ColorS(
     cfloat gg,
     cfloat bb,
     cfloat aalpha ):
-        m_r( rr ),
-        m_g( gg ),
-        m_b( bb ),
-        m_alpha( aalpha )
+    m_r( rr ),
+    m_g( gg ),
+    m_b( bb ),
+    m_alpha( aalpha )
 {
-
 }
 
 ColorS::~ColorS()
 {
-
 }
 
 ColorS::ColorS( const ColorE& color )

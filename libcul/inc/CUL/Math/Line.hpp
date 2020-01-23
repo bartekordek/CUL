@@ -2,15 +2,15 @@
 
 namespace CUL
 {
-    namespace Math
-    {
-        class Line
-        {
-        public:
-            Line();
-            virtual ~Line();
-        protected:
-        private:
-        };
-    }
+namespace Math
+{
+class Line
+{
+public:
+    Line();
+    virtual ~Line();
+protected:
+private:
+};
+}
 }

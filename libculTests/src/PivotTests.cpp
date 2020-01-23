@@ -30,13 +30,11 @@ public:
 
     ~TestClas()
     {
-
     }
 #if _MSC_VER
     __pragma( warning( push ) )
     __pragma( warning( disable:4100 ) )
 #endif
-
 
 #if _MSC_VER
     __pragma( warning( pop ) )
@@ -45,7 +43,6 @@ public:
 protected:
 private:
     Vec3Dd m_realSize;
-
 };
 
 TEST_F( PivotTests, dimensionSetting )

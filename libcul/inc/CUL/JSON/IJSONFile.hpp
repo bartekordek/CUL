@@ -11,16 +11,19 @@ class CULLib_API IJSONFile:
 {
 public:
     IJSONFile() = default;
-    IJSONFile( const IJSONFile& rhv ) = delete;
-    virtual ~IJSONFile() = default;
-
-    IJSONFile& operator=( const IJSONFile& rhv ) = delete;
 
     virtual INode* getRoot() const = 0;
 
+    virtual ~IJSONFile() = default;
 
 protected:
 private:
+
+private: // Deleted.
+    IJSONFile( const IJSONFile& rhv ) = delete;
+    IJSONFile( IJSONFile&& rhv ) = delete;
+    IJSONFile& operator=( const IJSONFile& rhv ) = delete;
+    IJSONFile& operator=( IJSONFile&& rhv ) = delete;
 };
 
 NAMESPACE_END( JSON )

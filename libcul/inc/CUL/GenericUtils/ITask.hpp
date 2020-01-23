@@ -17,7 +17,6 @@ protected:
 private:
     ITask( const ITask& arg ) = delete;
     ITask& operator=( const ITask& rhv ) = delete;
-
 };
 
 NAMESPACE_END( GUTILS )

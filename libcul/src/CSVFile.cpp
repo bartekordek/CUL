@@ -14,18 +14,15 @@ CSVFile::CSVFile( const CSVFile & rhv ):
     m_cached( rhv.m_cached ),
     m_keepLineEndingCharacter( rhv.m_keepLineEndingCharacter )
 {
-
 }
 
 CSVFile::CSVFile( CsStr& fPath ):
     m_path( fPath )
 {
-
 }
 
 CSVFile::~CSVFile()
 {
-
 }
 
 CSVFile& CSVFile::operator=( const CSVFile& rhv )
@@ -70,12 +67,12 @@ Cunt CSVFile::colsCount() const
 
 CsStr& CSVFile::getVal( Cunt row, Cunt col ) const
 {
-    return m_rows[ row ][ col ];
+    return m_rows[row][col];
 }
 
 void CSVFile::setVal( CsStr& val, Cunt row, Cunt col )
 {
-    m_rows[ row ][ col ] = val;
+    m_rows[row][col] = val;
 }
 
 const bool CSVFile::exists() const
@@ -112,8 +109,8 @@ void CSVFile::load( CBool keepLineEndingCharacter )
         if(
             false == line.empty() &&
             (
-                line.back() == ( '\r' ) ||
-                line.back() == ( '\n' ) ) )
+            line.back() == ( '\r' ) ||
+            line.back() == ( '\n' ) ) )
         {
             line.pop_back();
         }
@@ -136,10 +133,10 @@ void CSVFile::parseLine( CsStr& line )
             delimeterPos - 2 : delimeterPos;
 
         size_t cellStart = m_cellsContainQuotationMarks ?
-            static_cast<size_t>( 1 ) : static_cast<size_t>(0);
+            static_cast<size_t>( 1 ) : static_cast<size_t>( 0 );
 
         size_t newCellOffset = m_cellsContainQuotationMarks ?
-            static_cast<size_t>(3) : static_cast<size_t>(0);
+            static_cast<size_t>( 3 ) : static_cast<size_t>( 0 );
 
         cell = lineCp.string().substr( cellStart, cellEnd );
         inRow.push_back( cell );
@@ -172,7 +169,7 @@ CsStr& CSVFile::firstLine() const
 
 CsStr& CSVFile::lastLine() const
 {
-    return m_rows.back()[ m_rows.size() - 1 ];
+    return m_rows.back()[m_rows.size() - 1];
 }
 
 const Path& CSVFile::getPath() const
@@ -191,7 +188,7 @@ void CSVFile::cacheFile()
     for( const auto& row : m_rows )
     {
         String line;
-        for( const auto& cell: row )
+        for( const auto& cell : row )
         {
             line += cell;
             line += m_delimeter;
@@ -204,7 +201,7 @@ void CSVFile::cacheFile()
 
 Cunt CSVFile::getLinesCount() const
 {
-    return static_cast< Cunt >( m_rows.size() );
+    return static_cast<Cunt>( m_rows.size() );
 }
 
 void CSVFile::fileContainsQuotationMarks( const bool containsQuotationMarks )

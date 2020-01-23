@@ -3,7 +3,6 @@
 using namespace CUL;
 using namespace Math;
 
-
 Frustum::Frustum()
 {
 }

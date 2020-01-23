@@ -49,9 +49,7 @@ private:
     double m_x = 0.0;
     double m_y = 0.0;
     double m_z = 0.0;
-
 };
-
 
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )

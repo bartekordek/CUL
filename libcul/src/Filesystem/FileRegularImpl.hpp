@@ -49,7 +49,6 @@ private: // Deleted:
     FileRegularImpl( const Path& path ) = delete;
     FileRegularImpl& operator=( const FileRegularImpl& rhv ) = delete;
     FileRegularImpl& operator=( FileRegularImpl&& rhv ) = delete;
-
 };
 
 #ifdef _MSC_VER

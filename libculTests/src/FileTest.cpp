@@ -13,7 +13,7 @@ TEST_F( FileTest, fileFileExtistFileReturnsTrue )
 TEST_F( FileTest, fileFileDontExtistFileReturnsFalse )
 {
     auto f = CUL::FS::FileFactory::createRegularFileRawPtr( "someNotExistingFile.exe" );
-    GTEST_ASSERT_EQ(false, f->exists());
+    GTEST_ASSERT_EQ( false, f->exists() );
     delete f;
     f = nullptr;
 }

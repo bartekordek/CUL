@@ -45,22 +45,21 @@ public:
         m_vals( v2.m_vals ),
         m_rotationTraingles( v2.m_rotationTraingles )
     {
-
     }
 
     template <class someOtherClass>
     Vector3D( const Vector3D<someOtherClass>& right )
     {
-        auto index = static_cast< AxisCarthesian >( 0 );
-        auto indexR = static_cast< RotationType >( 0 );
+        auto index = static_cast<AxisCarthesian>( 0 );
+        auto indexR = static_cast<RotationType>( 0 );
         for(
             unsigned i = static_cast<unsigned>( AxisCarthesian::X );
             i < static_cast<unsigned>( AxisCarthesian::ERROR );
             ++i )
         {
-            index = static_cast< AxisCarthesian >( i );
-            indexR = static_cast< RotationType >( i );
-            m_vals[ index ] = static_cast<Type>( right[ index ] );
+            index = static_cast<AxisCarthesian>( i );
+            indexR = static_cast<RotationType>( i );
+            m_vals[index] = static_cast<Type>( right[index] );
             m_rotationTraingles[indexR] = right.getTriangle( indexR );
         }
     }
@@ -74,7 +73,7 @@ public:
 
     Type& operator[]( const AxisCarthesian axis )
     {
-        return m_vals[ ac2Size( axis ) ];
+        return m_vals[ac2Size( axis )];
     }
 
     const Type operator[]( const unsigned axis ) const = delete;
@@ -178,11 +177,11 @@ public:
     Vector3D<Type> operator*( const Vector3D<Type>& t ) const
     {
         Vector3D<Type> result( *this );
-        auto index = static_cast< AxisCarthesian >( 0 );
+        auto index = static_cast<AxisCarthesian>( 0 );
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
-            index = static_cast< AxisCarthesian >( i );
-            result.m_vals[ index ] *= t.m_vals.at( index );
+            index = static_cast<AxisCarthesian>( i );
+            result.m_vals[index] *= t.m_vals.at( index );
         }
         return result;
     }
@@ -198,9 +197,9 @@ public:
 
     Vector3D<Type>& operator*=( const Vector3D<Type>& t )
     {
-        m_vals[ AxisCarthesian::X ] *= t.getX();
-        m_vals[ AxisCarthesian::Y ] *= t.getY();
-        m_vals[ AxisCarthesian::Z ] *= t.getZ();
+        m_vals[AxisCarthesian::X] *= t.getX();
+        m_vals[AxisCarthesian::Y] *= t.getY();
+        m_vals[AxisCarthesian::Z] *= t.getZ();
         return *this;
     }
 
@@ -217,7 +216,7 @@ public:
     {
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
-            m_vals[ static_cast<AxisCarthesian>( i ) ] *= t;
+            m_vals[static_cast<AxisCarthesian>( i )] *= t;
         }
         return *this;
     }
@@ -231,9 +230,9 @@ public:
 
     Vector3D<Type>& operator+=( const Vector3D<Type>& right )
     {
-        m_vals[ AxisCarthesian::X ] += right.getX();
-        m_vals[ AxisCarthesian::Y ] += right.getY();
-        m_vals[ AxisCarthesian::Z ] += right.getZ();
+        m_vals[AxisCarthesian::X] += right.getX();
+        m_vals[AxisCarthesian::Y] += right.getY();
+        m_vals[AxisCarthesian::Z] += right.getZ();
         return *this;
     }
 
@@ -246,11 +245,11 @@ public:
 
     Vector3D<Type>& operator-=( const Vector3D<Type>& right )
     {
-        auto index = static_cast< AxisCarthesian >( 0 );
+        auto index = static_cast<AxisCarthesian>( 0 );
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
-            index = static_cast< AxisCarthesian >( i );
-            m_vals[ index ] -= right.m_vals.at( index );
+            index = static_cast<AxisCarthesian>( i );
+            m_vals[index] -= right.m_vals.at( index );
         }
         return *this;
     }
@@ -273,11 +272,11 @@ public:
 
     Vector3D<Type>& operator/=( const Vector3D<Type>& right )
     {
-        auto index = static_cast< AxisCarthesian >( 0 );
+        auto index = static_cast<AxisCarthesian>( 0 );
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
-            index = static_cast< AxisCarthesian >( i );
-            m_vals[ index ] /= right.m_vals.at( index );
+            index = static_cast<AxisCarthesian>( i );
+            m_vals[index] /= right.m_vals.at( index );
         }
         return *this;
     }
@@ -287,7 +286,7 @@ public:
         Vector3D<Type> result( *this );
         for( unsigned i = 0; i < 3; ++i )
         {
-            result.m_vals[ i ] /= t;
+            result.m_vals[i] /= t;
         }
         return result;
     }
@@ -296,7 +295,7 @@ public:
     {
         for( unsigned i = 0; i < 3; ++i )
         {
-            m_vals[ i ] /= t;
+            m_vals[i] /= t;
         }
         return *this;
     }
@@ -330,24 +329,24 @@ public:
         m_vals[axis] = value;
         if( AxisCarthesian::X == axis )
         {
-            m_rotationTraingles[RotationType::PITCH].setOpposite( static_cast< double >( value ) );
-            m_rotationTraingles[RotationType::ROLL].setAdjacent( static_cast< double >( value ) );
+            m_rotationTraingles[RotationType::PITCH].setOpposite( static_cast<double>( value ) );
+            m_rotationTraingles[RotationType::ROLL].setAdjacent( static_cast<double>( value ) );
         }
         else if( AxisCarthesian::Y == axis )
         {
-            m_rotationTraingles[RotationType::ROLL].setOpposite( static_cast< double >( value ) );
-            m_rotationTraingles[RotationType::YAW].setOpposite( static_cast< double >( value ) );
+            m_rotationTraingles[RotationType::ROLL].setOpposite( static_cast<double>( value ) );
+            m_rotationTraingles[RotationType::YAW].setOpposite( static_cast<double>( value ) );
         }
         else
         {
-            m_rotationTraingles[RotationType::YAW].setAdjacent( static_cast< double >( value ) );
-            m_rotationTraingles[RotationType::PITCH].setAdjacent( static_cast< double >( value ) );
+            m_rotationTraingles[RotationType::YAW].setAdjacent( static_cast<double>( value ) );
+            m_rotationTraingles[RotationType::PITCH].setAdjacent( static_cast<double>( value ) );
         }
     }
 
     const Type getAxis( const AxisCarthesian axis ) const
     {
-        return m_vals.at(axis);
+        return m_vals.at( axis );
     }
 
     const Type getAxis( const Axis axis ) const
@@ -358,11 +357,11 @@ public:
     template <class someOtherClass>
     Vector3D<Type>& operator=( const Vector3D<someOtherClass>& right )
     {
-        auto index = static_cast< AxisCarthesian >( 0 );
+        auto index = static_cast<AxisCarthesian>( 0 );
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
-            index = static_cast< AxisCarthesian >( i );
-            m_vals[ index ] = static_cast< Type >( right[index] );
+            index = static_cast<AxisCarthesian>( i );
+            m_vals[index] = static_cast<Type>( right[index] );
         }
         return *this;
     }
@@ -402,7 +401,7 @@ private:
         }
     }
 
-    std::map<AxisCarthesian,Type> m_vals =
+    std::map<AxisCarthesian, Type> m_vals =
     {
         { AxisCarthesian::X, static_cast<Type>( 0 ) },
         { AxisCarthesian::Y, static_cast<Type>( 0 ) },
@@ -422,12 +421,11 @@ private:
         { RotationType::PITCH, 0.0 },
         { RotationType::YAW, 0.0 }
     };
-
 };
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-using Vector3Dd = Vector3D<double> ;
+using Vector3Dd = Vector3D<double>;
 using Vector3Di = Vector3D<int>;
 using Vector3Du = Vector3D<unsigned>;
 
@@ -453,7 +451,6 @@ const Type max( const std::vector<Vector3D<Type>>& values, const Axis axis )
     }
     return result;
 }
-
 
 template <typename Type>
 const Type min( const std::vector<Vector3D<Type>>& values, const Axis axis )

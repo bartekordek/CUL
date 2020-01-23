@@ -46,7 +46,6 @@ private:
     double m_hypotenuse = 0.0;
     Angle m_angle;
     unsigned short m_quarter = 0;
-
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

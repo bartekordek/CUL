@@ -3,7 +3,7 @@
 #include "CUL/CUL.hpp"
 #include "CUL/UselessMacros.hpp"
 
-NAMESPACE_BEGIN(CUL)
+NAMESPACE_BEGIN( CUL )
 
 class CULLib_API ITime
 {
@@ -20,4 +20,4 @@ public:
     virtual const double getUs() const = 0;
 };
 
-NAMESPACE_END(CUL)
+NAMESPACE_END( CUL )

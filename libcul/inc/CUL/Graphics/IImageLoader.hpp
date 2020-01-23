@@ -21,7 +21,6 @@ protected:
 private: // Deleted
     IImageLoader( const IImageLoader& arg ) = delete;
     IImageLoader& operator=( const IImageLoader& rhv ) = delete;
-
 };
 
 NAMESPACE_END( Graphics )

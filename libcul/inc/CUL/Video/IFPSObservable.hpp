@@ -23,7 +23,6 @@ private:
     IFPSObservable& operator=( IFPSObservable&& instance ) = delete;
 
     IFPSCounter* m_fpsCounter = nullptr;
-
 };
 
 NAMESPACE_END( Video )

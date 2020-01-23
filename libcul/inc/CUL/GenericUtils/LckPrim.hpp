@@ -17,7 +17,6 @@ class CULLib_API LckPrim
 public:
     LckPrim()
     {
-
     }
 
     LckPrim( const Type& val )

@@ -23,13 +23,12 @@ struct Rect2D
         x( inX ),
         y( inY )
     {
-
     }
 
-    Type width = static_cast< Type >( 0 );
-    Type height = static_cast< Type >( 0 );
-    Type x = static_cast< Type >( 0 );
-    Type y = static_cast< Type >( 0 );
+    Type width = static_cast<Type>( 0 );
+    Type height = static_cast<Type>( 0 );
+    Type x = static_cast<Type>( 0 );
+    Type y = static_cast<Type>( 0 );
 };
 
 using Rect3Df = Rect2D<float>;

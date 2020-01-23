@@ -18,7 +18,6 @@ void FileRegularImpl::changePath( const Path& newPath )
 
 FileRegularImpl::~FileRegularImpl()
 {
-
 }
 
 const Path& FileRegularImpl::getPath() const
@@ -49,17 +48,17 @@ void FileRegularImpl::load( Cbool keepLineEndingCharacter )
     rows.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
-    infile.open( 
-        m_path.getPath().cStr(), 
+    infile.open(
+        m_path.getPath().cStr(),
         std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
     {
         if(
             false == line.empty() && // Skip empty line
-                ( 
-                    line.back() == ( '\r' ) || 
-                    line.back() == ( '\n' ) ) )
+            (
+            line.back() == ( '\r' ) ||
+            line.back() == ( '\n' ) ) )
         {
             line.pop_back();
         }
@@ -99,7 +98,7 @@ CsStr& FileRegularImpl::getAsOneString() const
 void FileRegularImpl::cacheFile()
 {
     m_cached = "";
-    for( const auto& line: rows )
+    for( const auto& line : rows )
     {
         m_cached += line;
         m_cached += "\n";
@@ -109,10 +108,10 @@ void FileRegularImpl::cacheFile()
 
 Cunt FileRegularImpl::getLinesCount() const
 {
-    return static_cast< Cunt >( rows.size() );
+    return static_cast<Cunt>( rows.size() );
 }
 
 const char** FileRegularImpl::getContent() const
 {
-    return const_cast<const char**>( &m_rowsAsChars[ 0 ] );
+    return const_cast<const char**>( &m_rowsAsChars[0] );
 }

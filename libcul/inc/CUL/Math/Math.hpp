@@ -39,7 +39,6 @@ const Type max( const Type val1, const Type val2, const Type val3 )
     return val3;
 }
 
-
 template <typename Type>
 const Type min( const Type val1, const Type val2 )
 {

@@ -12,7 +12,6 @@ public:
     IJSON();
     virtual ~IJSON();
 
-
 protected:
 private:
 };

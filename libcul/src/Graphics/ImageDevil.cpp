@@ -27,7 +27,7 @@ void ImageDevil::setData( const ILubyte* data, Cunt width, Cunt height )
     releaseImage();
 
     const auto textureSize = static_cast<size_t>( width * height );
-    m_data = new DataType[ textureSize ];
+    m_data = new DataType[textureSize];
     memcpy(
         m_data,
         data,

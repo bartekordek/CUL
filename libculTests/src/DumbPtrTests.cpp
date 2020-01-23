@@ -34,12 +34,10 @@ using DumbPtr = CUL::GUTILS::DumbPtr<Base>;
 
 DumbPtrTests::DumbPtrTests()
 {
-
 }
 
 DumbPtrTests::~DumbPtrTests()
 {
-
 }
 
 void DumbPtrTests::SetUpTestCase()

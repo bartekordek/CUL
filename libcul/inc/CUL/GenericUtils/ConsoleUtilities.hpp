@@ -23,7 +23,6 @@ private:
     CULLib_API ~ConsoleUtilities();
 
     std::unique_ptr<IArgumentsPair> m_args;
-
 };
 
 NAMESPACE_END( GUTILS )

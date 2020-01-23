@@ -20,7 +20,6 @@ public:
 
 protected:
 private:
-
 };
 
 NAMESPACE_END( GUTILS )

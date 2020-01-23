@@ -12,29 +12,25 @@ class CULLib_API Pos2D
 public:
     Pos2D()
     {
-
     }
 
-    Pos2D(const Pos2D& val):
+    Pos2D( const Pos2D& val ):
         m_x( val.m_x ),
         m_y( val.m_y )
     {
-
     }
 
     Pos2D( const Type x, const Type y ):
         m_x( x ),
         m_y( y )
     {
-
     }
 
     virtual ~Pos2D()
     {
-
     }
 
-    Pos2D& operator=(const Pos2D& rhv)
+    Pos2D& operator=( const Pos2D& rhv )
     {
         if( this != &rhv )
         {
@@ -72,9 +68,8 @@ public:
 
 protected:
 private:
-    Type m_x = static_cast< Type >( 0 );
-    Type m_y = static_cast< Type >( 0 );
-
+    Type m_x = static_cast<Type>( 0 );
+    Type m_y = static_cast<Type>( 0 );
 };
 
 using Pos2Di = Pos2D<int>;

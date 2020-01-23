@@ -12,7 +12,6 @@ class PosTable:
 public:
     PosTable()
     {
-
     }
 
     template <class SomeOtherClass>
@@ -20,14 +19,12 @@ public:
         m_row( row ),
         m_col( col )
     {
-
     }
 
     PosTable( const PosTable<Type>& table ):
         m_row( table.m_row ),
         m_col( table.m_col )
     {
-
     }
 
     virtual ~PosTable() = default;
@@ -37,7 +34,6 @@ public:
         m_row( static_cast<Type>( table.m_row ) ),
         m_col( static_cast<Type>( table.m_col ) )
     {
-
     }
 
     const Type getRow() const
@@ -130,7 +126,6 @@ private:
 
 using PosTableU = PosTable<unsigned>;
 using PosTableI = PosTable<int>;
-
 
 NAMESPACE_END( Math )
 NAMESPACE_END( CUL )

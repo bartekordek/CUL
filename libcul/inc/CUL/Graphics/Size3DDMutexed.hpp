@@ -47,11 +47,9 @@ public:
     Size3DDMutexed& operator-=( CDbl val );
     Size3DDMutexed operator-( CDbl val );
 
-
 protected:
 private:
     Size3DDMutexedImpl* m_impl = nullptr;
-
 };
 
 NAMESPACE_END( Graphics )

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "CUL/GenericUtils/DisableErros.hpp"
-#include <queue>
+
+#include <typeinfo>
 
 #ifdef _MSC_VER
 #pragma warning( pop )

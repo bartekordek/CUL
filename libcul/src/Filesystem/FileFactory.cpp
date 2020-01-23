@@ -43,7 +43,7 @@ IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
 
 CUL::Graphics::IRawImage* FileFactory::createRawImageRawPtr( const Path& path )
 {
-    auto rawConcrete = static_cast< Graphics::RawImageConcrete* >( createRawImageRawPtr() );
+    auto rawConcrete = static_cast<Graphics::RawImageConcrete*>( createRawImageRawPtr() );
     rawConcrete->loadFromFile( path.getPath() );
     return rawConcrete;
 }

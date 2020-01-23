@@ -12,7 +12,6 @@ class Triangle3D
 public:
     Triangle3D()
     {
-
     }
 
     Triangle3D( const Triangle3D<Type>& rhv ):
@@ -26,12 +25,12 @@ public:
 
     Triangle3D(
         const Vector3D<Type>& p1,
-        const Vector3D<Type>& p2, 
+        const Vector3D<Type>& p2,
         const Vector3D<Type>& p3 )
     {
-        m_p[ 0 ] = p1;
-        m_p[ 1 ] = p2;
-        m_p[ 2 ] = p3;
+        m_p[0] = p1;
+        m_p[1] = p2;
+        m_p[2] = p3;
 
         calculateDimensions();
     }
@@ -50,7 +49,7 @@ public:
 
     Triangle3D& operator +=( const Vector3D<Type>& translationVector )
     {
-        for( auto& point: m_p )
+        for( auto& point : m_p )
         {
             point += translationVector;
         }
@@ -69,19 +68,19 @@ public:
 
     const Type getDimension( const AxisCarthesian type ) const
     {
-        return m_dimensions[ type ];
+        return m_dimensions[type];
     }
 
     const Type getDimension( const Axis type ) const
     {
-        return m_dimensions[ static_cast<AxisCarthesian>( type ) ];
+        return m_dimensions[static_cast<AxisCarthesian>( type )];
     }
 
     void setPoint(
         const Vector3D<Type>& point,
         const AxisCarthesian axis )
     {
-        Vector3D<Type>& pointIn = m_p[ static_cast<unsigned>( axis ) ];
+        Vector3D<Type>& pointIn = m_p[static_cast<unsigned>( axis )];
         pointIn = point;
         calculateDimensions();
     }
@@ -106,12 +105,12 @@ private:
     void calculateDimensions()
     {
         for( auto i = static_cast<unsigned>( AxisCarthesian::X );
-             i <= static_cast<unsigned>( AxisCarthesian::Z );
-             ++i )
+            i <= static_cast<unsigned>( AxisCarthesian::Z );
+            ++i )
         {
             auto cartIndex = static_cast<AxisCarthesian>( i );
-            m_min.setAxisValue( cartIndex, min( m_p[ 0 ], m_p[ 1 ], m_p[ 2 ], cartIndex ) );
-            m_max.setAxisValue( cartIndex, max( m_p[ 0 ], m_p[ 1 ], m_p[ 2 ], cartIndex ) );
+            m_min.setAxisValue( cartIndex, min( m_p[0], m_p[1], m_p[2], cartIndex ) );
+            m_max.setAxisValue( cartIndex, max( m_p[0], m_p[1], m_p[2], cartIndex ) );
         }
 
         m_dimensions = m_max - m_min;
@@ -121,7 +120,6 @@ private:
     std::array<Vector3D<Type>, 3> m_p;
     Vector3D<Type> m_min;
     Vector3D<Type> m_max;
-
 };
 
 using Triangle3DI = Triangle3D<int>;

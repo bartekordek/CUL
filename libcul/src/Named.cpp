@@ -7,7 +7,7 @@ Name::Name( const String& name ):
 {
 }
 
-Name::Name( const Name& name ):
+Name::Name( const Name& name ) :
     mName( name.mName )
 {
 }

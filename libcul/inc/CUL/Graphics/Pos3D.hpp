@@ -16,7 +16,6 @@ public:
 
     Pos3D()
     {
-
     }
 
     Pos3D( const Type inX, const Type inY, const Type inZ ):
@@ -24,7 +23,6 @@ public:
         y( inY ),
         z( inZ )
     {
-
     }
 
     Pos3D( const Pos3D& arg ):
@@ -32,7 +30,6 @@ public:
         y( arg.y ),
         z( arg.z )
     {
-
     }
 
     Pos3D( Pos3D&& arg ):
@@ -40,7 +37,6 @@ public:
         y( std::move( arg.y ) ),
         z( std::move( arg.z ) )
     {
-
     }
 
     Pos3D& operator=( const Pos3D& rhv )
@@ -82,7 +78,6 @@ public:
 
     virtual ~Pos3D()
     {
-
     }
 
 protected:

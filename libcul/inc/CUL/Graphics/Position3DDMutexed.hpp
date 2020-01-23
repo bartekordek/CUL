@@ -48,11 +48,9 @@ public:
     Position3DDMutexed& operator-=( CDbl val );
     Position3DDMutexed operator-( CDbl val );
 
-
 protected:
 private:
     std::unique_ptr<Position3DDMutexedImpl> m_impl;
-
 };
 
 NAMESPACE_END( Graphics )

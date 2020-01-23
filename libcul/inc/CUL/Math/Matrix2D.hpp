@@ -18,13 +18,12 @@ namespace CUL
 {
 namespace Math
 {
-
 enum class Directions: char
 {
     L, R, U, D
 };
 
-inline std::pair<int,int> direction2RowCol( const Directions direction )
+inline std::pair<int, int> direction2RowCol( const Directions direction )
 {
     if( Directions::U == direction )
     {
@@ -165,17 +164,17 @@ public:
 
         const unsigned int columnsCount = static_cast<unsigned int>( values[0].size() );
 
-        for( 
+        for(
             int rowIndex =
-            Directions::D == direction ? rowsCount - 1 : 0 ;
+            Directions::D == direction ? rowsCount - 1 : 0;
             Directions::D == direction ? rowIndex >= 0 : rowIndex < static_cast<int>( rowsCount );
-            Directions::D == direction ? --rowIndex: ++rowIndex )
+            Directions::D == direction ? --rowIndex : ++rowIndex )
         {
-            for( 
+            for(
                 int columnIndex =
-                Directions::R == direction ? columnsCount - 1: 0 ;
-                Directions::R == direction ? columnIndex >= 0: columnIndex < static_cast<int> (columnsCount);
-                Directions::R == direction ? --columnIndex: ++columnIndex )
+                Directions::R == direction ? columnsCount - 1 : 0;
+                Directions::R == direction ? columnIndex >= 0 : columnIndex < static_cast<int> ( columnsCount );
+                Directions::R == direction ? --columnIndex : ++columnIndex )
             {
                 const unsigned int targetXumnIndex = columnIndex - offset.second;
                 if( elementExist( rowIndex + offset.first, targetXumnIndex ) )
@@ -203,9 +202,9 @@ public:
     {
         const Type zeroValue = static_cast<Type>( 0 );
 
-        for( const std::vector<Type>& row: values )
+        for( const std::vector<Type>& row : values )
         {
-            for( const Type& value: row )
+            for( const Type& value : row )
             {
                 if( zeroValue != value )
                 {
@@ -218,9 +217,9 @@ public:
 
     void print() const
     {
-        for( const std::vector<Type>& row: values )
+        for( const std::vector<Type>& row : values )
         {
-            for( const Type& value: row )
+            for( const Type& value : row )
             {
                 std::cout << std::setw( 3 ) << value;
             }
@@ -288,7 +287,7 @@ private:
     void allocateValues( const unsigned int rowsCount, const unsigned int columnsCount )
     {
         values.resize( rowsCount );
-        for( std::vector<Type>& row: values )
+        for( std::vector<Type>& row : values )
         {
             row.resize( columnsCount );
         }

@@ -29,7 +29,6 @@ private: // Deleted:
     ICSVFile( ICSVFile&& rhv ) = delete;
     ICSVFile& operator=( const ICSVFile& rhv ) = delete;
     ICSVFile& operator=( ICSVFile&& rhv ) = delete;
-
 };
 
 NAMESPACE_END( FS )

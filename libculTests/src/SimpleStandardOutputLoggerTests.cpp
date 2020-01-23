@@ -3,12 +3,10 @@
 
 SimpleStandardOutputLoggerTests::SimpleStandardOutputLoggerTests()
 {
-
 }
 
 SimpleStandardOutputLoggerTests::~SimpleStandardOutputLoggerTests()
 {
-
 }
 
 void SimpleStandardOutputLoggerTests::SetUpTestCase()

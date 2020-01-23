@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CUL/GenericUtils/DisableErros.hpp"
-#include "IL/il.h"
-#include "IL/ilu.h"
+
+#include <variant>
 
 #ifdef _MSC_VER
 #pragma warning( pop )

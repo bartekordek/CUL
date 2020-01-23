@@ -13,7 +13,6 @@ TimerChrono::~TimerChrono()
 {
 }
 
-
 void TimerChrono::start()
 {
     reset();

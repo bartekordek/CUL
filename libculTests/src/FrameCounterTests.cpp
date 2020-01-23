@@ -7,12 +7,10 @@ using namespace Video;
 
 FrameCounterTests::FrameCounterTests()
 {
-
 }
 
 FrameCounterTests::~FrameCounterTests()
 {
-
 }
 
 void FrameCounterTests::SetUpTestCase()
@@ -57,7 +55,7 @@ TEST_F( FrameCounterTests, fpsCurrentCountShouldBe10 )
     }
     fpsCounter->stop();
     auto fpsCount = fpsCounter->getCurrentFps();
-    auto avgFps = static_cast< unsigned >( fpsCount );
+    auto avgFps = static_cast<unsigned>( fpsCount );
     GTEST_ASSERT_EQ( 10, avgFps );
 }
 
@@ -76,7 +74,7 @@ TEST_F( FrameCounterTests, fpsAverageCountShouldBe40 )
     }
     fpsCounter->stop();
     auto fpsCount = fpsCounter->getAverageFps();
-    auto avgFps = static_cast< unsigned >(fpsCount);
+    auto avgFps = static_cast<unsigned>( fpsCount );
     GTEST_ASSERT_EQ( fpsTarget * 1000.0 / measurePeriod, avgFps );
 }
 #endif

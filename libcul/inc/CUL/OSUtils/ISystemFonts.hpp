@@ -22,7 +22,6 @@ protected:
 private:
     ISystemFonts& operator=( const ISystemFonts& rhv ) = delete;
     ISystemFonts( const ISystemFonts& rhv ) = delete;
-
 };
 
 CULLib_API ISystemFonts* getUtil();

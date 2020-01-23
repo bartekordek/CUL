@@ -44,7 +44,6 @@ ImageInfo& ImageInfo::operator=( ImageInfo&& rhv )
 
 IImage::IImage()
 {
-
 }
 
 IImage::~IImage()

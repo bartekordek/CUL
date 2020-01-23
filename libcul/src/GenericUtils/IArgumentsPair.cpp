@@ -11,10 +11,8 @@ IArgumentsPair* IArgumentsPair::getConcrete()
 
 IArgumentsPair::IArgumentsPair()
 {
-
 }
 
 IArgumentsPair::~IArgumentsPair()
 {
-
 }

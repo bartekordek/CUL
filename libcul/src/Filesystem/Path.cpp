@@ -13,10 +13,9 @@ CsStr& Path::getDirSeparator()
 
 Path::Path()
 {
-
 }
 
-Path::Path( const Path& path ): 
+Path::Path( const Path& path ):
     m_fullPath( path.m_fullPath ),
     m_extension( path.m_extension ),
     m_baseName( path.m_baseName ),
@@ -26,7 +25,7 @@ Path::Path( const Path& path ):
 }
 
 Path::Path( CsStr& path ):
-    m_fullPath(path)
+    m_fullPath( path )
 {
     preparePaths();
     normalizePaths();
@@ -47,7 +46,6 @@ Path::Path( const char* r ):
 
 Path::~Path()
 {
-
 }
 
 Path& Path::operator=( CsStr& path )
@@ -62,7 +60,7 @@ Path& Path::operator=( CsStr& path )
 
 Path& Path::operator=( const char* r )
 {
-    if ( m_fullPath != r )
+    if( m_fullPath != r )
     {
         m_fullPath = r;
         preparePaths();
@@ -110,16 +108,16 @@ Path Path::operator+( const Path & rhv )
 
 Path Path::operator+( CsStr& rhv )
 {
-	Path result = *this;
-	result += rhv;
-	return result;
+    Path result = *this;
+    result += rhv;
+    return result;
 }
 
 Path Path::operator+( const char* rhv )
 {
-	Path result = *this;
-	result += std::string( rhv );
-	return result;
+    Path result = *this;
+    result += std::string( rhv );
+    return result;
 }
 
 CsStr& Path::getPath() const

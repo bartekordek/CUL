@@ -14,11 +14,12 @@ public:
     public:
         Iterator( short value ):
             m_value( value )
-        { }
+        {
+        }
 
         T operator*() const
         {
-            return ( T ) m_value;
+            return (T) m_value;
         }
 
         void operator++()
@@ -39,19 +40,18 @@ public:
     private:
         short m_value;
     };
-
 };
 
 template< typename T >
 typename Enum<T>::Iterator begin( Enum<T> )
 {
-    return typename Enum<T>::Iterator( ( short ) T::First );
+    return typename Enum<T>::Iterator( (short) T::First );
 }
 
 template< typename T >
 typename Enum<T>::Iterator end( Enum<T> )
 {
-    return typename Enum<T>::Iterator( ( ( short ) T::Last ) + 1 );
+    return typename Enum<T>::Iterator( ( (short) T::Last ) + 1 );
 }
 
 NAMESPACE_END( CUL )

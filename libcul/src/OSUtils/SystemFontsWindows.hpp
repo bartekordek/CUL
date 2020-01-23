@@ -25,7 +25,6 @@ private:
 
     FontFilesPaths m_defaultDirsWithFonts;
     FontFilesPaths m_fontFilesList;
-
 };
 
 NAMESPACE_END( OSUtils )

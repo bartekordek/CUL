@@ -4,10 +4,8 @@ using ITexture = CUL::Graphics::ITexture;
 
 ITexture::ITexture()
 {
-
 }
 
 ITexture::~ITexture()
 {
-
 }

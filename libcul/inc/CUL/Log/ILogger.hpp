@@ -31,7 +31,6 @@ protected:
 private:
     ILogger( const ILogger& arg ) = delete;
     ILogger& operator=( const ILogger& arg ) = delete;
-
 };
 
 NAMESPACE_END( LOG )

@@ -10,7 +10,6 @@ bool RawImageConcrete::s_ilInitialized = false;
 
 RawImageConcrete::RawImageConcrete()
 {
-
 }
 
 RawImageConcrete::~RawImageConcrete()
@@ -62,12 +61,12 @@ void RawImageConcrete::loadFromFile( CUL::CsStr& path )
         CUL::LOG::LOG_CONTAINER::getLogger()->log( iluErrorString( error ), CUL::LOG::Severity::ERROR );
         CUL::Assert::simple( false, "Cannot convert image: " + path );
     }
-    auto imgWidth = ( unsigned int ) ilGetInteger( IL_IMAGE_WIDTH );
-    auto imgHeight = ( unsigned int ) ilGetInteger( IL_IMAGE_HEIGHT );
+    auto imgWidth = (unsigned int) ilGetInteger( IL_IMAGE_WIDTH );
+    auto imgHeight = (unsigned int) ilGetInteger( IL_IMAGE_HEIGHT );
 
     m_size.setXYZ( imgWidth, imgHeight, 0 );
     auto dataPtr = ilGetData();
-    m_data = static_cast< RawDataPtr >( dataPtr );
+    m_data = static_cast<RawDataPtr>( dataPtr );
 }
 
 Cunt RawImageConcrete::getID() const

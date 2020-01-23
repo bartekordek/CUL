@@ -7,18 +7,16 @@ using namespace Graphics;
 Size3DDMutexed::Size3DDMutexed():
     m_impl( new Size3DDMutexedImpl() )
 {
-
 }
 
 Size3DDMutexed::Size3DDMutexed( CDbl x, CDbl y, CDbl z ):
-    m_impl( new Size3DDMutexedImpl( x, y , z ) )
+    m_impl( new Size3DDMutexedImpl( x, y, z ) )
 {
 }
 
-Size3DDMutexed::Size3DDMutexed( const Size3DDMutexed& val ):
+Size3DDMutexed::Size3DDMutexed( const Size3DDMutexed& val ) :
     m_impl( new Size3DDMutexedImpl( *val.m_impl ) )
 {
-
 }
 
 Size3DDMutexed::~Size3DDMutexed()

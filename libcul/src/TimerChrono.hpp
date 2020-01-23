@@ -34,7 +34,6 @@ private:
 private: // Deleted
     TimerChrono( const TimerChrono& tc ) = delete;
     TimerChrono& operator=( const TimerChrono& rhv ) = delete;
-
 };
 
 #ifdef _MSC_VER

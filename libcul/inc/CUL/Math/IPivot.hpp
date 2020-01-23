@@ -12,7 +12,7 @@
 #pragma warning( push )
 #pragma warning( disable: 4574 )
 #endif
-#ifdef ABSOLUTE 
+#ifdef ABSOLUTE
 #undef ABSOLUTE
 #endif
 #ifdef _MSC_VER

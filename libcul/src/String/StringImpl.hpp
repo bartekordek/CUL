@@ -38,7 +38,7 @@ public:
     const bool operator==( const StringImpl& rhv ) const;
 
     operator const std::string() const;
-    operator const std::string&() const;
+    operator const std::string&( ) const;
 
     const bool operator<( const StringImpl& rhv ) const;
 
@@ -58,7 +58,6 @@ public:
 protected:
 private:
     std::string m_value;
-
 };
 
 NAMESPACE_END( CUL )

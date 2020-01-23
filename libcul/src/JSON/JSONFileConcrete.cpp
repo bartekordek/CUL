@@ -1,8 +1,6 @@
 #include "JSONFileConcrete.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "CUL/JSON/Array.hpp"
-#include "CUL/JSON/DataPair.hpp"
 
 using namespace CUL;
 using namespace JSON;
@@ -94,83 +92,68 @@ void JSONFileConcrete::parse()
 {
     auto documentContents = m_fileContents->getAsOneString().cStr();
     m_document.Parse( documentContents );
-    auto errorCode = m_document.GetParseError();
+    const auto errorCode = m_document.GetParseError();
     if( rapidjson::ParseErrorCode::kParseErrorNone != errorCode )
     {
-        auto message = rapidjson::GetParseError_En( errorCode );
+        const auto message = rapidjson::GetParseError_En( errorCode );
         CUL::Assert::simple( false, message );
     }
 
-    parse( "root", m_document );
+    m_root = parse( m_document );
+    m_root->setName( "root" );
 }
 
-void JSONFileConcrete::parse(
-    CsStr& valueName,
-    const JValue& parentValue,
-    INode* parentNode )
+INode* JSONFileConcrete::parse(
+    const JValue& value )
 {
-    INode* obj = nullptr;
-    if( parentValue.IsObject() )
+    if( value.IsObject() )
     {
-        obj = new Object( valueName );
-        for( auto& member : parentValue.GetObject() )
+        ChildrenNodes nodes;
+        for( auto& member : value.GetObject() )
         {
             const rapidjson::Value& childValue = member.value;
-            CsStr memberName = member.name.GetString();
-            parse( memberName, childValue, obj );
+            auto child = parse( childValue );
+            child->setName( member.name.GetString() );
+            nodes.push_back( child );
         }
-    }
-    else if( parentValue.IsArray() )
-    {
-        auto array = new Array( valueName );
-        for( auto& element : parentValue.GetArray() )
-        {
-            parse( "", element, array );
-        }
-        obj = array;
-    }
-    else if( parentValue.IsBool() )
-    {
-        auto valIntermediate = parentValue.GetBool();
-        auto val = std::to_string( valIntermediate );
-        obj = new DataPair( valueName, val );
-    }
-    else if( parentValue.IsDouble() )
-    {
-        auto valIntermediate = parentValue.GetDouble();
-        auto val = std::to_string( valIntermediate );
-        obj = new DataPair( valueName, val );
-    }
-    else if( parentValue.IsFloat() )
-    {
-        auto valIntermediate = parentValue.GetFloat();
-        auto val = std::to_string( valIntermediate );
-        obj = new DataPair( valueName, val );
-    }
-    else if( parentValue.IsInt() )
-    {
-        auto valIntermediate = parentValue.GetInt();
-        auto val = std::to_string( valIntermediate );
-        obj = new DataPair( valueName, val );
-    }
-    else if( parentValue.IsInt64() )
-    {
-        auto valIntermediate = parentValue.GetInt64();
-        auto val = std::to_string( valIntermediate );
-        obj = new DataPair( valueName, val );
-    }
-    else if( parentValue.IsString() )
-    {
-        auto val = parentValue.GetString();
-        obj = new DataPair( valueName, val );
+
+        return new INode( "", nodes );
     }
 
-    if( nullptr == parentNode )
+    else if( value.IsArray() )
     {
-        m_root = obj;
+        ChildrenNodes nodes;
+
+        unsigned int i = 0;
+        for( auto& element: value.GetArray() )
+        {
+            auto child = parse( element );
+            child->setName( "ID_" + std::to_string( i++ ) );
+            nodes.push_back( child );
+        }
+
+        return new INode( "", nodes );
     }
-    else
+    else if( value.IsInt() || value.IsInt64() )
     {
-        parentNode->addChild( obj );
+        return new INode( "", value.GetInt() );
     }
+    else if( value.IsString() )
+    {
+        return new INode( "", value.GetString() );
+    }
+    else if( value.IsBool() )
+    {
+        return new INode( "", value.GetBool() );
+    }
+    else if( value.IsDouble() )
+    {
+        return new INode( "", value.GetDouble() );
+    }
+    else if( value.IsFloat() )
+    {
+        return new INode( "", value.GetFloat() );
+    }
+
+    return nullptr;
 }

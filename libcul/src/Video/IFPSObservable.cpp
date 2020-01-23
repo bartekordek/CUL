@@ -4,7 +4,6 @@ using namespace CUL::Video;
 
 IFPSObservable::IFPSObservable()
 {
-
 }
 
 void IFPSObservable::addFPSCounter( IFPSCounter* counter )
@@ -22,5 +21,4 @@ void IFPSObservable::frameHasEnded()
 
 IFPSObservable::~IFPSObservable()
 {
-
 }

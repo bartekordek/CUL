@@ -1,20 +1,17 @@
 #include "JSONTests.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
-#include "CUL/JSON/Object.hpp"
-#include "CUL/JSON/DataPair.hpp"
-#include "CUL/JSON/Array.hpp"
+#include "CUL/JSON/INode.hpp"
 
 using namespace CUL;
-using JFIlePtr = CUL::JSON::IJSONFile;
+using JFilePtr = CUL::JSON::IJSONFile;
+using JFile = std::unique_ptr<JFilePtr>;
 
 JSONTests::JSONTests()
 {
-
 }
 
 JSONTests::~JSONTests()
 {
-
 }
 
 void JSONTests::SetUpTestCase()
@@ -27,160 +24,107 @@ void JSONTests::TearDownTestCase()
 
 TEST_F( JSONTests, objectTypeIsCorrect )
 {
-    JSON::Object object;
-    GTEST_ASSERT_EQ( 
-        JSON::ElementType::OBJECT,
+    JSON::INode object;
+    GTEST_ASSERT_EQ(
+        JSON::ElementType::NONE,
         object.getType() );
 }
 
 TEST_F( JSONTests, addObject )
 {
-    JSON::Object object;
-    JSON::Object* child = new JSON::Object();
+    JSON::INode object;
+    JSON::INode* child = new JSON::INode();
+    const String childName = "WAT";
+    child->setName( childName );
 
-    object.addChild( child );
+    object.setValue( child );
 
-    GTEST_ASSERT_EQ(
-        1,
-        object.getChildren().size() );
+    GTEST_ASSERT_EQ( childName, object.getObject()->getName() );
 }
 
-TEST_F( JSONTests, getSetDataPair )
+TEST_F( JSONTests, nestData )
 {
-    JSON::DataPair dataPair;
-    String val( "some val" );
-    dataPair.setVal( val );
-    GTEST_ASSERT_EQ( val, dataPair.getVal() );
-}
-
-TEST_F( JSONTests, nestDataPairInObject )
-{
-    JSON::Object object;
-    auto child = new JSON::DataPair();
-    object.addChild( child );
-    String val( "some val" );
-    child->setVal( val );
-    GTEST_ASSERT_EQ(
-        1,
-        object.getChildren().size() );
-    auto& node = object.getChildren().front();
-    GTEST_ASSERT_EQ( JSON::ElementType::VALUE, node->getType() );
-    auto dp = static_cast<JSON::DataPair*>( node );
-    GTEST_ASSERT_EQ( val, dp->getVal() );
+    JSON::INode node;
+    JSON::ChildrenNodes nodes;
+    const unsigned size = 10;
+    for( auto i = 0; i < size; ++i )
+    {
+        auto ptr = new JSON::INode();
+        ptr->setValue( i );
+        nodes.push_back( ptr );
+    }
+    node.setValue( nodes );
+    GTEST_ASSERT_EQ( size, node.getArray().size() );
 }
 
 TEST_F( JSONTests, arrayAddElements )
 {
-    JSON::Array arrayObj;
-    auto val1 = new JSON::DataPair( "val1", "10" );
-    auto val2 = new JSON::DataPair( "val2", "11" );
-    auto val3 = new JSON::DataPair( "name", "some name" );
-    arrayObj.addValue( val1 );
-    arrayObj.addValue( val2 );
-    arrayObj.addValue( val3 );
-    GTEST_ASSERT_EQ( 3, arrayObj.getAllValues().size() );
-}
-
-TEST_F( JSONTests, arrayFindValue )
-{
-    JSON::Array arrayObj;
-    auto val1 = new JSON::DataPair( "val1", "10" );
-    auto val2 = new JSON::DataPair( "val2", "11" );
-    auto val3 = new JSON::DataPair( "name", "some name" );
-    arrayObj.addValue( val1 );
-    arrayObj.addValue( val2 );
-    arrayObj.addValue( val3 );
-
-    auto foundedValue = arrayObj.getValue( "val1" );
-
-    GTEST_ASSERT_NE( nullptr, foundedValue );
-}
-
-TEST_F( JSONTests, arrayFindValueCorrectness )
-{
-    JSON::Array arrayObj;
-    auto val1 = new JSON::DataPair( "val1", "10" );
-    auto val2 = new JSON::DataPair( "val2", "11" );
-    auto val3 = new JSON::DataPair( "name", "some name" );
-    arrayObj.addValue( val1 );
-    arrayObj.addValue( val2 );
-    arrayObj.addValue( val3 );
-
-    auto foundedValue = static_cast<const JSON::DataPair*>( arrayObj.getValue( "val1" ) );
-
-    GTEST_ASSERT_EQ( "10", foundedValue->getVal() );
+    JSON::INode node;
+    JSON::ChildrenNodes nodes;
+    auto val1 = new JSON::INode( "val1", "10" );
+    auto val2 = new JSON::INode( "val2", "11" );
+    auto val3 = new JSON::INode( "name", "some name" );
+    nodes.push_back( val1 );
+    nodes.push_back( val2 );
+    nodes.push_back( val3 );
+    node.setValue( nodes );
+    GTEST_ASSERT_EQ( 3, node.getArray().size() );
 }
 
 TEST_F( JSONTests, fileLoadTest )
 {
-    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
     GTEST_ASSERT_EQ( true, jsonFilePtr->exists() );
     jsonFilePtr->load();
 }
 
 TEST_F( JSONTests, getRootElement )
 {
-    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
     GTEST_ASSERT_EQ( "root", rootElement->getName() );
 }
 
 TEST_F( JSONTests, findProperty )
 {
-    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
-    GTEST_ASSERT_EQ( "root", rootElement->getName() );
 
-    auto age = rootElement->getChild( "age" );
+    auto age = rootElement->findChild( "age" );
     GTEST_ASSERT_NE( nullptr, age );
-
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::VALUE, age->getType() );
-    auto dp = static_cast< const CUL::JSON::DataPair* >( age );
-    GTEST_ASSERT_EQ( "99", dp->getVal() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::INT, age->getType() );
+    GTEST_ASSERT_EQ( 99, age->getInt() );
 }
 
 TEST_F( JSONTests, arraySize )
 {
-    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
     GTEST_ASSERT_EQ( "root", rootElement->getName() );
 
-    auto messages = rootElement->getChild( "messages" );
+    auto messages = rootElement->findChild( "messages" );
     GTEST_ASSERT_NE( nullptr, messages );
 
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
-    auto array = static_cast< const CUL::JSON::Array* >( messages );
-    GTEST_ASSERT_EQ( 3, array->getAllValues().size() );
+    GTEST_ASSERT_EQ( 3, messages->getArray().size() );
 }
 
 TEST_F( JSONTests, arrayCorrectness )
 {
-    std::unique_ptr<JFIlePtr> jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::OBJECT, rootElement->getType() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
     GTEST_ASSERT_EQ( "root", rootElement->getName() );
 
-    auto messages = rootElement->getChild( "messages" );
+    auto messages = rootElement->findChild( "messages" );
     GTEST_ASSERT_NE( nullptr, messages );
 
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
-    auto array = static_cast< const CUL::JSON::Array* >( messages );
-    GTEST_ASSERT_EQ( 3, array->getAllValues().size() );
-
-    unsigned int i = 1;
-    for( const auto& msg: array->getChildren() )
-    {
-        GTEST_ASSERT_EQ( CUL::JSON::ElementType::VALUE, msg->getType() );
-        auto dp = static_cast< const CUL::JSON::DataPair* >( msg );
-        auto testVal = CUL::String( "msg " ) + i++;
-        auto& actualVal = dp->getVal();
-        GTEST_ASSERT_EQ( testVal, actualVal );
-    }
+    GTEST_ASSERT_EQ( 3, messages->getArray().size() );
 }

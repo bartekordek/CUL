@@ -31,7 +31,6 @@ protected:
 
     void TestBody() override
     {
-
     }
 };
 #ifdef _MSC_VER

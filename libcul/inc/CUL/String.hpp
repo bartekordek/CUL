@@ -51,7 +51,7 @@ public:
     const bool operator==( const String& rhv ) const;
 
     operator const std::string() const;
-    operator const std::string&() const;
+    operator const std::string&( ) const;
 
     void toLower();
     void toUpper();

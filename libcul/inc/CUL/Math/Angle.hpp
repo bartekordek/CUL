@@ -25,7 +25,7 @@ public:
     virtual ~Angle();
 
     Cdouble getValueD( const Type type = Type::RADIAN ) const;
-    Cfloat getValueF(const Type type = Type::RADIAN) const;
+    Cfloat getValueF( const Type type = Type::RADIAN ) const;
     Cint getValueI( const Type type = Type::RADIAN ) const;
 
     void setValue( Cdouble value, const Type type = Type::RADIAN );
@@ -85,7 +85,6 @@ private:
     double m_valueDeg = 0.0;
     double m_incrementValue = 0.1;
     Type m_type = Type::RADIAN;
-
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

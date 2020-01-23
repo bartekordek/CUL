@@ -9,7 +9,6 @@ TimeConcrete::TimeConcrete()
 TimeConcrete::TimeConcrete( const TimeConcrete& tc ):
     m_us( tc.m_us )
 {
-
 }
 
 TimeConcrete::~TimeConcrete()
@@ -42,12 +41,12 @@ const double TimeConcrete::getMs() const
 
 const double TimeConcrete::getS() const
 {
-    return m_us / (1000 * 1000);
+    return m_us / ( 1000 * 1000 );
 }
 
 const double TimeConcrete::getM() const
 {
-    return m_us / (60000 * 1000);
+    return m_us / ( 60000 * 1000 );
 }
 
 const double TimeConcrete::getH() const
