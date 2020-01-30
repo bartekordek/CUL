@@ -36,7 +36,7 @@ Position3DDMutexed& Position3DDMutexed::operator=( const Position3DDMutexed& val
     return *this;
 }
 
-Position3DDMutexed& Position3DDMutexed::operator=( const Math::Vector3Dd& vec )
+Position3DDMutexed& Position3DDMutexed::operator=( const MATH::Vector3Dd& vec )
 {
     m_impl->setXYZ( vec.getX(), vec.getY(), vec.getZ() );
     return *this;

@@ -7,7 +7,7 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
-using Vector3Dd = CUL::Math::Vector3Dd;
+using Vector3Dd = CUL::MATH::Vector3Dd;
 using Path = CUL::FS::Path;
 
 class CULLib_API ITexture

@@ -5,7 +5,7 @@
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 
 #if _MSC_VER
 #pragma warning( push )
@@ -51,5 +51,5 @@ private:
 #pragma warning( pop )
 #endif
 
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

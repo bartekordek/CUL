@@ -16,7 +16,7 @@
 
 namespace CUL
 {
-namespace Math
+namespace MATH
 {
 enum class Directions: char
 {

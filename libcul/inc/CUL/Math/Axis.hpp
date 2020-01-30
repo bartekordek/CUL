@@ -4,7 +4,7 @@
 #include "CUL/UselessMacros.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 
 using Size = unsigned;
 
@@ -41,5 +41,5 @@ enum class Axis: short
 const Size CULLib_API ac2Size( const AxisCarthesian cart );
 const Size CULLib_API ax2Size( const Axis ax );
 
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

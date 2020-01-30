@@ -1,8 +1,8 @@
 #include "PivotTests.hpp"
 #include "CUL/Math/IPivot.hpp"
 
-using IPivot = CUL::Math::IPivot;
-using Vec3Dd = CUL::Math::Vector3Dd;
+using IPivot = CUL::MATH::IPivot;
+using Vec3Dd = CUL::MATH::Vector3Dd;
 
 PivotTests::PivotTests()
 {

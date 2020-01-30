@@ -7,7 +7,7 @@
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 template <typename Type>
 class MultiPoint
 {
@@ -179,5 +179,5 @@ public:
 private:
     std::vector<Type> axisValue;
 };
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

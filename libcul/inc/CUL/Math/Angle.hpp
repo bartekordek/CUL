@@ -4,7 +4,7 @@
 #include "CUL/UselessMacros.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 
 #if _MSC_VER
 #pragma warning( push )
@@ -95,5 +95,5 @@ CULLib_API Cdouble degree2radian( Cdouble degree );
 CULLib_API Cfloat radian2degree( Cfloat radian );
 CULLib_API Cfloat degree2radian( Cfloat degree );
 
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

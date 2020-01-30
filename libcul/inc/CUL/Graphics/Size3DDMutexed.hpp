@@ -17,7 +17,7 @@ public:
     virtual ~Size3DDMutexed();
 
     Size3DDMutexed& operator=( const Size3DDMutexed& val );
-    Size3DDMutexed& operator=( const Math::Vector3Dd& vec );
+    Size3DDMutexed& operator=( const MATH::Vector3Dd& vec );
 
     void setWidth( CDbl val ) override;
     void setHeight( CDbl val ) override;

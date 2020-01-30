@@ -15,7 +15,7 @@ public:
     IRawImage() = default;
     virtual ~IRawImage() = default;
     virtual Cunt getID() const = 0;
-    virtual const Math::Vector3Du& getSize() const = 0;
+    virtual const MATH::Vector3Du& getSize() const = 0;
     virtual RawDataPtr getData() const = 0;
 
 protected:

@@ -3,7 +3,7 @@
 #include "CUL/UselessMacros.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 
 enum class RotationType
 {
@@ -13,5 +13,5 @@ enum class RotationType
     ERROR
 };
 
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

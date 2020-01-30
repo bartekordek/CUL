@@ -1,8 +1,8 @@
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Math/Math.hpp"
 
-using Angle = CUL::Math::Angle;
-using Type = CUL::Math::Angle::Type;
+using Angle = CUL::MATH::Angle;
+using Type = CUL::MATH::Angle::Type;
 
 Angle::Angle()
 {
@@ -337,22 +337,22 @@ Angle::operator const int() const
     return m_valueDeg;
 }
 
-const double CUL::Math::radian2degree( const double radian )
+const double CUL::MATH::radian2degree( const double radian )
 {
-    return radian * 180.0 / CUL::Math::Util::Constants::PI;
+    return radian * 180.0 / CUL::MATH::UTIL::Constants::PI;
 }
 
-const double CUL::Math::degree2radian( const double degree )
+const double CUL::MATH::degree2radian( const double degree )
 {
-    return degree * CUL::Math::Util::Constants::PI / 180.0;
+    return degree * CUL::MATH::UTIL::Constants::PI / 180.0;
 }
 
-const float CUL::Math::radian2degree( const float radian )
+const float CUL::MATH::radian2degree( const float radian )
 {
-    return radian * 180.0f / static_cast<float>( CUL::Math::Util::Constants::PI );
+    return radian * 180.0f / static_cast<float>( CUL::MATH::UTIL::Constants::PI );
 }
 
-const float CUL::Math::degree2radian( const float degree )
+const float CUL::MATH::degree2radian( const float degree )
 {
-    return degree * CUL::Math::Util::Constants::PI / 180.0f;
+    return degree * CUL::MATH::UTIL::Constants::PI / 180.0f;
 }

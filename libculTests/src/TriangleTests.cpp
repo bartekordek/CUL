@@ -2,9 +2,9 @@
 #include "CUL/Math/Triangle.hpp"
 #include "CUL/Math/TriangleRectangularSimple2D.hpp"
 
-using TriangleRectangularSimple2D = CUL::Math::TriangleRectangularSimple2D;
-using AngleTypes = CUL::Math::Angle::Type;
-using AxisTypes = CUL::Math::AxisCarthesian;
+using TriangleRectangularSimple2D = CUL::MATH::TriangleRectangularSimple2D;
+using AngleTypes = CUL::MATH::Angle::Type;
+using AxisTypes = CUL::MATH::AxisCarthesian;
 
 TriangleTests::TriangleTests()
 {
@@ -104,10 +104,11 @@ TEST_F( TriangleTests, initializationTest )
     auto p2xyz = 2;
     auto p3xyz = 3;
 
-    CUL::Math::Vector3Di p1( p1xyz, p1xyz, p1xyz );
-    CUL::Math::Vector3Di p2( p2xyz, p2xyz, p2xyz );
-    CUL::Math::Vector3Di p3( p3xyz, p3xyz, p3xyz );
-    CUL::Math::Triangle3DI triangle3D( p1, p2, p3 );
+    CUL::MATH::PointI p1( p1xyz, p1xyz, p1xyz );
+    CUL::MATH::PointI p2( p2xyz, p2xyz, p2xyz );
+    CUL::MATH::PointI p3( p3xyz, p3xyz, p3xyz );
+
+    CUL::MATH::Triangle3DI triangle3D( p1, p2, p3 );
 
     GTEST_ASSERT_EQ( triangle3D.getP1().getX(), p1xyz );
     GTEST_ASSERT_EQ( triangle3D.getP1().getY(), p1xyz );
@@ -125,11 +126,11 @@ TEST_F( TriangleTests, initializationTest )
 // TODO:
 //TEST_F( TriangleTests, translationTest )
 //{
-//    CUL::Math::Triangle3DI triangle3D;
+//    CUL::MATH::Triangle3DI triangle3D;
 //
 //    int x = 1, y = 2, z = 3;
 //
-//    CUL::Math::Vector3Di translationVector( x, y, z );
+//    CUL::MATH::Vector3Di translationVector( x, y, z );
 //    triangle3D += translationVector;
 //
 //    GTEST_ASSERT_EQ( triangle3D.getDimension( AxisTypes::X ), x );

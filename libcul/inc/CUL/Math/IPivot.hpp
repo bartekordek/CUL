@@ -20,7 +20,7 @@
 #endif
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 
 using Position3DDMutexed = CUL::Graphics::Position3DDMutexed;
 using CDouble = const double;
@@ -59,5 +59,5 @@ protected:
 private:
 };
 
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

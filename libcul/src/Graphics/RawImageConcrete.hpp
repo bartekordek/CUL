@@ -17,12 +17,12 @@ public:
     void loadFromFile( CUL::CsStr& path );
 
     Cunt getID() const override;
-    const Math::Vector3Du& getSize() const override;
+    const MATH::Vector3Du& getSize() const override;
     RawDataPtr getData() const override;
 
 protected:
 private:
-    Math::Vector3Du m_size;
+    MATH::Vector3Du m_size;
     RawDataPtr m_data = nullptr;
     unsigned int m_fileId = 0;
     ILuint m_iluId = 0;

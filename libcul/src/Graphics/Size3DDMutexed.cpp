@@ -34,7 +34,7 @@ Size3DDMutexed& Size3DDMutexed::operator=( const Size3DDMutexed& val )
     return *this;
 }
 
-Size3DDMutexed& Size3DDMutexed::operator=( const Math::Vector3Dd& vec )
+Size3DDMutexed& Size3DDMutexed::operator=( const MATH::Vector3Dd& vec )
 {
     this->m_impl->setWidthHeightDepth( vec.getX(), vec.getY(), vec.getZ() );
     return *this;

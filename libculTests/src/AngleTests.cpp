@@ -3,7 +3,7 @@
 #include "CUL/Math/Angle.hpp"
 
 using namespace CUL;
-using namespace Math;
+using namespace MATH;
 
 AngleTests::AngleTests()
 {

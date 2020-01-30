@@ -2,7 +2,7 @@
 #include "CUL/Math/Vector3D.hpp"
 
 using namespace CUL;
-using namespace Math;
+using namespace MATH;
 
 TEST_F( Vector3DTests, initialization )
 {

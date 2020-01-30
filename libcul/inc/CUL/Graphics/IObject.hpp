@@ -8,11 +8,11 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
-using RT = CUL::Math::RotationType;
+using RT = CUL::MATH::RotationType;
 using CRT = const RT;
 
 class CULLib_API IObject:
-    public CUL::Math::IPivot
+    public CUL::MATH::IPivot
 {
 public:
     enum class Type
@@ -28,7 +28,7 @@ public:
     virtual void move( const Position3DDMutexed& moveVect ) = 0;
 
     virtual const Position3DDMutexed& getScale() const = 0;
-    virtual void setScale( const CUL::Math::Vector3Dd& scale ) = 0;
+    virtual void setScale( const CUL::MATH::Vector3Dd& scale ) = 0;
 
     virtual const Position3DDMutexed& getPosition() const = 0;
     virtual const Position3DDMutexed& getRenderPosition() const = 0;
@@ -39,9 +39,9 @@ public:
     virtual const bool operator==( const IObject& right ) const;
 
     virtual void rotate(
-        const Math::Angle& angle,
+        const MATH::Angle& angle,
         CRT = RT::YAW ) = 0;
-    virtual const Math::Angle& getAngle(
+    virtual const MATH::Angle& getAngle(
         CRT = RT::YAW ) const = 0;
 
 protected:

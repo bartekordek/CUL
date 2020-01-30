@@ -3,7 +3,7 @@
 #include "CUL/Math/Epsilon.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 
 template <typename Type>
 class PosTable:
@@ -127,5 +127,5 @@ private:
 using PosTableU = PosTable<unsigned>;
 using PosTableI = PosTable<int>;
 
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

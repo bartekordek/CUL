@@ -18,7 +18,7 @@ public:
     virtual ~Position3DDMutexed();
 
     Position3DDMutexed& operator=( const Position3DDMutexed& val );
-    Position3DDMutexed& operator=( const Math::Vector3Dd& vec );
+    Position3DDMutexed& operator=( const MATH::Vector3Dd& vec );
 
     void setX( CDbl val ) override;
     void setY( CDbl val ) override;

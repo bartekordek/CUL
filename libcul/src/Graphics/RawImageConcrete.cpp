@@ -74,7 +74,7 @@ Cunt RawImageConcrete::getID() const
     return m_fileId;
 }
 
-const Math::Vector3Du& RawImageConcrete::getSize() const
+const MATH::Vector3Du& RawImageConcrete::getSize() const
 {
     return m_size;
 }

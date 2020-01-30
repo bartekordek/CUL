@@ -3,7 +3,7 @@
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 
 using namespace CUL;
-using namespace Math;
+using namespace MATH;
 
 TriangleRectangularSimple2D::TriangleRectangularSimple2D()
 {

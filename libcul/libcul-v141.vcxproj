@@ -48,7 +48,6 @@
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\CSVFile.cpp" />
     <ClCompile Include="src\FileCompileTest.cpp" />
-    <ClCompile Include="src\Frustum.cpp" />
     <ClCompile Include="src\ICSVFile.cpp" />
     <ClCompile Include="src\IName.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
@@ -60,7 +59,6 @@
     <ClCompile Include="src\ITimer.cpp" />
     <ClCompile Include="src\JSON\INode.cpp" />
     <ClCompile Include="src\JSON\JSONFileConcrete.cpp" />
-    <ClCompile Include="src\Line.cpp" />
     <ClCompile Include="src\Math\Axis.cpp" />
     <ClCompile Include="src\Math\IAngle.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
@@ -157,11 +155,9 @@
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_vector.hpp" />
     <ClInclude Include="inc\CUL\Math\Axis.hpp" />
     <ClInclude Include="inc\CUL\Math\Epsilon.hpp" />
-    <ClInclude Include="inc\CUL\Math\Frustum.hpp" />
     <ClInclude Include="inc\CUL\Math\Angle.hpp" />
     <ClInclude Include="inc\CUL\Math\IPivot.hpp" />
     <ClInclude Include="inc\CUL\Math\IPivotObserver.hpp" />
-    <ClInclude Include="inc\CUL\Math\Line.hpp" />
     <ClInclude Include="inc\CUL\Math\Math.hpp" />
     <ClInclude Include="inc\CUL\Math\Matrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\MultiPoint.hpp" />

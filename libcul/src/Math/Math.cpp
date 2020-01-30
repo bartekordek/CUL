@@ -1,11 +1,11 @@
 #include "CUL/Math/Math.hpp"
 
-const CUL::Math::Axis CUL::Math::Util::carthesian2Normal( const CUL::Math::AxisCarthesian cart )
+const CUL::MATH::Axis CUL::MATH::UTIL::carthesian2Normal( const CUL::MATH::AxisCarthesian cart )
 {
-    return static_cast<CUL::Math::Axis>( cart );
+    return static_cast<CUL::MATH::Axis>( cart );
 }
 
-const CUL::Math::AxisCarthesian CUL::Math::Util::normal2Carthesian( const CUL::Math::Axis cart )
+const CUL::MATH::AxisCarthesian CUL::MATH::UTIL::normal2Carthesian( const CUL::MATH::Axis cart )
 {
-    return static_cast<CUL::Math::AxisCarthesian>( cart );
+    return static_cast<CUL::MATH::AxisCarthesian>( cart );
 }

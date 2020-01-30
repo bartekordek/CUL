@@ -87,9 +87,6 @@
     <ClCompile Include="src\FileCompileTest.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Frustum.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ICSVFile.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -106,9 +103,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ITimer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Line.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Named.cpp">
@@ -380,9 +374,6 @@
     <ClInclude Include="inc\CUL\Math\Epsilon.hpp">
       <Filter>inc\CUL\Math</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\Math\Frustum.hpp">
-      <Filter>inc\CUL\Math</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Math\Angle.hpp">
       <Filter>inc\CUL\Math</Filter>
     </ClInclude>
@@ -390,9 +381,6 @@
       <Filter>inc\CUL\Math</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\IPivotObserver.hpp">
-      <Filter>inc\CUL\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\CUL\Math\Line.hpp">
       <Filter>inc\CUL\Math</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Math.hpp">

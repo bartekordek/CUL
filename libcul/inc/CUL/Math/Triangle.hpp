@@ -1,10 +1,17 @@
 #pragma once
 
-#include "CUL/Math/Vector3D.hpp"
+#include "CUL/Math/Math.hpp"
+#include "CUL/Math/Axis.hpp"
+#include "CUL/Math/Point.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
+
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 4820 )
+#endif
 
 template <typename Type>
 class Triangle3D
@@ -21,18 +28,20 @@ public:
         m_max( rhv.m_max )
     {
         calculateDimensions();
+        calculateCenter();
     }
 
     Triangle3D(
-        const Vector3D<Type>& p1,
-        const Vector3D<Type>& p2,
-        const Vector3D<Type>& p3 )
+        const Point<Type>& p1,
+        const Point<Type>& p2,
+        const Point<Type>& p3 )
     {
         m_p[0] = p1;
         m_p[1] = p2;
         m_p[2] = p3;
 
         calculateDimensions();
+        calculateCenter();
     }
 
     Triangle3D& operator=( const Triangle3D<Type>& rhv )
@@ -47,21 +56,18 @@ public:
         return *this;
     }
 
-    Triangle3D& operator +=( const Vector3D<Type>& translationVector )
+    Triangle3D& operator +=( const Point<Type>& translationVector )
     {
-        for( auto& point : m_p )
+        for( auto& point: m_p )
         {
             point += translationVector;
         }
         calculateDimensions();
+        calculateCenter();
         return *this;
     }
 
-    virtual ~Triangle3D()
-    {
-    }
-
-    const Vector3D<Type>& getSize() const
+    const Point<Type>& getSize() const
     {
         return m_dimensions;
     }
@@ -77,27 +83,52 @@ public:
     }
 
     void setPoint(
-        const Vector3D<Type>& point,
+        const Point<Type>& point,
         const AxisCarthesian axis )
     {
-        Vector3D<Type>& pointIn = m_p[static_cast<unsigned>( axis )];
+        Point<Type>& pointIn = m_p[static_cast<unsigned>( axis )];
         pointIn = point;
         calculateDimensions();
+        calculateCenter();
     }
 
-    const Vector3D<Type>& getP1() const
+    const Point<Type>& getP1() const
     {
         return m_p.at( 0 );
     }
 
-    const Vector3D<Type>& getP2() const
+    const Point<Type>& getP2() const
     {
         return m_p.at( 1 );
     }
 
-    const Vector3D<Type>& getP3() const
+    const Point<Type>& getP3() const
     {
         return m_p.at( 2 );
+    }
+
+    void setP1( const Point<Type>& val )
+    {
+        m_p[0] = val;
+    }
+
+    void setP2( const Point<Type>& val )
+    {
+         m_p[0] = val;
+    }
+
+    void setP3( const Point<Type>& val )
+    {
+        m_p[0] = val;
+    }
+
+    const Point<Type>& getCentralPosition() const
+    {
+        return m_center;
+    }
+
+    virtual ~Triangle3D()
+    {
     }
 
 protected:
@@ -109,22 +140,45 @@ private:
             ++i )
         {
             auto cartIndex = static_cast<AxisCarthesian>( i );
-            m_min.setAxisValue( cartIndex, min( m_p[0], m_p[1], m_p[2], cartIndex ) );
-            m_max.setAxisValue( cartIndex, max( m_p[0], m_p[1], m_p[2], cartIndex ) );
+            m_min.setAxisValue( cartIndex, UTIL::min(
+                m_p[0].getValue( cartIndex ),
+                m_p[1].getValue( cartIndex ),
+                m_p[2].getValue( cartIndex ) ) );
+
+            m_max.setAxisValue( cartIndex, UTIL::max( 
+                m_p[0].getValue( cartIndex ),
+                m_p[1].getValue( cartIndex ),
+                m_p[2].getValue( cartIndex ) ) );
         }
 
         m_dimensions = m_max - m_min;
     }
 
-    Vector3D<Type> m_dimensions;
-    std::array<Vector3D<Type>, 3> m_p;
-    Vector3D<Type> m_min;
-    Vector3D<Type> m_max;
+    void calculateCenter()
+    {
+        auto x = ( m_p[0].x + m_p[1].x + m_p[2].x ) / m_three;
+        auto y = ( m_p[0].y + m_p[1].y + m_p[2].y ) / m_three;
+        auto z = ( m_p[0].z + m_p[1].z + m_p[2].z ) / m_three;
+        m_center.x = x;
+        m_center.y = y;
+        m_center.z = z;
+    }
+
+    Point<Type> m_dimensions;
+    std::array<Point<Type>, 3> m_p;
+    Type m_three = static_cast<Type>( 3 );
+    Point<Type> m_center;
+    Point<Type> m_min;
+    Point<Type> m_max;
 };
 
 using Triangle3DI = Triangle3D<int>;
 using Triangle3DD = Triangle3D<double>;
 using Triangle3DF = Triangle3D<float>;
 
-NAMESPACE_END( Math )
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
+
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

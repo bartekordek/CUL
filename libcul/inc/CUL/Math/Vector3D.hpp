@@ -13,7 +13,7 @@
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 
 NAMESPACE_BEGIN( CUL )
-NAMESPACE_BEGIN( Math )
+NAMESPACE_BEGIN( MATH )
 
 using ST = TriangleRectangularSimple2D;
 #if _MSC_VER
@@ -321,7 +321,7 @@ public:
 
     void setAxisValue( const Axis axis, const Type value )
     {
-        setAxisValue( Util::normal2Carthesian( axis ), value );
+        setAxisValue( UTIL::normal2Carthesian( axis ), value );
     }
 
     void setAxisValue( const AxisCarthesian axis, const Type value )
@@ -351,7 +351,7 @@ public:
 
     const Type getAxis( const Axis axis ) const
     {
-        return m_vals.at( Util::normal2Carthesian( axis ) );
+        return m_vals.at( UTIL::normal2Carthesian( axis ) );
     }
 
     template <class someOtherClass>
@@ -368,12 +368,12 @@ public:
 
     const Type min( const Vector3D<Type>& p2, const Axis axis ) const
     {
-        return Util::min( getAxis( axis ), p2.getAxis( axis ) );
+        return UTIL::min( getAxis( axis ), p2.getAxis( axis ) );
     }
 
     const Type max( const Vector3D<Type>& p2, const Axis axis ) const
     {
-        return Util::max( getAxis( axis ), p2.getAxis( axis ) );
+        return UTIL::max( getAxis( axis ), p2.getAxis( axis ) );
     }
 
 protected:
@@ -473,13 +473,13 @@ const Type min( const std::vector<Vector3D<Type>>& values, const Axis axis )
 template <typename Type>
 const Type max( const Vector3D<Type>& p1, const Vector3D<Type>& p2, const Axis axis )
 {
-    return Util::max( p1.getAxis( axis ), p2.getAxis( axis ) );
+    return UTIL::max( p1.getAxis( axis ), p2.getAxis( axis ) );
 }
 
 template <typename Type>
 const Type min( const Vector3D<Type>& p1, const Vector3D<Type>& p2, const Axis axis )
 {
-    return Util::min( p1.getAxis( axis ), p2.getAxis( axis ) );
+    return UTIL::min( p1.getAxis( axis ), p2.getAxis( axis ) );
 }
 
 template <typename Type>
@@ -492,7 +492,7 @@ const Type max(
     const Type v1 = p1.getAxis( axis );
     const Type v2 = p2.getAxis( axis );
     const Type v3 = p3.getAxis( axis );
-    return Util::max( v1, v2, v3 );
+    return UTIL::max( v1, v2, v3 );
 }
 
 template <typename Type>
@@ -505,7 +505,7 @@ const Type max(
     const Type v1 = p1.getAxis( axis );
     const Type v2 = p2.getAxis( axis );
     const Type v3 = p3.getAxis( axis );
-    return Util::max( v1, v2, v3 );
+    return UTIL::max( v1, v2, v3 );
 }
 
 template <typename Type>
@@ -519,7 +519,7 @@ const Type min(
     const Type v2 = p2.getAxis( axis );
     const Type v3 = p3.getAxis( axis );
 
-    return Util::min( v1, v2, v3 );
+    return UTIL::min( v1, v2, v3 );
 }
 
 template <typename Type>
@@ -533,8 +533,8 @@ const Type min(
     const Type v2 = p2.getAxis( axis );
     const Type v3 = p3.getAxis( axis );
 
-    return Util::min( v1, v2, v3 );
+    return UTIL::min( v1, v2, v3 );
 }
 
-NAMESPACE_END( Math )
+NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )
