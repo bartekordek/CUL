@@ -1,5 +1,5 @@
 #pragma once
-#include "CUL/GenericUtils/IArgumentsPair.hpp"
+#include "CUL/GenericUtils/IArgumentsList.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/UselessMacros.hpp"
 
@@ -10,7 +10,8 @@ class ConsoleUtilities
 {
 public:
     CULLib_API void printInputParameters();
-    CULLib_API IArgumentsPair& getDefaultArgs();
+    CULLib_API const IArgumentsList& getArgs() const;
+    CULLib_API const String& getFlagValue( const String& flagName ) const;
     CULLib_API void setArgs( const int argc, char** argv );
 
     CULLib_API static ConsoleUtilities& getInstance();
@@ -22,7 +23,7 @@ private:
     CULLib_API ConsoleUtilities();
     CULLib_API ~ConsoleUtilities();
 
-    std::unique_ptr<IArgumentsPair> m_args;
+    std::unique_ptr<IArgumentsList> m_args;
 };
 
 NAMESPACE_END( GUTILS )

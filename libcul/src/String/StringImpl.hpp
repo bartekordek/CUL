@@ -37,8 +37,9 @@ public:
     const bool operator==( const std::string& rhv ) const;
     const bool operator==( const StringImpl& rhv ) const;
 
-    operator const std::string() const;
     operator const std::string&( ) const;
+
+    const char at( const unsigned int index ) const;
 
     const bool operator<( const StringImpl& rhv ) const;
 

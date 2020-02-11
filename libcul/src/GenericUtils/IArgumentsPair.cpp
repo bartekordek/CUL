@@ -1,18 +1,18 @@
-#include "CUL/GenericUtils/IArgumentsPair.hpp"
+#include "CUL/GenericUtils/IArgumentsList.hpp"
 #include "ArgumentsPairConcrete.hpp"
 
 using namespace CUL;
 using namespace GUTILS;
 
-IArgumentsPair* IArgumentsPair::getConcrete()
+IArgumentsList* IArgumentsList::getConcrete()
 {
     return new ArgumentsPairConcrete();
 }
 
-IArgumentsPair::IArgumentsPair()
+IArgumentsList::IArgumentsList()
 {
 }
 
-IArgumentsPair::~IArgumentsPair()
+IArgumentsList::~IArgumentsList()
 {
 }

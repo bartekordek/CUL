@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/GenericUtils/IArgumentsPair.hpp"
+#include "CUL/GenericUtils/IArgumentsList.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/String.hpp"
 
@@ -16,7 +16,7 @@ enum class ArgsDefs: char
 #pragma warning( disable : 4820 )
 #endif
 class ArgumentsPairConcrete final:
-    public IArgumentsPair
+    public IArgumentsList
 {
 public:
     ArgumentsPairConcrete();
@@ -27,10 +27,13 @@ private:
     void setArgs( const int argc, char** argv ) override;
     int* getArgCount() override;
     char** getArgsVal() override;
+    const ArgumentsVec& getArgsValVec() const override;
     void createDummyArgs() override;
     void clearArgs();
+    const String& getFlagValue( const String& flagName ) const override;
 
-    std::vector<String> m_argumentsPtrs;
+    ArgumentsVec m_argumentsPtrs;
+    std::vector<NameValue> m_values;
     char* m_valBegining = nullptr;
     char** m_valBeginingTable = nullptr;
     int m_argc = 0;

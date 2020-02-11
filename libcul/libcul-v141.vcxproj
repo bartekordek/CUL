@@ -85,7 +85,7 @@
     <ClInclude Include="inc\CUL\GenericUtils\ConsoleUtilities.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\DisableErros.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\DumbPtr.hpp" />
-    <ClInclude Include="inc\CUL\GenericUtils\IArgumentsPair.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\IArgumentsList.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\ITask.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\LckPrim.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\SimpleAssert.hpp" />

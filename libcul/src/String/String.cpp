@@ -2,6 +2,8 @@
 #include "String/StringImpl.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 
+using namespace CUL;
+
 using String = CUL::String;
 using Length = CUL::Length;
 using CsStr = CUL::CsStr;
@@ -165,10 +167,11 @@ const bool String::operator==( const String& rhv ) const
     return *m_impl == *rhv.m_impl;
 }
 
-String::operator const std::string() const
+const char String::at( const unsigned int index ) const
 {
-    return m_impl->string();
+    return m_impl->at( index );
 }
+
 
 String::operator const std::string& () const
 {

@@ -1,7 +1,9 @@
 #include "ArgumentsPairConcrete.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
+#include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 
-using namespace CUL::GUTILS;
+using namespace CUL;
+using namespace GUTILS;
 
 ArgumentsPairConcrete::ArgumentsPairConcrete()
 {
@@ -19,15 +21,38 @@ ArgumentsPairConcrete::~ArgumentsPairConcrete()
 #pragma warning( push )
 #pragma warning( disable: 5045 )
 #endif
+
 void ArgumentsPairConcrete::setArgs( const int argc, char** argv )
 {
     clearArgs();
 
+    bool skip = false;
     for( int i = 0; i < argc; ++i )
     {
-        m_argumentsPtrs.push_back( argv[i] );
+        const String argument = argv[i];
+        m_argumentsPtrs.push_back( argument );
+        if( false == skip )
+        {
+            NameValue nameValue;
+            nameValue.name = argument;
+            if( argument.at( 0 ) == '-' )
+            {
+                skip = true;
+                if( ( i + 1  ) < argc )
+                {
+                    const String value = argv[i+1];
+                    nameValue.value = value;
+                }
+            }
+            m_values.push_back( nameValue );
+        }
+        else
+        {
+            skip = false;
+        }
     }
 }
+
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
@@ -46,6 +71,11 @@ char** CUL::GUTILS::ArgumentsPairConcrete::getArgsVal()
     m_valBegining = const_cast<char*>( m_argumentsPtrs.begin()->cStr() );
     m_valBeginingTable = &m_valBegining;
     return m_valBeginingTable;
+}
+
+const IArgumentsList::ArgumentsVec& ArgumentsPairConcrete::getArgsValVec() const
+{
+    return m_argumentsPtrs;
 }
 
 void ArgumentsPairConcrete::createDummyArgs()
@@ -72,4 +102,28 @@ void ArgumentsPairConcrete::clearArgs()
 {
     m_argumentsPtrs.clear();
     m_argumentsAreDummy = false;
+}
+
+const String& ArgumentsPairConcrete::getFlagValue(
+    const String& flagName ) const
+{
+    auto id = std::find_if( m_values.begin(), m_values.end(),
+        [flagName]( const NameValue& val )
+    {
+        if( val.name == flagName )
+        {
+            return true;
+        }
+        return false;
+    } );
+
+    if( id == m_values.end() )
+    {
+        static String nullValue;
+        return nullValue;
+    }
+    else
+    {
+        return id->value;
+    }
 }

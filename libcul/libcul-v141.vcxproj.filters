@@ -590,9 +590,6 @@
     <ClInclude Include="inc\CUL\GenericUtils\DumbPtr.hpp">
       <Filter>inc\CUL\GenericUtils</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\GenericUtils\IArgumentsPair.hpp">
-      <Filter>inc\CUL\GenericUtils</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\GenericUtils\ITask.hpp">
       <Filter>inc\CUL\GenericUtils</Filter>
     </ClInclude>
@@ -607,6 +604,9 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_typeinfo.hpp">
       <Filter>inc\CUL\STL_IMPORTS</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\GenericUtils\IArgumentsList.hpp">
+      <Filter>inc\CUL\GenericUtils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

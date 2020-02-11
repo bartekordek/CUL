@@ -164,14 +164,14 @@ const bool StringImpl::operator==( const StringImpl & rhv ) const
     return m_value == rhv.m_value;
 }
 
-StringImpl::operator const std::string() const
+StringImpl::operator const std::string&() const
 {
     return m_value;
 }
 
-StringImpl::operator const std::string&() const
+const char StringImpl::at( const unsigned int index ) const
 {
-    return m_value;
+    return m_value.at( index );
 }
 
 const bool StringImpl::operator<( const StringImpl & rhv ) const

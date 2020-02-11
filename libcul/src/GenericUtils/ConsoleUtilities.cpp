@@ -32,9 +32,14 @@ void ConsoleUtilities::printInputParameters()
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-IArgumentsPair& ConsoleUtilities::getDefaultArgs()
+const IArgumentsList& ConsoleUtilities::getArgs() const
 {
     return *m_args;
+}
+
+CULLib_API const String& ConsoleUtilities::getFlagValue( const String& flagName ) const
+{
+    return m_args->getFlagValue( flagName );
 }
 
 void ConsoleUtilities::setArgs( const int argc, char** argv )
