@@ -1,4 +1,3 @@
-ARCH := $(shell getconf LONG_BIT)
 ifeq ($(OS),Windows_NT)
 DYN_LIB_EXT := .dll
 BUILD_ROOT := Build-Cygwin
@@ -8,13 +7,11 @@ BUILD_ROOT := Build-Linux
 endif
 
 DIAG_FLAG := -fdiagnostics-color=always
-COMPILER := g++
-#COMPILER := clang++-6.0
-CC := $(COMPILER) $(DIAG_FLAG) -fPIC
-CC_LINK := $(COMPILER) $(DIAG_FLAG) -shared -fPIC
+COMPILER := g++ #clang++-6.0
 CPP_VERSION := --std=c++17
-COMPILER_FLAGS = -pedantic -Wall $(CPP_VERSION) -Werror
-TEST := -Wno-ignored-attributes
+CC := $(COMPILER) $(CPP_VERSION) $(DIAG_FLAG) \
+-fPIC -pedantic -Wall -Werror
+CC_LINK := $(COMPILER) $(DIAG_FLAG) -shared -fPIC
 
 DEBUG_FLAGS = -ggdb3
 RELEASE_FLAGS = -Ofast
@@ -87,6 +84,8 @@ OBJ_RELEASE_DIR := $(OUTPUT_DIR_DEBUG)/obj/release/
 OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
 OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
 
+DEP := $(patsubst %.cpp,%.d,$(CPP_FILES))
+
 DLL_NAME = $(PROJECT_NAME)$(DYN_LIB_EXT)
 
 debug: $(OUTPUT_DEBUG)
@@ -100,15 +99,24 @@ $(OUTPUT_RELEASE): $(OBJ_RELEASE_FILES)
 	@mkdir -p $(@D)
 	$(CC_LINK) -o $(OUTPUT_RELEASE) $(OBJ_RELEASE_FILES) $(IMP_LIBS) $(RELEASE_FLAGS) $(IMPORT_LIBS_RELEASE)
 
+#depend: .depend
+
 # Replace $< (first dependency) with $^ (all dependencies).
 
 $(OBJ_DEBUG_DIR)%.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(DEBUG_FLAGS) -c -o $@ $<
+	rm -f ./.depend
+	$(CC) $(HEADER_INC) -MM $^ > ./.depend;
+	$(CC) $(HEADER_INC) $(DEBUG_FLAGS) -c -o $@ $<
 
-$(OBJ_RELEASE_DIR)%.o: %.cpp %.hpp
+$(OBJ_RELEASE_DIR)%.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(CC) $(HEADER_INC) $(COMPILER_FLAGS) $(RELEASE_FLAGS) -c -o $@ $^
+	$(CC) $(HEADER_INC) $(RELEASE_FLAGS) -c -o $@ $^
 
 clean:
 	rm -rf $(OUTPUT_DIR)
+
+test:
+	@echo "DEP = $(DEP)"
+
+#include .depend
