@@ -28,7 +28,7 @@ public:
         cfloat rr,
         cfloat gg,
         cfloat bb,
-        cfloat aalpha );
+        cfloat aalpha = 0.0f );
 
     ColorS( const ColorE& color );
 
