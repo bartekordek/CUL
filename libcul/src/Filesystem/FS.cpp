@@ -1,11 +1,18 @@
 #include "CUL/Filesystem/FS.hpp"
+#include "CUL/Filesystem/Directory.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
 #include "Filesystem/FSUtils.hpp"
 
 using namespace CUL;
 using namespace FS;
 
+using FF = FileFactory;
+
 const bool isRegularFile( const char* path );
 const bool isRegularFile( const wchar_t* path );
+
+const bool isDirectory( const char* path );
+const bool isDirectory( const wchar_t* path );
 
 FSApi::FSApi()
 {
@@ -26,18 +33,27 @@ String FSApi::getCurrentDir()
     return full_path.string();
 }
 
-const FileList FSApi::getFilesUnderDirectory( const Path& directory )
+IFile* FSApi::getDirectory( const Path& directory )
 {
-    FileList result;
+    Directory* result = new Directory();
+    result->changePath( directory );
     FsPath directoryBf( directory.getPath().cStr() );
     using DI = DirectoryIterator;
     DI end;
     for( DI it( directoryBf ); it != end; ++it )
     {
-        if( isRegularFile( it->path().c_str() ) )
+        const auto pathIt = it->path();
+        const auto filePath = pathIt.string();
+        Path path = filePath;
+        if( isRegularFile( filePath.c_str() ) )
         {
-            String filePath = it->path().string();
-            result.insert( filePath );
+            auto child = FF::createFileFromPath( path );
+            result->addChild( child );
+        }
+        else if( isDirectory( filePath.c_str() ) )
+        {
+            auto nestedDirectory = getDirectory( path );
+            result->addChild( nestedDirectory );
         }
     }
 
@@ -59,5 +75,24 @@ const bool isRegularFile( const wchar_t* path )
     return std::experimental::filesystem::is_regular_file( path );
 #else
     return std::filesystem::is_regular_file( path );
+#endif
+}
+
+
+const bool isDirectory( const char* path )
+{
+#ifdef FILESYSTEM_IS_EXPERIMENTAL
+    return std::experimental::filesystem::is_directory( path );
+#else
+    return std::filesystem::is_directory( path );
+#endif
+}
+
+const bool isDirectory( const wchar_t* path )
+{
+#ifdef FILESYSTEM_IS_EXPERIMENTAL
+    return std::experimental::filesystem::is_directory( path );
+#else
+    return std::filesystem::is_directory( path );
 #endif
 }

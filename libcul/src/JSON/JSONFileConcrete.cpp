@@ -24,14 +24,9 @@ const FS::Path& JSONFileConcrete::getPath() const
     return m_fileContents->getPath();
 }
 
-CBool JSONFileConcrete::exists() const
+const FS::FileType JSONFileConcrete::getType() const
 {
-    return m_fileContents->exists();
-}
-
-CBool JSONFileConcrete::isBinary() const
-{
-    return m_fileContents->isBinary();
+    return FS::FileType::TXT;
 }
 
 void JSONFileConcrete::changePath( const FS::Path& newPath )
@@ -39,13 +34,13 @@ void JSONFileConcrete::changePath( const FS::Path& newPath )
     m_fileContents->changePath( newPath );
 }
 
-void JSONFileConcrete::reload( CBool keepLineEndingCharacter )
+void JSONFileConcrete::reload( Cbool keepLineEndingCharacter )
 {
     m_fileContents->reload( keepLineEndingCharacter );
     parse();
 }
 
-void JSONFileConcrete::load( CBool keepLineEndingCharacter )
+void JSONFileConcrete::load( Cbool keepLineEndingCharacter )
 {
     m_fileContents->load( keepLineEndingCharacter );
     parse();

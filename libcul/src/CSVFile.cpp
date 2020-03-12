@@ -75,14 +75,9 @@ void CSVFile::setVal( CsStr& val, Cunt row, Cunt col )
     m_rows[row][col] = val;
 }
 
-const bool CSVFile::exists() const
+const FileType CSVFile::getType() const
 {
-    return m_path.exists();
-}
-
-const bool CSVFile::isBinary() const
-{
-    return false;//TODO
+    return FileType::TXT;
 }
 
 void CSVFile::setDelimeter( CsStr& delimeter )
@@ -90,13 +85,13 @@ void CSVFile::setDelimeter( CsStr& delimeter )
     m_delimeter = delimeter;
 }
 
-void CSVFile::reload( CBool keepLineEndingCharacter )
+void CSVFile::reload( Cbool keepLineEndingCharacter )
 {
     unload();
     load( keepLineEndingCharacter );
 }
 
-void CSVFile::load( CBool keepLineEndingCharacter )
+void CSVFile::load( Cbool keepLineEndingCharacter )
 {
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;

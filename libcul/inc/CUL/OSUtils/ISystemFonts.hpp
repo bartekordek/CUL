@@ -1,13 +1,13 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
-#include "CUL/UselessMacros.hpp"
 #include "CUL/Filesystem/FS.hpp"
+#include "CUL/STL_IMPORTS/STD_set.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( OSUtils )
 
-using FontFilesPaths = FS::FileList;
+using FontFilesPaths = std::set<FS::Path>;
 
 class CULLib_API ISystemFonts
 {

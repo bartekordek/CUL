@@ -6,8 +6,8 @@
 #pragma warning( disable : 4251)
 #endif
 NAMESPACE_BEGIN( CUL )
-using CBool = const bool;
 NAMESPACE_BEGIN( FS )
+
 class CULLib_API Path
 {
 public:
@@ -16,7 +16,6 @@ public:
     Path( CsStr& path );
     Path( const std::string& path );
     Path( const char* r );
-    virtual ~Path();
 
     Path& operator=( CsStr& r );
     Path& operator=( const char* r );
@@ -41,6 +40,8 @@ public:
     const bool exists() const;
 
     static CsStr& getDirSeparator();
+
+    virtual ~Path();
 
 protected:
 private:

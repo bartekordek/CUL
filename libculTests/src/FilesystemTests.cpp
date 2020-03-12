@@ -52,12 +52,7 @@ TEST_F( FilesystemTests, FileNotExist )
 
 TEST_F( FilesystemTests, listFilesCount )
 {
-    auto fl = CUL::FS::FSApi::getFilesUnderDirectory( "FSTEST" );
-    ASSERT_EQ( 3, fl.size() );
-}
-
-TEST_F( FilesystemTests, listFileName )
-{
-    auto fl = CUL::FS::FSApi::getFilesUnderDirectory( "FSTEST" );
-    ASSERT_EQ( "file1", fl.begin()->getBaseName() );
+    auto directory = CUL::FS::FSApi::getDirectory( "FSTEST" );
+    ASSERT_EQ( 4, directory->getChildList().size() );
+    delete directory;
 }

@@ -22,12 +22,35 @@ public:
 
 protected:
 private:
+    const FS::Path& getPath() const override;
+    void changePath( const FS::Path& newPath ) override;
+    void reload( Cbool keepLineEndingCharacter = false ) override;
+    void load( Cbool keepLineEndingCharacter = false ) override;
+    void unload() override;
+
+    CsStr& firstLine() const override;
+    CsStr& lastLine() const override;
+
+    CsStr& getAsOneString() const override;
+    const char** getContent() const override;
+
+    Cunt getLinesCount() const override;
+    const FS::FileType getType() const override;
+
+    CUL::FS::Path m_path;
+    CUL::String m_value;
     MATH::Vector3Du m_size;
     RawDataPtr m_data = nullptr;
     unsigned int m_fileId = 0;
     ILuint m_iluId = 0;
 
     static bool s_ilInitialized;
+
+    // Deleted:
+    RawImageConcrete( const RawImageConcrete& arg ) = delete;
+    RawImageConcrete( RawImageConcrete&& arg ) = delete;
+    RawImageConcrete& operator=( const RawImageConcrete& arg ) = delete;
+    RawImageConcrete& operator=( RawImageConcrete&& arg ) = delete;
 };
 
 NAMESPACE_END( Graphics )

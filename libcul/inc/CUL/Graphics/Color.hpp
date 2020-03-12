@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
-#include "CUL/UselessMacros.hpp"
+#include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -16,10 +16,18 @@ enum class ColorE: short
     BLUE
 };
 
+enum class ColorComponent: short
+{
+    RED = 0,
+    GREEN,
+    BLUE,
+    ALPHA
+};
+
 using cfloat = const float;
 using cuint8_t = const uint8_t;
 
-class CULLib_API ColorS
+class CULLib_API ColorS final
 {
 public:
     ColorS();
@@ -31,8 +39,6 @@ public:
         cfloat aalpha = 0.0f );
 
     ColorS( const ColorE& color );
-
-    virtual ~ColorS();
 
     ColorS& operator=( const ColorE color );
 
@@ -56,12 +62,20 @@ public:
     void setBCU( cuint8_t b );
     void setAlphaCU( cuint8_t alpha );
 
+    ~ColorS();
+
 protected:
 private:
-    float m_r = 0.0f;
-    float m_g = 0.0f;
-    float m_b = 0.0f;
-    float m_alpha = 0.0f;
+    void setFromEnum( const ColorE& color );
+    void setFloat( const float red, const float green, const float blue, const float alpha );
+    void setRed( const float val );
+    void setGreen( const float val );
+    void setBlue( const float val );
+    void setAlpha( const float val );
+
+    std::array<float, 4 > m_colorF = { 0.0f, 0.0f, 0.0f, 0.0f };
+    std::array<unsigned char, 4 > m_colorUC = { 0, 0, 0, 0 };
+
 };
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )

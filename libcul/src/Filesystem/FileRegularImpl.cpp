@@ -9,6 +9,7 @@ using CsStr = const CUL::String;
 
 FileRegularImpl::FileRegularImpl()
 {
+    std::cout << "FileRegularImpl::FileRegularImpl() " << this << "\n";
 }
 
 void FileRegularImpl::changePath( const Path& newPath )
@@ -16,23 +17,9 @@ void FileRegularImpl::changePath( const Path& newPath )
     m_path = newPath;
 }
 
-FileRegularImpl::~FileRegularImpl()
-{
-}
-
 const Path& FileRegularImpl::getPath() const
 {
     return m_path;
-}
-
-const bool FileRegularImpl::exists() const
-{
-    return m_path.exists();
-}
-
-const bool FileRegularImpl::isBinary() const
-{
-    return true;//TODO: Implement
 }
 
 void FileRegularImpl::reload( Cbool keepLineEndingCharacter )
@@ -106,6 +93,11 @@ void FileRegularImpl::cacheFile()
     }
 }
 
+const FileType FileRegularImpl::getType() const
+{
+    return FileType::TXT;
+}
+
 Cunt FileRegularImpl::getLinesCount() const
 {
     return static_cast<Cunt>( rows.size() );
@@ -114,4 +106,10 @@ Cunt FileRegularImpl::getLinesCount() const
 const char** FileRegularImpl::getContent() const
 {
     return const_cast<const char**>( &m_rowsAsChars[0] );
+}
+
+
+FileRegularImpl::~FileRegularImpl()
+{
+    std::cout << "FileRegularImpl::~FileRegularImpl() " << this << "\n";
 }

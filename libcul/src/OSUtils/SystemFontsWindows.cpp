@@ -35,14 +35,17 @@ void SystemFontsWindows::updateFontFilesList()
     getWindowsPath();
     for( const auto& dir : m_defaultDirsWithFonts )
     {
-        const auto files = FS::FSApi::getFilesUnderDirectory( dir );
+        const auto directory = FS::FSApi::getDirectory( dir );
+        const auto files = directory->getChildList();
         for( const auto& file : files )
         {
-            if( file.getExtension() == ".ttf" )
+            const FS::Path& path = file->getPath();
+            if( path.getExtension() == ".ttf" )
             {
-                m_fontFilesList.insert( file );
+                m_fontFilesList.insert( path );
             }
         }
+        delete directory;
     }
 }
 

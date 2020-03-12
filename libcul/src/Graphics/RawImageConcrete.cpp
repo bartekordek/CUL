@@ -12,15 +12,6 @@ RawImageConcrete::RawImageConcrete()
 {
 }
 
-RawImageConcrete::~RawImageConcrete()
-{
-    if( m_data )
-    {
-        ilDeleteImages( 1, &m_iluId );
-        m_data = nullptr;
-    }
-}
-
 void RawImageConcrete::loadFromFile( CUL::CsStr& path )
 {
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "RawImageConcrete::loadFromFile" );
@@ -67,6 +58,7 @@ void RawImageConcrete::loadFromFile( CUL::CsStr& path )
     m_size.setXYZ( imgWidth, imgHeight, 0 );
     auto dataPtr = ilGetData();
     m_data = static_cast<RawDataPtr>( dataPtr );
+    m_path = path;
 }
 
 Cunt RawImageConcrete::getID() const
@@ -82,4 +74,71 @@ const MATH::Vector3Du& RawImageConcrete::getSize() const
 RawDataPtr RawImageConcrete::getData() const
 {
     return m_data;
+}
+
+const FS::Path& RawImageConcrete::getPath() const
+{
+    return m_path;
+}
+
+void RawImageConcrete::changePath( const FS::Path& )
+{
+    // TODO.
+}
+
+void RawImageConcrete::reload( Cbool )
+{
+    // TODO.
+}
+
+void RawImageConcrete::load( Cbool )
+{
+    // TODO.
+}
+
+void RawImageConcrete::unload()
+{
+    // TODO.
+}
+
+CsStr& RawImageConcrete::firstLine() const
+{
+    // TODO.
+    return m_value;
+}
+
+CsStr& RawImageConcrete::lastLine() const
+{
+    // TODO.
+    return m_value;
+}
+
+CsStr& RawImageConcrete::getAsOneString() const
+{
+    // TODO.
+    return m_value;
+}
+
+const char** RawImageConcrete::getContent() const
+{
+    return nullptr;
+}
+
+Cunt RawImageConcrete::getLinesCount() const
+{
+    return 0;
+}
+
+const FS::FileType RawImageConcrete::getType() const
+{
+    return FS::FileType::BINARY;
+}
+
+RawImageConcrete::~RawImageConcrete()
+{
+    if( m_data )
+    {
+        ilDeleteImages( 1, &m_iluId );
+        m_data = nullptr;
+    }
 }

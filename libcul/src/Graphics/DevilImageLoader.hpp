@@ -12,11 +12,12 @@ class DevilImageLoader final:
 {
 public:
     DevilImageLoader();
-    ~DevilImageLoader();
 
     IImage* loadImage( const Path& path ) override;
     void deleteImage( const Path& path ) override;
     IImage* findImage( const Path& path ) override;
+
+    ~DevilImageLoader();
 
 protected:
 

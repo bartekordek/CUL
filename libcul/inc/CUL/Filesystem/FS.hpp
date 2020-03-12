@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/Filesystem/Path.hpp"
+#include "CUL/Filesystem/IFile.hpp"
 #include "CUL/String.hpp"
 #include "CUL/UselessMacros.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
@@ -8,7 +8,6 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
 
-using FileList = std::set<Path>;
 
 class CULLib_API FSApi
 {
@@ -16,7 +15,7 @@ public:
     FSApi();
     virtual ~FSApi();
     static String getCurrentDir();
-    static const FileList getFilesUnderDirectory( const Path& directory );
+    static IFile* getDirectory( const Path& directory );
 protected:
 private:
 };

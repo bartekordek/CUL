@@ -1,5 +1,6 @@
 #include "Graphics/DevilImageLoader.hpp"
 #include "Graphics/ImageDevil.hpp"
+#include "CUL/Graphics/Color.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/String.hpp"
 
@@ -12,12 +13,18 @@ DevilImageLoader::DevilImageLoader()
 {
     ilInit();
     iluInit();
-    ilClearColour( 255, 255, 255, 000 );
+    ColorS clearColor( ColorE::WHITE );
+    ilClearColour(
+        clearColor.getRUI(),
+        clearColor.getGUI(),
+        clearColor.getBUI(),
+        clearColor.getAUI() );
     checkForIluErrors();
 }
 
 DevilImageLoader::~DevilImageLoader()
 {
+    ilShutDown();
 }
 
 IImage* DevilImageLoader::loadImage( const Path& path )

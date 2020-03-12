@@ -25,10 +25,9 @@ protected:
 private:
     void changePath( const Path& newPath ) override;
     const Path& getPath() const override;
-    CBool exists() const override;
-    CBool isBinary() const override;
-    void reload( CBool keepLineEndingCharacter = false ) override;
-    void load( CBool keepLineEndingCharacter = false ) override;
+
+    void reload( Cbool keepLineEndingCharacter = false ) override;
+    void load( Cbool keepLineEndingCharacter = false ) override;
     void unload() override;
     CsStr& firstLine() const override;
     CsStr& lastLine() const override;
@@ -36,6 +35,7 @@ private:
     const char** getContent() const override;
     Cunt getLinesCount() const override;
     void cacheFile();
+    const FileType getType() const override;
 
     Path m_path;
     std::vector<String> rows;

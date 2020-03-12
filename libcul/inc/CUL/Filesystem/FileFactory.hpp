@@ -2,6 +2,7 @@
 
 #include "CUL/UselessMacros.hpp"
 #include "CUL/Filesystem/IFile.hpp"
+#include "CUL/Filesystem/Directory.hpp"
 #include "CUL/ICSVFile.hpp"
 #include "CUL/JSON/IJSONFile.hpp"
 #include "CUL/Graphics/IRawImage.hpp"
@@ -22,6 +23,7 @@ public:
     static JSON::IJSONFile* createJSONFileRawPtr();
     static Graphics::IRawImage* createRawImageRawPtr();
 
+    static IFile* createFileFromPath( const Path& path );
     static IFile* createRegularFileRawPtr( const Path& path );
     static ICSVFile* createCSVFileRawPtr( const Path& path );
     static JSON::IJSONFile* createJSONFileRawPtr( const Path& path );

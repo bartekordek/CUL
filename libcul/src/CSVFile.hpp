@@ -36,11 +36,10 @@ public:
     CsStr& getVal( Cunt row, Cunt col ) const override;
     void setVal( CsStr& val, Cunt row, Cunt col ) override;
 
-    CBool exists() const override;
-    CBool isBinary() const override;
+    const FileType getType() const override;
 
-    void reload( CBool keepLineEndingCharacter = false ) override;
-    void load( CBool keepLineEndingCharacter = false ) override;
+    void reload( Cbool keepLineEndingCharacter = false ) override;
+    void load( Cbool keepLineEndingCharacter = false ) override;
     void unload() override;
 
     CsStr& firstLine() const override;

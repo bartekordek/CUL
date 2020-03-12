@@ -27,13 +27,12 @@ private:
         const JValue& parentValue );
     const FS::Path& getPath() const override;
 
-    CBool exists() const override;
-    CBool isBinary() const override;
+    const FS::FileType getType() const override;
 
     void changePath( const FS::Path& newPath ) override;
 
-    void reload( CBool keepLineEndingCharacter = false ) override;
-    void load( CBool keepLineEndingCharacter = false ) override;
+    void reload( Cbool keepLineEndingCharacter = false ) override;
+    void load( Cbool keepLineEndingCharacter = false ) override;
     void unload() override;
 
     CsStr& firstLine() const override;

@@ -10,6 +10,32 @@ using FileFactory = CUL::FS::FileFactory;
 using ICSVFile = CUL::FS::ICSVFile;
 using IJSONFile = CUL::JSON::IJSONFile;
 
+IFile* FileFactory::createFileFromPath( const Path& path )
+{
+    auto ext = path.getExtension();
+    ext.toLower();
+    if( ext == ".csv" )
+    {
+        return createJSONFileRawPtr( path );
+    }
+    else if( ext == ".json" )
+    {
+        return createJSONFileRawPtr( path );
+    }
+    else if(
+        ext == ".bmp" ||
+        ext == ".png" ||
+        ext == ".jpg" || 
+        ext == ".jpeg" )
+    {
+        return createRawImageRawPtr( path );
+    }
+    else
+    {
+        return createRegularFileRawPtr( path );
+    }
+}
+
 IFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
     auto file = createRegularFileRawPtr();

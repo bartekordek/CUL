@@ -3,7 +3,7 @@
 #include "CUL/CUL.hpp"
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
-#include "CUL/UselessMacros.hpp"
+#include "CUL/STL_IMPORTS/STD_set.hpp"
 
 using Cunt = const unsigned int;
 using Cbool = const bool;
@@ -11,20 +11,29 @@ using Cbool = const bool;
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
 
+enum class FileType: short
+{
+    NONE = 0,
+    TXT,
+    BINARY,
+    DIRECTORY,
+    INVALID
+};
+
+class CULLib_API IFile;
+
+using FileList = std::set<IFile*>;
+
 class CULLib_API IFile
 {
 public:
     IFile();
 
     virtual const Path& getPath() const = 0;
-
-    virtual CBool exists() const = 0;
-    virtual CBool isBinary() const = 0;
-
+    Cbool exists() const;
     virtual void changePath( const Path& newPath ) = 0;
-
-    virtual void reload( CBool keepLineEndingCharacter = false ) = 0;
-    virtual void load( CBool keepLineEndingCharacter = false ) = 0;
+    virtual void reload( Cbool keepLineEndingCharacter = false ) = 0;
+    virtual void load( Cbool keepLineEndingCharacter = false ) = 0;
     virtual void unload() = 0;
 
     virtual CsStr& firstLine() const = 0;
@@ -35,10 +44,18 @@ public:
 
     virtual Cunt getLinesCount() const = 0;
 
+    virtual const FileType getType() const = 0;
+    const FileList& getChildList() const;
+    void addChild( IFile* file );
+
+    const bool operator==( const IFile* arg ) const;
+    const bool operator<( const IFile* arg ) const;
+
     virtual ~IFile();
 
 protected:
 private:
+    FileList m_fileList;
 
 private: // Deleted:
     IFile( CsStr& fPath ) = delete;
