@@ -85,39 +85,29 @@ OBJ_RELEASE_DIR := $(OUTPUT_DIR_DEBUG)/obj/release/
 OBJ_DEBUG_FILES := $(addprefix $(OBJ_DEBUG_DIR),$(CPP_FILES:.cpp=.o))
 OBJ_RELEASE_FILES := $(addprefix $(OBJ_RELEASE_DIR),$(CPP_FILES:.cpp=.o))
 
-DEP := $(patsubst %.cpp,%.d,$(CPP_FILES))
+DEP_DEBUG := $(patsubst %.o,%.d,$(OBJ_DEBUG_FILES))
+DEP_RELEASE := $(patsubst %.o,%.d,$(OBJ_RELEASE_FILES))
 
-DLL_NAME = $(PROJECT_NAME)$(DYN_LIB_EXT)
+PROG_DEBUG := $(patsubst %.cpp,%,$(CPP_FILES))
 
-debug: $(OUTPUT_DEBUG)
-release: $(OUTPUT_RELEASE)
+debug: $(DEP_DEBUG)
+	echo "debug: Compiling $@"
+	$(MAKE) $(PROG_DEBUG)
 
-$(OUTPUT_DEBUG): $(OBJ_DEBUG_FILES)
-	@mkdir -p $(@D)
-	$(CC_LINK) -o $(OUTPUT_DEBUG) $(OBJ_DEBUG_FILES) $(IMP_LIBS) $(IMPORT_LIBS_DEBUG)
-
-$(OUTPUT_RELEASE): $(OBJ_RELEASE_FILES)
-	@mkdir -p $(@D)
-	$(CC_LINK) -o $(OUTPUT_RELEASE) $(OBJ_RELEASE_FILES) $(IMP_LIBS) $(RELEASE_FLAGS) $(IMPORT_LIBS_RELEASE)
-
-#depend: .depend
-
-# Replace $< (first dependency) with $^ (all dependencies).
-
-$(OBJ_DEBUG_DIR)%.o: %.cpp
+%.d:
+	echo "Creating dependency for: $@"
 	@mkdir -p $(dir $@)
-	rm -f ./.depend
-	#$(CC) $(CC_FLAGS) $(HEADER_INC) -MM $^ > ./.depend;
-	$(CC) $(CC_FLAGS) $(HEADER_INC) $(DEBUG_FLAGS) -c -o $@ $<
+	$(CC) $(CC_FLAGS) `echo "$@" | sed 's/.*src/src/' | sed 's/\.d/\.cpp/'` -MM  $(HEADER_INC) $< > $@
 
-$(OBJ_RELEASE_DIR)%.o: %.cpp
-	@mkdir -p $(dir $@)
-	$(CC) $(CC_FLAGS) $(HEADER_INC) $(RELEASE_FLAGS) -c -o $@ $^
-
-clean:
-	rm -rf $(OUTPUT_DIR)
+%: %.d
+	echo "Compiling $@"
 
 test:
-	@echo "DEP = $(DEP)"
+	echo "DEP_DEBUG = $(DEP_DEBUG)"
+	echo "\n\n\n\n"
+	echo "OBJ_DEBUG_FILES = $(OBJ_DEBUG_FILES)"
+	echo "\n\n\n\n"
+	echo "PROG_DEBUG = $(PROG_DEBUG)"
 
-#include .depend
+clean:
+	rm -rfv $(OUTPUT_DIR)
