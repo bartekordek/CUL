@@ -33,9 +33,9 @@ private:
     CsStr& lastLine() const override;
     CsStr& getAsOneString() const override;
     const char** getContent() const override;
-    Cunt getLinesCount() const override;
+    unsigned getLinesCount() const override;
     void cacheFile();
-    const FileType getType() const override;
+    FileType getType() const override;
 
     Path m_path;
     std::vector<String> rows;

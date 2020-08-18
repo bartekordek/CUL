@@ -61,7 +61,7 @@ void RawImageConcrete::loadFromFile( CUL::CsStr& path )
     m_path = path;
 }
 
-Cunt RawImageConcrete::getID() const
+unsigned RawImageConcrete::getID() const
 {
     return m_fileId;
 }
@@ -124,12 +124,12 @@ const char** RawImageConcrete::getContent() const
     return nullptr;
 }
 
-Cunt RawImageConcrete::getLinesCount() const
+unsigned RawImageConcrete::getLinesCount() const
 {
     return 0;
 }
 
-const FS::FileType RawImageConcrete::getType() const
+FS::FileType RawImageConcrete::getType() const
 {
     return FS::FileType::BINARY;
 }

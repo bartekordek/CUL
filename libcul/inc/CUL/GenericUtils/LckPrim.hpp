@@ -82,13 +82,13 @@ public:
         return copy;
     }
 
-    const bool operator==( const LckPrim<Type>& val )
+    bool operator==( const LckPrim<Type>& val )
     {
         std::lock_guard<std::mutex> lock( mtx );
         return value == val.value;
     }
 
-    const bool operator==( const Type& val )
+    bool operator==( const Type& val )
     {
         std::lock_guard<std::mutex> lock( mtx );
         return value == val;
@@ -123,7 +123,7 @@ private:
 };
 
 template <typename Type>
-const bool operator==( const Type& r, LckPrim<Type>&l )
+bool operator==( const Type& r, LckPrim<Type>&l )
 {
     return l == r;
 }

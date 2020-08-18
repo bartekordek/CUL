@@ -149,17 +149,17 @@ StringImpl& StringImpl::operator+=( const StringImpl& rhv )
     return *this;
 }
 
-const bool StringImpl::operator==( const char * rhv ) const
+bool StringImpl::operator==( const char * rhv ) const
 {
     return m_value == rhv;
 }
 
-const bool StringImpl::operator==( const std::string & rhv ) const
+bool StringImpl::operator==( const std::string & rhv ) const
 {
     return m_value == rhv;
 }
 
-const bool StringImpl::operator==( const StringImpl & rhv ) const
+bool StringImpl::operator==( const StringImpl & rhv ) const
 {
     return m_value == rhv.m_value;
 }
@@ -169,12 +169,12 @@ StringImpl::operator const std::string&() const
     return m_value;
 }
 
-const char StringImpl::at( const unsigned int index ) const
+char StringImpl::at( const unsigned int index ) const
 {
     return m_value.at( index );
 }
 
-const bool StringImpl::operator<( const StringImpl & rhv ) const
+bool StringImpl::operator<( const StringImpl & rhv ) const
 {
     return m_value < rhv.m_value;
 }
@@ -189,12 +189,12 @@ void StringImpl::toUpper()
     String::toUpperS( m_value );
 }
 
-const bool StringImpl::contains( const String& inputString ) const
+bool StringImpl::contains( const String& inputString ) const
 {
     return m_value.find( inputString.string() ) != std::string::npos;
 }
 
-const bool StringImpl::contains( const char* inputString ) const
+bool StringImpl::contains( const char* inputString ) const
 {
     return m_value.find( inputString ) != std::string::npos;
 }
@@ -224,12 +224,12 @@ const char* StringImpl::cStr() const
     return m_value.c_str();
 }
 
-const Length StringImpl::length() const
+Length StringImpl::length() const
 {
     return static_cast< Length >( m_value.length() );
 }
 
-const Length StringImpl::capacity() const
+Length StringImpl::capacity() const
 {
     return static_cast< Length >( m_value.capacity() );
 }
@@ -239,7 +239,7 @@ void StringImpl::clear()
     m_value.clear();
 }
 
-const bool StringImpl::empty() const
+bool StringImpl::empty() const
 {
     return m_value.empty();
 }

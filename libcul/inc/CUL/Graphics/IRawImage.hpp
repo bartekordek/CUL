@@ -17,7 +17,7 @@ public:
     {
     }
 
-    virtual Cunt getID() const = 0;
+    virtual unsigned getID() const = 0;
     virtual const MATH::Vector3Du& getSize() const = 0;
     virtual RawDataPtr getData() const = 0;
 

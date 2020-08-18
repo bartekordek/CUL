@@ -28,15 +28,15 @@ public:
     void setValue( Cint64 value );
     void setValue( const String& value );
 
-    const ElementType getType() const;
+    ElementType getType() const;
     const INode* getObject() const;
     const ChildrenNodes& getArray() const;
     ChildrenNodes& getArray();
-    Cbool getBool() const;
-    Cdouble getDouble() const;
-    Cfloat getFloat() const;
-    Cint getInt() const;
-    Cint64 getInt64() const;
+    bool getBool() const;
+    double getDouble() const;
+    float getFloat() const;
+    int getInt() const;
+    unsigned int long getInt64() const;
     const String& getString() const;
 
     ~INodeImpl();

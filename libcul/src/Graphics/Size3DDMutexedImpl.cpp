@@ -64,19 +64,19 @@ void Size3DDMutexedImpl::setWidthHeightDepth( CDbl width, CDbl height, CDbl dept
     this->m_depth = depth;
 }
 
-CDbl Size3DDMutexedImpl::getWidth() const
+double Size3DDMutexedImpl::getWidth() const
 {
     std::lock_guard<std::mutex> lock( this->m_valMtx );
     return m_width;
 }
 
-CDbl Size3DDMutexedImpl::getHeight() const
+double Size3DDMutexedImpl::getHeight() const
 {
     std::lock_guard<std::mutex> lock( this->m_valMtx );
     return m_height;
 }
 
-CDbl Size3DDMutexedImpl::getDepth() const
+double Size3DDMutexedImpl::getDepth() const
 {
     std::lock_guard<std::mutex> lock( this->m_valMtx );
     return m_depth;

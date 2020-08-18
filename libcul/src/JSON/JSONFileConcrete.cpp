@@ -24,7 +24,7 @@ const FS::Path& JSONFileConcrete::getPath() const
     return m_fileContents->getPath();
 }
 
-const FS::FileType JSONFileConcrete::getType() const
+FS::FileType JSONFileConcrete::getType() const
 {
     return FS::FileType::TXT;
 }
@@ -73,7 +73,7 @@ const char** JSONFileConcrete::getContent() const
     return m_fileContents->getContent();
 }
 
-Cunt JSONFileConcrete::getLinesCount() const
+unsigned JSONFileConcrete::getLinesCount() const
 {
     return m_fileContents->getLinesCount();
 }

@@ -157,12 +157,12 @@ public:
         }
     }
 
-    const bool operator!=( Vector3D& r ) const
+    bool operator!=( Vector3D& r ) const
     {
         return !operator==( r );
     }
 
-    const bool operator==( const Vector3D& ivector ) const
+    bool operator==( const Vector3D& ivector ) const
     {
         if(
             Epsilon<Type>::equals( getX(), ivector.getX() ) &&

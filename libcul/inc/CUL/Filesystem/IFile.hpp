@@ -30,7 +30,7 @@ public:
     IFile();
 
     virtual const Path& getPath() const = 0;
-    Cbool exists() const;
+    bool exists() const;
     virtual void changePath( const Path& newPath ) = 0;
     virtual void reload( Cbool keepLineEndingCharacter = false ) = 0;
     virtual void load( Cbool keepLineEndingCharacter = false ) = 0;
@@ -42,14 +42,14 @@ public:
     virtual CsStr& getAsOneString() const = 0;
     virtual const char** getContent() const = 0;
 
-    virtual Cunt getLinesCount() const = 0;
+    virtual unsigned getLinesCount() const = 0;
 
-    virtual const FileType getType() const = 0;
+    virtual FileType getType() const = 0;
     const FileList& getChildList() const;
     void addChild( IFile* file );
 
-    const bool operator==( const IFile* arg ) const;
-    const bool operator<( const IFile* arg ) const;
+    bool operator==( const IFile* arg ) const;
+    bool operator<( const IFile* arg ) const;
 
     virtual ~IFile();
 

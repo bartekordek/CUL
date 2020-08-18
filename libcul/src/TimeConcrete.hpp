@@ -19,11 +19,11 @@ public:
 
     void setTimeMs( const double ms ) override;
     void setTimeUs( const double us ) override;
-    const double getMs() const override;
-    const double getS() const override;
-    const double getM() const override;
-    const double getH() const override;
-    const double getUs() const override;
+    double getMs() const override;
+    double getS() const override;
+    double getM() const override;
+    double getH() const override;
+    double getUs() const override;
 
 protected:
 private:

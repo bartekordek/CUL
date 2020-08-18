@@ -65,36 +65,36 @@ void TriangleRectangularSimple2D::setHypotenuse( const double value )
     calculateAngle();
 }
 
-const double TriangleRectangularSimple2D::getOpposite()
+double TriangleRectangularSimple2D::getOpposite()
 {
     return m_opposite;
 }
 
-const double TriangleRectangularSimple2D::getAdjacent()
+double TriangleRectangularSimple2D::getAdjacent()
 {
     return m_adjacent;
 }
 
-const double TriangleRectangularSimple2D::getHypotenuse()
+double TriangleRectangularSimple2D::getHypotenuse()
 {
     return m_hypotenuse;
 }
 
-const double TriangleRectangularSimple2D::calculateOpposite()
+double TriangleRectangularSimple2D::calculateOpposite()
 {
     const auto sq = m_hypotenuse * m_hypotenuse - m_adjacent * m_adjacent;
     m_opposite = std::sqrt( sq );
     return m_opposite;
 }
 
-const double TriangleRectangularSimple2D::calculateAdjacent()
+double TriangleRectangularSimple2D::calculateAdjacent()
 {
     const auto sq = m_hypotenuse * m_hypotenuse - m_opposite * m_opposite;
     m_adjacent = std::sqrt( sq );
     return m_adjacent;
 }
 
-const double TriangleRectangularSimple2D::calculateHypotenuse()
+double TriangleRectangularSimple2D::calculateHypotenuse()
 {
     const auto sq = m_opposite * m_opposite + m_adjacent * m_adjacent;
     m_hypotenuse = std::sqrt( sq );

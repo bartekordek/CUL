@@ -140,7 +140,7 @@ CsStr& Path::getDir() const
     return m_dir;
 }
 
-const bool Path::operator==( const Path& rhv ) const
+bool Path::operator==( const Path& rhv ) const
 {
     return m_fullPath == rhv.m_fullPath;
 }
@@ -176,13 +176,17 @@ void Path::normalizePath( String& path )
     path.replace( "\\", "/" );
 }
 
-const bool Path::exists() const
+bool Path::exists() const
 {
+#if defined( _MSC_VER ) && _MSC_VER < 1920
     const bool result = std::experimental::filesystem::is_regular_file( m_fullPath.cStr() );
+#else
+    const bool result = std::filesystem::is_regular_file(m_fullPath.cStr());
+#endif
     return result;
 }
 
-const bool CULLib_API CUL::FS::operator<( const Path & lhv, const Path & rhv )
+bool CULLib_API CUL::FS::operator<( const Path & lhv, const Path & rhv )
 {
     return lhv.getPath() < rhv.getPath();
 }

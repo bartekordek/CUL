@@ -4,10 +4,13 @@
 using namespace CUL;
 using namespace FS;
 
-CSVFile::CSVFile()
+CSVFile::CSVFile():
+    ICSVFile()
 {
 }
+
 CSVFile::CSVFile( const CSVFile & rhv ):
+    ICSVFile(),
     m_delimeter( rhv.m_delimeter ),
     m_path( rhv.m_path ),
     m_rows( rhv.m_rows ),
@@ -50,19 +53,20 @@ void CSVFile::changePath( const Path& newPath )
     reload();
 }
 
-const bool CSVFile::checkIfFileIsAllRight() const
+bool CSVFile::checkIfFileIsAllRight() const
 {
     return true;//TODO
 }
 
-Cunt CSVFile::rowsCount() const
+unsigned CSVFile::rowsCount() const
 {
-    return static_cast<Cunt>( m_rows.size() );
+    return static_cast<unsigned>( m_rows.size() );
 }
 
-Cunt CSVFile::colsCount() const
+unsigned CSVFile::colsCount() const
 {
-    return static_cast<Cunt>( m_rows[0].size() );
+    //TODO: what if there are no rows?
+    return static_cast<unsigned>( m_rows[0].size() );
 }
 
 CsStr& CSVFile::getVal( Cunt row, Cunt col ) const
@@ -75,7 +79,7 @@ void CSVFile::setVal( CsStr& val, Cunt row, Cunt col )
     m_rows[row][col] = val;
 }
 
-const FileType CSVFile::getType() const
+FileType CSVFile::getType() const
 {
     return FileType::TXT;
 }
@@ -194,9 +198,9 @@ void CSVFile::cacheFile()
     }
 }
 
-Cunt CSVFile::getLinesCount() const
+unsigned CSVFile::getLinesCount() const
 {
-    return static_cast<Cunt>( m_rows.size() );
+    return static_cast<unsigned>( m_rows.size() );
 }
 
 void CSVFile::fileContainsQuotationMarks( const bool containsQuotationMarks )

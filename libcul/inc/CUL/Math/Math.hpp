@@ -8,8 +8,8 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 NAMESPACE_BEGIN( UTIL )
 
-const Axis CULLib_API carthesian2Normal( const AxisCarthesian cart );
-const AxisCarthesian CULLib_API normal2Carthesian( const Axis cart );
+Axis CULLib_API carthesian2Normal( const AxisCarthesian cart );
+AxisCarthesian CULLib_API normal2Carthesian( const Axis cart );
 
 #ifdef _MSC_VER
 // Yes, I know that is a Spectre mitigation.

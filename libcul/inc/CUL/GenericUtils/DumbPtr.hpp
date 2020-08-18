@@ -78,7 +78,7 @@ public:
         m_ptr = nullptr;
     }
 
-    const bool isReleased()
+    bool isReleased()
     {
         return m_destroyed;
     }

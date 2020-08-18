@@ -19,9 +19,9 @@ public:
 
     virtual void setXYZ( CDbl x, CDbl y, CDbl z ) = 0;
 
-    virtual CDbl getX() const = 0;
-    virtual CDbl getY() const = 0;
-    virtual CDbl getZ() const = 0;
+    virtual double getX() const = 0;
+    virtual double getY() const = 0;
+    virtual double getZ() const = 0;
 
 protected:
 private:

@@ -27,7 +27,7 @@ private:
         const JValue& parentValue );
     const FS::Path& getPath() const override;
 
-    const FS::FileType getType() const override;
+    FS::FileType getType() const override;
 
     void changePath( const FS::Path& newPath ) override;
 
@@ -41,7 +41,7 @@ private:
     CsStr& getAsOneString() const override;
     const char** getContent() const override;
 
-    Cunt getLinesCount() const override;
+    unsigned getLinesCount() const override;
 
     INode* getRoot() const override;
 

@@ -16,7 +16,7 @@ public:
 
     void loadFromFile( CUL::CsStr& path );
 
-    Cunt getID() const override;
+    unsigned getID() const override;
     const MATH::Vector3Du& getSize() const override;
     RawDataPtr getData() const override;
 
@@ -34,8 +34,8 @@ private:
     CsStr& getAsOneString() const override;
     const char** getContent() const override;
 
-    Cunt getLinesCount() const override;
-    const FS::FileType getType() const override;
+    unsigned getLinesCount() const override;
+    FS::FileType getType() const override;
 
     CUL::FS::Path m_path;
     CUL::String m_value;

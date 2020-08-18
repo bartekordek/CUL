@@ -35,8 +35,8 @@ public:
     virtual const Position3DDMutexed& getSizeReal() const = 0;
     virtual const Position3DDMutexed& getSizeAbs() const = 0;
 
-    virtual const Type getType() const = 0;
-    virtual const bool operator==( const IObject& right ) const;
+    virtual Type getType() const = 0;
+    virtual bool operator==( const IObject& right ) const;
 
     virtual void rotate(
         const MATH::Angle& angle,

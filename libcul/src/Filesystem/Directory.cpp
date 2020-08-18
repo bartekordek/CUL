@@ -53,12 +53,12 @@ const char ** Directory::getContent() const
 }
 
 //TODO
-Cunt Directory::getLinesCount() const
+unsigned Directory::getLinesCount() const
 {
     return 0;
 }
 
-const FileType Directory::getType() const
+FileType Directory::getType() const
 {
     return FileType::DIRECTORY;
 }

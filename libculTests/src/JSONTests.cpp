@@ -42,11 +42,15 @@ TEST_F( JSONTests, addObject )
     GTEST_ASSERT_EQ( childName, object.getObject()->getName() );
 }
 
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 5045 )
+#endif
 TEST_F( JSONTests, nestData )
 {
     JSON::INode node;
     JSON::ChildrenNodes nodes;
-    const unsigned size = 10;
+    const int size = 10;
     for( auto i = 0; i < size; ++i )
     {
         auto ptr = new JSON::INode();
@@ -56,6 +60,9 @@ TEST_F( JSONTests, nestData )
     node.setValue( nodes );
     GTEST_ASSERT_EQ( size, node.getArray().size() );
 }
+#if _MSC_VER
+#pragma warning( pop )
+#endif
 
 TEST_F( JSONTests, arrayAddElements )
 {

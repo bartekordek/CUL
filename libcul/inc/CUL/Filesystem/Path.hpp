@@ -33,11 +33,11 @@ public:
     CsStr& getBaseName() const;
     CsStr& getDir() const;
 
-    const bool operator==( const Path& rhv ) const;
+    bool operator==( const Path& rhv ) const;
 
     operator CsStr() const;
 
-    const bool exists() const;
+    bool exists() const;
 
     static CsStr& getDirSeparator();
 
@@ -57,7 +57,7 @@ private:
     static String extensionSeparator;
 };
 
-const bool CULLib_API operator<( const Path& lhv, const Path& rhv );
+bool CULLib_API operator<( const Path& lhv, const Path& rhv );
 const Path CULLib_API operator+( const Path& lval, const Path& rval );
 NAMESPACE_END( FS )
 NAMESPACE_END( CUL )

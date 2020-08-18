@@ -9,7 +9,7 @@ IFile::IFile()
     std::cout << "IFile::IFile() " << this << "\n";
 }
 
-Cbool IFile::exists() const
+bool IFile::exists() const
 {
     return getPath().exists();
 }
@@ -24,12 +24,12 @@ void IFile::addChild( IFile* file )
     m_fileList.emplace( file );
 }
 
-const bool IFile::operator==( const IFile* arg ) const
+bool IFile::operator==( const IFile* arg ) const
 {
     return getPath() == arg->getPath();
 }
 
-const bool IFile::operator<( const IFile* arg ) const
+bool IFile::operator<( const IFile* arg ) const
 {
     return getPath() < arg->getPath();
 }

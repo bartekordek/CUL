@@ -33,28 +33,28 @@ public:
     StringImpl operator+( const StringImpl& rhv );
     StringImpl& operator+=( const StringImpl& rhv );
 
-    const bool operator==( const char* rhv ) const;
-    const bool operator==( const std::string& rhv ) const;
-    const bool operator==( const StringImpl& rhv ) const;
+    bool operator==( const char* rhv ) const;
+    bool operator==( const std::string& rhv ) const;
+    bool operator==( const StringImpl& rhv ) const;
 
     operator const std::string&( ) const;
 
-    const char at( const unsigned int index ) const;
+    char at( const unsigned int index ) const;
 
-    const bool operator<( const StringImpl& rhv ) const;
+    bool operator<( const StringImpl& rhv ) const;
 
     void toLower();
     void toUpper();
-    const bool contains( const String & inputString ) const;
-    const bool contains( const char * inputString ) const;
+    bool contains( const String & inputString ) const;
+    bool contains( const char * inputString ) const;
     void replace( const String& inWhat, const String& inFor );
     const std::string& string() const;
     std::string& string();
     const char* cStr() const;
-    const Length length() const;
-    const Length capacity() const;
+    Length length() const;
+    Length capacity() const;
     void clear();
-    const bool empty() const;
+    bool empty() const;
 
 protected:
 private:

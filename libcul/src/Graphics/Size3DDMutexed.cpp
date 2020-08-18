@@ -14,7 +14,8 @@ Size3DDMutexed::Size3DDMutexed( CDbl x, CDbl y, CDbl z ):
 {
 }
 
-Size3DDMutexed::Size3DDMutexed( const Size3DDMutexed& val ) :
+Size3DDMutexed::Size3DDMutexed( const Size3DDMutexed& val ):
+    ISize3DD(),
     m_impl( new Size3DDMutexedImpl( *val.m_impl ) )
 {
 }
@@ -60,17 +61,17 @@ void Size3DDMutexed::setWidthHeightDepth( CDbl width, CDbl height, CDbl depth )
     this->m_impl->setWidthHeightDepth( width, height, depth );
 }
 
-CDbl Size3DDMutexed::getWidth() const
+double Size3DDMutexed::getWidth() const
 {
     return this->m_impl->getWidth();
 }
 
-CDbl Size3DDMutexed::getHeight() const
+double Size3DDMutexed::getHeight() const
 {
     return this->m_impl->getHeight();
 }
 
-CDbl Size3DDMutexed::getDepth() const
+double Size3DDMutexed::getDepth() const
 {
     return this->m_impl->getDepth();
 }

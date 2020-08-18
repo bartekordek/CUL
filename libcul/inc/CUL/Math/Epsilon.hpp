@@ -38,13 +38,13 @@ public:
     }
 
     template <typename SomeOtherType>
-    const bool isLessThanEpislon( const SomeOtherType value ) const
+    bool isLessThanEpislon( const SomeOtherType value ) const
     {
         return std::abs( value ) < getEpsilon();
     }
 
 protected:
-    const bool equals( const Type val1, const Type val2 ) const
+    bool equals( const Type val1, const Type val2 ) const
     {
         const Type epsilonAsType = static_cast<Type>( epsilon );
         return std::abs( val1 - val2 ) <= epsilonAsType;

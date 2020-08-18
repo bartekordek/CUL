@@ -2,7 +2,7 @@
 
 using IObject = CUL::Graphics::IObject;
 
-const bool IObject::operator==( const IObject& right ) const
+bool IObject::operator==( const IObject& right ) const
 {
     return this == &right;
 }

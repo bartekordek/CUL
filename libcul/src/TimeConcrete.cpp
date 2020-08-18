@@ -34,27 +34,27 @@ void TimeConcrete::setTimeUs( const double us )
     m_us = us;
 }
 
-const double TimeConcrete::getMs() const
+double TimeConcrete::getMs() const
 {
     return m_us * 1000.0;
 }
 
-const double TimeConcrete::getS() const
+double TimeConcrete::getS() const
 {
     return m_us / ( 1000 * 1000 );
 }
 
-const double TimeConcrete::getM() const
+double TimeConcrete::getM() const
 {
     return m_us / ( 60000 * 1000 );
 }
 
-const double TimeConcrete::getH() const
+double TimeConcrete::getH() const
 {
     return m_us / ( 3600000.0 * 1000.0 );
 }
 
-const double TimeConcrete::getUs() const
+double TimeConcrete::getUs() const
 {
     return m_us;
 }

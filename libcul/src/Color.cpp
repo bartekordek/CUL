@@ -46,42 +46,42 @@ void ColorS::setFromEnum( const ColorE& color )
     }
 }
 
-cfloat ColorS::getRF() const
+float ColorS::getRF() const
 {
     return m_colorF[static_cast<size_t>( ColorComponent::RED )];
 }
 
-cfloat ColorS::getGF() const
+float ColorS::getGF() const
 {
     return m_colorF[static_cast<size_t>( ColorComponent::GREEN )];
 }
 
-cfloat ColorS::getBF() const
+float ColorS::getBF() const
 {
     return m_colorF[static_cast<size_t>( ColorComponent::BLUE )];
 }
 
-cfloat ColorS::getAF() const
+float ColorS::getAF() const
 {
     return m_colorF[static_cast<size_t>( ColorComponent::ALPHA )];
 }
 
-cuint8_t ColorS::getRUI() const
+uint8_t ColorS::getRUI() const
 {
     return m_colorUC[static_cast<size_t>( ColorComponent::RED )];
 }
 
-cuint8_t ColorS::getGUI() const
+uint8_t ColorS::getGUI() const
 {
     return m_colorUC[static_cast<size_t>( ColorComponent::GREEN )];
 }
 
-cuint8_t ColorS::getBUI() const
+uint8_t ColorS::getBUI() const
 {
     return m_colorUC[static_cast<size_t>( ColorComponent::BLUE )];
 }
 
-cuint8_t ColorS::getAUI() const
+uint8_t ColorS::getAUI() const
 {
     return m_colorUC[static_cast<size_t>( ColorComponent::ALPHA )];
 }

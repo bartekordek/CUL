@@ -26,9 +26,9 @@ public:
 
     void setXYZ( CDbl x, CDbl y, CDbl z ) override;
 
-    CDbl getX() const override;
-    CDbl getY() const override;
-    CDbl getZ() const override;
+    double getX() const override;
+    double getY() const override;
+    double getZ() const override;
 
     Position3DDMutexed& operator+=( const Position3DDMutexed& val );
     Position3DDMutexed operator+( const Position3DDMutexed& val );

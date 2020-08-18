@@ -22,7 +22,7 @@ Angle::~Angle()
 {
 }
 
-const int Angle::getValueI( const Type type ) const
+int Angle::getValueI( const Type type ) const
 {
     return static_cast<int>( getValueD( type ) );
 }
@@ -47,7 +47,7 @@ void Angle::setIncrementValue( const double value )
     m_incrementValue = value;
 }
 
-const Type Angle::getCurrentType() const
+Type Angle::getCurrentType() const
 {
     return m_type;
 }
@@ -306,7 +306,7 @@ void Angle::setValue( const double value, const Type type )
     m_type = type;
 }
 
-const double Angle::getValueD( const Type type ) const
+double Angle::getValueD( const Type type ) const
 {
     if( Type::RADIAN == type )
     {
@@ -315,7 +315,7 @@ const double Angle::getValueD( const Type type ) const
     return m_valueDeg;
 }
 
-const float Angle::getValueF( const Type type ) const
+float Angle::getValueF( const Type type ) const
 {
     if( Type::RADIAN == type )
     {
@@ -327,32 +327,32 @@ const float Angle::getValueF( const Type type ) const
 // ASUMPTION!
 // We are returning radian.
 // Why? Mostly, if people want Degrees, they want them to be integer.
-Angle::operator const double() const
+Angle::operator double() const
 {
     return m_valueRad;
 }
 
-Angle::operator const int() const
+Angle::operator int() const
 {
     return m_valueDeg;
 }
 
-const double CUL::MATH::radian2degree( const double radian )
+double CUL::MATH::radian2degree( const double radian )
 {
     return radian * 180.0 / CUL::MATH::UTIL::Constants::PI;
 }
 
-const double CUL::MATH::degree2radian( const double degree )
+double CUL::MATH::degree2radian( const double degree )
 {
     return degree * CUL::MATH::UTIL::Constants::PI / 180.0;
 }
 
-const float CUL::MATH::radian2degree( const float radian )
+float CUL::MATH::radian2degree( const float radian )
 {
     return radian * 180.0f / static_cast<float>( CUL::MATH::UTIL::Constants::PI );
 }
 
-const float CUL::MATH::degree2radian( const float degree )
+float CUL::MATH::degree2radian( const float degree )
 {
     return degree * CUL::MATH::UTIL::Constants::PI / 180.0f;
 }

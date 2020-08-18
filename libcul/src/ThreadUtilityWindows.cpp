@@ -36,7 +36,7 @@ void CUL::ThreadUtils::setCurrentThreadNameWin( CsStr& name )
 #pragma warning(pop)
 }
 #else
-void CUL::ThreadUtils::setCurrentThreadNameWin( CsStr& name )
+void CUL::ThreadUtils::setCurrentThreadNameWin( CsStr& )
 {
 }
 #endif

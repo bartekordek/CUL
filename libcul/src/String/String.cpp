@@ -137,37 +137,37 @@ String& String::operator+=( const String & rhv )
     return *this;
 }
 
-const bool String::operator!=( const char * rhv ) const
+bool String::operator!=( const char * rhv ) const
 {
     return !operator==( rhv );
 }
 
-const bool String::operator!=( const std::string & rhv ) const
+bool String::operator!=( const std::string & rhv ) const
 {
     return !operator==( rhv );
 }
 
-const bool String::operator!=( const String & rhv ) const
+bool String::operator!=( const String & rhv ) const
 {
     return !operator==( rhv );
 }
 
-const bool String::operator==( const char * rhv ) const
+bool String::operator==( const char * rhv ) const
 {
     return *m_impl == rhv;
 }
 
-const bool String::operator==( const std::string & rhv ) const
+bool String::operator==( const std::string & rhv ) const
 {
     return *m_impl == rhv;
 }
 
-const bool String::operator==( const String& rhv ) const
+bool String::operator==( const String& rhv ) const
 {
     return *m_impl == *rhv.m_impl;
 }
 
-const char String::at( const unsigned int index ) const
+char String::at( const unsigned int index ) const
 {
     return m_impl->at( index );
 }
@@ -188,12 +188,12 @@ void String::toUpper()
     m_impl->toUpper();
 }
 
-const bool String::contains( const String& inputString ) const
+bool String::contains( const String& inputString ) const
 {
     return m_impl->contains( inputString );
 }
 
-const bool String::contains( const char* inputString ) const
+bool String::contains( const char* inputString ) const
 {
     return m_impl->contains( inputString );
 }
@@ -218,12 +218,12 @@ const char* String::cStr() const
     return m_impl->cStr();
 }
 
-const Length String::length() const
+Length String::length() const
 {
     return m_impl->length();
 }
 
-const Length String::capacity() const
+Length String::capacity() const
 {
     return m_impl->capacity();
 }
@@ -233,7 +233,7 @@ void String::clear()
     m_impl->clear();
 }
 
-const bool String::empty() const
+bool String::empty() const
 {
     return m_impl->empty();
 }
@@ -276,12 +276,12 @@ CsStr CUL::operator+( CsStr& lhv, CsStr& rhv )
     return result;
 }
 
-const bool CUL::operator==( const char* lhv, CsStr& rhv )
+bool CUL::operator==( const char* lhv, CsStr& rhv )
 {
     return rhv == lhv;
 }
 
-const bool CUL::operator<( CsStr& lhv, CsStr& rhv )
+bool CUL::operator<( CsStr& lhv, CsStr& rhv )
 {
     return lhv.string() < rhv.string();
 }

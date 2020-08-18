@@ -64,19 +64,19 @@ void Position3DDMutexedImpl::setXYZ( CDbl x, CDbl y, CDbl z )
     m_z = z;
 }
 
-CDbl Position3DDMutexedImpl::getX() const
+double Position3DDMutexedImpl::getX() const
 {
     std::lock_guard<std::mutex> lock( m_valMtx );
     return m_x;
 }
 
-CDbl Position3DDMutexedImpl::getY() const
+double Position3DDMutexedImpl::getY() const
 {
     std::lock_guard<std::mutex> lock( m_valMtx );
     return m_y;
 }
 
-CDbl Position3DDMutexedImpl::getZ() const
+double Position3DDMutexedImpl::getZ() const
 {
     std::lock_guard<std::mutex> lock( m_valMtx );
     return m_z;

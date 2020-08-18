@@ -234,7 +234,7 @@ void INode::setName( CsStr& name )
     m_name = name;
 }
 
-Cbool INode::operator==(
+bool INode::operator==(
     const INode& rhv
     ) const
 {
@@ -248,7 +248,7 @@ Cbool INode::operator==(
     return true;
 }
 
-Cbool INode::operator==( CsStr& rhv ) const
+bool INode::operator==( CsStr& rhv ) const
 {
     if( m_name == rhv )
     {
@@ -349,27 +349,27 @@ Cbool operator==( INode* lhv, CsStr& rhv )
 //    }
 //};
 
-Cbool INode::getBool() const
+bool INode::getBool() const
 {
     return m_bool;
 }
 
-Cdouble INode::getDouble() const
+double INode::getDouble() const
 {
     return m_double;
 }
 
-Cfloat INode::getFloat() const
+float INode::getFloat() const
 {
     return m_float;
 }
 
-Cint INode::getInt() const
+int INode::getInt() const
 {
     return m_int;
 }
 
-Cint64 INode::getInt64() const
+unsigned long int INode::getInt64() const
 {
     return m_int64;
 }

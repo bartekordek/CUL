@@ -7,7 +7,7 @@
 using namespace CUL::Graphics;
 
 void checkForIluErrors();
-Cunt roundUpToPowerOfTwo( unsigned value );
+unsigned roundUpToPowerOfTwo( unsigned value );
 
 DevilImageLoader::DevilImageLoader()
 {
@@ -119,7 +119,7 @@ void checkForIluErrors()
     }
 }
 
-Cunt roundUpToPowerOfTwo( unsigned value )
+unsigned roundUpToPowerOfTwo( unsigned value )
 {
     if( value != 0 )
     {

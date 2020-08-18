@@ -21,9 +21,9 @@ public:
 
     void setXYZ( CDbl x, CDbl y, CDbl z );
 
-    CDbl getX() const;
-    CDbl getY() const;
-    CDbl getZ() const;
+    double getX() const;
+    double getY() const;
+    double getZ() const;
 
     Position3DDMutexedImpl& operator+=( const Position3DDMutexedImpl& val );
     Position3DDMutexedImpl operator+( const Position3DDMutexedImpl& val );

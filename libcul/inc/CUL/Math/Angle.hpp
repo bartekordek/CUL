@@ -24,9 +24,9 @@ public:
     Angle( Cint value, const Type type = Type::RADIAN );
     virtual ~Angle();
 
-    Cdouble getValueD( const Type type = Type::RADIAN ) const;
-    Cfloat getValueF( const Type type = Type::RADIAN ) const;
-    Cint getValueI( const Type type = Type::RADIAN ) const;
+    double getValueD( const Type type = Type::RADIAN ) const;
+    float getValueF( const Type type = Type::RADIAN ) const;
+    int getValueI( const Type type = Type::RADIAN ) const;
 
     void setValue( Cdouble value, const Type type = Type::RADIAN );
     void setValue( Cunt value, const Type type = Type::RADIAN );
@@ -36,7 +36,7 @@ public:
     void setIncrementValue( Cint value );
     void setIncrementValue( Cdouble value );
 
-    const Type getCurrentType() const;
+    Type getCurrentType() const;
     void setCurrentType( const Type type );
 
     Angle& operator+=( Cunt val );
@@ -69,8 +69,8 @@ public:
     Angle operator++( int );
     Angle operator--( int );
 
-    operator Cdouble() const;
-    operator Cint() const;
+    operator double() const;
+    operator int() const;
 
 protected:
 private:
@@ -89,11 +89,11 @@ private:
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-CULLib_API Cdouble radian2degree( Cdouble radian );
-CULLib_API Cdouble degree2radian( Cdouble degree );
+CULLib_API double radian2degree( Cdouble radian );
+CULLib_API double degree2radian( Cdouble degree );
 
-CULLib_API Cfloat radian2degree( Cfloat radian );
-CULLib_API Cfloat degree2radian( Cfloat degree );
+CULLib_API float radian2degree( Cfloat radian );
+CULLib_API float degree2radian( Cfloat degree );
 
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

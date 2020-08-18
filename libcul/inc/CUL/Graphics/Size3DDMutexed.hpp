@@ -25,9 +25,9 @@ public:
 
     void setWidthHeightDepth( CDbl x, CDbl y, CDbl z ) override;
 
-    CDbl getWidth() const override;
-    CDbl getHeight() const override;
-    CDbl getDepth() const override;
+    double getWidth() const override;
+    double getHeight() const override;
+    double getDepth() const override;
 
     Size3DDMutexed& operator+=( const Size3DDMutexed& val );
     Size3DDMutexed operator+( const Size3DDMutexed& val );

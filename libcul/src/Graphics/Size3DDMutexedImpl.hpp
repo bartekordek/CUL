@@ -21,9 +21,9 @@ public:
 
     void setWidthHeightDepth( CDbl x, CDbl y, CDbl z );
 
-    CDbl getWidth() const;
-    CDbl getHeight() const;
-    CDbl getDepth() const;
+    double getWidth() const;
+    double getHeight() const;
+    double getDepth() const;
 
     Size3DDMutexedImpl& operator+=( const Size3DDMutexedImpl& val );
     Size3DDMutexedImpl operator+( const Size3DDMutexedImpl& val );

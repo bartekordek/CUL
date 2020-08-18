@@ -42,15 +42,15 @@ public:
 
     ColorS& operator=( const ColorE color );
 
-    cfloat getRF() const;
-    cfloat getGF() const;
-    cfloat getBF() const;
-    cfloat getAF() const;
+    float getRF() const;
+    float getGF() const;
+    float getBF() const;
+    float getAF() const;
 
-    cuint8_t getRUI() const;
-    cuint8_t getGUI() const;
-    cuint8_t getBUI() const;
-    cuint8_t getAUI() const;
+    uint8_t getRUI() const;
+    uint8_t getGUI() const;
+    uint8_t getBUI() const;
+    uint8_t getAUI() const;
 
     void setRF( cfloat r );
     void setGF( cfloat g );

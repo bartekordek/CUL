@@ -13,9 +13,9 @@ public:
 
     virtual ~ICSVFile();
 
-    virtual Cbool checkIfFileIsAllRight() const = 0;
-    virtual Cunt rowsCount() const = 0;
-    virtual Cunt colsCount() const = 0;
+    virtual bool checkIfFileIsAllRight() const = 0;
+    virtual unsigned rowsCount() const = 0;
+    virtual unsigned colsCount() const = 0;
     virtual CsStr& getVal( Cunt row, Cunt col ) const = 0;
     virtual void setVal( CsStr& val, Cunt row, Cunt col ) = 0;
     virtual void setDelimeter( CsStr& delimeter ) = 0;

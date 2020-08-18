@@ -9,7 +9,7 @@ endif
 DIAG_FLAG := -fdiagnostics-color=always
 COMPILER := g++ #clang++-6.0
 CPP_VERSION := --std=c++17
-CC := $(COMPILER) 
+CC := $(COMPILER)
 CC_FLAGS := $(CPP_VERSION) $(DIAG_FLAG) \
 -fPIC -pedantic -Wall -Werror
 CC_LINK := $(COMPILER) $(DIAG_FLAG) -shared -fPIC
@@ -65,6 +65,7 @@ HEADER_INC += -I $(RAPIDJSON_INCLUDE)
 HEADER_INC += -I $(SPDLOG_INCLUDE)
 HEADER_INC += -I src
 
+
 OUTPUT_DEBUG = $(OUTPUT_DIR_DEBUG)/$(DLL_NAME)
 OUTPUT_RELEASE = $(OUTPUT_DIR_RELEASE)/$(DLL_NAME)
 IMP_LIB_DEBUG = $(OUTPUT_DIR_DEBUG)/$(IMP_LIB_NAME)
@@ -91,13 +92,17 @@ DEP_RELEASE := $(patsubst %.o,%.d,$(OBJ_RELEASE_FILES))
 PROG_DEBUG := $(patsubst %.cpp,%,$(CPP_FILES))
 
 debug: $(DEP_DEBUG)
-	echo "debug: Compiling $@"
+	@echo "Rule for: $@."
+	@echo "Dependencies1: $@"
+	@echo "Dependencies1: $(DEP_DEBUG)"
 	$(MAKE) $(PROG_DEBUG)
 
 %.d:
-	echo "Creating dependency for: $@"
+	@echo "Rule for: $@."
+	@echo "COOOO? $<"
+	@echo "ELO: `echo "$@" | sed 's/.*src/src/' | sed 's/\.d/\.cpp/'`"
 	@mkdir -p $(dir $@)
-	$(CC) $(CC_FLAGS) `echo "$@" | sed 's/.*src/src/' | sed 's/\.d/\.cpp/'` -MM  $(HEADER_INC) $< > $@
+	$(CC)`echo "$@" | sed 's/.*src/src/' | sed 's/\.d/\.cpp/'` -MM  $(HEADER_INC)  $(CC_FLAGS)  > $@
 
 %: %.d
 	echo "Compiling $@"

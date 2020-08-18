@@ -100,7 +100,7 @@ public:
         return result;
     }
 
-    const bool operator==( const Quaternion& qb )
+    bool operator==( const Quaternion& qb )
     {
         Quaternion& qa = *this;
         return ( ( qa.s == qb.s ) && ( qa.x == qb.x ) && ( qa.y == qb.y ) && ( qa.z == qb.z ) );

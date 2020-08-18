@@ -19,9 +19,9 @@ public:
 
     virtual void setWidthHeightDepth( CDbl width, CDbl height, CDbl depth ) = 0;
 
-    virtual CDbl getWidth() const = 0;
-    virtual CDbl getHeight() const = 0;
-    virtual CDbl getDepth() const = 0;
+    virtual double getWidth() const = 0;
+    virtual double getHeight() const = 0;
+    virtual double getDepth() const = 0;
 
 protected:
 private:

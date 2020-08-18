@@ -12,8 +12,8 @@ public:
     IFPSCounter();
     virtual ~IFPSCounter();
 
-    virtual const double getCurrentFps() const = 0;
-    virtual const double getAverageFps() const = 0;
+    virtual double getCurrentFps() const = 0;
+    virtual double getAverageFps() const = 0;
     virtual void setSampleSize( unsigned short sampleSize ) = 0;
     virtual void setMeasurePeriod( const unsigned periodMs ) = 0;
 

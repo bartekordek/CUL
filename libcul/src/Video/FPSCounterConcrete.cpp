@@ -42,12 +42,12 @@ void FPSCounterConcrete::increase()
     ++m_framesCount;
 }
 
-const double FPSCounterConcrete::getCurrentFps() const
+double FPSCounterConcrete::getCurrentFps() const
 {
     return m_lastFrameValue * 1.0;
 }
 
-const double FPSCounterConcrete::getAverageFps() const
+double FPSCounterConcrete::getAverageFps() const
 {
     return m_averageFps;
 }
@@ -74,7 +74,7 @@ void FPSCounterConcrete::counterLoop()
     }
 }
 
-const double FPSCounterConcrete::calculateAverageFps() const
+double FPSCounterConcrete::calculateAverageFps() const
 {
     if( 0 == m_samples.size() )
     {
@@ -91,7 +91,7 @@ const double FPSCounterConcrete::calculateAverageFps() const
     return normalizeToSleepTime( result );
 }
 
-const double FPSCounterConcrete::normalizeToSleepTime( const double fpsCount ) const
+double FPSCounterConcrete::normalizeToSleepTime( const double fpsCount ) const
 {
     return fpsCount * 1000.0 / m_sleepTimeMs;
 }

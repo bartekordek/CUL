@@ -66,7 +66,7 @@ void INodeImpl::setValue( const String& value )
     m_type = ElementType::STRING;
 }
 
-const ElementType INodeImpl::getType() const
+ElementType INodeImpl::getType() const
 {
     return m_type;
 }
@@ -86,27 +86,27 @@ ChildrenNodes& INodeImpl::getArray()
     return m_array;
 }
 
-Cbool INodeImpl::getBool() const
+bool INodeImpl::getBool() const
 {
     return m_bool;
 }
 
-Cdouble INodeImpl::getDouble() const
+double INodeImpl::getDouble() const
 {
     return m_double;
 }
 
-Cfloat INodeImpl::getFloat() const
+float INodeImpl::getFloat() const
 {
     return m_float;
 }
 
-Cint INodeImpl::getInt() const
+int INodeImpl::getInt() const
 {
     return m_int;
 }
 
-Cint64 INodeImpl::getInt64() const
+unsigned long INodeImpl::getInt64() const
 {
     return m_int64;
 }

@@ -38,8 +38,8 @@ enum class Axis: short
     ERROR
 };
 
-const Size CULLib_API ac2Size( const AxisCarthesian cart );
-const Size CULLib_API ax2Size( const Axis ax );
+Size CULLib_API ac2Size( const AxisCarthesian cart );
+Size CULLib_API ax2Size( const Axis ax );
 
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

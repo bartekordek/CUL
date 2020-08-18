@@ -2,14 +2,7 @@
 
 #include "CUL/GenericUtils/DisableErros.hpp"
 
-#if defined( _MSC_VER )
-    #if _MSC_VER < 1920
-        #include <experimental/filesystem>
-        #define FILESYSTEM_IS_EXPERIMENTAL
-    #else
-    #include <filesystem>
-    #endif
-#elif defined( __GNUC__ ) || defined( __clang__ )
+#if defined( _MSC_VER ) && _MSC_VER < 1920
     #include <experimental/filesystem>
     #define FILESYSTEM_IS_EXPERIMENTAL
 #else

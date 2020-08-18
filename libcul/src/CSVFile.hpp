@@ -30,13 +30,13 @@ public:
 
     const Path& getPath() const override;
 
-    const bool checkIfFileIsAllRight() const override;
-    Cunt rowsCount() const override;
-    Cunt colsCount() const override;
+    bool checkIfFileIsAllRight() const override;
+    unsigned rowsCount() const override;
+    unsigned colsCount() const override;
     CsStr& getVal( Cunt row, Cunt col ) const override;
     void setVal( CsStr& val, Cunt row, Cunt col ) override;
 
-    const FileType getType() const override;
+    FileType getType() const override;
 
     void reload( Cbool keepLineEndingCharacter = false ) override;
     void load( Cbool keepLineEndingCharacter = false ) override;
@@ -50,7 +50,7 @@ public:
     CsStr& getAsOneString() const override;
     const char** getContent() const override;
 
-    Cunt getLinesCount() const override;
+    unsigned getLinesCount() const override;
 
     void fileContainsQuotationMarks( const bool containsQuotationMarks ) override;
 

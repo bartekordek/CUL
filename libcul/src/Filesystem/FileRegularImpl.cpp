@@ -93,14 +93,14 @@ void FileRegularImpl::cacheFile()
     }
 }
 
-const FileType FileRegularImpl::getType() const
+FileType FileRegularImpl::getType() const
 {
     return FileType::TXT;
 }
 
-Cunt FileRegularImpl::getLinesCount() const
+unsigned FileRegularImpl::getLinesCount() const
 {
-    return static_cast<Cunt>( rows.size() );
+    return static_cast<unsigned>( rows.size() );
 }
 
 const char** FileRegularImpl::getContent() const

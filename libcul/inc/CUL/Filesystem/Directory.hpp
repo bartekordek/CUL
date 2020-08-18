@@ -19,8 +19,8 @@ public:
     CsStr& lastLine() const override;
     CsStr& getAsOneString() const override;
     const char** getContent() const override;
-    Cunt getLinesCount() const override;
-    const FileType getType() const override;
+    unsigned int getLinesCount() const override;
+    FileType getType() const override;
 
     ~Directory();
 protected:

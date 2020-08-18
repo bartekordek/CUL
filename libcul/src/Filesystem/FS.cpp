@@ -8,11 +8,11 @@ using namespace FS;
 
 using FF = FileFactory;
 
-const bool isRegularFile( const char* path );
-const bool isRegularFile( const wchar_t* path );
+bool isRegularFile( const char* path );
+bool isRegularFile( const wchar_t* path );
 
-const bool isDirectory( const char* path );
-const bool isDirectory( const wchar_t* path );
+bool isDirectory( const char* path );
+bool isDirectory( const wchar_t* path );
 
 FSApi::FSApi()
 {
@@ -60,7 +60,7 @@ IFile* FSApi::getDirectory( const Path& directory )
     return result;
 }
 
-const bool isRegularFile( const char* path )
+bool isRegularFile( const char* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_regular_file( path );
@@ -69,7 +69,7 @@ const bool isRegularFile( const char* path )
 #endif
 }
 
-const bool isRegularFile( const wchar_t* path )
+bool isRegularFile( const wchar_t* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_regular_file( path );
@@ -79,7 +79,7 @@ const bool isRegularFile( const wchar_t* path )
 }
 
 
-const bool isDirectory( const char* path )
+bool isDirectory( const char* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_directory( path );
@@ -88,7 +88,7 @@ const bool isDirectory( const char* path )
 #endif
 }
 
-const bool isDirectory( const wchar_t* path )
+bool isDirectory( const wchar_t* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_directory( path );

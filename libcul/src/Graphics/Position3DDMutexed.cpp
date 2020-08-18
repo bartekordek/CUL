@@ -17,9 +17,8 @@ Position3DDMutexed::Position3DDMutexed( CDbl x, CDbl y, CDbl z ):
 }
 
 Position3DDMutexed::Position3DDMutexed( const Position3DDMutexed& val ):
-    m_impl(
-    std::make_unique< Position3DDMutexedImpl>(
-    Position3DDMutexedImpl( *val.m_impl ) ) )
+    IPosition3DD(),
+    m_impl( std::make_unique< Position3DDMutexedImpl>( Position3DDMutexedImpl( *val.m_impl ) ) )
 {
 }
 
@@ -62,17 +61,17 @@ void Position3DDMutexed::setXYZ( CDbl x, CDbl y, CDbl z )
     m_impl->setXYZ( x, y, z );
 }
 
-CDbl Position3DDMutexed::getX() const
+double Position3DDMutexed::getX() const
 {
     return m_impl->getX();
 }
 
-CDbl Position3DDMutexed::getY() const
+double Position3DDMutexed::getY() const
 {
     return m_impl->getY();
 }
 
-CDbl Position3DDMutexed::getZ() const
+double Position3DDMutexed::getZ() const
 {
     return m_impl->getZ();
 }

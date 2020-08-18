@@ -26,13 +26,12 @@ public:
     void setAdjacent( const double value );
     void setHypotenuse( const double value );
 
-    const double getOpposite();
-    const double getAdjacent();
-    const double getHypotenuse();
-
-    const double calculateOpposite();
-    const double calculateAdjacent();
-    const double calculateHypotenuse();
+    double getOpposite();
+    double getAdjacent();
+    double getHypotenuse();
+    double calculateOpposite();
+    double calculateAdjacent();
+    double calculateHypotenuse();
 
     const Angle& getAngle() const;
 

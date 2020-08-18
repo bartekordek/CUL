@@ -42,23 +42,23 @@ public:
     String operator+( const String& rhv );
     String& operator+=( const String& rhv );
 
-    const bool operator!=( const char* rhv ) const;
-    const bool operator!=( const std::string& rhv ) const;
-    const bool operator!=( const String& rhv ) const;
+    bool operator!=( const char* rhv ) const;
+    bool operator!=( const std::string& rhv ) const;
+    bool operator!=( const String& rhv ) const;
 
-    const bool operator==( const char* rhv ) const;
-    const bool operator==( const std::string& rhv ) const;
-    const bool operator==( const String& rhv ) const;
+    bool operator==( const char* rhv ) const;
+    bool operator==( const std::string& rhv ) const;
+    bool operator==( const String& rhv ) const;
 
-    const char at( const unsigned int index ) const;
+    char at( const unsigned int index ) const;
 
     operator const std::string&( ) const;
 
     void toLower();
     void toUpper();
 
-    const bool contains( const String& inputString ) const;
-    const bool contains( const char* inputString ) const;
+    bool contains( const String& inputString ) const;
+    bool contains( const char* inputString ) const;
 
     void replace( const String& inWhat, const String& inFor );
 
@@ -66,10 +66,10 @@ public:
     std::string& string();
 
     const char* cStr() const;
-    const Length length() const;
-    const Length capacity() const;
+    Length length() const;
+    Length capacity() const;
     void clear();
-    const bool empty() const;
+    bool empty() const;
 
     static void toLowerS( std::string& inOutString );
     static void toUpperS( std::string& inOutString );
@@ -82,7 +82,7 @@ private:
 using CsStr = const String;
 
 CsStr CULLib_API operator+( CsStr& lhv, CsStr& rhv );
-const bool CULLib_API operator==( const char* lhv, CsStr& rhv );
-const bool CULLib_API operator<( CsStr& lhv, CsStr& rhv );
+bool CULLib_API operator==( const char* lhv, CsStr& rhv );
+bool CULLib_API operator<( CsStr& lhv, CsStr& rhv );
 
 NAMESPACE_END( CUL )

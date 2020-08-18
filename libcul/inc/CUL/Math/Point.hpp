@@ -131,12 +131,12 @@ public:
         return result;
     }
 
-    const bool operator<( const Point& rhv ) const
+    bool operator<( const Point& rhv ) const
     {
         return diagonal < rhv.diagonal;
     }
 
-    const Type& getValue( const AxisCarthesian axis )
+    Type& getValue( const AxisCarthesian axis )
     {
         if( AxisCarthesian::X == axis )
         {

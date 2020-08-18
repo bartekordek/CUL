@@ -47,8 +47,8 @@ public:
 
     CsStr& getName() const;
     void setName( CsStr& name );
-    Cbool operator==( const INode& rhv ) const;
-    Cbool operator==( CsStr& rhv ) const;
+    bool operator==( const INode& rhv ) const;
+    bool operator==( CsStr& rhv ) const;
 
     void setValue( INode* val );
     void setValue( const ChildrenNodes& value );
@@ -60,15 +60,15 @@ public:
     void setValue( const char* value );
     void setValue( CsStr& value );
 
-    const ElementType getType() const;
+    ElementType getType() const;
     const INode* getObject() const;
     const ChildrenNodes& getArray() const;
     ChildrenNodes& getArray();
-    Cbool getBool() const;
-    Cdouble getDouble() const;
-    Cfloat getFloat() const;
-    Cint getInt() const;
-    Cint64 getInt64() const;
+    bool getBool() const;
+    double getDouble() const;
+    float getFloat() const;
+    int getInt() const;
+    unsigned long int getInt64() const;
     CsStr& getString() const;
 
     INode* findChild( const String& name );
