@@ -12,13 +12,11 @@ class CULLib_API DumbPtr
 public:
     DumbPtr()
     {
-
     }
 
     DumbPtr( Type* value ):
         m_ptr( value )
     {
-
     }
 
     Type& operator*()
