@@ -11,6 +11,7 @@
 #pragma warning( disable: 4626 )
 #pragma warning( disable: 4710 )
 #pragma warning( disable: 4711 )
+#pragma warning( disable: 4715 )
 #pragma warning( disable: 4774 )
 #pragma warning( disable: 4800 )
 #pragma warning( disable: 4820 )
