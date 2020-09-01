@@ -311,7 +311,7 @@ void INode::setValue( CsStr& value )
     m_type = ElementType::STRING;
 }
 
-const ElementType INode::getType() const
+ElementType INode::getType() const
 {
     return m_type;
 }
@@ -331,7 +331,7 @@ ChildrenNodes& INode::getArray()
     return m_array;
 }
 
-Cbool operator==( INode* lhv, CsStr& rhv )
+bool operator==( INode* lhv, CsStr& rhv )
 {
     return lhv->operator==( rhv );
 }
@@ -343,7 +343,7 @@ Cbool operator==( INode* lhv, CsStr& rhv )
 //    {
 //    }
 //
-//    Cbool operator()( const NodePtr& nodePtr ) const
+//    bool operator()( const NodePtr& nodePtr ) const
 //    {
 //        return nodePtr->operator==( m_value );
 //    }
@@ -369,7 +369,7 @@ int INode::getInt() const
     return m_int;
 }
 
-unsigned long int INode::getInt64() const
+int64_t INode::getInt64() const
 {
     return m_int64;
 }

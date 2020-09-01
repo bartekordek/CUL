@@ -106,7 +106,7 @@ int INodeImpl::getInt() const
     return m_int;
 }
 
-unsigned long INodeImpl::getInt64() const
+int64_t INodeImpl::getInt64() const
 {
     return m_int64;
 }

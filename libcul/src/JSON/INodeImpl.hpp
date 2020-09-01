@@ -36,7 +36,7 @@ public:
     double getDouble() const;
     float getFloat() const;
     int getInt() const;
-    unsigned int long getInt64() const;
+    int64_t getInt64() const;
     const String& getString() const;
 
     ~INodeImpl();

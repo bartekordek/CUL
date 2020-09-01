@@ -42,7 +42,7 @@ private:
     MATH::Vector3Du m_size;
     RawDataPtr m_data = nullptr;
     unsigned int m_fileId = 0;
-    ILuint m_iluId = 0;
+    unsigned int m_iluId = 0;
 
     static bool s_ilInitialized;
 
