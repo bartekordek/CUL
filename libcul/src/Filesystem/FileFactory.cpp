@@ -2,7 +2,6 @@
 #include "FileRegularImpl.hpp"
 #include "CSVFile.hpp"
 #include "JSON/JSONFileConcrete.hpp"
-#include "Graphics/RawImageConcrete.hpp"
 
 using IFile = CUL::FS::IFile;
 using Path = CUL::FS::Path;
@@ -28,7 +27,8 @@ IFile* FileFactory::createFileFromPath( const Path& path )
         ext == ".jpg" || 
         ext == ".jpeg" )
     {
-        return createRawImageRawPtr( path );
+        CUL::Assert::simple( false, "Not implemented." );
+        return nullptr;
     }
     else
     {
@@ -67,19 +67,21 @@ IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
     return result;
 }
 
-CUL::Graphics::IRawImage* FileFactory::createRawImageRawPtr( const Path& path )
-{
-    auto rawConcrete = static_cast<Graphics::RawImageConcrete*>( createRawImageRawPtr() );
-    rawConcrete->loadFromFile( path.getPath() );
-    return rawConcrete;
-}
-
 IJSONFile* FileFactory::createJSONFileRawPtr()
 {
     return new JSON::JSONFileConcrete();
 }
 
+//TODO
+CUL::Graphics::IRawImage* FileFactory::createRawImageRawPtr( const Path& )
+{
+    auto rawConcrete = createRawImageRawPtr();
+    // rawConcrete load from file!
+    return rawConcrete;
+}
+
+// TODO
 CUL::Graphics::IRawImage* FileFactory::createRawImageRawPtr()
 {
-    return new Graphics::RawImageConcrete();
+    return nullptr;
 }
