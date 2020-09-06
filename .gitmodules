@@ -79,3 +79,9 @@
 [submodule "deps/boost/container_hash"]
 	path = deps/boost/container_hash
 	url = git@github.com:boostorg/container_hash.git
+[submodule "deps/stb"]
+	path = deps/stb
+	url = git@github.com:nothings/stb.git
+[submodule "deps/tiny-image"]
+	path = deps/tiny-image
+	url = git@github.com:charlesdong/tiny-image.git
