@@ -35,7 +35,7 @@
 //    DataValue& operator=( DataValue&& rhv );
 //
 //    auto getValue() const;
-//    const ElementType getType()const;
+//    ElementType getType()const;
 //
 //    void setValue( INode* node );
 //    void setValue( const ChildrenNodes& node );

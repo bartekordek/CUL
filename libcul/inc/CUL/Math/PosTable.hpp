@@ -62,7 +62,7 @@ public:
         m_col = col;
     }
 
-    const bool operator==( const PosTable<Type>& rhv ) const
+    bool operator==( const PosTable<Type>& rhv ) const
     {
         if( &rhv != this )
         {

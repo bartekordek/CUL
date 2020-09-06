@@ -113,7 +113,7 @@ public:
         return result;
     }
 
-    const bool operator==( const MultiPoint<Type>& p ) const
+    bool operator==( const MultiPoint<Type>& p ) const
     {
         if( this == &p )
         {

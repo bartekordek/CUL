@@ -68,7 +68,7 @@ public:
     double getDouble() const;
     float getFloat() const;
     int getInt() const;
-    unsigned long int getInt64() const;
+    int64_t getInt64() const;
     CsStr& getString() const;
 
     INode* findChild( const String& name );

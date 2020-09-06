@@ -189,7 +189,7 @@ public:
         }
     }
 
-    const bool elementExist( const unsigned row, const unsigned col ) const
+    bool elementExist( const unsigned row, const unsigned col ) const
     {
         if( getRowsCount() <= row || getColumnCount() <= col )
         {
@@ -198,7 +198,7 @@ public:
         return true;
     }
 
-    const bool isZero() const
+    bool isZero() const
     {
         const Type zeroValue = static_cast<Type>( 0 );
 
@@ -235,7 +235,7 @@ public:
     }
 
 protected:
-    const bool columnIsEmpty( const unsigned int columnIndex ) const
+    bool columnIsEmpty( const unsigned int columnIndex ) const
     {
         if( getRowsCount() == 0 && columnIndex >= getColumnCount() )
         {
@@ -252,7 +252,7 @@ protected:
         return true;
     }
 
-    const bool rowIsEmpty( const unsigned int rowIndex ) const
+    bool rowIsEmpty( const unsigned int rowIndex ) const
     {
         if( rowIndex >= getRowsCount() )
         {
