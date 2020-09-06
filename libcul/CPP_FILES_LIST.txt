@@ -16,7 +16,7 @@ src/GenericUtils/IArgumentsPair.cpp
 src/Graphics/DevilImageLoader.cpp
 src/Graphics/IImage.cpp
 src/Graphics/IImageLoader.cpp
-src/Graphics/ImageDevil.cpp
+src/Graphics/ImageConcrete.cpp
 src/Graphics/IObject.cpp
 src/Graphics/IPosition3DD.cpp
 src/Graphics/ITexture.cpp
