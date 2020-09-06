@@ -1,3 +1,4 @@
+#cmake -DCMAKE_BUILD_TYPE=Debug
 cmake_minimum_required(VERSION 3.0.0)
 
 project(cul LANGUAGES CXX)
@@ -30,8 +31,6 @@ else()
     add_definitions( -Wfatal-errors )
 endif()
 
-find_package( DevIL REQUIRED )
-
 add_library( cul SHARED
     src/ITimer.cpp
     src/Color.cpp
@@ -50,7 +49,7 @@ add_library( cul SHARED
     src/Graphics/DevilImageLoader.cpp
     src/Graphics/IImage.cpp
     src/Graphics/IImageLoader.cpp
-    src/Graphics/ImageDevil.cpp
+    src/Graphics/ImageConcrete.cpp
     src/Graphics/IObject.cpp
     src/Graphics/IPosition3DD.cpp
     src/Graphics/ITexture.cpp
@@ -192,10 +191,31 @@ set_target_properties(cul PROPERTIES PUBLIC_HEADER
     inc/CUL/Windows/INCLUDE_dwrite.hpp
 )
 
+if( MSVC )
+    #add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut  ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut )
+    set( FREEGLUT_DIR, "${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary" )
+    set( GLUT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary/include )
+    set( GLUT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary/include )
+    set( GLUT_glut_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary/lib )
+    #message( "FREEGLUT_INCLUDE_DIRS = ${FREEGLUT_INCLUDE_DIRS}" )
+    #message( "FREEGLUT_LIBRARY_DIRS = ${FREEGLUT_LIBRARY_DIRS}" )
+    #message( "FREEGLUT_LIBRARY_DIRS = ${FREEGLUT_LIBRARY_DIRS}" )
+    #message( "GLUT_INCLUDE_DIR = ${GLUT_INCLUDE_DIRS}" )
+    #message( "GLUT_glut_LIBRARY = ${GLUT_glut_LIBRARY}" )
+    
+    
+    #include_directories( SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut/include )
+    #SET( GLUT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut/include )
+    ##SET (GLUT_glut_LIBRARY C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib\glut32.lib )
+
+    add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/DevIL-repo/DevIL ${CMAKE_CURRENT_BINARY_DIR}/../deps/DevIL-repo/DevIL )
+    include_directories( SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/../deps/DevIL-repo/DevIL/include )
+endif()
+
 find_package( DevIL REQUIRED )
 if(IL_FOUND OR DevIL_FOUND)
-  include_directories( ${IL_INCLUDE_DIR} )
-  target_link_libraries( ${EXEC} ${IL_LIBRARIES} ${ILU_LIBRARIES} stdc++fs )
+    include_directories( ${IL_INCLUDE_DIR} )
+    target_link_libraries( ${EXEC} ${IL_LIBRARIES} ${ILU_LIBRARIES} stdc++fs )
 endif()
 
 target_include_directories(cul PUBLIC inc)

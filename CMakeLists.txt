@@ -1,15 +1,17 @@
+#cmake -DCMAKE_BUILD_TYPE=Debug
 cmake_minimum_required(VERSION 3.0.0)
 
 project(culTests LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(EXEC culTests)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libcul)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libcul/inc)
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/libcul )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/libcul/inc) 
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/googletest)
-include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/deps/googletest/googletest/include)
+add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/deps/googletest )
+include_directories( SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/deps/googletest/googletest/include )
 
+find_package( cul REQUIRED )
 
 if (MSVC)
     # warning level 4 and all warnings as errors
