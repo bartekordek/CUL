@@ -1,8 +1,11 @@
-#include "Graphics/DevilImageLoader.hpp"
-#include "Graphics/ImageDevil.hpp"
+#ifdef USE_DEVIL
+
+#include "Graphics/ImageLoaderDevil.hpp"
+#include "Graphics/ImageConcrete.hpp"
 #include "CUL/Graphics/Color.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/String.hpp"
+#include "Graphics/IMPORT_Devil.hpp"
 
 using namespace CUL::Graphics;
 
@@ -22,15 +25,10 @@ DevilImageLoader::DevilImageLoader()
     checkForIluErrors();
 }
 
-DevilImageLoader::~DevilImageLoader()
-{
-    ilShutDown();
-}
-
-IImage* DevilImageLoader::loadImage( const Path& path )
+IImage* DevilImageLoader::loadImage( const Path& path, Cbool )
 {
     IImage* result = findImage( path );
-    ImageInfo imageInfo;
+    ImageInfo ii;
     if( result )
     {
         return result;
@@ -40,7 +38,8 @@ IImage* DevilImageLoader::loadImage( const Path& path )
     ilGenImages( 1, &imgID );
     ilBindImage( imgID );
 
-    ILboolean success = ilLoadImage( path.getPath().cStr() );
+    const auto pathAsCharArray = path.getPath().cStr();
+    ILboolean success = ilLoadImage( pathAsCharArray );
     const ILenum ilError = ilGetError();
     if( ilError != IL_NO_ERROR )
     {
@@ -51,38 +50,52 @@ IImage* DevilImageLoader::loadImage( const Path& path )
     // TODO: Is it really necessary?
     success = ilConvertImage( IL_RGBA, IL_UNSIGNED_BYTE );
     checkForIluErrors();
-    imageInfo.colorFormat = "RGBA";
+
     CUL::Assert::simple( success == IL_TRUE, "ILU/ILUT error, cannot convert image." );
 
     const auto imgWidth = static_cast<unsigned>( ilGetInteger( IL_IMAGE_WIDTH ) );
     const auto imgHeight = static_cast<unsigned>( ilGetInteger( IL_IMAGE_HEIGHT ) );
+    ii.depth = 24;//static_cast<int>( ilGetInteger( IL_IMAGE_DEPTH ) );// 24
 
-    const auto roundedUpWidth = roundUpToPowerOfTwo( imgWidth );
-    const auto roundedUpHeight = roundUpToPowerOfTwo( imgHeight );
 
-    if( imgWidth != roundedUpWidth || imgHeight != roundedUpHeight )
-    {
-        //Place image at upper left
-        iluImageParameter( ILU_PLACEMENT, ILU_UPPER_LEFT );
+    iluImageParameter( ILU_PLACEMENT, ILU_UPPER_LEFT );
 
-        //Resize image
-        iluEnlargeCanvas(
-            static_cast<ILuint>( roundedUpWidth ),
-            static_cast<ILuint>( roundedUpHeight ),
-            1 );
-    }
-    const auto iluImage = new ImageDevil();
-    imageInfo.size.width = roundedUpWidth;
-    imageInfo.size.height = roundedUpHeight;
-    iluImage->setData( ilGetData(), roundedUpWidth, roundedUpHeight );
-    iluImage->setPath( path );
-    iluImage->setImageInfo( imageInfo );
+    //Resize image
+    iluEnlargeCanvas(
+        static_cast<ILuint>( imgWidth ),
+        static_cast<ILuint>( imgHeight ),
+        1 );
 
-    m_fileList[path.getPath()] = std::unique_ptr<IImage>( iluImage );
+    const auto imageConcrete = new ImageConcrete();
+
+    ii.size.width = static_cast<int>( imgWidth );
+    ii.size.height = static_cast<int>( imgHeight );
+    
+    ii.pitch = 4 * static_cast<int>( imgWidth ); //1628
+    ii.pixelFormat = PixelFormat::RGBA32; //376840196
+    ii.path = path;
+
+
+    auto rawData = ilGetData();
+
+    const auto textureSize = static_cast<size_t>( imgWidth * imgHeight * 4);
+    DataType* dataCopy = new DataType[textureSize];
+
+    memcpy(
+        dataCopy,
+        rawData,
+        static_cast<size_t>( textureSize ) );
+
+    imageConcrete->setData( dataCopy );
+    imageConcrete->setPath( path );
+    imageConcrete->setImageInfo( ii );
+    //imageConcrete->disableRelease( true );
+
+    m_fileList[path.getPath()] = std::unique_ptr<IImage>( imageConcrete );
 
     ilDeleteImages( 1, &imgID );
 
-    result = iluImage;
+    result = imageConcrete;
 
     return result;
 }
@@ -134,3 +147,10 @@ unsigned roundUpToPowerOfTwo( unsigned value )
 
     return value;
 }
+
+DevilImageLoader::~DevilImageLoader()
+{
+    ilShutDown();
+}
+
+#endif // USE_DEVIL

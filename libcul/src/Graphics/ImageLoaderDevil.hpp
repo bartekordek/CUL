@@ -1,3 +1,5 @@
+#ifdef USE_DEVIL
+
 #pragma once
 
 #include "CUL/Graphics/IImageLoader.hpp"
@@ -13,7 +15,7 @@ class DevilImageLoader final:
 public:
     DevilImageLoader();
 
-    IImage* loadImage( const Path& path ) override;
+    IImage* loadImage( const Path& path, Cbool rgba = false ) override;
     void deleteImage( const Path& path ) override;
     IImage* findImage( const Path& path ) override;
 
@@ -32,3 +34,5 @@ private: // Deleted
 
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )
+
+#endif // USE_DEVIL
