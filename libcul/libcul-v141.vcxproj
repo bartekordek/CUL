@@ -19,15 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\deps\stb\deprecated\stb_image.c" />
+    <ClCompile Include="..\deps\stb\stb_vorbis.c" />
+    <ClCompile Include="..\deps\tiny-image\src\tinyimage.cpp" />
     <ClCompile Include="src\Filesystem\Directory.cpp" />
     <ClCompile Include="src\Filesystem\FSUtils.cpp" />
     <ClCompile Include="src\GenericUtils\ArgumentsPairConcrete.cpp" />
     <ClCompile Include="src\GenericUtils\ConsoleUtilities.cpp" />
     <ClCompile Include="src\GenericUtils\IArgumentsPair.cpp" />
-    <ClCompile Include="src\Graphics\DevilImageLoader.cpp" />
     <ClCompile Include="src\Graphics\IImage.cpp" />
     <ClCompile Include="src\Graphics\IImageLoader.cpp" />
-    <ClCompile Include="src\Graphics\ImageDevil.cpp" />
+    <ClCompile Include="src\Graphics\ImageConcrete.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderConcrete.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderDevil.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderSTB.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderTiny.cpp" />
+    <ClCompile Include="src\Graphics\IObject.cpp" />
+    <ClCompile Include="src\Graphics\IPosition3DD.cpp" />
+    <ClCompile Include="src\Graphics\ITexture.cpp" />
+    <ClCompile Include="src\Graphics\Position3DDMutexed.cpp" />
+    <ClCompile Include="src\Graphics\Position3DDMutexedImpl.cpp" />
     <ClCompile Include="src\Graphics\Size3DDMutexed.cpp" />
     <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp" />
     <ClCompile Include="src\JSON\DataValue.cpp" />
@@ -40,12 +51,6 @@
     <ClCompile Include="src\Filesystem\FS.cpp" />
     <ClCompile Include="src\Filesystem\IFile.cpp" />
     <ClCompile Include="src\Filesystem\Path.cpp" />
-    <ClCompile Include="src\Graphics\IObject.cpp" />
-    <ClCompile Include="src\Graphics\IPosition3DD.cpp" />
-    <ClCompile Include="src\Graphics\ITexture.cpp" />
-    <ClCompile Include="src\Graphics\Position3DDMutexedImpl.cpp" />
-    <ClCompile Include="src\Graphics\Position3DDMutexed.cpp" />
-    <ClCompile Include="src\Graphics\RawImageConcrete.cpp" />
     <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\CSVFile.cpp" />
     <ClCompile Include="src\FileCompileTest.cpp" />
@@ -178,11 +183,15 @@
     <ClInclude Include="src\Filesystem\FileRegularImpl.hpp" />
     <ClInclude Include="src\Filesystem\FSUtils.hpp" />
     <ClInclude Include="src\GenericUtils\ArgumentsPairConcrete.hpp" />
-    <ClInclude Include="src\Graphics\DevilImageLoader.hpp" />
-    <ClInclude Include="src\Graphics\ImageDevil.hpp" />
+    <ClInclude Include="src\Graphics\ImageConcrete.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderConcrete.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderDevil.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderSTB.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderTiny.hpp" />
     <ClInclude Include="src\Graphics\IMPORT_Devil.hpp" />
+    <ClInclude Include="src\Graphics\IMPORT_Stb.hpp" />
+    <ClInclude Include="src\Graphics\IMPORT_Tiny.hpp" />
     <ClInclude Include="src\Graphics\Position3DDMutexedImpl.hpp" />
-    <ClInclude Include="src\Graphics\RawImageConcrete.hpp" />
     <ClInclude Include="src\Graphics\Size3DDMutexedImpl.hpp" />
     <ClInclude Include="src\IMPORT_boost_assert.hpp" />
     <ClInclude Include="src\IMPORT_boost_variant.hpp" />
@@ -299,14 +308,15 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -340,10 +350,10 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
@@ -382,15 +392,16 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <DebugInformationFormat>None</DebugInformationFormat>
       <SupportJustMyCode>true</SupportJustMyCode>
       <ProgramDataBaseFileName />
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -427,15 +438,16 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <DebugInformationFormat>None</DebugInformationFormat>
       <SupportJustMyCode>true</SupportJustMyCode>
       <ProgramDataBaseFileName />
       <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -177,42 +177,6 @@
     <ClCompile Include="src\OSUtils\SystemFontsWindows.cpp">
       <Filter>src\OSUtils</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\DevilImageLoader.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\IImage.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\IImageLoader.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ImageDevil.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Size3DDMutexed.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\IObject.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\IPosition3DD.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\ITexture.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Position3DDMutexedImpl.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Position3DDMutexed.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\RawImageConcrete.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Filesystem\FSUtils.cpp">
       <Filter>src\Filesystem</Filter>
     </ClCompile>
@@ -245,6 +209,57 @@
     </ClCompile>
     <ClCompile Include="src\Filesystem\Directory.cpp">
       <Filter>src\Filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\deps\stb\stb_vorbis.c">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\deps\stb\deprecated\stb_image.c">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\deps\tiny-image\src\tinyimage.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\IImage.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\IImageLoader.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ImageConcrete.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ImageLoaderConcrete.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ImageLoaderDevil.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ImageLoaderSTB.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ImageLoaderTiny.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\IObject.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\IPosition3DD.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ITexture.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Position3DDMutexed.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Position3DDMutexedImpl.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Size3DDMutexed.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp">
+      <Filter>src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,24 +310,6 @@
     </ClInclude>
     <ClInclude Include="src\OSUtils\SystemFontsWindows.hpp">
       <Filter>src\OSUtils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\DevilImageLoader.hpp">
-      <Filter>src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\ImageDevil.hpp">
-      <Filter>src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\IMPORT_Devil.hpp">
-      <Filter>src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Position3DDMutexedImpl.hpp">
-      <Filter>src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\RawImageConcrete.hpp">
-      <Filter>src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\Size3DDMutexedImpl.hpp">
-      <Filter>src\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\Filesystem\FileRegularImpl.hpp">
       <Filter>src\Filesystem</Filter>
@@ -613,6 +610,36 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\Filesystem\Directory.hpp">
       <Filter>inc\CUL\Filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageConcrete.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageLoaderConcrete.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageLoaderDevil.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageLoaderSTB.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageLoaderTiny.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\IMPORT_Devil.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\IMPORT_Stb.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\IMPORT_Tiny.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Position3DDMutexedImpl.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\Size3DDMutexedImpl.hpp">
+      <Filter>src\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
