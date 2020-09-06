@@ -14,6 +14,7 @@ struct SimpleSize2D
 };
 
 using SSize2Dui = SimpleSize2D<unsigned>;
+using SSize2Di = SimpleSize2D<int>;
 
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )
