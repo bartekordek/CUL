@@ -11,7 +11,7 @@ public:
     IImageLoader();
     virtual ~IImageLoader();
 
-    virtual IImage* loadImage( const Path& path ) = 0;
+    virtual IImage* loadImage( const Path& path, Cbool rgba = false ) = 0;
     virtual IImage* findImage( const Path& path ) = 0;
     virtual void deleteImage( const Path& path ) = 0;
 

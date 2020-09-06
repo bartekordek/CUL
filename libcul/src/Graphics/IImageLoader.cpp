@@ -1,5 +1,5 @@
 #include "CUL/Graphics/IImageLoader.hpp"
-#include "Graphics/DevilImageLoader.hpp"
+#include "Graphics/ImageLoaderConcrete.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -10,10 +10,7 @@ IImageLoader::IImageLoader()
 
 IImageLoader* IImageLoader::createConcrete()
 {
-    IImageLoader* result = nullptr;
-    // TODO
-    result = new DevilImageLoader();
-    return result;
+    return new ImageLoaderConcrete();
 }
 
 IImageLoader::~IImageLoader()
