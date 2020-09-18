@@ -178,6 +178,11 @@ String::operator const std::string& () const
     return *m_impl;
 }
 
+String::operator const char* ( ) const
+{
+    return m_impl->cStr();
+}
+
 void String::toLower()
 {
     m_impl->toLower();

@@ -17,7 +17,6 @@ public:
     StringImpl( const bool val );
     StringImpl( const int val );
     StringImpl( const unsigned val );
-    ~StringImpl() = default;
 
     StringImpl& operator=( const char* rhv );
     StringImpl& operator=( const unsigned char* rhv );
@@ -48,13 +47,18 @@ public:
     bool contains( const String & inputString ) const;
     bool contains( const char * inputString ) const;
     void replace( const String& inWhat, const String& inFor );
+
+
     const std::string& string() const;
     std::string& string();
     const char* cStr() const;
+
     Length length() const;
     Length capacity() const;
     void clear();
     bool empty() const;
+
+    ~StringImpl() = default;
 
 protected:
 private:

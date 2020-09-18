@@ -26,7 +26,6 @@ public:
     String( const bool val );
     String( const int val );
     String( const unsigned val );
-    ~String();
 
     String& operator=( const char* someString );
     String& operator=( const unsigned char* someString );
@@ -53,6 +52,7 @@ public:
     char at( const unsigned int index ) const;
 
     operator const std::string&( ) const;
+    operator const char* ( ) const;
 
     void toLower();
     void toUpper();
@@ -66,6 +66,7 @@ public:
     std::string& string();
 
     const char* cStr() const;
+
     Length length() const;
     Length capacity() const;
     void clear();
@@ -73,6 +74,8 @@ public:
 
     static void toLowerS( std::string& inOutString );
     static void toUpperS( std::string& inOutString );
+
+    ~String();
 
 protected:
 private:
