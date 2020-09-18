@@ -87,7 +87,7 @@ double FPSCounterConcrete::calculateAverageFps() const
         sum += sampleVal;
     }
 
-    const auto result = sum / m_samples.size();
+    const auto result = sum / (double)m_samples.size();
     return normalizeToSleepTime( result );
 }
 
