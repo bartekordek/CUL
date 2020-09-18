@@ -210,15 +210,6 @@
     <ClCompile Include="src\Filesystem\Directory.cpp">
       <Filter>src\Filesystem</Filter>
     </ClCompile>
-    <ClCompile Include="..\deps\stb\stb_vorbis.c">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\deps\stb\deprecated\stb_image.c">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\deps\tiny-image\src\tinyimage.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Graphics\IImage.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
@@ -260,6 +251,15 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp">
       <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\ImageLoaderBMP.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GenericUtils\IConfigFile.cpp">
+      <Filter>src\GenericUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GenericUtils\IConfigFileConcrete.cpp">
+      <Filter>src\GenericUtils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -640,6 +640,21 @@
     </ClInclude>
     <ClInclude Include="src\Graphics\Size3DDMutexedImpl.hpp">
       <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\ImageLoaderBMP.hpp">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_iosfwd.hpp">
+      <Filter>inc\CUL\STL_IMPORTS</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\GenericUtils\Conversion.hpp">
+      <Filter>inc\CUL\GenericUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\GenericUtils\IConfigFile.hpp">
+      <Filter>inc\CUL\GenericUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GenericUtils\IConfigFileConcrete.hpp">
+      <Filter>src\GenericUtils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

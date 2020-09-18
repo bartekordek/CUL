@@ -19,17 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\deps\stb\deprecated\stb_image.c" />
-    <ClCompile Include="..\deps\stb\stb_vorbis.c" />
-    <ClCompile Include="..\deps\tiny-image\src\tinyimage.cpp" />
     <ClCompile Include="src\Filesystem\Directory.cpp" />
     <ClCompile Include="src\Filesystem\FSUtils.cpp" />
     <ClCompile Include="src\GenericUtils\ArgumentsPairConcrete.cpp" />
     <ClCompile Include="src\GenericUtils\ConsoleUtilities.cpp" />
     <ClCompile Include="src\GenericUtils\IArgumentsPair.cpp" />
+    <ClCompile Include="src\GenericUtils\IConfigFile.cpp" />
+    <ClCompile Include="src\GenericUtils\IConfigFileConcrete.cpp" />
     <ClCompile Include="src\Graphics\IImage.cpp" />
     <ClCompile Include="src\Graphics\IImageLoader.cpp" />
     <ClCompile Include="src\Graphics\ImageConcrete.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderBMP.cpp" />
     <ClCompile Include="src\Graphics\ImageLoaderConcrete.cpp" />
     <ClCompile Include="src\Graphics\ImageLoaderDevil.cpp" />
     <ClCompile Include="src\Graphics\ImageLoaderSTB.cpp" />
@@ -90,9 +90,11 @@
     <ClInclude Include="inc\CUL\Filesystem\IFile.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\Path.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\ConsoleUtilities.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\Conversion.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\DisableErros.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\DumbPtr.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\IArgumentsList.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\IConfigFile.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\ITask.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\LckPrim.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\SimpleAssert.hpp" />
@@ -144,6 +146,7 @@
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_fstream.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_functional.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_iomanip.hpp" />
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_iosfwd.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_iostream.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_map.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_memory.hpp" />
@@ -183,7 +186,9 @@
     <ClInclude Include="src\Filesystem\FileRegularImpl.hpp" />
     <ClInclude Include="src\Filesystem\FSUtils.hpp" />
     <ClInclude Include="src\GenericUtils\ArgumentsPairConcrete.hpp" />
+    <ClInclude Include="src\GenericUtils\IConfigFileConcrete.hpp" />
     <ClInclude Include="src\Graphics\ImageConcrete.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderBMP.hpp" />
     <ClInclude Include="src\Graphics\ImageLoaderConcrete.hpp" />
     <ClInclude Include="src\Graphics\ImageLoaderDevil.hpp" />
     <ClInclude Include="src\Graphics\ImageLoaderSTB.hpp" />
@@ -308,7 +313,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\Devil-Code\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -317,6 +322,7 @@
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <EnablePREfast>false</EnablePREfast>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -324,10 +330,10 @@
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AdditionalDeps.lib;ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
@@ -339,7 +345,8 @@
       </Command>
     </PreBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
+xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.pdb" "$(TargetDir)" /y</Command>
       <Outputs>NonExistinngFile.SomeExtension</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -350,7 +357,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\Devil-Code\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -359,16 +366,17 @@
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <EnablePREfast>false</EnablePREfast>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AdditionalDeps.lib;ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
@@ -380,7 +388,8 @@
       </Command>
     </PreBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
+xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.pdb" "$(TargetDir)" /y</Command>
       <Outputs>NonExistinngFile.SomeExtension</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -392,7 +401,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\Devil-Code\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -402,15 +411,16 @@
       <ProgramDataBaseFileName />
       <EnablePREfast>false</EnablePREfast>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AdditionalDeps.lib;ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile />
     </Link>
     <Lib>
@@ -426,7 +436,8 @@
       </Command>
     </PreBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
+xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.pdb" "$(TargetDir)" /y</Command>
       <Outputs>NonExistinngFile.SomeExtension</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -438,7 +449,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\Devil-Code\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -448,15 +459,16 @@
       <ProgramDataBaseFileName />
       <EnablePREfast>false</EnablePREfast>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AdditionalDeps.lib;ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile />
     </Link>
     <Lib>
@@ -471,7 +483,8 @@
       </Command>
     </PreBuildEvent>
     <CustomBuildStep>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y
+xcopy "$(ProjectDir)..\deps\Devil-Code\Build-Windows\$(Platform)\*.pdb" "$(TargetDir)" /y</Command>
       <Outputs>NonExistinngFile.SomeExtension</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
