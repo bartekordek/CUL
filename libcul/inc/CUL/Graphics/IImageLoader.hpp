@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/Graphics/IImage.hpp"
+#include "CUL/GenericUtils/IConfigFile.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -15,7 +16,7 @@ public:
     virtual IImage* findImage( const Path& path ) = 0;
     virtual void deleteImage( const Path& path ) = 0;
 
-    static IImageLoader* createConcrete();
+    static IImageLoader* createConcrete( CUL::GUTILS::IConfigFile* config );
 
 protected:
 private: // Deleted

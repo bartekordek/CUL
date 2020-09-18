@@ -14,8 +14,13 @@ using Path = FS::Path;
 enum class PixelFormat: short
 {
     NONE = -1,
-    RGB24,
-    RGBA32
+    RGB,
+    RGBA,
+    ARGB,
+    BGR,
+    BGRA,
+    ABGR,
+    TEST
 };
 
 #if _MSC_VER

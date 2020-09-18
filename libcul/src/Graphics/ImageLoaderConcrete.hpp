@@ -11,7 +11,7 @@ class ImageLoaderConcrete final:
     public IImageLoader
 {
 public:
-    ImageLoaderConcrete();
+    ImageLoaderConcrete( GUTILS::IConfigFile* file );
 
     IImage* loadImage( const Path& path, Cbool rgba = false ) override;
     void deleteImage( const Path& path ) override;

@@ -14,17 +14,9 @@ STBIImageLoader::STBIImageLoader()
 IImage* STBIImageLoader::loadImage( const Path& path, Cbool )
 {
     int req_format = STBI_rgb_alpha;
-    int width, height, orig_format;
+    int width = 0, height = 0, orig_format = 0;
 
-    stbi_uc* rawData = nullptr;
-    if( path.getExtension() == ".bmp" || path.getExtension() == ".BMP" )
-    {
-        rawData = stbi_load( path.getPath().cStr(), &width, &height, &orig_format, req_format );
-    }
-    else
-    {
-        rawData = stbi_load( path.getPath().cStr(), &width, &height, &orig_format, req_format );
-    }
+    stbi_uc* rawData = stbi_load( path.getPath(), &width, &height, &orig_format, req_format );
 
     CUL::Assert::simple( rawData != nullptr, "cannot export data." );
     auto data = reinterpret_cast<DataType*>( rawData );
@@ -38,13 +30,13 @@ IImage* STBIImageLoader::loadImage( const Path& path, Cbool )
     {
         ii.depth = 24;
         ii.pitch = 3 * width;
-        ii.pixelFormat = PixelFormat::RGB24;
+        ii.pixelFormat = PixelFormat::ARGB;
     }
     else
     {
         ii.depth = 24;
         ii.pitch = 4 * width;
-        ii.pixelFormat = PixelFormat::RGBA32;
+        ii.pixelFormat = PixelFormat::RGBA;
     }
 
     auto iimage = new ImageConcrete();

@@ -8,9 +8,9 @@ IImageLoader::IImageLoader()
 {
 }
 
-IImageLoader* IImageLoader::createConcrete()
+IImageLoader* IImageLoader::createConcrete( CUL::GUTILS::IConfigFile* config )
 {
-    return new ImageLoaderConcrete();
+    return new ImageLoaderConcrete( config );
 }
 
 IImageLoader::~IImageLoader()
