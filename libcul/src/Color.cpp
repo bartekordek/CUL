@@ -108,26 +108,26 @@ void ColorS::setAlphaF( cfloat v )
 
 void ColorS::setRCU( cuint8_t r )
 {
-    m_colorF[static_cast<size_t>( ColorComponent::RED )] = r / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::RED )] = r;
+    m_colorF[static_cast<size_t>( ColorComponent::RED )] = static_cast<float>( r ) / 255.0f;
+    m_colorUC[static_cast<size_t>( ColorComponent::RED )] = static_cast<float>( r );
 }
 
 void ColorS::setGCU( cuint8_t g )
 {
-    m_colorF[static_cast<size_t>( ColorComponent::GREEN )] = g / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::GREEN )] = g;
+    m_colorF[static_cast<size_t>( ColorComponent::GREEN )] = static_cast<float>( g ) / 255.0f;
+    m_colorUC[static_cast<size_t>( ColorComponent::GREEN )] = static_cast<float>( g );
 }
 
 void ColorS::setBCU( cuint8_t b )
 {
-    m_colorF[static_cast<size_t>( ColorComponent::BLUE )] = b / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::BLUE )] = b;
+    m_colorF[static_cast<size_t>( ColorComponent::BLUE )] = static_cast<float>( b ) / 255.0f;
+    m_colorUC[static_cast<size_t>( ColorComponent::BLUE )] = static_cast<float>( b );
 }
 
 void ColorS::setAlphaCU( cuint8_t a )
 {
-    m_colorF[static_cast<size_t>( ColorComponent::ALPHA )] = a / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::ALPHA )] = a;
+    m_colorF[static_cast<size_t>( ColorComponent::ALPHA )] = static_cast<float>( a ) / 255.0f;
+    m_colorUC[static_cast<size_t>( ColorComponent::ALPHA )] = static_cast<float>( a );
 }
 
 void ColorS::setFloat( const float red, const float green, const float blue, const float alpha )
