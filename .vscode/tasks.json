@@ -38,6 +38,18 @@
             "problemMatcher": [
                 "$gcc"
             ]
+        },
+        {// & rd /s /q Build-Windows & mkdir Build-Windows & cd Build-Windows & cmake -G \"Visual Studio 16 2019\" .. -DCMAKE_BUILD_TYPE=Debug"
+            "label": "Windows Recreate Cmake libcultest",
+            "type": "shell",
+            "command": ".\\scripts\\RecreateTests.bat",
+            "group": {
+                "kind": "none",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ]
 }
