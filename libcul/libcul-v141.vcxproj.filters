@@ -222,9 +222,6 @@
     <ClCompile Include="src\Graphics\ImageLoaderConcrete.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\ImageLoaderDevil.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\Graphics\ImageLoaderSTB.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
@@ -617,16 +614,10 @@
     <ClInclude Include="src\Graphics\ImageLoaderConcrete.hpp">
       <Filter>src\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\ImageLoaderDevil.hpp">
-      <Filter>src\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\ImageLoaderSTB.hpp">
       <Filter>src\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\ImageLoaderTiny.hpp">
-      <Filter>src\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\IMPORT_Devil.hpp">
       <Filter>src\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\IMPORT_Stb.hpp">

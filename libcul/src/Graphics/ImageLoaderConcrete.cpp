@@ -2,24 +2,52 @@
 
 #include "Graphics/ImageLoaderSTB.hpp"
 #include "Graphics/ImageLoaderTiny.hpp"
-#include "Graphics/ImageLoaderDevil.hpp"
+#include "Graphics/ImageLoaderBMP.hpp"
 
 using namespace CUL;
 using namespace Graphics;
 
-ImageLoaderConcrete::ImageLoaderConcrete()
+ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* file )
 {
-    std::unique_ptr<DevilImageLoader> png( new DevilImageLoader() );
-    //std::unique_ptr<STBIImageLoader> png( new STBIImageLoader() );
-    m_loaders["png"] = std::move( png );
+    if( file )
+    {
+        const auto& bmpLoader = file->getValue( "BMP_LOADER" );
+        if( bmpLoader == "TinyImageLoader" )
+        {
+            std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader() );
+            m_loaders["bmp"] = std::move( bmp );
+        }
+        else if( bmpLoader == "STBIImageLoader" )
+        {
+            std::unique_ptr<STBIImageLoader> bmp( new STBIImageLoader() );
+            m_loaders["bmp"] = std::move( bmp );
+        }
+        else
+        {
+            std::unique_ptr<ImageLoaderBMP> bmp( new ImageLoaderBMP() );
+            m_loaders["bmp"] = std::move( bmp );
+        }
 
-    //std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader() );
-    std::unique_ptr<DevilImageLoader> bmp( new DevilImageLoader() );
-    m_loaders["bmp"] = std::move( bmp );
+        const auto& pngLoader = file->getValue( "PNG_LOADER" );
+        if( pngLoader == "TinyImageLoader" )
+        {
+            std::unique_ptr<TinyImageLoader> png( new TinyImageLoader() );
+            m_loaders["png"] = std::move( png );
+        }
+        else
+        {
+            std::unique_ptr<STBIImageLoader> png( new STBIImageLoader() );
+            m_loaders["png"] = std::move( png );
+        }
+    }
+    else
+    {
+        std::unique_ptr<STBIImageLoader> png( new STBIImageLoader() );
+        m_loaders["png"] = std::move( png );
 
-    //result = new STBIImageLoader();
-    //result = new TinyImageLoader();
-    //result = new DevilImageLoader();
+        std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader() );
+        m_loaders["bmp"] = std::move( bmp );
+    }
 }
 
 
