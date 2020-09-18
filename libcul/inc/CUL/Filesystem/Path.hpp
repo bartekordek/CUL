@@ -33,6 +33,8 @@ public:
     CsStr& getBaseName() const;
     CsStr& getDir() const;
 
+    uint64_t getFileSize() const;
+
     bool operator==( const Path& rhv ) const;
 
     operator CsStr() const;

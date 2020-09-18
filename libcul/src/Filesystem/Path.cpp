@@ -140,6 +140,16 @@ CsStr& Path::getDir() const
     return m_dir;
 }
 
+uint64_t Path::getFileSize() const
+{
+    FsPath file( m_fullPath.cStr() );
+#if defined( _MSC_VER ) && _MSC_VER < 1920
+    return std::experimental::filesystem::file_size( file );
+#else
+    return std::filesystem::file_size( file );
+#endif
+}
+
 bool Path::operator==( const Path& rhv ) const
 {
     return m_fullPath == rhv.m_fullPath;
