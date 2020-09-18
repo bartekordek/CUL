@@ -14,9 +14,11 @@ TinyImageLoader::TinyImageLoader()
 IImage* TinyImageLoader::loadImage( const Path& path, Cbool )
 {
     int width = 0, height = 0;
-    auto rawData = tinyimg_load( path.getPath().cStr(),
+    auto type = TinyImgColorType::TINYIMG_RGB;
+    DataType* rawData = tinyimg_load( path.getPath(),
                                           &width, &height,
-                                          TinyImgColorType::TINYIMG_RGB );
+                                          type );
+
 
     const auto error =  tinyimg_get_error();
     if( TINYIMG_OK != error )
@@ -29,23 +31,25 @@ IImage* TinyImageLoader::loadImage( const Path& path, Cbool )
     ii.path = path;
     ii.size.width = width;
     ii.size.height = height;
+    ii.depth = 24;
+    ii.pitch = 4 * width;
+    ii.pixelFormat = PixelFormat::TEST;
 
-    if( true )
-    {
-        ii.depth = 24;
-        ii.pitch = 3 * width;
-        ii.pixelFormat = PixelFormat::RGB24 ;
-    }
-    else
-    {
-        ii.depth = 24;
-        ii.pitch = 3 * width;
-        ii.pixelFormat = PixelFormat::RGBA32;
-    }
+    //if( type == TinyImgColorType::TINYIMG_RGB )
+    //{
+    //    ii.depth = 24;
+    //    ii.pitch = 4 * width;
+    //    ii.pixelFormat = PixelFormat::RGB24;
+    //}
+    //else
+    //{
+    //    ii.depth = 24;
+    //    ii.pitch = 4 * width;
+    //    ii.pixelFormat = PixelFormat::RGBA32;
+    //}
 
     auto iimage = new ImageConcrete();
-    auto data = reinterpret_cast<DataType*>( rawData );
-    iimage->setData( data );
+    iimage->setData( rawData );
     iimage->setImageInfo( ii );
 
     return iimage;

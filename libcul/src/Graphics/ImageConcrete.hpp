@@ -24,7 +24,6 @@ public:
     void setPath( const Path& path );
     void setData( DataType* data );
     void setImageInfo( const ImageInfo& ii );
-    void disableRelease( Cbool val );
 
     ~ImageConcrete();
 
@@ -34,7 +33,6 @@ private:
 
     ImageInfo m_imageInfo;
     DataType* m_data = nullptr;
-    bool m_disableRelease = false;
 
 private: // Deleted
     ImageConcrete( const ImageConcrete& arg ) = delete;

@@ -33,11 +33,6 @@ void ImageConcrete::setImageInfo( const ImageInfo& ii )
     m_imageInfo = ii;
 }
 
-void ImageConcrete::disableRelease( Cbool val )
-{
-    m_disableRelease = val;
-}
-
 ImageConcrete::~ImageConcrete()
 {
     releaseImage();
@@ -45,9 +40,6 @@ ImageConcrete::~ImageConcrete()
 
 void ImageConcrete::releaseImage()
 {
-    if( !m_disableRelease )
-    {
-        delete[] m_data;
-        m_data = nullptr;
-    }
+    delete[] m_data;
+    m_data = nullptr;
 }
