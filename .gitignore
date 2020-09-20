@@ -21,14 +21,14 @@
 *.opensdf
 *.pdb
 *.sdf
+*.so
 *.suo
 *.tlog
 *cache
 *~ml
 .vs
 /libcul/libcul/nbproject/Package*
-Build-Linux/*
-Build-Windows/*
+Build*
 CMakeFiles/
 build
 intermediate
