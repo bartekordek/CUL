@@ -5,9 +5,11 @@ inc/CUL/Filesystem/FS.hpp
 inc/CUL/Filesystem/IFile.hpp
 inc/CUL/Filesystem/Path.hpp
 inc/CUL/GenericUtils/ConsoleUtilities.hpp
+inc/CUL/GenericUtils/Conversion.hpp
 inc/CUL/GenericUtils/DisableErros.hpp
 inc/CUL/GenericUtils/DumbPtr.hpp
 inc/CUL/GenericUtils/IArgumentsList.hpp
+inc/CUL/GenericUtils/IConfigFile.hpp
 inc/CUL/GenericUtils/ITask.hpp
 inc/CUL/GenericUtils/LckPrim.hpp
 inc/CUL/GenericUtils/SimpleAssert.hpp
@@ -72,6 +74,7 @@ inc/CUL/STL_IMPORTS/STD_filesystem.hpp
 inc/CUL/STL_IMPORTS/STD_fstream.hpp
 inc/CUL/STL_IMPORTS/STD_functional.hpp
 inc/CUL/STL_IMPORTS/STD_iomanip.hpp
+inc/CUL/STL_IMPORTS/STD_iosfwd.hpp
 inc/CUL/STL_IMPORTS/STD_iostream.hpp
 inc/CUL/STL_IMPORTS/STD_map.hpp
 inc/CUL/STL_IMPORTS/STD_memory.hpp
