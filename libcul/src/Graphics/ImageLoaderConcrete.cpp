@@ -7,11 +7,11 @@
 using namespace CUL;
 using namespace Graphics;
 
-ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* file )
+ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config )
 {
-    if( file )
+    if( config )
     {
-        const auto& bmpLoader = file->getValue( "BMP_LOADER" );
+        const auto& bmpLoader = config->getValue( "BMP_LOADER" );
         if( bmpLoader == "TinyImageLoader" )
         {
             std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader() );
@@ -28,7 +28,7 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* file )
             m_loaders["bmp"] = std::move( bmp );
         }
 
-        const auto& pngLoader = file->getValue( "PNG_LOADER" );
+        const auto& pngLoader = config->getValue( "PNG_LOADER" );
         if( pngLoader == "TinyImageLoader" )
         {
             std::unique_ptr<TinyImageLoader> png( new TinyImageLoader() );

@@ -2,6 +2,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 project(cul LANGUAGES CXX)
+
 set(CMAKE_CXX_STANDARD 17)
 set(EXEC cul)
 
@@ -19,7 +20,10 @@ include_directories( SYSTEM "../deps/boost/throw_exception/include" )
 include_directories( SYSTEM "../deps/boost/type_index/include" )
 include_directories( SYSTEM "../deps/boost/type_traits/include" )
 include_directories( SYSTEM "../deps/boost/variant/include" )
+include_directories( SYSTEM "../deps/tiny-image/src" )
+include_directories( SYSTEM "../deps/stb" )
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../deps ${CMAKE_CURRENT_BINARY_DIR}/../deps)
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -32,7 +36,6 @@ else()
 endif()
 
 add_library( cul SHARED
-    src/ITimer.cpp
     src/Color.cpp
     src/CSVFile.cpp
     src/FileCompileTest.cpp
@@ -46,16 +49,20 @@ add_library( cul SHARED
     src/GenericUtils/ArgumentsPairConcrete.cpp
     src/GenericUtils/ConsoleUtilities.cpp
     src/GenericUtils/IArgumentsPair.cpp
-    src/Graphics/DevilImageLoader.cpp
+    src/GenericUtils/IConfigFile.cpp
+    src/GenericUtils/IConfigFileConcrete.cpp
     src/Graphics/IImage.cpp
     src/Graphics/IImageLoader.cpp
     src/Graphics/ImageConcrete.cpp
+    src/Graphics/ImageLoaderBMP.cpp
+    src/Graphics/ImageLoaderConcrete.cpp
+    src/Graphics/ImageLoaderSTB.cpp
+    src/Graphics/ImageLoaderTiny.cpp
     src/Graphics/IObject.cpp
     src/Graphics/IPosition3DD.cpp
     src/Graphics/ITexture.cpp
     src/Graphics/Position3DDMutexed.cpp
     src/Graphics/Position3DDMutexedImpl.cpp
-    src/Graphics/RawImageConcrete.cpp
     src/Graphics/Size3DDMutexed.cpp
     src/Graphics/Size3DDMutexedImpl.cpp
     src/ICSVFile.cpp
@@ -63,6 +70,7 @@ add_library( cul SHARED
     src/IName.cpp
     src/IPivot.cpp
     src/ITime.cpp
+    src/ITimer.cpp
     src/JSON/DataValue.cpp
     src/JSON/INode.cpp
     src/JSON/INodeImpl.cpp
@@ -91,7 +99,8 @@ add_library( cul SHARED
     src/Video/IFPSObservable.cpp
 )
 
-set_target_properties(cul PROPERTIES PUBLIC_HEADER
+#set_target_properties(cul PROPERTIES PUBLIC_HEADER
+set( HEADERS_PUBLIC
     inc/CUL/CUL.hpp
     inc/CUL/Filesystem/Directory.hpp
     inc/CUL/Filesystem/FileFactory.hpp
@@ -99,9 +108,11 @@ set_target_properties(cul PROPERTIES PUBLIC_HEADER
     inc/CUL/Filesystem/IFile.hpp
     inc/CUL/Filesystem/Path.hpp
     inc/CUL/GenericUtils/ConsoleUtilities.hpp
+    inc/CUL/GenericUtils/Conversion.hpp
     inc/CUL/GenericUtils/DisableErros.hpp
     inc/CUL/GenericUtils/DumbPtr.hpp
     inc/CUL/GenericUtils/IArgumentsList.hpp
+    inc/CUL/GenericUtils/IConfigFile.hpp
     inc/CUL/GenericUtils/ITask.hpp
     inc/CUL/GenericUtils/LckPrim.hpp
     inc/CUL/GenericUtils/SimpleAssert.hpp
@@ -166,6 +177,7 @@ set_target_properties(cul PROPERTIES PUBLIC_HEADER
     inc/CUL/STL_IMPORTS/STD_fstream.hpp
     inc/CUL/STL_IMPORTS/STD_functional.hpp
     inc/CUL/STL_IMPORTS/STD_iomanip.hpp
+    inc/CUL/STL_IMPORTS/STD_iosfwd.hpp
     inc/CUL/STL_IMPORTS/STD_iostream.hpp
     inc/CUL/STL_IMPORTS/STD_map.hpp
     inc/CUL/STL_IMPORTS/STD_memory.hpp
@@ -192,31 +204,9 @@ set_target_properties(cul PROPERTIES PUBLIC_HEADER
 )
 
 if( MSVC )
-    #add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut  ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut )
-    set( FREEGLUT_DIR, "${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary" )
-    set( GLUT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary/include )
-    set( GLUT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary/include )
-    set( GLUT_glut_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut-win-binary/lib )
-    #message( "FREEGLUT_INCLUDE_DIRS = ${FREEGLUT_INCLUDE_DIRS}" )
-    #message( "FREEGLUT_LIBRARY_DIRS = ${FREEGLUT_LIBRARY_DIRS}" )
-    #message( "FREEGLUT_LIBRARY_DIRS = ${FREEGLUT_LIBRARY_DIRS}" )
-    #message( "GLUT_INCLUDE_DIR = ${GLUT_INCLUDE_DIRS}" )
-    #message( "GLUT_glut_LIBRARY = ${GLUT_glut_LIBRARY}" )
-    
-    
-    #include_directories( SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut/include )
-    #SET( GLUT_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../deps/freeglut/include )
-    ##SET (GLUT_glut_LIBRARY C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\lib\glut32.lib )
-
-    add_subdirectory( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/DevIL-repo/DevIL ${CMAKE_CURRENT_BINARY_DIR}/../deps/DevIL-repo/DevIL )
-    include_directories( SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/../deps/DevIL-repo/DevIL/include )
+else()
 endif()
+target_link_libraries( ${EXEC} stdc++fs )
 
-find_package( DevIL REQUIRED )
-if(IL_FOUND OR DevIL_FOUND)
-    include_directories( ${IL_INCLUDE_DIR} )
-    target_link_libraries( ${EXEC} ${IL_LIBRARIES} ${ILU_LIBRARIES} stdc++fs )
-endif()
-
-target_include_directories(cul PUBLIC inc)
-target_include_directories(cul PRIVATE src)
+target_include_directories(${EXEC} PUBLIC inc)
+target_include_directories(${EXEC} PRIVATE src)
