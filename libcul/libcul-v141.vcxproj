@@ -103,7 +103,6 @@
     <ClInclude Include="inc\CUL\Graphics\IObject.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IObjectRegister.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IPosition3DD.hpp" />
-    <ClInclude Include="inc\CUL\Graphics\IRawImage.hpp" />
     <ClInclude Include="inc\CUL\Graphics\ISize3DD.hpp" />
     <ClInclude Include="inc\CUL\Graphics\ITexture.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Pos2D.hpp" />

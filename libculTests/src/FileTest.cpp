@@ -47,10 +47,12 @@ TEST_F( FileTest, loadCachedFileRegular )
 
 TEST_F( FileTest, loadRawImage )
 {
-    std::unique_ptr<CUL::Graphics::IRawImage> f( CUL::FS::FileFactory::createRawImageRawPtr( dummyImage ) );
+    std::unique_ptr<CUL::Graphics::IImage> f( CUL::FS::FileFactory::createRawImageRawPtr
+( dummyImage ) );
+    GTEST_ASSERT_NE( nullptr, f.get() );
     GTEST_ASSERT_NE( nullptr, f->getData() );
 
-    const auto& fileSize = f->getSize();
-    GTEST_ASSERT_EQ( 407, fileSize.getX() );
-    GTEST_ASSERT_EQ( 412, fileSize.getY() );
+    const auto& size = f->getImageInfo().size;
+    GTEST_ASSERT_EQ( 407, size.width );
+    GTEST_ASSERT_EQ( 412, size.height );
 }

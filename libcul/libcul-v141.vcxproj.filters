@@ -449,9 +449,6 @@
     <ClInclude Include="inc\CUL\Graphics\IPosition3DD.hpp">
       <Filter>inc\CUL\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\Graphics\IRawImage.hpp">
-      <Filter>inc\CUL\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Graphics\ISize3DD.hpp">
       <Filter>inc\CUL\Graphics</Filter>
     </ClInclude>

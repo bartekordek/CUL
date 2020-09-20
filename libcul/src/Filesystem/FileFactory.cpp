@@ -2,6 +2,9 @@
 #include "FileRegularImpl.hpp"
 #include "CSVFile.hpp"
 #include "JSON/JSONFileConcrete.hpp"
+#include "CUL/Graphics/IImageLoader.hpp"
+#include "Graphics/ImageConcrete.hpp"
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 
 using IFile = CUL::FS::IFile;
 using Path = CUL::FS::Path;
@@ -73,15 +76,14 @@ IJSONFile* FileFactory::createJSONFileRawPtr()
 }
 
 //TODO
-CUL::Graphics::IRawImage* FileFactory::createRawImageRawPtr( const Path& )
+CUL::Graphics::IImage* FileFactory::createRawImageRawPtr( const Path& path )
 {
-    auto rawConcrete = createRawImageRawPtr();
-    // rawConcrete load from file!
-    return rawConcrete;
+    std::unique_ptr< Graphics::IImageLoader> il( Graphics::IImageLoader::createConcrete( nullptr ) );
+    return il->loadImage( path );
 }
 
 // TODO
-CUL::Graphics::IRawImage* FileFactory::createRawImageRawPtr()
+CUL::Graphics::IImage* FileFactory::createRawImageRawPtr()
 {
-    return nullptr;
+    return new CUL::Graphics::ImageConcrete();
 }

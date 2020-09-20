@@ -1,5 +1,3 @@
-libcul/nbproject/private/cpp_standard_headers_indexer.cpp
-src/ITimer.cpp
 src/Color.cpp
 src/CSVFile.cpp
 src/FileCompileTest.cpp
@@ -13,16 +11,20 @@ src/Filesystem/Path.cpp
 src/GenericUtils/ArgumentsPairConcrete.cpp
 src/GenericUtils/ConsoleUtilities.cpp
 src/GenericUtils/IArgumentsPair.cpp
-src/Graphics/DevilImageLoader.cpp
+src/GenericUtils/IConfigFile.cpp
+src/GenericUtils/IConfigFileConcrete.cpp
 src/Graphics/IImage.cpp
 src/Graphics/IImageLoader.cpp
 src/Graphics/ImageConcrete.cpp
+src/Graphics/ImageLoaderBMP.cpp
+src/Graphics/ImageLoaderConcrete.cpp
+src/Graphics/ImageLoaderSTB.cpp
+src/Graphics/ImageLoaderTiny.cpp
 src/Graphics/IObject.cpp
 src/Graphics/IPosition3DD.cpp
 src/Graphics/ITexture.cpp
 src/Graphics/Position3DDMutexed.cpp
 src/Graphics/Position3DDMutexedImpl.cpp
-src/Graphics/RawImageConcrete.cpp
 src/Graphics/Size3DDMutexed.cpp
 src/Graphics/Size3DDMutexedImpl.cpp
 src/ICSVFile.cpp
@@ -30,6 +32,7 @@ src/IHttpRequest.cpp
 src/IName.cpp
 src/IPivot.cpp
 src/ITime.cpp
+src/ITimer.cpp
 src/JSON/DataValue.cpp
 src/JSON/INode.cpp
 src/JSON/INodeImpl.cpp
