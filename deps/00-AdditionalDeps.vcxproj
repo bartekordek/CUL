@@ -49,10 +49,10 @@
     <ClInclude Include="tiny-image\src\tinyimage.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{71DCD617-001F-4F0E-8054-5A99CC1D78D3}</ProjectGuid>
+    <ProjectGuid>{CF814454-DA46-3AA5-B88A-F3FCC5528153}</ProjectGuid>
     <RootNamespace>PFS</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>AdditionalDeps</ProjectName>
+    <ProjectName>00-AdditionalDeps</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -103,7 +103,7 @@
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>AdditionalDeps</TargetName>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
     <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -121,7 +121,7 @@
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>AdditionalDeps</TargetName>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
     <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
