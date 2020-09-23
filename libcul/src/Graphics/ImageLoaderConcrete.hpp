@@ -29,6 +29,8 @@ private:
 // Deleted
     ImageLoaderConcrete( const ImageLoaderConcrete& arg ) = delete;
     ImageLoaderConcrete& operator=( const ImageLoaderConcrete& rhv ) = delete;
+    ImageLoaderConcrete( ImageLoaderConcrete&& arg ) = delete;
+    ImageLoaderConcrete& operator=( ImageLoaderConcrete&& rhv ) = delete;
 };
 
 NAMESPACE_END( Graphics )
