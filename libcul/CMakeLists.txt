@@ -1,12 +1,11 @@
 #cmake -DCMAKE_BUILD_TYPE=Debug
 cmake_minimum_required(VERSION 3.0.0)
 
-project(cul LANGUAGES CXX)
-
 set(CMAKE_CXX_STANDARD 17)
 set(EXEC cul)
+project(${EXEC} LANGUAGES CXX)
 
-include_directories( SYSTEM "../deps/spdlog/include" )
+
 include_directories( SYSTEM "../deps/boost/assert/include" )
 include_directories( SYSTEM "../deps/boost/circular_buffer/include" )
 include_directories( SYSTEM "../deps/boost/concept_check/include" )
@@ -20,22 +19,25 @@ include_directories( SYSTEM "../deps/boost/throw_exception/include" )
 include_directories( SYSTEM "../deps/boost/type_index/include" )
 include_directories( SYSTEM "../deps/boost/type_traits/include" )
 include_directories( SYSTEM "../deps/boost/variant/include" )
-include_directories( SYSTEM "../deps/tiny-image/src" )
+include_directories( SYSTEM "../deps/rapidjson/include" )
+include_directories( SYSTEM "../deps/spdlog/include" )
 include_directories( SYSTEM "../deps/stb" )
+include_directories( SYSTEM "../deps/tiny-image/src" )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../deps ${CMAKE_CURRENT_BINARY_DIR}/../deps)
 
 if( MSVC )
     # warning level 4 and all warnings as errors
     add_compile_options( /W4 /WX )
+    add_compile_options( /MP )
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 else()
     # lots of warnings and all warnings as errors
-    #add_compile_options(-Wall -Wextra -pedantic -Werror)
     add_compile_options( -Wall -Wextra -pedantic -Werror )
     add_definitions( -Wfatal-errors )
 endif()
 
-add_library( cul SHARED
+add_library( ${EXEC} SHARED
     src/Color.cpp
     src/CSVFile.cpp
     src/FileCompileTest.cpp
@@ -203,10 +205,11 @@ set( HEADERS_PUBLIC
     inc/CUL/Windows/INCLUDE_dwrite.hpp
 )
 
-if( MSVC )
+if (MSVC)
+    target_link_libraries( ${EXEC} AdditionalDeps )
 else()
+    target_link_libraries( ${EXEC} AdditionalDeps stdc++fs )
 endif()
-target_link_libraries( ${EXEC} stdc++fs )
 
 target_include_directories(${EXEC} PUBLIC inc)
 target_include_directories(${EXEC} PRIVATE src)

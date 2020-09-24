@@ -5,6 +5,7 @@ project(cul LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
 set(EXEC AdditionalDeps)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_library(AdditionalDeps STATIC
     stb/deprecated/stb_image.c
@@ -38,7 +39,11 @@ set(HEADERS_PUBLIC
     tiny-image/src/tinyimage.h
 )
 
-target_link_libraries( ${EXEC} stdc++fs )
+if (MSVC)
+    target_link_libraries( ${EXEC} )
+else()
+    target_link_libraries( ${EXEC} stdc++fs )
+endif()
 
 target_include_directories(${EXEC} PUBLIC stb tiny-image/src/)
 target_include_directories(${EXEC} PRIVATE src)
