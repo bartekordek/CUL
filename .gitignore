@@ -2,6 +2,7 @@
 *.bin
 *.check_cache
 *.cmake
+*.dir*
 *.exp
 *.idb
 *.ilk
@@ -11,6 +12,7 @@
 *.ipdb
 *.keep
 *.lastcodeanalysisissucceded
+*.lib
 *.log
 *.make
 *.marks
