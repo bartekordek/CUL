@@ -109,25 +109,25 @@ void ColorS::setAlphaF( cfloat v )
 void ColorS::setRCU( cuint8_t r )
 {
     m_colorF[static_cast<size_t>( ColorComponent::RED )] = static_cast<float>( r ) / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::RED )] = static_cast<float>( r );
+    m_colorUC[static_cast<size_t>( ColorComponent::RED )] = static_cast<unsigned char>( r );
 }
 
 void ColorS::setGCU( cuint8_t g )
 {
     m_colorF[static_cast<size_t>( ColorComponent::GREEN )] = static_cast<float>( g ) / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::GREEN )] = static_cast<float>( g );
+    m_colorUC[static_cast<size_t>( ColorComponent::GREEN )] = static_cast<unsigned char>( g );
 }
 
 void ColorS::setBCU( cuint8_t b )
 {
     m_colorF[static_cast<size_t>( ColorComponent::BLUE )] = static_cast<float>( b ) / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::BLUE )] = static_cast<float>( b );
+    m_colorUC[static_cast<size_t>( ColorComponent::BLUE )] = static_cast<unsigned char>( b );
 }
 
 void ColorS::setAlphaCU( cuint8_t a )
 {
     m_colorF[static_cast<size_t>( ColorComponent::ALPHA )] = static_cast<float>( a ) / 255.0f;
-    m_colorUC[static_cast<size_t>( ColorComponent::ALPHA )] = static_cast<float>( a );
+    m_colorUC[static_cast<size_t>( ColorComponent::ALPHA )] = static_cast<unsigned char>( a );
 }
 
 void ColorS::setFloat( const float red, const float green, const float blue, const float alpha )
@@ -141,25 +141,25 @@ void ColorS::setFloat( const float red, const float green, const float blue, con
 void ColorS::setRed( const float val )
 {
     m_colorF[static_cast<size_t>( ColorComponent::RED )] = val;
-    m_colorUC[static_cast<size_t>( ColorComponent::RED )] = val * 255;
+    m_colorUC[static_cast<size_t>( ColorComponent::RED )] = static_cast<CDataType>( val * 255 );
 }
 
 void ColorS::setGreen( const float val )
 {
     m_colorF[static_cast<size_t>( ColorComponent::GREEN )] = val;
-    m_colorUC[static_cast<size_t>( ColorComponent::GREEN )] = val * 255;
+    m_colorUC[static_cast<size_t>( ColorComponent::GREEN )] = static_cast<CDataType>( val * 255 );
 }
 
 void ColorS::setBlue( const float val )
 {
     m_colorF[static_cast<size_t>( ColorComponent::BLUE )] = val;
-    m_colorUC[static_cast<size_t>( ColorComponent::BLUE )] = val * 255;
+    m_colorUC[static_cast<size_t>( ColorComponent::BLUE )] = static_cast<CDataType>( val * 255 );
 }
 
 void ColorS::setAlpha( const float val )
 {
     m_colorF[static_cast<size_t>( ColorComponent::ALPHA )] = val;
-    m_colorUC[static_cast<size_t>( ColorComponent::ALPHA )] = val * 255;
+    m_colorUC[static_cast<size_t>( ColorComponent::ALPHA )] = static_cast<CDataType>( val * 255 );
 }
 
 ColorS::~ColorS()
