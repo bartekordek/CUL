@@ -334,7 +334,7 @@ Angle::operator double() const
 
 Angle::operator int() const
 {
-    return m_valueDeg;
+    return static_cast<int>( m_valueDeg );
 }
 
 double CUL::MATH::radian2degree( const double radian )
@@ -354,5 +354,5 @@ float CUL::MATH::radian2degree( const float radian )
 
 float CUL::MATH::degree2radian( const float degree )
 {
-    return degree * CUL::MATH::UTIL::Constants::PI / 180.0f;
+    return degree * static_cast<float>( CUL::MATH::UTIL::Constants::PI ) / 180.0f;
 }
