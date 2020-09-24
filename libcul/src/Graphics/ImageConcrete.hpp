@@ -37,6 +37,8 @@ private:
 private: // Deleted
     ImageConcrete( const ImageConcrete& arg ) = delete;
     ImageConcrete& operator=( const ImageConcrete& rhv ) = delete;
+    ImageConcrete( ImageConcrete&& arg ) = delete;
+    ImageConcrete& operator=( ImageConcrete&& rhv ) = delete;
 };
 
 #ifdef _MSC_VER
