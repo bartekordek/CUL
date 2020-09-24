@@ -24,6 +24,15 @@ Path::Path( const Path& path ):
     normalizePaths();
 }
 
+Path::Path( Path&& path ):
+    m_fullPath( std::move( path.m_fullPath ) ),
+    m_extension( std::move( path.m_extension ) ),
+    m_baseName( std::move( path.m_baseName ) ),
+    m_dir( std::move( path.m_dir ) )
+{
+    normalizePaths();
+}
+
 Path::Path( CsStr& path ):
     m_fullPath( path )
 {
@@ -44,8 +53,28 @@ Path::Path( const char* r ):
     preparePaths();
 }
 
-Path::~Path()
+Path& Path::operator=( const Path& path )
 {
+    if( this != &path )
+    {
+        m_fullPath = path.m_fullPath;
+        m_extension = path.m_extension;
+        m_baseName = path.m_baseName;
+        m_dir = path.m_dir;
+    }
+    return *this;
+}
+
+Path& Path::operator=( Path&& path )
+{
+    if( this != &path )
+    {
+        m_fullPath = std::move( path.m_fullPath );
+        m_extension = std::move( path.m_extension );
+        m_baseName = std::move( path.m_baseName );
+        m_dir = std::move( path.m_dir );
+    }
+    return *this;
 }
 
 Path& Path::operator=( CsStr& path )
@@ -206,4 +235,8 @@ const Path CULLib_API CUL::FS::operator+( const Path& lval, const Path& rval )
     Path result( lval );
     result += rval;
     return result;
+}
+
+Path::~Path()
+{
 }

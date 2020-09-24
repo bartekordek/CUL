@@ -13,9 +13,13 @@ class CULLib_API Path
 public:
     Path();
     Path( const Path& path );
+    Path( Path&& path );
     Path( CsStr& path );
     Path( const std::string& path );
     Path( const char* r );
+
+    Path& operator=( const Path& path );
+    Path& operator=( Path&& path );
 
     Path& operator=( CsStr& r );
     Path& operator=( const char* r );
@@ -63,6 +67,7 @@ bool CULLib_API operator<( const Path& lhv, const Path& rhv );
 const Path CULLib_API operator+( const Path& lval, const Path& rval );
 NAMESPACE_END( FS )
 NAMESPACE_END( CUL )
+
 #if _MSC_VER
 #pragma warning( pop )
 #endif
