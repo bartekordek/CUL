@@ -26,6 +26,7 @@ enum class ColorComponent: short
 
 using cfloat = const float;
 using cuint8_t = const uint8_t;
+using CDataType = unsigned char;
 
 class CULLib_API ColorS final
 {
@@ -74,7 +75,7 @@ private:
     void setAlpha( const float val );
 
     std::array<float, 4 > m_colorF = { 0.0f, 0.0f, 0.0f, 0.0f };
-    std::array<unsigned char, 4 > m_colorUC = { 0, 0, 0, 0 };
+    std::array<CDataType, 4 > m_colorUC = { 0, 0, 0, 0 };
 
 };
 NAMESPACE_END( Graphics )
