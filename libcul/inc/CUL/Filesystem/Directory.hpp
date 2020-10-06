@@ -5,10 +5,11 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
 
-class CULLib_API Directory final: public IFile
+class CULLib_API Directory final:
+    public IFile
 {
 public:
-    Directory();
+    Directory( CsStr& path );
 
     const Path& getPath() const override;
     void changePath( const Path& newPath ) override;

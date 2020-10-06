@@ -18,9 +18,6 @@ using IRawImagePtr = std::shared_ptr<Graphics::IImage>;
 class CULLib_API FileFactory
 {
 public:
-    static IFile* createRegularFileRawPtr();
-    static ICSVFile* createCSVFileRawPtr();
-    static JSON::IJSONFile* createJSONFileRawPtr();
     static Graphics::IImage* createRawImageRawPtr();
 
     static IFile* createFileFromPath( const Path& path );

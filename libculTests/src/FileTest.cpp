@@ -1,48 +1,45 @@
 #include "FileTest.hpp"
 
+#include "CUL/Filesystem/FS.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
+
+void FileTest::SetUp()
+{
+    std::cout << "Current dir: " << CUL::FS::FSApi::getCurrentDir() << "\n";
+}
 
 TEST_F( FileTest, fileFileExtistFileReturnsTrue )
 {
-    auto f = CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath );
-    GTEST_ASSERT_EQ( true, f->exists() );
-    delete f;
-    f = nullptr;
+    std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath ) );
+    GTEST_ASSERT_EQ( true, file->exists() );
 }
 
 TEST_F( FileTest, fileFileDontExtistFileReturnsFalse )
 {
-    auto f = CUL::FS::FileFactory::createRegularFileRawPtr( "someNotExistingFile.exe" );
-    GTEST_ASSERT_EQ( false, f->exists() );
-    delete f;
-    f = nullptr;
+    std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( "someNotExistingFile.exe" ) );
+    GTEST_ASSERT_EQ( false, file->exists() );
 }
 
 TEST_F( FileTest, basicFileLoadFirstLine )
 {
-    auto f = CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath );
-    f->load();
-    GTEST_ASSERT_EQ( "Line1", f->firstLine() );
-    delete f;
-    f = nullptr;
+    std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath ) );
+    file->load();
+    GTEST_ASSERT_EQ( "Line1", file->firstLine() );
 }
 
 TEST_F( FileTest, basicFileLoadlastLine )
 {
-    auto f = CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath );
-    f->load();
-    GTEST_ASSERT_EQ( "Line3", f->lastLine() );
-    delete f;
-    f = nullptr;
+    std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath ) );
+    file->load();
+    GTEST_ASSERT_EQ( "Line3", file->lastLine() );
 }
 
 TEST_F( FileTest, loadCachedFileRegular )
 {
-    auto f = CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath );
-    f->load();
-    auto text = f->getAsOneString();
-    delete f;
-    f = nullptr;
+    std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath ) );
+    file->load();
+    auto text = file->getAsOneString();
+    GTEST_ASSERT_NE( "", text );
 }
 
 TEST_F( FileTest, loadRawImage )

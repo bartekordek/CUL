@@ -17,7 +17,7 @@ class JSONFileConcrete final:
     public IJSONFile
 {
 public:
-    JSONFileConcrete();
+    JSONFileConcrete( CsStr& path );
     ~JSONFileConcrete();
 
 protected:

@@ -18,7 +18,7 @@ class CSVFile final:
     public ICSVFile
 {
 public:
-    CSVFile();
+    
     CSVFile( const CSVFile& rhv );
     CSVFile( CsStr& fPath );
     ~CSVFile();
@@ -65,6 +65,10 @@ private:
     Rows m_rows;
     String m_cached;
     bool m_keepLineEndingCharacter = false;
+
+
+// Deleted:
+    CSVFile() = delete;
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

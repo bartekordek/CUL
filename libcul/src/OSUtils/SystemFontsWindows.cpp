@@ -16,10 +16,6 @@ SystemFontsWindows::SystemFontsWindows()
     updateFontFilesList();
 }
 
-SystemFontsWindows::~SystemFontsWindows()
-{
-}
-
 const FontFilesPaths& SystemFontsWindows::getFontFilesPaths()
 {
     return m_fontFilesList;
@@ -68,6 +64,15 @@ CHOOSEFONT ShowSelectFont()
     return cf;
 }
 
+#ifdef _MSC_VER
+// Yes, I know that is a Spectre mitigation.
+// But for now, I let this as TODO, since i don't know
+// How to fix this.
+// TODO
+#pragma warning( push )
+#pragma warning( disable: 5045 )
+#endif
+
 bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
 {
     bool result = false;
@@ -91,11 +96,16 @@ bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
                 result = true;
             }
             delete[] buffer;
+
         }
         ::DeleteDC( hdc );
     }
     return result;
 }
+
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 
 #pragma warning( push, 0 )
 #pragma warning( disable: 4700 )
@@ -133,5 +143,11 @@ void SystemFontsWindows::getWindowsPath()
     FS::Path windowsFonts = windowsPath + "/Fonts";
     m_defaultDirsWithFonts.insert( windowsFonts );
 }
+
+
+SystemFontsWindows::~SystemFontsWindows()
+{
+}
+
 #pragma warning( pop )
 #endif

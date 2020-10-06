@@ -10,10 +10,6 @@ JSONTests::JSONTests()
 {
 }
 
-JSONTests::~JSONTests()
-{
-}
-
 void JSONTests::SetUpTestCase()
 {
 }
@@ -134,4 +130,8 @@ TEST_F( JSONTests, arrayCorrectness )
 
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
     GTEST_ASSERT_EQ( 3, messages->getArray().size() );
+}
+
+JSONTests::~JSONTests()
+{
 }

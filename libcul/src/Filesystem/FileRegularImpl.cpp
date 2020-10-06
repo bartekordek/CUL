@@ -7,14 +7,16 @@
 using namespace CUL::FS;
 using CsStr = const CUL::String;
 
-FileRegularImpl::FileRegularImpl()
+FileRegularImpl::FileRegularImpl( CsStr& path ):
+    IFile( path ),
+    m_path( path )
 {
-    std::cout << "FileRegularImpl::FileRegularImpl() " << this << "\n";
 }
 
 void FileRegularImpl::changePath( const Path& newPath )
 {
     m_path = newPath;
+    IFile::setPath( newPath );
 }
 
 const Path& FileRegularImpl::getPath() const
@@ -111,5 +113,4 @@ const char** FileRegularImpl::getContent() const
 
 FileRegularImpl::~FileRegularImpl()
 {
-    std::cout << "FileRegularImpl::~FileRegularImpl() " << this << "\n";
 }

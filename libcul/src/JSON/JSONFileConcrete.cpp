@@ -5,18 +5,10 @@
 using namespace CUL;
 using namespace JSON;
 
-JSONFileConcrete::JSONFileConcrete():
-    m_fileContents( FS::FileFactory::createRegularFileRawPtr() )
+JSONFileConcrete::JSONFileConcrete( CsStr& path ):
+    IJSONFile( path ),
+    m_fileContents( FS::FileFactory::createRegularFileRawPtr( path ) )
 {
-}
-
-JSONFileConcrete::~JSONFileConcrete()
-{
-    delete m_root;
-    m_root = nullptr;
-
-    delete m_fileContents;
-    m_fileContents = nullptr;
 }
 
 const FS::Path& JSONFileConcrete::getPath() const
@@ -32,6 +24,7 @@ FS::FileType JSONFileConcrete::getType() const
 void JSONFileConcrete::changePath( const FS::Path& newPath )
 {
     m_fileContents->changePath( newPath );
+    IFile::setPath( newPath );
 }
 
 void JSONFileConcrete::reload( Cbool keepLineEndingCharacter )
@@ -151,4 +144,13 @@ INode* JSONFileConcrete::parse(
     }
 
     return nullptr;
+}
+
+JSONFileConcrete::~JSONFileConcrete()
+{
+    delete m_root;
+    m_root = nullptr;
+
+    delete m_fileContents;
+    m_fileContents = nullptr;
 }

@@ -3,7 +3,8 @@
 using namespace CUL;
 using namespace FS;
 
-Directory::Directory()
+Directory::Directory( CsStr& path ):
+    IFile( path )
 {
 }
 
@@ -15,6 +16,7 @@ const Path& Directory::getPath() const
 void Directory::changePath( const Path& newPath )
 {
     m_path = newPath;
+    IFile::setPath( newPath );
 }
 
 //TODO

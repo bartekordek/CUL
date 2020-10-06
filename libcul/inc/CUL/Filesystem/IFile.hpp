@@ -27,7 +27,9 @@ using FileList = std::set<IFile*>;
 class CULLib_API IFile
 {
 public:
-    IFile();
+    IFile( CsStr& fPath );
+
+    void setPath(CsStr& fPath);
 
     virtual const Path& getPath() const = 0;
     bool exists() const;
@@ -54,11 +56,13 @@ public:
     virtual ~IFile();
 
 protected:
+
 private:
     FileList m_fileList;
+    String m_path;
 
 private: // Deleted:
-    IFile( CsStr& fPath ) = delete;
+    IFile() = delete;
     IFile( const IFile& file ) = delete;
     IFile( IFile&& file ) = delete;
     IFile& operator=( CsStr& rPath ) = delete;

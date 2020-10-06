@@ -41,6 +41,7 @@
     <ClCompile Include="src\Graphics\Size3DDMutexed.cpp" />
     <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp" />
     <ClCompile Include="src\JSON\DataValue.cpp" />
+    <ClCompile Include="src\JSON\IJSONFile.cpp" />
     <ClCompile Include="src\JSON\INodeImpl.cpp" />
     <ClCompile Include="src\Log\ILogContainer.cpp" />
     <ClCompile Include="src\Log\LoggerSimpleStandardOutput.cpp" />

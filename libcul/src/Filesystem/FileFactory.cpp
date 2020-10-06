@@ -41,38 +41,20 @@ IFile* FileFactory::createFileFromPath( const Path& path )
 
 IFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
-    auto file = createRegularFileRawPtr();
-    file->changePath( path );
+    auto file = new FileRegularImpl( path.getPath() );
     return file;
-}
-
-IFile* FileFactory::createRegularFileRawPtr()
-{
-    return new FileRegularImpl();
 }
 
 ICSVFile* FileFactory::createCSVFileRawPtr( const Path& path )
 {
-    auto csvFile = createCSVFileRawPtr();
-    csvFile->changePath( path );
+    auto csvFile = new CSVFile( path );
     return csvFile;
-}
-
-ICSVFile* FileFactory::createCSVFileRawPtr()
-{
-    return new CSVFile();
 }
 
 IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
 {
-    auto result = createJSONFileRawPtr();
-    result->changePath( path );
+    auto result = new JSON::JSONFileConcrete( path );
     return result;
-}
-
-IJSONFile* FileFactory::createJSONFileRawPtr()
-{
-    return new JSON::JSONFileConcrete();
 }
 
 //TODO

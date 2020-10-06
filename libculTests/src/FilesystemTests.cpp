@@ -2,6 +2,7 @@
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/Filesystem/FS.hpp"
 #include "CUL/Log/ILogContainer.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 using Path = CUL::FS::Path;
 
@@ -52,7 +53,6 @@ TEST_F( FilesystemTests, FileNotExist )
 
 TEST_F( FilesystemTests, listFilesCount )
 {
-    auto directory = CUL::FS::FSApi::getDirectory( "FSTEST" );
+    std::unique_ptr<CUL::FS::IFile> directory( CUL::FS::FSApi::getDirectory( "FSTEST" ) );
     ASSERT_EQ( 4, directory->getChildList().size() );
-    delete directory;
 }

@@ -18,7 +18,7 @@ class FileRegularImpl final:
     public IFile
 {
 public:
-    FileRegularImpl();
+    FileRegularImpl( CsStr& path );
     ~FileRegularImpl();
 
 protected:

@@ -258,6 +258,9 @@
     <ClCompile Include="src\GenericUtils\IConfigFileConcrete.cpp">
       <Filter>src\GenericUtils</Filter>
     </ClCompile>
+    <ClCompile Include="src\JSON\IJSONFile.cpp">
+      <Filter>src\JSON</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CSVFile.hpp">

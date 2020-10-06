@@ -4,9 +4,15 @@
 using namespace CUL;
 using namespace FS;
 
-IFile::IFile()
+IFile::IFile( CsStr& fPath ):
+    m_path( fPath )
 {
-    std::cout << "IFile::IFile() " << this << "\n";
+    std::cout << "IFile::IFile(),  path: " << fPath << "\n";
+}
+
+void IFile::setPath( CsStr& fPath )
+{
+    m_path = fPath;
 }
 
 bool IFile::exists() const
@@ -37,7 +43,7 @@ bool IFile::operator<( const IFile* arg ) const
 
 IFile::~IFile()
 {
-    std::cout << "IFile::~IFile() " << this << "\n";
+    std::cout << "IFile::~IFile(), path: " << m_path << "\n";
     for( const auto& child: m_fileList )
     {
         delete child;

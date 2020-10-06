@@ -9,7 +9,7 @@ class CULLib_API ICSVFile:
     public IFile
 {
 public:
-    ICSVFile();
+    ICSVFile( CsStr& path );
 
     virtual ~ICSVFile();
 

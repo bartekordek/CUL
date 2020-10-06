@@ -15,21 +15,20 @@ protected:
     {
     }
 
-    virtual ~FileTest()
+    ~FileTest()
     {
     }
 
-    virtual void SetUp()
-    {
-    }
+    void SetUp() override;
 
-    virtual void TearDown()
+    void TearDown() override
     {
     }
 
     CUL::String dummyFilePath = "../media/Dummy.txt";
     CUL::String dummyImage = "../media/pikaczu.png";
 };
+
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif

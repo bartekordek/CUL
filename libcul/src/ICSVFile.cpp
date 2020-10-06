@@ -2,7 +2,8 @@
 
 using namespace CUL::FS;
 
-ICSVFile::ICSVFile()
+ICSVFile::ICSVFile( CsStr& path ):
+    IFile( path )
 {
 }
 

@@ -10,11 +10,11 @@ class CULLib_API IJSONFile:
     public FS::IFile
 {
 public:
-    IJSONFile() = default;
+    IJSONFile( CsStr& path );
 
     virtual INode* getRoot() const = 0;
 
-    virtual ~IJSONFile() = default;
+    virtual ~IJSONFile();
 
 protected:
 private:

@@ -35,8 +35,7 @@ String FSApi::getCurrentDir()
 
 IFile* FSApi::getDirectory( const Path& directory )
 {
-    Directory* result = new Directory();
-    result->changePath( directory );
+    Directory* result = new Directory( directory );
     FsPath directoryBf( directory.getPath().cStr() );
     using DI = DirectoryIterator;
     DI end;

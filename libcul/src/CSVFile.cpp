@@ -4,13 +4,9 @@
 using namespace CUL;
 using namespace FS;
 
-CSVFile::CSVFile():
-    ICSVFile()
-{
-}
 
-CSVFile::CSVFile( const CSVFile & rhv ):
-    ICSVFile(),
+CSVFile::CSVFile( const CSVFile& rhv ):
+    ICSVFile( rhv.m_path ),
     m_delimeter( rhv.m_delimeter ),
     m_path( rhv.m_path ),
     m_rows( rhv.m_rows ),
@@ -20,11 +16,8 @@ CSVFile::CSVFile( const CSVFile & rhv ):
 }
 
 CSVFile::CSVFile( CsStr& fPath ):
+    ICSVFile( fPath ),
     m_path( fPath )
-{
-}
-
-CSVFile::~CSVFile()
 {
 }
 
@@ -37,6 +30,7 @@ CSVFile& CSVFile::operator=( const CSVFile& rhv )
         m_rows = rhv.m_rows;
         m_cached = rhv.m_cached;
         m_keepLineEndingCharacter = rhv.m_keepLineEndingCharacter;
+        IFile::setPath( rhv.m_path );
     }
     return *this;
 }
@@ -44,6 +38,7 @@ CSVFile& CSVFile::operator=( const CSVFile& rhv )
 CSVFile& CSVFile::operator=( CsStr& rPath )
 {
     changePath( rPath );
+    IFile::setPath( rPath );
     return *this;
 }
 
@@ -211,4 +206,9 @@ void CSVFile::fileContainsQuotationMarks( const bool containsQuotationMarks )
 const char** CSVFile::getContent() const
 {
     return nullptr;//TODO
+}
+
+
+CSVFile::~CSVFile()
+{
 }
