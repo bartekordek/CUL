@@ -31,51 +31,63 @@ using CDataType = unsigned char;
 class CULLib_API ColorS final
 {
 public:
-    ColorS();
+    explicit ColorS();
 
-    ColorS(
+    explicit ColorS( const ColorE colorE );
+
+    explicit ColorS(
         cfloat rr,
         cfloat gg,
         cfloat bb,
         cfloat aalpha = 0.0f );
 
-    ColorS( const ColorE& color );
-
     ColorS& operator=( const ColorE color );
+
 
     float getRF() const;
     float getGF() const;
     float getBF() const;
     float getAF() const;
 
-    uint8_t getRUI() const;
-    uint8_t getGUI() const;
-    uint8_t getBUI() const;
-    uint8_t getAUI() const;
+    CDataType getRUI() const;
+    CDataType getGUI() const;
+    CDataType getBUI() const;
+    CDataType getAUI() const;
 
     void setRF( cfloat r );
     void setGF( cfloat g );
     void setBF( cfloat b );
     void setAlphaF( cfloat alpha );
 
-    void setRCU( cuint8_t r );
-    void setGCU( cuint8_t g );
-    void setBCU( cuint8_t b );
-    void setAlphaCU( cuint8_t alpha );
+    void setRCU( CDataType r );
+    void setGCU( CDataType g );
+    void setBCU( CDataType b );
+    void setAlphaCU( CDataType alpha );
 
     ~ColorS();
 
 protected:
 private:
     void setFromEnum( const ColorE& color );
-    void setFloat( const float red, const float green, const float blue, const float alpha );
-    void setRed( const float val );
-    void setGreen( const float val );
-    void setBlue( const float val );
-    void setAlpha( const float val );
+    void setFloat(
+        cfloat red,
+        cfloat green,
+        cfloat blue,
+        cfloat alpha );
+    void setRed( cfloat val );
+    void setGreen( cfloat val );
+    void setBlue( cfloat val );
+    void setAlpha( cfloat val );
 
-    std::array<float, 4 > m_colorF = { 0.0f, 0.0f, 0.0f, 0.0f };
-    std::array<CDataType, 4 > m_colorUC = { 0, 0, 0, 0 };
+    float m_redF = 0.0f;
+    float m_greenF = 0.0f;
+    float m_blueF = 0.0f;
+    float m_alphaF = 0.0f;
+
+    CDataType m_redUC = 0;
+    CDataType m_greenUC = 0;
+    CDataType m_blueUC = 0;
+    CDataType m_alphaUC = 0;
 
 };
 NAMESPACE_END( Graphics )
