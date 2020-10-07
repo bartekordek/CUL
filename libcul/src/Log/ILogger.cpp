@@ -7,3 +7,7 @@ ILogger* ILogger::createSimpleStandardOutputLogger()
 {
     return new LoggerSimpleStandardOutput();
 }
+
+ILogger::~ILogger()
+{
+}

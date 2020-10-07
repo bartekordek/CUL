@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CULInterface.cpp" />
     <ClCompile Include="src\Filesystem\Directory.cpp" />
     <ClCompile Include="src\Filesystem\FSUtils.cpp" />
     <ClCompile Include="src\GenericUtils\ArgumentsPairConcrete.cpp" />
@@ -84,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\CUL\CUL.hpp" />
+    <ClInclude Include="inc\CUL\CULInterface.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\Directory.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\FileFactory.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\FS.hpp" />

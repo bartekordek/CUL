@@ -8,16 +8,13 @@ using namespace LOG;
 
 LoggerSimpleStandardOutput::LoggerSimpleStandardOutput()
 {
+    log( "Iniatializing LoggerSimpleStandardOutput... Done." );
 }
 
 LoggerSimpleStandardOutput::~LoggerSimpleStandardOutput()
 {
+    log( "Destroying LoggerSimpleStandardOutput... Done." );
 }
-
-#ifdef _MSC_VER
-#pragma warning( push )
-#pragma warning( disable: 4189 )
-#endif
 
 void LoggerSimpleStandardOutput::log(
     const String& text,
@@ -40,7 +37,3 @@ void LoggerSimpleStandardOutput::log(
         spdlog::info( message );
     }
 }
-
-#ifdef _MSC_VER
-#pragma warning( pop )
-#endif

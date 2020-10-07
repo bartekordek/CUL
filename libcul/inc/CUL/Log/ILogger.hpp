@@ -19,7 +19,7 @@ class CULLib_API ILogger
 {
 public:
     ILogger() = default;
-    virtual ~ILogger() = default;
+    virtual ~ILogger();
 
     virtual void log(
         const String& text,

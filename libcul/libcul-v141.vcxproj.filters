@@ -261,6 +261,9 @@
     <ClCompile Include="src\JSON\IJSONFile.cpp">
       <Filter>src\JSON</Filter>
     </ClCompile>
+    <ClCompile Include="src\CULInterface.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CSVFile.hpp">
@@ -646,6 +649,9 @@
     </ClInclude>
     <ClInclude Include="src\GenericUtils\IConfigFileConcrete.hpp">
       <Filter>src\GenericUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\CULInterface.hpp">
+      <Filter>inc\CUL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
