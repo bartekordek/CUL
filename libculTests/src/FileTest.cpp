@@ -44,7 +44,7 @@ TEST_F( FileTest, loadCachedFileRegular )
 
 TEST_F( FileTest, loadRawImage )
 {
-    std::unique_ptr<CUL::Graphics::IImage> f( CUL::FS::FileFactory::createRawImageRawPtr
+    auto f( CUL::FS::FileFactory::createRawImageRawPtr
 ( dummyImage ) );
     GTEST_ASSERT_NE( nullptr, f.get() );
     GTEST_ASSERT_NE( nullptr, f->getData() );

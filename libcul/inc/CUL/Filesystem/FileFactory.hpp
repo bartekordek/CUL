@@ -24,7 +24,7 @@ public:
     static IFile* createRegularFileRawPtr( const Path& path );
     static ICSVFile* createCSVFileRawPtr( const Path& path );
     static JSON::IJSONFile* createJSONFileRawPtr( const Path& path );
-    static Graphics::IImage* createRawImageRawPtr( const Path& path );
+    static IRawImagePtr createRawImageRawPtr( const Path& path );
 protected:
 private:
 };

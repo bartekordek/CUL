@@ -29,7 +29,7 @@ class CULLib_API IFile
 public:
     IFile( CsStr& fPath );
 
-    void setPath(CsStr& fPath);
+    void setPath( CsStr& fPath );
 
     virtual const Path& getPath() const = 0;
     bool exists() const;

@@ -57,11 +57,11 @@ IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
     return result;
 }
 
-//TODO
-CUL::Graphics::IImage* FileFactory::createRawImageRawPtr( const Path& path )
+CUL::FS::IRawImagePtr FileFactory::createRawImageRawPtr( const Path& path )
 {
     std::unique_ptr< Graphics::IImageLoader> il( Graphics::IImageLoader::createConcrete( nullptr ) );
-    return il->loadImage( path );
+    CUL::FS::IRawImagePtr result( il->loadImage( path ) );
+    return result;
 }
 
 // TODO
