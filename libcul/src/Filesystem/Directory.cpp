@@ -3,7 +3,7 @@
 using namespace CUL;
 using namespace FS;
 
-Directory::Directory( CsStr& path ):
+Directory::Directory( const String& path ):
     IFile( path )
 {
 }
@@ -34,17 +34,17 @@ void Directory::unload()
 {
 }
 
-CsStr& Directory::firstLine() const
+const String& Directory::firstLine() const
 {
     return m_value;
 }
 
-CsStr& Directory::lastLine() const
+const String& Directory::lastLine() const
 {
     return m_value;
 }
 
-CsStr& Directory::getAsOneString() const
+const String& Directory::getAsOneString() const
 {
     return m_value;
 }

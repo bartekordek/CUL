@@ -18,7 +18,7 @@ class FileRegularImpl final:
     public IFile
 {
 public:
-    FileRegularImpl( CsStr& path );
+    FileRegularImpl( const String& path );
     ~FileRegularImpl();
 
 protected:
@@ -29,9 +29,9 @@ private:
     void reload( Cbool keepLineEndingCharacter = false ) override;
     void load( Cbool keepLineEndingCharacter = false ) override;
     void unload() override;
-    CsStr& firstLine() const override;
-    CsStr& lastLine() const override;
-    CsStr& getAsOneString() const override;
+    const String& firstLine() const override;
+    const String& lastLine() const override;
+    const String& getAsOneString() const override;
     const char** getContent() const override;
     unsigned getLinesCount() const override;
     void cacheFile();

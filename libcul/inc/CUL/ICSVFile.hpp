@@ -9,16 +9,16 @@ class CULLib_API ICSVFile:
     public IFile
 {
 public:
-    ICSVFile( CsStr& path );
+    ICSVFile( const String& path );
 
     virtual ~ICSVFile();
 
     virtual bool checkIfFileIsAllRight() const = 0;
     virtual unsigned rowsCount() const = 0;
     virtual unsigned colsCount() const = 0;
-    virtual CsStr& getVal( Cunt row, Cunt col ) const = 0;
-    virtual void setVal( CsStr& val, Cunt row, Cunt col ) = 0;
-    virtual void setDelimeter( CsStr& delimeter ) = 0;
+    virtual const String& getVal( Cunt row, Cunt col ) const = 0;
+    virtual void setVal( const String& val, Cunt row, Cunt col ) = 0;
+    virtual void setDelimeter( const String& delimeter ) = 0;
     virtual void fileContainsQuotationMarks( Cbool containsQuotationMarks ) = 0;
 
 protected:

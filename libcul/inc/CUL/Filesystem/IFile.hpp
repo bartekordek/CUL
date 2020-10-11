@@ -27,9 +27,9 @@ using FileList = std::set<IFile*>;
 class CULLib_API IFile
 {
 public:
-    IFile( CsStr& fPath );
+    IFile( const String& fPath );
 
-    void setPath( CsStr& fPath );
+    void setPath( const String& fPath );
 
     virtual const Path& getPath() const = 0;
     bool exists() const;
@@ -38,10 +38,10 @@ public:
     virtual void load( Cbool keepLineEndingCharacter = false ) = 0;
     virtual void unload() = 0;
 
-    virtual CsStr& firstLine() const = 0;
-    virtual CsStr& lastLine() const = 0;
+    virtual const String& firstLine() const = 0;
+    virtual const String& lastLine() const = 0;
 
-    virtual CsStr& getAsOneString() const = 0;
+    virtual const String& getAsOneString() const = 0;
     virtual const char** getContent() const = 0;
 
     virtual unsigned getLinesCount() const = 0;
@@ -65,7 +65,7 @@ private: // Deleted:
     IFile() = delete;
     IFile( const IFile& file ) = delete;
     IFile( IFile&& file ) = delete;
-    IFile& operator=( CsStr& rPath ) = delete;
+    IFile& operator=( const String& rPath ) = delete;
     IFile& operator=( const IFile& file ) = delete;
     IFile& operator=( IFile&& file ) = delete;
 

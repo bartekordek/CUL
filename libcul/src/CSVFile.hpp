@@ -20,11 +20,11 @@ class CSVFile final:
 public:
     
     CSVFile( const CSVFile& rhv );
-    CSVFile( CsStr& fPath );
+    CSVFile( const String& fPath );
     ~CSVFile();
 
     CSVFile& operator=( const CSVFile& rhv );
-    CSVFile& operator=( CsStr& rPath );
+    CSVFile& operator=( const String& rPath );
 
     void changePath( const Path& newPath ) override;
 
@@ -33,8 +33,8 @@ public:
     bool checkIfFileIsAllRight() const override;
     unsigned rowsCount() const override;
     unsigned colsCount() const override;
-    CsStr& getVal( Cunt row, Cunt col ) const override;
-    void setVal( CsStr& val, Cunt row, Cunt col ) override;
+    const String& getVal( Cunt row, Cunt col ) const override;
+    void setVal( const String& val, Cunt row, Cunt col ) override;
 
     FileType getType() const override;
 
@@ -42,12 +42,12 @@ public:
     void load( Cbool keepLineEndingCharacter = false ) override;
     void unload() override;
 
-    CsStr& firstLine() const override;
-    CsStr& lastLine() const override;
+    const String& firstLine() const override;
+    const String& lastLine() const override;
 
-    void setDelimeter( CsStr& delimeter ) override;
+    void setDelimeter( const String& delimeter ) override;
 
-    CsStr& getAsOneString() const override;
+    const String& getAsOneString() const override;
     const char** getContent() const override;
 
     unsigned getLinesCount() const override;
@@ -56,7 +56,7 @@ public:
 
 protected:
 private:
-    void parseLine( CsStr& line );
+    void parseLine( const String& line );
     void cacheFile();
 
     String m_delimeter = ",";

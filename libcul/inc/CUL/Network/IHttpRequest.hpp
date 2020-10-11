@@ -13,13 +13,13 @@ public:
     IHttpRequest();
     virtual ~IHttpRequest();
 
-    virtual void setConnectionAddres( CsStr& adddress ) = 0;
+    virtual void setConnectionAddres( const String& adddress ) = 0;
 
     virtual void connect() = 0;
 
-    virtual void get( CsStr& command ) = 0;
+    virtual void get( const String& command ) = 0;
 
-    virtual CsStr getError() = 0;
+    virtual const String getError() = 0;
 
 protected:
 private:

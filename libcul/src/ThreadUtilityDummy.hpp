@@ -5,7 +5,7 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( ThreadUtils )
 
-void setCurrentThreadNameDummy( CsStr& name );
+void setCurrentThreadNameDummy( const String& name );
 
 NAMESPACE_END( ThreadUtils )
 NAMESPACE_END( CUL )

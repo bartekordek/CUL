@@ -87,7 +87,7 @@ TEST_F( JSONTests, getRootElement )
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
-    GTEST_ASSERT_EQ( "root", rootElement->getName() );
+    GTEST_ASSERT_EQ( CUL::String( "root" ), rootElement->getName().cStr() );
 }
 
 TEST_F( JSONTests, findProperty )
@@ -108,7 +108,7 @@ TEST_F( JSONTests, arraySize )
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
-    GTEST_ASSERT_EQ( "root", rootElement->getName() );
+    GTEST_ASSERT_EQ( CUL::String( "root" ), rootElement->getName().cStr() );
 
     auto messages = rootElement->findChild( "messages" );
     GTEST_ASSERT_NE( nullptr, messages );
@@ -123,7 +123,7 @@ TEST_F( JSONTests, arrayCorrectness )
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
-    GTEST_ASSERT_EQ( "root", rootElement->getName() );
+    GTEST_ASSERT_EQ( CUL::String( "root" ), rootElement->getName().cStr() );
 
     auto messages = rootElement->findChild( "messages" );
     GTEST_ASSERT_NE( nullptr, messages );

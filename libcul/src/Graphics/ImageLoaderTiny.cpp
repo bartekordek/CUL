@@ -15,7 +15,7 @@ IImage* TinyImageLoader::loadImage( const Path& path, Cbool )
 {
     int width = 0, height = 0;
     auto type = TinyImgColorType::TINYIMG_RGB;
-    DataType* rawData = tinyimg_load( path.getPath(),
+    DataType* rawData = tinyimg_load( path.getPath().cStr(),
                                           &width, &height,
                                           type );
 

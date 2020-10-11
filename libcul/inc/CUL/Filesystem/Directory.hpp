@@ -9,16 +9,16 @@ class CULLib_API Directory final:
     public IFile
 {
 public:
-    Directory( CsStr& path );
+    Directory( const String& path );
 
     const Path& getPath() const override;
     void changePath( const Path& newPath ) override;
     void reload( Cbool keepLineEndingCharacter = false ) override;
     void load( Cbool keepLineEndingCharacter = false ) override;
     void unload() override;
-    CsStr& firstLine() const override;
-    CsStr& lastLine() const override;
-    CsStr& getAsOneString() const override;
+    const String& firstLine() const override;
+    const String& lastLine() const override;
+    const String& getAsOneString() const override;
     const char** getContent() const override;
     unsigned int getLinesCount() const override;
     FileType getType() const override;

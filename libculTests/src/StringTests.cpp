@@ -49,14 +49,24 @@ TEST_F( StringTests, clear )
     ASSERT_EQ( "", string );
 }
 
-TEST_F( StringTests, assigmentOperator )
+TEST_F( StringTests, operatorTest )
 {
-    CUL::String string = true;
-    ASSERT_EQ( "1", string );
+    CUL::String string0 = true;
+    std::cout << "string0 = " << string0.cStr() << "\n";
+    ASSERT_EQ( "true", string0 );
 
-    string = 10;
-    ASSERT_EQ( "10", string );
+    CUL::String string1 = 1;
+    std::cout << "string1 = " << string1.cStr() << "\n";
+    ASSERT_EQ( 1, string1 );
 
-    string = -1;
-    ASSERT_EQ( "-1", string );
+    CUL::String string2 = 1u;
+    std::cout << "string2 = " << string2.cStr() << "\n";
+    ASSERT_EQ( 1u, string2 );
+
+    CUL::String string3 = 3.0;
+    std::cout << "string 3 = " << string3.cStr() << "\n";
+
+    CUL::String string4 = 3.0f;
+    std::cout << "string 4 = " << string4.cStr() << "\n";
+
 }

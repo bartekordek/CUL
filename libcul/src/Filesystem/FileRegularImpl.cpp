@@ -5,9 +5,9 @@
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 
 using namespace CUL::FS;
-using CsStr = const CUL::String;
+using String = const CUL::String;
 
-FileRegularImpl::FileRegularImpl( CsStr& path ):
+FileRegularImpl::FileRegularImpl( const String& path ):
     IFile( path ),
     m_path( path )
 {
@@ -69,17 +69,17 @@ void FileRegularImpl::unload()
     m_cached = "";
 }
 
-CsStr& FileRegularImpl::firstLine() const
+const String& FileRegularImpl::firstLine() const
 {
     return rows.front();
 }
 
-CsStr& FileRegularImpl::lastLine() const
+const String& FileRegularImpl::lastLine() const
 {
     return rows.back();
 }
 
-CsStr& FileRegularImpl::getAsOneString() const
+const String& FileRegularImpl::getAsOneString() const
 {
     return m_cached;
 }

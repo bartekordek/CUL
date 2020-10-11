@@ -8,12 +8,12 @@ INodeImpl::INodeImpl()
 {
 }
 
-CsStr& INodeImpl::getName() const
+const String& INodeImpl::getName() const
 {
     return m_name;
 }
 
-void INodeImpl::setName( CsStr& name )
+void INodeImpl::setName( const String& name )
 {
     m_name = name;
 }

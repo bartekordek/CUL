@@ -14,38 +14,38 @@ public:
     Path();
     Path( const Path& path );
     Path( Path&& path );
-    Path( CsStr& path );
+    Path( const String& path );
     Path( const std::string& path );
     Path( const char* r );
 
     Path& operator=( const Path& path );
     Path& operator=( Path&& path );
 
-    Path& operator=( CsStr& r );
+    Path& operator=( const String& r );
     Path& operator=( const char* r );
     Path& operator=( const std::string& rhv );
     Path& operator+=( const Path& rhv );
-    Path& operator+=( CsStr& rhv );
+    Path& operator+=( const String& rhv );
     Path& operator+=( const std::string& rhv );
 
     Path operator+( const Path& rhv );
-    Path operator+( CsStr& rhv );
+    Path operator+( const String& rhv );
     Path operator+( const char* rhv );
 
-    CsStr& getPath() const;
-    CsStr& getExtension() const;
-    CsStr& getBaseName() const;
-    CsStr& getDir() const;
+    const String& getPath() const;
+    const String& getExtension() const;
+    const String& getBaseName() const;
+    const String& getDir() const;
 
     uint64_t getFileSize() const;
 
     bool operator==( const Path& rhv ) const;
 
-    operator CsStr() const;
+    operator const String() const;
 
     bool exists() const;
 
-    static CsStr& getDirSeparator();
+    static const String& getDirSeparator();
 
     virtual ~Path();
 

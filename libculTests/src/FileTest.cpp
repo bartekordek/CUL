@@ -5,7 +5,7 @@
 
 void FileTest::SetUp()
 {
-    std::cout << "Current dir: " << CUL::FS::FSApi::getCurrentDir() << "\n";
+    std::cout << "Current dir: " << CUL::FS::FSApi::getCurrentDir().cStr() << "\n";
 }
 
 TEST_F( FileTest, fileFileExtistFileReturnsTrue )
@@ -24,22 +24,24 @@ TEST_F( FileTest, basicFileLoadFirstLine )
 {
     std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath ) );
     file->load();
-    GTEST_ASSERT_EQ( "Line1", file->firstLine() );
+    auto firstLine = file->firstLine();
+    auto asCstring = firstLine.cStr();
+    GTEST_ASSERT_EQ( CUL::String( "Line1" ), asCstring );
 }
 
 TEST_F( FileTest, basicFileLoadlastLine )
 {
     std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath ) );
     file->load();
-    GTEST_ASSERT_EQ( "Line3", file->lastLine() );
+    GTEST_ASSERT_EQ( CUL::String( "Line3" ), file->lastLine().cStr() );
 }
 
 TEST_F( FileTest, loadCachedFileRegular )
 {
     std::unique_ptr<CUL::FS::IFile> file( CUL::FS::FileFactory::createRegularFileRawPtr( dummyFilePath ) );
     file->load();
-    auto text = file->getAsOneString();
-    GTEST_ASSERT_NE( "", text );
+    auto text = file->getAsOneString().cStr();
+    GTEST_ASSERT_NE( CUL::String( "" ), text );
 }
 
 TEST_F( FileTest, loadRawImage )

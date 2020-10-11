@@ -6,7 +6,7 @@ using namespace FS;
 
 String Path::extensionSeparator = String( "." );
 
-CsStr& Path::getDirSeparator()
+const String& Path::getDirSeparator()
 {
     return extensionSeparator;
 }
@@ -33,7 +33,7 @@ Path::Path( Path&& path ):
     normalizePaths();
 }
 
-Path::Path( CsStr& path ):
+Path::Path( const String& path ):
     m_fullPath( path )
 {
     preparePaths();
@@ -77,7 +77,7 @@ Path& Path::operator=( Path&& path )
     return *this;
 }
 
-Path& Path::operator=( CsStr& path )
+Path& Path::operator=( const String& path )
 {
     if( m_fullPath != path )
     {
@@ -97,7 +97,7 @@ Path& Path::operator=( const char* r )
     return *this;
 }
 
-Path& Path::operator=( const std::string & rhv )
+Path& Path::operator=( const std::string& rhv )
 {
     if( m_fullPath != rhv )
     {
@@ -114,7 +114,7 @@ Path& Path::operator+=( const Path& rhv )
     return *this;
 }
 
-Path& Path::operator+=( CsStr& rhv )
+Path& Path::operator+=( const String& rhv )
 {
     m_fullPath = m_fullPath + rhv;
     preparePaths();
@@ -135,7 +135,7 @@ Path Path::operator+( const Path & rhv )
     return result;
 }
 
-Path Path::operator+( CsStr& rhv )
+Path Path::operator+( const String& rhv )
 {
     Path result = *this;
     result += rhv;
@@ -149,22 +149,22 @@ Path Path::operator+( const char* rhv )
     return result;
 }
 
-CsStr& Path::getPath() const
+const String& Path::getPath() const
 {
     return m_fullPath;
 }
 
-CsStr& Path::getExtension() const
+const String& Path::getExtension() const
 {
     return m_extension;
 }
 
-CsStr& Path::getBaseName() const
+const String& Path::getBaseName() const
 {
     return m_baseName;
 }
 
-CsStr& Path::getDir() const
+const String& Path::getDir() const
 {
     return m_dir;
 }
@@ -184,7 +184,7 @@ bool Path::operator==( const Path& rhv ) const
     return m_fullPath == rhv.m_fullPath;
 }
 
-Path::operator CsStr() const
+Path::operator const String() const
 {
     return m_fullPath;
 }

@@ -16,43 +16,39 @@ class StringImpl;
 class CULLib_API String final
 {
 public:
-    String();
-    String( const char* inputString );
-    String( const unsigned char* inputString );
-    String( const String& inputString );
-    String( const std::string& inputString );
-    String( const double val );
-    String( const float val );
-    String( const bool val );
-    String( const int val );
-    String( const unsigned val );
+    explicit String();
+    String( const bool arg );
+    String( const char* arg );
+    String( const std::string& arg );
+    String( const double arg );
+    String( const int arg );
+    String( const unsigned int arg );
 
-    String& operator=( const char* someString );
-    String& operator=( const unsigned char* someString );
-    String& operator=( const std::string& someString );
-    String& operator=( const String& someString );
-    String& operator=( const double val );
-    String& operator=( const float val );
-    String& operator=( const bool val );
-    String& operator=( const int val );
-    String& operator+( const unsigned val );
-    String& operator=( const unsigned val );
+    String& operator=( const bool arg );
+    String& operator=( const char* arg );
+    String& operator=( const std::string& arg );
+    String& operator=( const double arg );
+    String& operator=( const int arg );
+    String& operator=( const unsigned arg );
 
-    String operator+( const String& rhv );
-    String& operator+=( const String& rhv );
+    String operator+( const String& arg ) const;
 
-    bool operator!=( const char* rhv ) const;
-    bool operator!=( const std::string& rhv ) const;
-    bool operator!=( const String& rhv ) const;
+    String& operator+=( const String& arg );
 
-    bool operator==( const char* rhv ) const;
-    bool operator==( const std::string& rhv ) const;
-    bool operator==( const String& rhv ) const;
+    bool operator==( const String& arg ) const;
+    bool operator!=( const String& arg ) const;
 
-    char at( const unsigned int index ) const;
+    bool operator==( const std::string& arg ) const;
+    bool operator!=( const std::string& arg ) const;
 
-    operator const std::string&( ) const;
-    operator const char* ( ) const;
+    bool operator==( const char* arg ) const;
+    bool operator!=( const char* arg ) const;
+
+    bool operator!=( const int arg ) const;
+    bool operator==( const int arg ) const;
+    
+
+    bool operator<( const String& arg ) const;
 
     void toLower();
     void toUpper();
@@ -72,20 +68,15 @@ public:
     void clear();
     bool empty() const;
 
-    static void toLowerS( std::string& inOutString );
-    static void toUpperS( std::string& inOutString );
-
     ~String();
 
 protected:
 private:
-    StringImpl* m_impl = nullptr;
+    std::string m_value;
 };
 
-using CsStr = const String;
-
-CsStr CULLib_API operator+( CsStr& lhv, CsStr& rhv );
-bool CULLib_API operator==( const char* lhv, CsStr& rhv );
-bool CULLib_API operator<( CsStr& lhv, CsStr& rhv );
+String CULLib_API operator+( const char* arg1, const String& arg2 );
+bool CULLib_API operator==( const char* arg1, const String& arg2 );
+bool CULLib_API operator==( const int arg1, const String& arg2 );
 
 NAMESPACE_END( CUL )

@@ -22,7 +22,7 @@ public:
 protected:
 
 private:
-    IImageLoader* getLoader( CsStr& fileExt );
+    IImageLoader* getLoader( const String& fileExt );
 
     std::map<String, std::unique_ptr<IImageLoader>> m_loaders;
 

@@ -127,17 +127,19 @@ void SystemFontsWindows::getWindowsPath()
     LOGFONT LogFont;
     ZeroMemory( &LogFont, sizeof( LogFont ) );
 
-    auto chuj = static_cast<HFONT>( GetStockObject( DEFAULT_GUI_FONT ) );
+    auto defaultGuiFontStockObject = GetStockObject( DEFAULT_GUI_FONT );
+    auto defaultFontName = static_cast<HFONT>(defaultGuiFontStockObject);
     std::vector<char> data;
-    GetFontData1( chuj, data );
+    GetFontData1( defaultFontName, data );
 
     DWORD table;
     DWORD offset;
     PVOID buffer;
     DWORD cjBuffer = 0;
+    
 
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::String( hf ) );
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::String( chuj ) );
+    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::String( defaultFontName ) );
 
     FS::Path windowsPath( windir );
     FS::Path windowsFonts = windowsPath + "/Fonts";

@@ -15,7 +15,7 @@ CSVFile::CSVFile( const CSVFile& rhv ):
 {
 }
 
-CSVFile::CSVFile( CsStr& fPath ):
+CSVFile::CSVFile( const String& fPath ):
     ICSVFile( fPath ),
     m_path( fPath )
 {
@@ -35,7 +35,7 @@ CSVFile& CSVFile::operator=( const CSVFile& rhv )
     return *this;
 }
 
-CSVFile& CSVFile::operator=( CsStr& rPath )
+CSVFile& CSVFile::operator=( const String& rPath )
 {
     changePath( rPath );
     IFile::setPath( rPath );
@@ -64,12 +64,12 @@ unsigned CSVFile::colsCount() const
     return static_cast<unsigned>( m_rows[0].size() );
 }
 
-CsStr& CSVFile::getVal( Cunt row, Cunt col ) const
+const String& CSVFile::getVal( Cunt row, Cunt col ) const
 {
     return m_rows[row][col];
 }
 
-void CSVFile::setVal( CsStr& val, Cunt row, Cunt col )
+void CSVFile::setVal( const String& val, Cunt row, Cunt col )
 {
     m_rows[row][col] = val;
 }
@@ -79,7 +79,7 @@ FileType CSVFile::getType() const
     return FileType::TXT;
 }
 
-void CSVFile::setDelimeter( CsStr& delimeter )
+void CSVFile::setDelimeter( const String& delimeter )
 {
     m_delimeter = delimeter;
 }
@@ -115,7 +115,7 @@ void CSVFile::load( Cbool keepLineEndingCharacter )
     cacheFile();
 }
 
-void CSVFile::parseLine( CsStr& line )
+void CSVFile::parseLine( const String& line )
 {
     Row inRow;//TODO: there is a problem with parsing.
     auto lineCp = line;//huj
@@ -156,12 +156,12 @@ void CSVFile::unload()
     m_rows.clear();
 }
 
-CsStr& CSVFile::firstLine() const
+const String& CSVFile::firstLine() const
 {
     return m_rows.front()[0];
 }
 
-CsStr& CSVFile::lastLine() const
+const String& CSVFile::lastLine() const
 {
     return m_rows.back()[m_rows.size() - 1];
 }
@@ -171,7 +171,7 @@ const Path& CSVFile::getPath() const
     return m_path;
 }
 
-CsStr& CSVFile::getAsOneString() const
+const String& CSVFile::getAsOneString() const
 {
     return m_cached;
 }

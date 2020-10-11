@@ -17,7 +17,7 @@ class JSONFileConcrete final:
     public IJSONFile
 {
 public:
-    JSONFileConcrete( CsStr& path );
+    JSONFileConcrete( const String& path );
     ~JSONFileConcrete();
 
 protected:
@@ -35,10 +35,10 @@ private:
     void load( Cbool keepLineEndingCharacter = false ) override;
     void unload() override;
 
-    CsStr& firstLine() const override;
-    CsStr& lastLine() const override;
+    const String& firstLine() const override;
+    const String& lastLine() const override;
 
-    CsStr& getAsOneString() const override;
+    const String& getAsOneString() const override;
     const char** getContent() const override;
 
     unsigned getLinesCount() const override;

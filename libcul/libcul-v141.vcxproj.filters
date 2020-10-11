@@ -168,9 +168,6 @@
     <ClCompile Include="src\String\String.cpp">
       <Filter>src\String</Filter>
     </ClCompile>
-    <ClCompile Include="src\String\StringImpl.cpp">
-      <Filter>src\String</Filter>
-    </ClCompile>
     <ClCompile Include="src\OSUtils\ISystemFonts.cpp">
       <Filter>src\OSUtils</Filter>
     </ClCompile>
@@ -307,9 +304,6 @@
     </ClInclude>
     <ClInclude Include="src\Video\FPSCounterConcrete.hpp">
       <Filter>src\Video</Filter>
-    </ClInclude>
-    <ClInclude Include="src\String\StringImpl.hpp">
-      <Filter>src\String</Filter>
     </ClInclude>
     <ClInclude Include="src\OSUtils\SystemFontsWindows.hpp">
       <Filter>src\OSUtils</Filter>

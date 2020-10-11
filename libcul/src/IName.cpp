@@ -6,7 +6,7 @@ CUL::IName::IName()
 {
 }
 
-CUL::IName::IName( CsStr& name ):
+CUL::IName::IName( const String& name ):
     m_name( name )
 {
 }
@@ -29,12 +29,12 @@ IName & CUL::IName::operator=( const IName& rhv )
     return *this;
 }
 
-CsStr& CUL::IName::getName() const
+const String& CUL::IName::getName() const
 {
     return m_name;
 }
 
-void CUL::IName::setName( CsStr& name )
+void CUL::IName::setName( const String& name )
 {
     m_name = name;
 }

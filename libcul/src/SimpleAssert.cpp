@@ -5,7 +5,7 @@
 
 using namespace CUL;
 
-void Assert::simple( Cbool val, CsStr& msg )
+void Assert::simple( Cbool val, const String& msg )
 {
     if( 0 == val )
     {

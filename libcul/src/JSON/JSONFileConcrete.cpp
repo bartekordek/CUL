@@ -5,7 +5,7 @@
 using namespace CUL;
 using namespace JSON;
 
-JSONFileConcrete::JSONFileConcrete( CsStr& path ):
+JSONFileConcrete::JSONFileConcrete( const String& path ):
     IJSONFile( path ),
     m_fileContents( FS::FileFactory::createRegularFileRawPtr( path ) )
 {
@@ -46,17 +46,17 @@ void JSONFileConcrete::unload()
     m_root = nullptr;
 }
 
-CsStr& JSONFileConcrete::firstLine() const
+const String& JSONFileConcrete::firstLine() const
 {
     return m_fileContents->firstLine();
 }
 
-CsStr& JSONFileConcrete::lastLine() const
+const String& JSONFileConcrete::lastLine() const
 {
     return m_fileContents->lastLine();
 }
 
-CsStr& JSONFileConcrete::getAsOneString() const
+const String& JSONFileConcrete::getAsOneString() const
 {
     return m_fileContents->getAsOneString();
 }

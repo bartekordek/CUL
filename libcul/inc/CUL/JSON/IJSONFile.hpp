@@ -10,7 +10,7 @@ class CULLib_API IJSONFile:
     public FS::IFile
 {
 public:
-    IJSONFile( CsStr& path );
+    IJSONFile( const String& path );
 
     virtual INode* getRoot() const = 0;
 

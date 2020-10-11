@@ -1,292 +1,248 @@
 #include "CUL/String.hpp"
-#include "String/StringImpl.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 
 using namespace CUL;
 
-using String = CUL::String;
-using Length = CUL::Length;
-using CsStr = CUL::CsStr;
-
-String::String():
-    m_impl( new StringImpl() )
+String::String()
 {
 }
 
-String::String( const char* inputString ) :
-    m_impl( new StringImpl( inputString ) )
+String::String( const bool arg )
 {
+    *this = arg;
 }
 
-String::String( const unsigned char* inputString ) :
-    m_impl( new StringImpl( inputString ) )
+String::String( const char* arg )
 {
+    *this = arg;
 }
 
-String::String( const String& inputString ) :
-    m_impl( new StringImpl( *inputString.m_impl ) )
+String::String( const std::string& arg )
 {
+    *this = arg;
 }
 
-String::String( const std::string& inputString ) :
-    m_impl( new StringImpl( inputString ) )
+String::String( const double arg )
 {
+    *this = arg;
 }
 
-String::String( const double val ) :
-    m_impl( new StringImpl( val ) )
+String::String( const int arg )
 {
+    *this = arg;
 }
 
-String::String( const float val ) :
-    m_impl( new StringImpl( val ) )
+String::String( const unsigned int arg )
 {
+    *this = arg;
 }
 
-String::String( const bool val ) :
-    m_impl( new StringImpl( val ) )
+String& String::operator=( const bool arg )
 {
-}
-
-String::String( const int val ) :
-    m_impl( new StringImpl( val ) )
-{
-}
-
-String::String( const unsigned val ) :
-    m_impl( new StringImpl( val ) )
-{
-}
-
-String::~String()
-{
-    delete m_impl;
-    m_impl = nullptr;
-}
-
-String& String::operator=( const char* someString )
-{
-    *m_impl = someString;
+    if( true == arg )
+    {
+        m_value = "true";
+    }
+    else
+    {
+        m_value = "false";
+    }
     return *this;
 }
 
-String & String::operator=( const unsigned char* someString )
+String& String::operator=( const char* arg )
 {
-    *m_impl = someString;
+    m_value = arg;
     return *this;
 }
 
-String & String::operator=( const std::string& someString )
+String& String::operator=( const std::string& arg )
 {
-    *m_impl = someString;
+    m_value = arg;
     return *this;
 }
 
-String& String::operator=( const String& someString )
+String& String::operator=( const double arg )
 {
-    *m_impl = *someString.m_impl;
+    m_value = std::to_string( arg );
     return *this;
 }
 
-String& String::operator=( const double val )
+String& String::operator=( const int arg )
 {
-    *m_impl = val;
+    m_value = std::to_string( arg );
     return *this;
 }
 
-String& String::operator=( const float val )
+String& String::operator=( const unsigned arg )
 {
-    *m_impl = val;
+    m_value = std::to_string( arg ) + "u";
     return *this;
 }
 
-String& String::operator=( const bool val )
+String String::operator+( const String& arg ) const
 {
-    *m_impl = val;
-    return *this;
-}
-
-String& String::operator=( const int val )
-{
-    *m_impl = val;
-    return *this;
-}
-
-String& String::operator+( const unsigned val )
-{
-    *m_impl + val;
-    return *this;
-}
-
-String& String::operator=( const unsigned val )
-{
-    *m_impl = val;
-    return *this;
-}
-
-String String::operator+( const String & rhv )
-{
-    String result = *this;
-    *result.m_impl += *rhv.m_impl;
+    String result( *this );
+    result.m_value = result.m_value + arg.m_value;
     return result;
 }
 
-String& String::operator+=( const String & rhv )
+String& String::operator+=( const String& arg )
 {
-    *m_impl += *rhv.m_impl;
+    m_value += arg.m_value;
     return *this;
 }
 
-bool String::operator!=( const char * rhv ) const
+bool String::operator==( const String& arg ) const
 {
-    return !operator==( rhv );
+    return m_value == arg.m_value;
 }
 
-bool String::operator!=( const std::string & rhv ) const
+bool String::operator!=( const String& arg ) const
 {
-    return !operator==( rhv );
+    return !operator==( arg );
 }
 
-bool String::operator!=( const String & rhv ) const
+bool String::operator==( const std::string& arg ) const
 {
-    return !operator==( rhv );
+    return m_value == arg;
 }
 
-bool String::operator==( const char * rhv ) const
+bool String::operator!=( const std::string& arg ) const
 {
-    return *m_impl == rhv;
+    return !operator==( arg );
 }
 
-bool String::operator==( const std::string & rhv ) const
+bool String::operator==( const char* arg ) const
 {
-    return *m_impl == rhv;
+    return m_value == arg;
 }
 
-bool String::operator==( const String& rhv ) const
+bool String::operator!=( const char* arg ) const
 {
-    return *m_impl == *rhv.m_impl;
+    return !operator==( arg );
 }
 
-char String::at( const unsigned int index ) const
+bool String::operator!=( const int arg ) const
 {
-    return m_impl->at( index );
+    return !operator==( arg );
 }
 
-
-String::operator const std::string& () const
+bool String::operator==( const int arg ) const
 {
-    return *m_impl;
+    return m_value == std::to_string( arg );
 }
 
-String::operator const char* ( ) const
+bool String::operator<( const String& arg ) const
 {
-    return m_impl->cStr();
+    return m_value < arg.m_value;
 }
 
 void String::toLower()
 {
-    m_impl->toLower();
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable:4244 )
+#endif
+    std::transform(
+        m_value.begin(),
+        m_value.end(),
+        m_value.begin(),
+        ::tolower );
+#if _MSC_VER
+#pragma warning( pop )
+#endif
 }
 
 void String::toUpper()
 {
-    m_impl->toUpper();
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable:4244 )
+#endif
+    std::transform(
+        m_value.begin(),
+        m_value.end(),
+        m_value.begin(),
+        ::toupper );
+#if _MSC_VER
+#pragma warning( pop )
+#endif
 }
 
 bool String::contains( const String& inputString ) const
 {
-    return m_impl->contains( inputString );
+    return m_value.find( inputString.string() ) != std::string::npos;
 }
 
 bool String::contains( const char* inputString ) const
 {
-    return m_impl->contains( inputString );
+    return m_value.find( inputString ) != std::string::npos;
 }
 
 void String::replace( const String& inWhat, const String& inFor )
 {
-    m_impl->replace( inWhat, inFor );
+    auto inWhatPosition = m_value.find( inWhat.string() );
+    while( std::string::npos != inWhatPosition )
+    {
+        m_value.replace( inWhatPosition, inWhat.string().length(), inFor.string() );
+        inWhatPosition = m_value.find( inWhat.string() );
+    }
 }
 
 const std::string& String::string() const
 {
-    return m_impl->string();
+    return m_value;
 }
 
 std::string& String::string()
 {
-    return m_impl->string();
+    return m_value;
 }
 
 const char* String::cStr() const
 {
-    return m_impl->cStr();
+    return m_value.c_str();
 }
 
 Length String::length() const
 {
-    return m_impl->length();
+    return Length();
 }
 
 Length String::capacity() const
 {
-    return m_impl->capacity();
+    return Length();
 }
 
 void String::clear()
 {
-    m_impl->clear();
+    m_value.clear();
 }
 
 bool String::empty() const
 {
-    return m_impl->empty();
+    return m_value.empty();
 }
 
-void String::toLowerS( std::string& inOutString )
+String::~String()
 {
-#if _MSC_VER
-    __pragma( warning( push ) ) \
-        __pragma( warning( disable:4244 ) )
-#endif
-        std::transform(
-        inOutString.begin(),
-        inOutString.end(),
-        inOutString.begin(),
-        ::tolower );
-#if _MSC_VER
-    __pragma( warning( pop ) )
-#endif
 }
 
-void String::toUpperS( std::string& inOutString )
+String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )
 {
-#if _MSC_VER
-    __pragma( warning( push ) ) \
-        __pragma( warning( disable:4244 ) )
-#endif
-        std::transform(
-        inOutString.begin(),
-        inOutString.end(),
-        inOutString.begin(),
-        ::toupper );
-#if _MSC_VER
-    __pragma( warning( pop ) )
-#endif
-}
-
-CsStr CUL::operator+( CsStr& lhv, CsStr& rhv )
-{
-    CsStr result( lhv.string() + rhv.string() );
+    String left( arg1 );
+    String result = left + arg2;
+   
     return result;
 }
 
-bool CUL::operator==( const char* lhv, CsStr& rhv )
+bool CULLib_API CUL::operator==( const char* arg1, const String& arg2 )
 {
-    return rhv == lhv;
+    return arg2 == arg1;
 }
 
-bool CUL::operator<( CsStr& lhv, CsStr& rhv )
+bool CULLib_API CUL::operator==( const int arg1, const String& arg2 )
 {
-    return lhv.string() < rhv.string();
+    return arg2 == arg1;
 }

@@ -218,18 +218,18 @@ INode::INode( const String& name, const char* value ):
     setValue( value );
 }
 
-INode::INode( const String& name, CsStr& value ):
+INode::INode( const String& name, const String& value ):
     m_name( name )
 {
     setValue( value );
 }
 
-CsStr& INode::getName() const
+const String& INode::getName() const
 {
     return m_name;
 }
 
-void INode::setName( CsStr& name )
+void INode::setName( const String& name )
 {
     m_name = name;
 }
@@ -248,7 +248,7 @@ bool INode::operator==(
     return true;
 }
 
-bool INode::operator==( CsStr& rhv ) const
+bool INode::operator==( const String& rhv ) const
 {
     if( m_name == rhv )
     {
@@ -305,7 +305,7 @@ void INode::setValue( const char* value )
     m_type = ElementType::STRING;
 }
 
-void INode::setValue( CsStr& value )
+void INode::setValue( const String& value )
 {
     m_string = value;
     m_type = ElementType::STRING;
@@ -331,7 +331,7 @@ ChildrenNodes& INode::getArray()
     return m_array;
 }
 
-bool operator==( INode* lhv, CsStr& rhv )
+bool operator==( INode* lhv, const String& rhv )
 {
     return lhv->operator==( rhv );
 }
@@ -339,7 +339,7 @@ bool operator==( INode* lhv, CsStr& rhv )
 //struct isChild
 //{
 //    String m_value;
-//    isChild( CsStr& val ): m_value( val )
+//    isChild( const String& val ): m_value( val )
 //    {
 //    }
 //
@@ -374,7 +374,7 @@ int64_t INode::getInt64() const
     return m_int64;
 }
 
-CsStr& INode::getString() const
+const String& INode::getString() const
 {
     return m_string;
 }

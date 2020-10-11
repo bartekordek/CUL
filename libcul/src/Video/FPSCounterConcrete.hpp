@@ -39,7 +39,7 @@ private:
     void counterLoop();
     double calculateAverageFps() const;
     double normalizeToSleepTime( const double fpsCount ) const;
-    unsigned int bufferSize = 4;
+    unsigned int bufferSize = 16;
 
     std::thread m_mainThread;
     std::unique_ptr<CUL::ITimer> m_timer;

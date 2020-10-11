@@ -4,7 +4,7 @@
 using namespace CUL;
 using namespace JSON;
 
-IJSONFile::IJSONFile( CsStr& path ):
+IJSONFile::IJSONFile( const String& path ):
     FS::IFile( path )
 {
 }

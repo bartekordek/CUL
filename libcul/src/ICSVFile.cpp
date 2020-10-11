@@ -2,7 +2,7 @@
 
 using namespace CUL::FS;
 
-ICSVFile::ICSVFile( CsStr& path ):
+ICSVFile::ICSVFile( const String& path ):
     IFile( path )
 {
 }

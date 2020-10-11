@@ -66,7 +66,7 @@ IImage* ImageLoaderConcrete::findImage( const Path& path )
     return getLoader( path )->findImage( path );
 }
 
-IImageLoader* ImageLoaderConcrete::getLoader( CsStr& fileExt )
+IImageLoader* ImageLoaderConcrete::getLoader( const String& fileExt )
 {
     auto ext = fileExt;
     ext.toLower();

@@ -16,7 +16,7 @@ IImage* STBIImageLoader::loadImage( const Path& path, Cbool )
     int req_format = STBI_rgb_alpha;
     int width = 0, height = 0, orig_format = 0;
 
-    stbi_uc* rawData = stbi_load( path.getPath(), &width, &height, &orig_format, req_format );
+    stbi_uc* rawData = stbi_load( path.getPath().cStr(), &width, &height, &orig_format, req_format );
 
     CUL::Assert::simple( rawData != nullptr, "cannot export data." );
     auto data = reinterpret_cast<DataType*>( rawData );

@@ -43,12 +43,12 @@ public:
     explicit INode( const String& name, Cint value );
     explicit INode( const String& name, Cint64 value );
     explicit INode( const String& name, const char* value );
-    explicit INode( const String& name, CsStr& value );
+    explicit INode( const String& name, const String& value );
 
-    CsStr& getName() const;
-    void setName( CsStr& name );
+    const String& getName() const;
+    void setName( const String& name );
     bool operator==( const INode& rhv ) const;
-    bool operator==( CsStr& rhv ) const;
+    bool operator==( const String& rhv ) const;
 
     void setValue( INode* val );
     void setValue( const ChildrenNodes& value );
@@ -58,7 +58,7 @@ public:
     void setValue( Cint value );
     void setValue( Cint64 value );
     void setValue( const char* value );
-    void setValue( CsStr& value );
+    void setValue( const String& value );
 
     ElementType getType() const;
     const INode* getObject() const;
@@ -69,7 +69,7 @@ public:
     float getFloat() const;
     int getInt() const;
     int64_t getInt64() const;
-    CsStr& getString() const;
+    const String& getString() const;
 
     INode* findChild( const String& name );
 

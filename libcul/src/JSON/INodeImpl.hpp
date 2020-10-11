@@ -16,8 +16,8 @@ class INodeImpl final
 public:
     INodeImpl();
 
-    CsStr& getName() const;
-    void setName( CsStr& name );
+    const String& getName() const;
+    void setName( const String& name );
 
     void setValue( INode* val );
     void setValue( const ChildrenNodes& value );

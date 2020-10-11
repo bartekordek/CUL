@@ -35,7 +35,7 @@ void ArgumentsPairConcrete::setArgs( const int argc, char** argv )
         {
             NameValue nameValue;
             nameValue.name = argument;
-            if( argument.at( 0 ) == '-' )
+            if( argument.string()[0] == '-' )
             {
                 skip = true;
                 if( ( i + 1  ) < argc )
