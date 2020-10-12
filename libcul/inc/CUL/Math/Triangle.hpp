@@ -114,12 +114,12 @@ public:
 
     void setP2( const Point<Type>& val )
     {
-         m_p[0] = val;
+         m_p[1] = val;
     }
 
     void setP3( const Point<Type>& val )
     {
-        m_p[0] = val;
+        m_p[2] = val;
     }
 
     const Point<Type>& getCentralPosition() const

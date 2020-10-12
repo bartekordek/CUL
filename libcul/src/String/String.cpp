@@ -7,12 +7,27 @@ String::String()
 {
 }
 
+String::String( const String& arg ):
+    m_value( arg.m_value )
+{
+}
+
+String::String( String&& arg ):
+    m_value( std::move( arg.m_value ) )
+{
+}
+
 String::String( const bool arg )
 {
     *this = arg;
 }
 
 String::String( const char* arg )
+{
+    *this = arg;
+}
+
+String::String( const unsigned char* arg )
 {
     *this = arg;
 }
@@ -37,6 +52,24 @@ String::String( const unsigned int arg )
     *this = arg;
 }
 
+String& String::operator=( const String& arg )
+{
+    if( this != &arg )
+    {
+        m_value = arg.m_value;
+    }
+    return *this;
+}
+
+String& String::operator=( String&& arg )
+{
+    if( this != &arg )
+    {
+        m_value = std::move( arg.m_value );
+    }
+    return *this;
+}
+
 String& String::operator=( const bool arg )
 {
     if( true == arg )
@@ -55,6 +88,28 @@ String& String::operator=( const char* arg )
     m_value = arg;
     return *this;
 }
+
+#ifdef _MSC_VER
+// Yes, I know that is a Spectre mitigation.
+// But for now, I let this as TODO, since i don't know
+// How to fix this.
+// TODO
+#pragma warning( push )
+#pragma warning( disable: 5045 )
+#endif
+String& String::operator=( const unsigned char* arg )
+{
+    auto len = strlen( (const char*)arg );
+    m_value.resize( len );
+    for( unsigned i = 0; i < len; ++i )
+    {
+        m_value[ i ] = static_cast<char>( arg[i] );
+    }
+    return *this;
+}
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 
 String& String::operator=( const std::string& arg )
 {
@@ -188,6 +243,21 @@ void String::replace( const String& inWhat, const String& inFor )
         m_value.replace( inWhatPosition, inWhat.string().length(), inFor.string() );
         inWhatPosition = m_value.find( inWhat.string() );
     }
+}
+
+bool String::equals( const char* arg ) const
+{
+    return m_value == arg;
+}
+
+bool String::equals( const std::string& arg ) const
+{
+    return m_value == arg;
+}
+
+bool String::equals( const String& arg ) const
+{
+    return m_value == arg.m_value;
 }
 
 const std::string& String::string() const

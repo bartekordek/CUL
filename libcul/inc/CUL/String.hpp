@@ -17,15 +17,21 @@ class CULLib_API String final
 {
 public:
     explicit String();
+    String( const String& arg );
+    String( String&& arg );
     String( const bool arg );
     String( const char* arg );
+    String( const unsigned char* arg );
     String( const std::string& arg );
     String( const double arg );
     String( const int arg );
     String( const unsigned int arg );
 
+    String& operator=( const String& arg );
+    String& operator=( String&& arg );
     String& operator=( const bool arg );
     String& operator=( const char* arg );
+    String& operator=( const unsigned char* arg );
     String& operator=( const std::string& arg );
     String& operator=( const double arg );
     String& operator=( const int arg );
@@ -57,6 +63,10 @@ public:
     bool contains( const char* inputString ) const;
 
     void replace( const String& inWhat, const String& inFor );
+
+    bool equals( const char* arg ) const;
+    bool equals( const std::string& arg ) const;
+    bool equals( const String& arg ) const;
 
     const std::string& string() const;
     std::string& string();
