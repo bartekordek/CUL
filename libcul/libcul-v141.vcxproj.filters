@@ -647,6 +647,9 @@
     <ClInclude Include="inc\CUL\CULInterface.hpp">
       <Filter>inc\CUL</Filter>
     </ClInclude>
+    <ClInclude Include="inc\CUL\Math\FloatHandler.hpp">
+      <Filter>inc\CUL\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="libcul-v141.ruleset" />

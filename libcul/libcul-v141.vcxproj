@@ -128,6 +128,7 @@
     <ClInclude Include="inc\CUL\List\IList.hpp" />
     <ClInclude Include="inc\CUL\Log\ILogContainer.hpp" />
     <ClInclude Include="inc\CUL\Log\ILogger.hpp" />
+    <ClInclude Include="inc\CUL\Math\FloatHandler.hpp" />
     <ClInclude Include="inc\CUL\Math\RotationType.hpp" />
     <ClInclude Include="inc\CUL\Math\TriangleRectangularSimple2D.hpp" />
     <ClInclude Include="inc\CUL\Named.hpp" />
