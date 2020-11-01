@@ -7,6 +7,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(EXEC AdditionalDeps)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+if (MSVC)
+    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Build-Windows )
+    message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
+    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+endif()
+
 add_library(AdditionalDeps STATIC
     stb/deprecated/stb_image.c
     stb/stb_vorbis.c

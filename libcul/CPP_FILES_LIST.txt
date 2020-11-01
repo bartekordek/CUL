@@ -1,5 +1,6 @@
 src/Color.cpp
 src/CSVFile.cpp
+src/CULInterface.cpp
 src/FileCompileTest.cpp
 src/Filesystem/Directory.cpp
 src/Filesystem/FileFactory.cpp
@@ -34,6 +35,7 @@ src/IPivot.cpp
 src/ITime.cpp
 src/ITimer.cpp
 src/JSON/DataValue.cpp
+src/JSON/IJSONFile.cpp
 src/JSON/INode.cpp
 src/JSON/INodeImpl.cpp
 src/JSON/JSONFileConcrete.cpp
@@ -50,7 +52,6 @@ src/OSUtils/SystemFontsWindows.cpp
 src/Quaternion.cpp
 src/SimpleAssert.cpp
 src/String/String.cpp
-src/String/StringImpl.cpp
 src/ThreadUtilityDummy.cpp
 src/ThreadUtilityWindows.cpp
 src/ThreadUtils.cpp
