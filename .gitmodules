@@ -85,3 +85,6 @@
 [submodule "deps/tiny-image"]
 	path = deps/tiny-image
 	url = git@github.com:charlesdong/tiny-image.git
+[submodule "deps/GSL"]
+	path = deps/GSL
+	url = git@github.com:microsoft/GSL.git
