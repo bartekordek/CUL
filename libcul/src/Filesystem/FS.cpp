@@ -14,11 +14,8 @@ bool isRegularFile( const wchar_t* path );
 bool isDirectory( const char* path );
 bool isDirectory( const wchar_t* path );
 
-FSApi::FSApi()
-{
-}
-
-FSApi::~FSApi()
+FSApi::FSApi( FileFactory* ff ):
+    m_fileFactory( ff )
 {
 }
 
@@ -41,17 +38,16 @@ IFile* FSApi::getDirectory( const Path& directory )
     DI end;
     for( DI it( directoryBf ); it != end; ++it )
     {
-        const auto pathIt = it->path();
+        const auto& pathIt = it->path();
         const auto filePath = pathIt.string();
-        Path path = filePath;
         if( isRegularFile( filePath.c_str() ) )
         {
-            auto child = FF::createFileFromPath( path );
+            auto child = m_fileFactory->createFileFromPath( filePath );
             result->addChild( child );
         }
         else if( isDirectory( filePath.c_str() ) )
         {
-            auto nestedDirectory = getDirectory( path );
+            auto nestedDirectory = getDirectory( filePath );
             result->addChild( nestedDirectory );
         }
     }
@@ -94,4 +90,9 @@ bool isDirectory( const wchar_t* path )
 #else
     return std::filesystem::is_directory( path );
 #endif
+}
+
+
+FSApi::~FSApi()
+{
 }

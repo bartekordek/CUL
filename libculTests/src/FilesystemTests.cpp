@@ -6,11 +6,22 @@
 
 using Path = CUL::FS::Path;
 
+CUL::GUTILS::DumbPtr<CUL::CULInterface> FilesystemTests::m_culInterface = nullptr;
+
 FilesystemTests::FilesystemTests()
 {
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "FilesystemTests::FilesystemTests()" );
-    auto cwd = CUL::FS::FSApi::getCurrentDir();
+    auto cwd = m_culInterface->getFS()->getCurrentDir();
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "Current dir: " + cwd.string() );
+}
+
+void FilesystemTests::SetUpTestCase()
+{
+    m_culInterface = CUL::CULInterface::createInstance();
+}
+
+void FilesystemTests::SetUp()
+{
 }
 
 TEST_F( FilesystemTests, GetExtension )
@@ -53,6 +64,16 @@ TEST_F( FilesystemTests, FileNotExist )
 
 TEST_F( FilesystemTests, listFilesCount )
 {
-    std::unique_ptr<CUL::FS::IFile> directory( CUL::FS::FSApi::getDirectory( "FSTEST" ) );
+    std::unique_ptr<CUL::FS::IFile> directory( m_culInterface->getFS()->getDirectory( "FSTEST" ) );
     ASSERT_EQ( 4, directory->getChildList().size() );
+}
+
+
+void FilesystemTests::TearDown()
+{
+}
+
+void FilesystemTests::TearDownTestCase()
+{
+    m_culInterface.release();
 }

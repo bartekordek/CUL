@@ -53,7 +53,8 @@ ICSVFile* FileFactory::createCSVFileRawPtr( const Path& path )
 
 IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
 {
-    auto result = new JSON::JSONFileConcrete( path );
+    auto fc = FS::FileFactory::createRegularFileRawPtr( path );
+    auto result = new JSON::JSONFileConcrete( path, fc );
     return result;
 }
 

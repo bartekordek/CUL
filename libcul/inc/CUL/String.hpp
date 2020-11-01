@@ -23,6 +23,7 @@ public:
     String( const char* arg );
     String( const unsigned char* arg );
     String( const std::string& arg );
+    String( const float arg );
     String( const double arg );
     String( const int arg );
     String( const unsigned int arg );
@@ -33,6 +34,7 @@ public:
     String& operator=( const char* arg );
     String& operator=( const unsigned char* arg );
     String& operator=( const std::string& arg );
+    String& operator=( const float arg );
     String& operator=( const double arg );
     String& operator=( const int arg );
     String& operator=( const unsigned arg );
@@ -52,7 +54,15 @@ public:
 
     bool operator!=( const int arg ) const;
     bool operator==( const int arg ) const;
-    
+
+    bool operator!=( const unsigned int arg ) const;
+    bool operator==( const unsigned int arg ) const;
+
+    bool operator!=( const float arg ) const;
+    bool operator==( const float arg ) const;
+
+    bool operator!=( const double arg ) const;
+    bool operator==( const double arg ) const;
 
     bool operator<( const String& arg ) const;
 
@@ -86,7 +96,15 @@ private:
 };
 
 String CULLib_API operator+( const char* arg1, const String& arg2 );
+
 bool CULLib_API operator==( const char* arg1, const String& arg2 );
+
 bool CULLib_API operator==( const int arg1, const String& arg2 );
+
+bool CULLib_API operator==( const unsigned int arg1, const String& arg2 );
+
+bool CULLib_API operator==( const float arg1, const String& arg2 );
+
+bool CULLib_API operator==( const double arg1, const String& arg2 );
 
 NAMESPACE_END( CUL )

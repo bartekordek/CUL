@@ -37,6 +37,12 @@ String::String( const std::string& arg )
     *this = arg;
 }
 
+String::String( const float arg )
+{
+    *this = arg;
+}
+
+
 String::String( const double arg )
 {
     *this = arg;
@@ -117,6 +123,12 @@ String& String::operator=( const std::string& arg )
     return *this;
 }
 
+String& String::operator=( const float arg )
+{
+    m_value = std::to_string( arg );
+    return *this;
+}
+
 String& String::operator=( const double arg )
 {
     m_value = std::to_string( arg );
@@ -184,6 +196,36 @@ bool String::operator!=( const int arg ) const
 }
 
 bool String::operator==( const int arg ) const
+{
+    return m_value == std::to_string( arg );
+}
+
+bool String::operator!=( const unsigned int arg ) const
+{
+    return !operator==( arg );
+}
+
+bool String::operator==( const unsigned int arg ) const
+{
+    return m_value == std::to_string( arg ) + "u";
+}
+
+bool String::operator!=( const float arg ) const
+{
+    return !operator==( arg );
+}
+
+bool String::operator==( const float arg ) const
+{
+    return m_value == std::to_string( arg );
+}
+
+bool String::operator!=( const double arg ) const
+{
+    return !operator==( arg );
+}
+
+bool String::operator==( const double arg ) const
 {
     return m_value == std::to_string( arg );
 }
@@ -313,6 +355,21 @@ bool CULLib_API CUL::operator==( const char* arg1, const String& arg2 )
 }
 
 bool CULLib_API CUL::operator==( const int arg1, const String& arg2 )
+{
+    return arg2 == arg1;
+}
+
+bool CULLib_API CUL::operator==( const unsigned int arg1, const String& arg2 )
+{
+    return arg2 == arg1;
+}
+
+bool CULLib_API CUL::operator==( const float arg1, const String& arg2 )
+{
+    return arg2 == arg1;
+}
+
+bool CULLib_API CUL::operator==( const double arg1, const String& arg2 )
 {
     return arg2 == arg1;
 }

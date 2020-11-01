@@ -1,6 +1,11 @@
 #pragma once
+
+#include "CUL/CULInterface.hpp"
+#include "CUL/GenericUtils/DumbPtr.hpp"
+
 #include "Gtest.hpp"
-#include "CUL/String.hpp"
+
+
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4625 )
@@ -13,8 +18,12 @@ protected:
     virtual ~JSONTests();
 
     static void SetUpTestCase();
+    void SetUp() override;
+
+    void TearDown() override;
     static void TearDownTestCase();
 
+    static CUL::GUTILS::DumbPtr<CUL::CULInterface> m_culInterface;
     CUL::String jsonTestFileName = { "test.json" };
 };
 #ifdef _MSC_VER

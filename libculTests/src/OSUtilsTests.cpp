@@ -4,21 +4,21 @@
 
 using ISystemFonts = CUL::OSUtils::ISystemFonts;
 
-OSUtilsTests::OSUtilsTests()
-{
-}
+CUL::GUTILS::DumbPtr<CUL::CULInterface> OSUtilsTests::m_culInterface = nullptr;
 
-OSUtilsTests::~OSUtilsTests()
+OSUtilsTests::OSUtilsTests()
 {
 }
 
 void OSUtilsTests::SetUpTestCase()
 {
+    m_culInterface = CUL::CULInterface::createInstance();
 }
 
-void OSUtilsTests::TearDownTestCase()
+void OSUtilsTests::SetUp()
 {
 }
+
 
 #if _MSC_VER
 #pragma warning( push )
@@ -26,14 +26,24 @@ void OSUtilsTests::TearDownTestCase()
 #endif
 TEST_F( OSUtilsTests, genericCreation )
 {
-    auto ptr = CUL::OSUtils::getUtil();
-    if( ptr )
-    {
-        std::unique_ptr<ISystemFonts> sf( ptr );
-        auto& ff = sf->getFontFilesPaths();
-        GTEST_ASSERT_GT( ff.size(), 0 );
-    }
+    auto sf = m_culInterface->getSystemFonts();
+    auto& ff = sf->getFontFilesPaths();
+    GTEST_ASSERT_GT( ff.size(), 0 );
 }
+
+OSUtilsTests::~OSUtilsTests()
+{
+}
+
+void OSUtilsTests::TearDown()
+{
+}
+
+void OSUtilsTests::TearDownTestCase()
+{
+    m_culInterface.release();
+}
+
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif

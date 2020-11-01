@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CUL/UselessMacros.hpp"
 #include "CUL/GenericUtils/LckPrim.hpp"
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
@@ -12,6 +12,12 @@ class CULLib_API DumbPtr
 public:
     DumbPtr()
     {
+    }
+
+    DumbPtr( DumbPtr&& arg ):
+        m_ptr( std::move( arg.m_ptr ) )
+    {
+
     }
 
     DumbPtr( Type* value ):
@@ -41,8 +47,15 @@ public:
         return *this;
     }
 
+    DumbPtr<Type>& operator=( DumbPtr<Type>& arg )
+    {
+        m_ptr = std::move( arg.m_ptr );
+        return *this;
+    }
+
     DumbPtr<Type>& operator=( Type* rhv )
     {
+        Assert::simple( m_ptr == nullptr, "Trying to override pointer, previous pointer exists." );
         m_ptr = rhv;
         return *this;
     }
@@ -55,6 +68,11 @@ public:
     const Type* get() const
     {
         return m_ptr;
+    }
+
+    void reset( Type* value )
+    {
+        m_ptr = value;
     }
 
     Type* get()

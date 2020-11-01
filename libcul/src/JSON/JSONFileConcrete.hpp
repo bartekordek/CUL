@@ -17,7 +17,7 @@ class JSONFileConcrete final:
     public IJSONFile
 {
 public:
-    JSONFileConcrete( const String& path );
+    JSONFileConcrete( const String& path, FS::IFile* fileContent );
     ~JSONFileConcrete();
 
 protected:

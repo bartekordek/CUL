@@ -73,6 +73,9 @@
     <Filter Include="inc\CUL\GenericUtils">
       <UniqueIdentifier>{04042a3b-5621-417a-9cfa-743405c9cd1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\CUL\OtherImports">
+      <UniqueIdentifier>{70a41fac-f731-4fb9-8450-d4449a06f302}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\STD_chrono.hpp">
@@ -649,6 +652,9 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\FloatHandler.hpp">
       <Filter>inc\CUL\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\OtherImports\import_gsl.hpp">
+      <Filter>inc\CUL\OtherImports</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

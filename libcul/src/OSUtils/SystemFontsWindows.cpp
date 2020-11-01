@@ -11,7 +11,9 @@ using namespace CUL;
 using SystemFontsWindows = OSUtils::SystemFontsWindows;
 using FontFilesPaths = OSUtils::FontFilesPaths;
 
-SystemFontsWindows::SystemFontsWindows()
+SystemFontsWindows::SystemFontsWindows( FS::FSApi* fsApi, LOG::ILogger* logger ):
+    m_fsApi( fsApi ),
+    m_logger( logger )
 {
     updateFontFilesList();
 }
@@ -31,8 +33,8 @@ void SystemFontsWindows::updateFontFilesList()
     getWindowsPath();
     for( const auto& dir : m_defaultDirsWithFonts )
     {
-        const auto directory = FS::FSApi::getDirectory( dir );
-        const auto files = directory->getChildList();
+        const auto directory = m_fsApi->getDirectory( dir );
+        const auto& files = directory->getChildList();
         for( const auto& file : files )
         {
             const FS::Path& path = file->getPath();
@@ -138,8 +140,8 @@ void SystemFontsWindows::getWindowsPath()
     DWORD cjBuffer = 0;
     
 
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::String( hf ) );
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "DEFAULT FONT NAME: " + CUL::String( defaultFontName ) );
+    m_logger->log( "DEFAULT FONT NAME: " + CUL::String( hf ) );
+    m_logger->log( "DEFAULT FONT NAME: " + CUL::String( defaultFontName ) );
 
     FS::Path windowsPath( windir );
     FS::Path windowsFonts = windowsPath + "/Fonts";

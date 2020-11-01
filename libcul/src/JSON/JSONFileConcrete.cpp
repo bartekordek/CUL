@@ -5,9 +5,9 @@
 using namespace CUL;
 using namespace JSON;
 
-JSONFileConcrete::JSONFileConcrete( const String& path ):
+JSONFileConcrete::JSONFileConcrete( const String& path, FS::IFile* fileContent ):
     IJSONFile( path ),
-    m_fileContents( FS::FileFactory::createRegularFileRawPtr( path ) )
+    m_fileContents( fileContent )
 {
 }
 

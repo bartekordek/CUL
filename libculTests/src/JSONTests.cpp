@@ -6,15 +6,18 @@ using namespace CUL;
 using JFilePtr = CUL::JSON::IJSONFile;
 using JFile = std::unique_ptr<JFilePtr>;
 
+CUL::GUTILS::DumbPtr<CUL::CULInterface> JSONTests::m_culInterface = nullptr;
+
 JSONTests::JSONTests()
 {
 }
 
 void JSONTests::SetUpTestCase()
 {
+    m_culInterface = CUL::CULInterface::createInstance();
 }
 
-void JSONTests::TearDownTestCase()
+void JSONTests::SetUp()
 {
 }
 
@@ -76,14 +79,14 @@ TEST_F( JSONTests, arrayAddElements )
 
 TEST_F( JSONTests, fileLoadTest )
 {
-    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     GTEST_ASSERT_EQ( true, jsonFilePtr->exists() );
     jsonFilePtr->load();
 }
 
 TEST_F( JSONTests, getRootElement )
 {
-    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
@@ -92,7 +95,7 @@ TEST_F( JSONTests, getRootElement )
 
 TEST_F( JSONTests, findProperty )
 {
-    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
 
@@ -104,7 +107,7 @@ TEST_F( JSONTests, findProperty )
 
 TEST_F( JSONTests, arraySize )
 {
-    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
@@ -119,7 +122,7 @@ TEST_F( JSONTests, arraySize )
 
 TEST_F( JSONTests, arrayCorrectness )
 {
-    JFile jsonFilePtr( CUL::FS::FileFactory::createJSONFileRawPtr( jsonTestFileName ) );
+    JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
@@ -131,6 +134,17 @@ TEST_F( JSONTests, arrayCorrectness )
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
     GTEST_ASSERT_EQ( 3, messages->getArray().size() );
 }
+
+
+void JSONTests::TearDown()
+{
+}
+
+void JSONTests::TearDownTestCase()
+{
+    m_culInterface.release();
+}
+
 
 JSONTests::~JSONTests()
 {

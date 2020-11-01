@@ -1,23 +1,31 @@
 #pragma once
+#include "CUL/OSUtils/ISystemFonts.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/GenericUtils/DumbPtr.hpp"
+#include "CUL/Log/ILogger.hpp"
 
-#include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
+
 
 NAMESPACE_BEGIN( CUL )
 
 template <typename Type>
 using UniquePtr = std::unique_ptr<Type>;
 
-NAMESPACE_BEGIN( LOG )
-class ILogger;
-NAMESPACE_END( LOG )
 
-class CULLib_API CULInterface
+NAMESPACE_BEGIN( FS )
+class FSApi;
+NAMESPACE_END( FS )
+
+class CULLib_API CULInterface final
 {
 public:
 
-    static UniquePtr<CULInterface> createInstance();
+    static CULInterface* createInstance();
     LOG::ILogger* getLogger();
+    FS::FSApi* getFS();
+    OSUtils::ISystemFonts* getSystemFonts();
+    FS::FileFactory* getFF();
 
     ~CULInterface();
 protected:
@@ -28,8 +36,10 @@ private:
     CULInterface& operator=( const CULInterface& arg ) = delete;
     CULInterface& operator=( CULInterface&& arg ) = delete;
 
-    LOG::ILogger* m_logger = nullptr;
-
+    CUL::LOG::ILogger* m_logger = nullptr;
+    GUTILS::DumbPtr<FS::FileFactory> m_fileFactory;
+    GUTILS::DumbPtr<FS::FSApi> m_fsApi;
+    GUTILS::DumbPtr<OSUtils::ISystemFonts> m_sysFonts;
 };
 
 NAMESPACE_END( CUL )

@@ -63,8 +63,10 @@ TEST_F( StringTests, operatorTest )
     std::cout << "string2 = " << string2.cStr() << "\n";
     ASSERT_EQ( 1u, string2 );
 
-    CUL::String string3 = 3.0;
+    const float val = 3.0;
+    CUL::String string3 = val;
     std::cout << "string 3 = " << string3.cStr() << "\n";
+    ASSERT_EQ( 3.0, string3 );
 
     CUL::String string4 = 3.0f;
     std::cout << "string 4 = " << string4.cStr() << "\n";
