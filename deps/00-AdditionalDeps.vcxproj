@@ -103,7 +103,7 @@
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>AdditionalDeps</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
     <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
@@ -121,7 +121,7 @@
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>AdditionalDeps</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
     <CustomBuildAfterTargets>Build</CustomBuildAfterTargets>
     <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>

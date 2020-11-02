@@ -336,7 +336,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
@@ -379,7 +379,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
@@ -423,7 +423,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile />
     </Link>
     <Lib>
@@ -471,7 +471,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile />
     </Link>
     <Lib>
