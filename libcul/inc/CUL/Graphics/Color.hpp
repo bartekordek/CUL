@@ -31,11 +31,11 @@ using CDataType = unsigned char;
 class CULLib_API ColorS final
 {
 public:
-    explicit ColorS();
+    ColorS();
 
-    explicit ColorS( const ColorE colorE );
+    ColorS( const ColorE colorE );
 
-    explicit ColorS(
+    ColorS(
         cfloat rr,
         cfloat gg,
         cfloat bb,
