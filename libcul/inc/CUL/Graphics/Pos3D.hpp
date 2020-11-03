@@ -18,7 +18,7 @@ public:
     {
     }
 
-    Pos3D( const Type inX, const Type inY, const Type inZ ):
+    Pos3D( const Type inX, const Type inY, const Type inZ = static_cast<Type>( 0 ) ):
         x( inX ),
         y( inY ),
         z( inZ )
