@@ -76,6 +76,9 @@
     <Filter Include="inc\CUL\OtherImports">
       <UniqueIdentifier>{70a41fac-f731-4fb9-8450-d4449a06f302}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\CUL\Math\Primitives">
+      <UniqueIdentifier>{a0b89883-2639-47b6-b0e6-0a6c9e6cb32e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\STD_chrono.hpp">
@@ -655,6 +658,9 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\OtherImports\import_gsl.hpp">
       <Filter>inc\CUL\OtherImports</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Math\Primitives\Quad.hpp">
+      <Filter>inc\CUL\Math\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
