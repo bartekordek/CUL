@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
-#include "CUL/UselessMacros.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
