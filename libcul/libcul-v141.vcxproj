@@ -130,11 +130,12 @@
     <ClInclude Include="inc\CUL\Log\ILogger.hpp" />
     <ClInclude Include="inc\CUL\Math\FloatHandler.hpp" />
     <ClInclude Include="inc\CUL\Math\Primitives\Quad.hpp" />
+    <ClInclude Include="inc\CUL\Math\Primitives\Triangle.hpp" />
+    <ClInclude Include="inc\CUL\Math\Primitives\Triangle3D.hpp" />
     <ClInclude Include="inc\CUL\Math\RotationType.hpp" />
     <ClInclude Include="inc\CUL\Math\TriangleRectangularSimple2D.hpp" />
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Network\IHttpRequest.hpp" />
-    <ClInclude Include="inc\CUL\Math\Triangle.hpp" />
     <ClInclude Include="inc\CUL\OSUtils\ISystemFonts.hpp" />
     <ClInclude Include="inc\CUL\OtherImports\import_gsl.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_algorithm.hpp" />

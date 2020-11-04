@@ -368,9 +368,6 @@
     <ClInclude Include="inc\CUL\Math\TriangleRectangularSimple2D.hpp">
       <Filter>inc\CUL\Math</Filter>
     </ClInclude>
-    <ClInclude Include="inc\CUL\Math\Triangle.hpp">
-      <Filter>inc\CUL\Math</Filter>
-    </ClInclude>
     <ClInclude Include="inc\CUL\Math\Axis.hpp">
       <Filter>inc\CUL\Math</Filter>
     </ClInclude>
@@ -660,6 +657,12 @@
       <Filter>inc\CUL\OtherImports</Filter>
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Primitives\Quad.hpp">
+      <Filter>inc\CUL\Math\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Math\Primitives\Triangle.hpp">
+      <Filter>inc\CUL\Math\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\Math\Primitives\Triangle3D.hpp">
       <Filter>inc\CUL\Math\Primitives</Filter>
     </ClInclude>
   </ItemGroup>

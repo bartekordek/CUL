@@ -1,6 +1,6 @@
 #include "CSVFileTests.hpp"
 #include "CUL/Math/Vector3D.hpp"
-#include "CUL/Math/Triangle.hpp"
+#include "CUL/Math/Primitives/Triangle3D.hpp"
 #include "UtilsTest.hpp"
 
 const int someBigValue = 1000;

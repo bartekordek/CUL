@@ -77,6 +77,7 @@ private:
 };
 
 using Size2Du = Size2D<unsigned>;
+using Size2Di = Size2D<int>;
 using Size2Dsu = Size2D<unsigned short int>;
 
 NAMESPACE_END( Graphics )

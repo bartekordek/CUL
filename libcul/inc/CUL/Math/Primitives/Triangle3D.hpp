@@ -7,6 +7,7 @@
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
+NAMESPACE_BEGIN( Primitives )
 
 #ifdef _MSC_VER
 #pragma warning( push )
@@ -133,6 +134,14 @@ public:
 
 protected:
 private:
+#ifdef _MSC_VER
+    // Yes, I know that is a Spectre mitigation.
+    // But for now, I let this as TODO, since i don't know
+    // How to fix this.
+    // TODO
+#pragma warning( push )
+#pragma warning( disable: 5045 )
+#endif
     void calculateDimensions()
     {
         for( auto i = static_cast<unsigned>( AxisCarthesian::X );
@@ -153,7 +162,9 @@ private:
 
         m_dimensions = m_max - m_min;
     }
-
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
     void calculateCenter()
     {
         auto x = ( m_p[0].x + m_p[1].x + m_p[2].x ) / m_three;
@@ -180,5 +191,6 @@ using Triangle3DF = Triangle3D<float>;
 #pragma warning( pop )
 #endif
 
+NAMESPACE_END( Primitives )
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

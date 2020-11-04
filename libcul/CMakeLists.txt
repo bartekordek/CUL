@@ -177,7 +177,7 @@ inc/CUL/Math/PosTable.hpp
 inc/CUL/Math/Quaternion.hpp
 inc/CUL/Math/RotationType.hpp
 inc/CUL/Math/SquareMatrix2D.hpp
-inc/CUL/Math/Triangle.hpp
+inc/CUL/Math/Primitives/Triangle3D.hpp
 inc/CUL/Math/TriangleRectangularSimple2D.hpp
 inc/CUL/Math/Vector3D.hpp
 inc/CUL/Named.hpp

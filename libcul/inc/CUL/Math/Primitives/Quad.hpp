@@ -4,6 +4,7 @@
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
+NAMESPACE_BEGIN( Primitives )
 
 template <typename Type>
 class Quad
@@ -13,8 +14,6 @@ public:
     {
 
     }
-
-
 
     virtual ~Quad()
     {
@@ -35,5 +34,6 @@ using QuadD = Quad<double>;
 using QuadI = Quad<int>;
 using QuadUi = Quad<unsigned int>;
 
+NAMESPACE_END( Primitives )
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

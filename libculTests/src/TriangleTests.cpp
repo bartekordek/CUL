@@ -1,5 +1,5 @@
 #include "TriangleTests.hpp"
-#include "CUL/Math/Triangle.hpp"
+#include "CUL/Math/Primitives/Triangle3D.hpp"
 #include "CUL/Math/TriangleRectangularSimple2D.hpp"
 
 using TriangleRectangularSimple2D = CUL::MATH::TriangleRectangularSimple2D;
@@ -108,7 +108,7 @@ TEST_F( TriangleTests, initializationTest )
     CUL::MATH::PointI p2( p2xyz, p2xyz, p2xyz );
     CUL::MATH::PointI p3( p3xyz, p3xyz, p3xyz );
 
-    CUL::MATH::Triangle3DI triangle3D( p1, p2, p3 );
+    CUL::MATH::Primitives::Triangle3DI triangle3D( p1, p2, p3 );
 
     GTEST_ASSERT_EQ( triangle3D.getP1().getX(), p1xyz );
     GTEST_ASSERT_EQ( triangle3D.getP1().getY(), p1xyz );
