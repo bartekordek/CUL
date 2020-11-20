@@ -40,6 +40,8 @@ public:
     uint64_t getFileSize() const;
 
     bool operator==( const Path& rhv ) const;
+    bool operator<( const Path& rhv ) const;
+    bool operator>( const Path& rhv ) const;
 
     operator const String() const;
 
@@ -63,7 +65,6 @@ private:
     static String extensionSeparator;
 };
 
-bool CULLib_API operator<( const Path& lhv, const Path& rhv );
 const Path CULLib_API operator+( const Path& lval, const Path& rval );
 NAMESPACE_END( FS )
 NAMESPACE_END( CUL )

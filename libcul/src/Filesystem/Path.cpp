@@ -184,6 +184,16 @@ bool Path::operator==( const Path& rhv ) const
     return m_fullPath == rhv.m_fullPath;
 }
 
+bool Path::operator<( const Path& rhv ) const
+{
+    return m_fullPath < rhv.m_fullPath;
+}
+
+bool Path::operator>( const Path& rhv ) const
+{
+    return m_fullPath > rhv.m_fullPath;
+}
+
 Path::operator const String() const
 {
     return m_fullPath;
@@ -223,11 +233,6 @@ bool Path::exists() const
     const bool result = std::filesystem::is_regular_file(m_fullPath.cStr());
 #endif
     return result;
-}
-
-bool CULLib_API CUL::FS::operator<( const Path & lhv, const Path & rhv )
-{
-    return lhv.getPath() < rhv.getPath();
 }
 
 const Path CULLib_API CUL::FS::operator+( const Path& lval, const Path& rval )
