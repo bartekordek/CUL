@@ -56,6 +56,14 @@ TEST_F( FilesystemTests, FileExistence )
     ASSERT_EQ( file.exists(), true );
 }
 
+TEST_F( FilesystemTests, TimeModified )
+{
+    std::string filePath = "../media/Dummy.txt";
+    auto modificationTime = m_culInterface->getFS()->getLastModificationTime( filePath );
+    auto us = modificationTime.getUs();
+    ASSERT_GT( us, 0 );
+}
+
 TEST_F( FilesystemTests, FileNotExist )
 {
     Path file( "C:/Windows/System32/xcopy312312.exe" );

@@ -25,8 +25,8 @@ TEST_F( JSONTests, objectTypeIsCorrect )
 {
     JSON::INode object;
     GTEST_ASSERT_EQ(
-        JSON::ElementType::NONE,
-        object.getType() );
+        JSON::ElementType::NONE == object.getType(),
+        true );
 }
 
 TEST_F( JSONTests, addObject )
@@ -38,7 +38,7 @@ TEST_F( JSONTests, addObject )
 
     object.setValue( child );
 
-    GTEST_ASSERT_EQ( childName, object.getObject()->getName() );
+    GTEST_ASSERT_EQ( childName == object.getObject()->getName(), true );
 }
 
 #if _MSC_VER
@@ -57,7 +57,7 @@ TEST_F( JSONTests, nestData )
         nodes.push_back( ptr );
     }
     node.setValue( nodes );
-    GTEST_ASSERT_EQ( size, node.getArray().size() );
+    GTEST_ASSERT_EQ( size == node.getArray().size(), true );
 }
 #if _MSC_VER
 #pragma warning( pop )
@@ -74,13 +74,13 @@ TEST_F( JSONTests, arrayAddElements )
     nodes.push_back( val2 );
     nodes.push_back( val3 );
     node.setValue( nodes );
-    GTEST_ASSERT_EQ( 3, node.getArray().size() );
+    GTEST_ASSERT_EQ( 3 == node.getArray().size(), true );
 }
 
 TEST_F( JSONTests, fileLoadTest )
 {
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
-    GTEST_ASSERT_EQ( true, jsonFilePtr->exists() );
+    GTEST_ASSERT_EQ( true == jsonFilePtr->exists(), true );
     jsonFilePtr->load();
 }
 
@@ -89,8 +89,8 @@ TEST_F( JSONTests, getRootElement )
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
-    GTEST_ASSERT_EQ( CUL::String( "root" ), rootElement->getName().cStr() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
+    GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
 }
 
 TEST_F( JSONTests, findProperty )
@@ -100,9 +100,9 @@ TEST_F( JSONTests, findProperty )
     auto rootElement = jsonFilePtr->getRoot();
 
     auto age = rootElement->findChild( "age" );
-    GTEST_ASSERT_NE( nullptr, age );
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::INT, age->getType() );
-    GTEST_ASSERT_EQ( 99, age->getInt() );
+    GTEST_ASSERT_NE( nullptr == age, true );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::INT == age->getType(), true );
+    GTEST_ASSERT_EQ( 99 == age->getInt(), true );
 }
 
 TEST_F( JSONTests, arraySize )
@@ -110,14 +110,14 @@ TEST_F( JSONTests, arraySize )
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
-    GTEST_ASSERT_EQ( CUL::String( "root" ), rootElement->getName().cStr() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
+    GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
 
     auto messages = rootElement->findChild( "messages" );
-    GTEST_ASSERT_NE( nullptr, messages );
+    GTEST_ASSERT_EQ( nullptr == messages, false );
 
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
-    GTEST_ASSERT_EQ( 3, messages->getArray().size() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == messages->getType(), true );
+    GTEST_ASSERT_EQ( 3 == messages->getArray().size(), true );
 }
 
 TEST_F( JSONTests, arrayCorrectness )
@@ -125,14 +125,14 @@ TEST_F( JSONTests, arrayCorrectness )
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     jsonFilePtr->load();
     auto rootElement = jsonFilePtr->getRoot();
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, rootElement->getType() );
-    GTEST_ASSERT_EQ( CUL::String( "root" ), rootElement->getName().cStr() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
+    GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
 
     auto messages = rootElement->findChild( "messages" );
-    GTEST_ASSERT_NE( nullptr, messages );
+    GTEST_ASSERT_EQ( nullptr == messages, false );
 
-    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY, messages->getType() );
-    GTEST_ASSERT_EQ( 3, messages->getArray().size() );
+    GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == messages->getType(), true );
+    GTEST_ASSERT_EQ( 3 == messages->getArray().size(), true );
 }
 
 

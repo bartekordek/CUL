@@ -63,14 +63,15 @@ TEST_F( FileTest, loadCachedFileRegular )
 
 TEST_F( FileTest, loadRawImage )
 {
-    auto f( m_culInterface->getFF()->createRawImageRawPtr
-( dummyImage ) );
-    GTEST_ASSERT_NE( nullptr, f.get() );
-    GTEST_ASSERT_NE( nullptr, f->getData() );
+    auto f = m_culInterface->getFF()->createRawImageRawPtr( dummyImage );
+
+    GTEST_ASSERT_EQ( f == nullptr, false );
+    GTEST_ASSERT_EQ( f->getData() == nullptr, false );
 
     const auto& size = f->getImageInfo().size;
     GTEST_ASSERT_EQ( 407, size.width );
     GTEST_ASSERT_EQ( 412, size.height );
+    delete f;
 }
 
 void FileTest::TearDown()
