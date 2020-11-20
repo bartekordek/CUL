@@ -158,6 +158,7 @@
       <PreprocessorDefinitions>_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest_windows\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
@@ -182,6 +183,7 @@
       <PreprocessorDefinitions>_MBCS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)..\deps\gtest_windows\Build-Windows\$(Platform)_$(Configuration);$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
@@ -206,6 +208,7 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -232,6 +235,7 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4710;4711</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
