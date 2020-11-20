@@ -1,13 +1,14 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/ISerializable.hpp"
 #include "CUL/STL_IMPORTS/STD_utility.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
 template <typename Type>
-class CULLib_API Pos3D
+class CULLib_API Pos3D final:
+    public ISerializable
 {
 public:
     Type x = static_cast<Type>( 0 );
@@ -39,6 +40,16 @@ public:
     {
     }
 
+    const String serialize() const
+    {
+        String result   = "{\n";
+        result = result + "    \"x\": " + String( x ) + ",\n";
+        result = result + "    \"y\": " + String( y ) + ",\n";
+        result = result + "    \"z\": " + String( z ) + "\n";
+        result = result + "}\n";
+        return result;
+    }
+
     Pos3D& operator=( const Pos3D& rhv )
     {
         if( this != &rhv )
@@ -61,22 +72,7 @@ public:
         return *this;
     }
 
-    const Type& getX() const
-    {
-        return x;
-    }
-
-    const Type& getY() const
-    {
-        return y;
-    }
-
-    const Type& getZ() const
-    {
-        return z;
-    }
-
-    virtual ~Pos3D()
+    ~Pos3D()
     {
     }
 

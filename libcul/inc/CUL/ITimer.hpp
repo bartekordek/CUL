@@ -1,6 +1,5 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
 #include "CUL/ITime.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -19,6 +18,10 @@ public:
     static void sleepSeconds( const unsigned int seconds );
     static void sleepMiliSeconds( const unsigned int mSeconds );
     static void sleepMicroSeconds( const unsigned int uSeconds );
+
+    static void sleepSeconds( const int seconds );
+    static void sleepMiliSeconds( const int mSeconds );
+    static void sleepMicroSeconds( const int uSeconds );
 };
 
 class CULLib_API TimerFactory

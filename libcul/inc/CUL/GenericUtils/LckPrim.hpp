@@ -52,11 +52,11 @@ public:
         value = val;
     }
 
-    Type& operator++()
+    LckPrim<Type>& operator++()
     {
         std::lock_guard<std::mutex> lock( mtx );
         ++value;
-        return value;
+        return *this;
     }
 
     Type operator++( int )
@@ -67,12 +67,27 @@ public:
         return copy;
     }
 
-    Type& operator--()
+    LckPrim<Type>& operator+=( const Type val )
+    {
+        std::lock_guard<std::mutex> lock( mtx );
+        value += val;
+        return *this;
+    }
+
+    LckPrim<Type>& operator-=( const Type val )
+    {
+        std::lock_guard<std::mutex> lock( mtx );
+        value -= val;
+        return *this;
+    }
+
+    LckPrim<Type>& operator--()
     {
         std::lock_guard<std::mutex> lock( mtx );
         --value;
-        return value;
+        return *this;
     }
+
 
     Type operator--( int )
     {

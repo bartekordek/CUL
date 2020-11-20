@@ -1,10 +1,12 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/CULInterface.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/Filesystem/Path.hpp"
+#include "CUL/TimeConcrete.hpp"
 
 NAMESPACE_BEGIN( CUL )
+class CULInterface;
 NAMESPACE_BEGIN( GUTILS )
 
 class CULLib_API IConfigFile
@@ -12,10 +14,9 @@ class CULLib_API IConfigFile
 public:
     IConfigFile() = default;
 
-    static IConfigFile* createFile( const FS::Path& path );
-
     virtual const String& getValue( const String& valueFieldName ) const = 0;
-
+    virtual void reload() = 0;
+    virtual TimeConcrete getModificationTime() = 0;
     virtual ~IConfigFile() = default;
 
 protected:

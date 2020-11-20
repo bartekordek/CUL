@@ -31,3 +31,18 @@ void ITimer::sleepMicroSeconds( const unsigned int uSeconds )
 {
     std::this_thread::sleep_for( std::chrono::microseconds( uSeconds ) );
 }
+
+void ITimer::sleepSeconds( const int seconds )
+{
+    std::this_thread::sleep_for( std::chrono::seconds( seconds ) );
+}
+
+void ITimer::sleepMiliSeconds( const int mSeconds )
+{
+    std::this_thread::sleep_for( std::chrono::milliseconds( mSeconds ) );
+}
+
+void ITimer::sleepMicroSeconds( const int uSeconds )
+{
+    std::this_thread::sleep_for( std::chrono::microseconds( uSeconds ) );
+}
