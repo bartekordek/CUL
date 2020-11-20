@@ -85,6 +85,21 @@ public:
         return m_ptr;
     }
 
+    bool operator==( const DumbPtr<Type>& arg ) const
+    {
+        return *m_ptr == *arg.m_ptr;
+    }
+
+    bool operator<( const DumbPtr<Type>& arg ) const
+    {
+        return *m_ptr < *arg.m_ptr;
+    }
+
+    bool operator>( const DumbPtr<Type>& arg ) const
+    {
+        return *m_ptr > *arg.m_ptr;
+    }
+
     virtual ~DumbPtr()
     {
         release();
