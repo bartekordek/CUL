@@ -17,6 +17,10 @@ NAMESPACE_BEGIN( FS )
 class FSApi;
 NAMESPACE_END( FS )
 
+NAMESPACE_BEGIN( GUTILS )
+class IConfigFile;
+NAMESPACE_END( GUTILS )
+
 class CULLib_API CULInterface final
 {
 public:
@@ -26,6 +30,7 @@ public:
     FS::FSApi* getFS();
     OSUtils::ISystemFonts* getSystemFonts();
     FS::FileFactory* getFF();
+    GUTILS::IConfigFile* createConfigFile( const FS::Path& path );
 
     ~CULInterface();
 protected:

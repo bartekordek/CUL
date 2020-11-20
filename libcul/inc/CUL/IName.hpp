@@ -3,8 +3,8 @@
 #include "CUL.hpp"
 #include "CUL/String.hpp"
 
-namespace CUL
-{
+NAMESPACE_BEGIN( CUL )
+
 class IName
 {
 public:
@@ -22,4 +22,5 @@ protected:
 private:
     String m_name;
 };
-}
+
+NAMESPACE_END( CUL )

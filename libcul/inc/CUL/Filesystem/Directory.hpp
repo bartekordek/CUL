@@ -3,13 +3,14 @@
 #include "CUL/Filesystem/IFile.hpp"
 
 NAMESPACE_BEGIN( CUL )
+class CULInterface;
 NAMESPACE_BEGIN( FS )
 
 class CULLib_API Directory final:
     public IFile
 {
 public:
-    Directory( const String& path );
+    Directory( const String& path, CULInterface* interface );
 
     const Path& getPath() const override;
     void changePath( const Path& newPath ) override;

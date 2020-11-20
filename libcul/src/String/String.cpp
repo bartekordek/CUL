@@ -235,6 +235,11 @@ bool String::operator<( const String& arg ) const
     return m_value < arg.m_value;
 }
 
+bool String::operator>( const String& arg ) const
+{
+    return m_value > arg.m_value;
+}
+
 void String::toLower()
 {
 #if _MSC_VER
@@ -315,6 +320,26 @@ std::string& String::string()
 const char* String::cStr() const
 {
     return m_value.c_str();
+}
+
+float String::toFloat() const
+{
+    return m_value == "" ? 0.0f: std::stof( m_value, nullptr );
+}
+
+double String::toDouble() const
+{
+    return m_value == "" ? 0.0 : std::stod( m_value, nullptr );
+}
+
+int String::toInt() const
+{
+    return m_value == "" ? 0 : std::stoi( m_value, nullptr, 0 );
+}
+
+unsigned int String::toUInt() const
+{
+    return m_value == "" ? 0u : std::stoul( m_value, nullptr, 0 );
 }
 
 Length String::length() const

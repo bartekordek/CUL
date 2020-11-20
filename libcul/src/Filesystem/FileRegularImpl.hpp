@@ -18,7 +18,7 @@ class FileRegularImpl final:
     public IFile
 {
 public:
-    FileRegularImpl( const String& path );
+    FileRegularImpl( const String& path, CULInterface* interface );
     ~FileRegularImpl();
 
 protected:

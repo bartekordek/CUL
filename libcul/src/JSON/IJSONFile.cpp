@@ -4,8 +4,8 @@
 using namespace CUL;
 using namespace JSON;
 
-IJSONFile::IJSONFile( const String& path ):
-    FS::IFile( path )
+IJSONFile::IJSONFile( const String& path, CULInterface* interface ):
+    FS::IFile( path, interface )
 {
 }
 

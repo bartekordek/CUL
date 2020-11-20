@@ -65,6 +65,7 @@ public:
     bool operator==( const double arg ) const;
 
     bool operator<( const String& arg ) const;
+    bool operator>( const String& arg ) const;
 
     void toLower();
     void toUpper();
@@ -83,6 +84,12 @@ public:
 
     const char* cStr() const;
 
+    float toFloat() const;
+    double toDouble() const;
+    int toInt() const;
+    unsigned int toUInt() const;
+
+
     Length length() const;
     Length capacity() const;
     void clear();
@@ -94,6 +101,7 @@ protected:
 private:
     std::string m_value;
 };
+
 
 String CULLib_API operator+( const char* arg1, const String& arg2 );
 

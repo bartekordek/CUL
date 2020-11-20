@@ -126,9 +126,6 @@
     <ClCompile Include="src\ThreadUtilityWindows.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\TimeConcrete.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\TimerChrono.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -267,6 +264,12 @@
     <ClCompile Include="src\CULInterface.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ISerializable.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimeConcrete.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CSVFile.hpp">
@@ -288,9 +291,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ThreadUtilityWindows.hpp">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TimeConcrete.hpp">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\TimerChrono.hpp">
@@ -664,6 +664,12 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\Math\Primitives\Triangle3D.hpp">
       <Filter>inc\CUL\Math\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\ISerializable.hpp">
+      <Filter>inc\CUL</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\TimeConcrete.hpp">
+      <Filter>inc\CUL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

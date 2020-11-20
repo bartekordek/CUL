@@ -53,6 +53,7 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config )
 
 IImage* ImageLoaderConcrete::loadImage( const Path& path, Cbool rgba )
 {
+
     return getLoader( path.getExtension() )->loadImage( path, rgba );
 }
 

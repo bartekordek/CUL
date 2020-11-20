@@ -18,13 +18,8 @@ class CSVFile final:
     public ICSVFile
 {
 public:
-    
-    CSVFile( const CSVFile& rhv );
-    CSVFile( const String& fPath );
+    CSVFile( const String& fPath, CULInterface* interface );
     ~CSVFile();
-
-    CSVFile& operator=( const CSVFile& rhv );
-    CSVFile& operator=( const String& rPath );
 
     void changePath( const Path& newPath ) override;
 
@@ -69,6 +64,10 @@ private:
 
 // Deleted:
     CSVFile() = delete;
+    CSVFile( const CSVFile& rhv ) = delete;
+    CSVFile( CSVFile&& rhv ) = delete;
+    CSVFile& operator=( const CSVFile& rhv ) = delete;
+    CSVFile& operator=( CSVFile&& rhv ) = delete;
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

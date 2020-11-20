@@ -3,8 +3,8 @@
 using namespace CUL;
 using namespace FS;
 
-Directory::Directory( const String& path ):
-    IFile( path )
+Directory::Directory( const String& path, CULInterface* interface ):
+    IFile( path, interface )
 {
 }
 

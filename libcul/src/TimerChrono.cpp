@@ -1,15 +1,11 @@
 #include "TimerChrono.hpp"
-#include "TimeConcrete.hpp"
+#include "CUL/TimeConcrete.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 
 using namespace CUL;
 
 TimerChrono::TimerChrono():
     time( new TimeConcrete() )
-{
-}
-
-TimerChrono::~TimerChrono()
 {
 }
 
@@ -37,4 +33,8 @@ const ITime& TimerChrono::getElapsed() const
     const auto d_us = static_cast<double>( us );
     time->setTimeUs( d_us );
     return *time;
+}
+
+TimerChrono::~TimerChrono()
+{
 }

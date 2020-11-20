@@ -1,7 +1,9 @@
 #include "CUL/Filesystem/FS.hpp"
 #include "CUL/Filesystem/Directory.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/CULInterface.hpp"
 #include "Filesystem/FSUtils.hpp"
+#include "CUL/TimeConcrete.hpp"
 
 using namespace CUL;
 using namespace FS;
@@ -14,8 +16,9 @@ bool isRegularFile( const wchar_t* path );
 bool isDirectory( const char* path );
 bool isDirectory( const wchar_t* path );
 
-FSApi::FSApi( FileFactory* ff ):
-    m_fileFactory( ff )
+FSApi::FSApi( FileFactory* ff, CULInterface* culInterface ):
+    m_fileFactory( ff ),
+    m_culInterface( culInterface )
 {
 }
 
@@ -32,7 +35,7 @@ String FSApi::getCurrentDir()
 
 IFile* FSApi::getDirectory( const Path& directory )
 {
-    Directory* result = new Directory( directory );
+    Directory* result = new Directory( directory, m_culInterface );
     FsPath directoryBf( directory.getPath().cStr() );
     using DI = DirectoryIterator;
     DI end;
@@ -53,6 +56,35 @@ IFile* FSApi::getDirectory( const Path& directory )
     }
 
     return result;
+}
+
+
+// TODO:
+TimeConcrete FSApi::getCreationTime( const Path& )
+{
+    return TimeConcrete();
+}
+
+TimeConcrete FSApi::getLastModificationTime( const Path& path )
+{
+    if( false == m_culInterface->getFS()->fileExist( path ) )
+    {
+        return TimeConcrete();
+    }
+
+    TimeConcrete timeConcrete;
+    const auto ftime = FSCpp::last_write_time( path.getPath().cStr() );
+    const auto timeSinceEpoch = ftime.time_since_epoch();
+    const auto count = timeSinceEpoch.count();
+    const auto seconds = count * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
+    const auto microSeconds = seconds * 100000;
+    timeConcrete.setTimeUs( (const unsigned int) microSeconds );
+    return timeConcrete;
+}
+
+bool FSApi::fileExist( const Path& path )
+{
+    return isRegularFile( path.getPath().cStr() );
 }
 
 bool isRegularFile( const char* path )

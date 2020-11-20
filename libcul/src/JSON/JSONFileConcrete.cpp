@@ -5,8 +5,8 @@
 using namespace CUL;
 using namespace JSON;
 
-JSONFileConcrete::JSONFileConcrete( const String& path, FS::IFile* fileContent ):
-    IJSONFile( path ),
+JSONFileConcrete::JSONFileConcrete( const String& path, FS::IFile* fileContent, CULInterface* interface ):
+    IJSONFile( path, interface ),
     m_fileContents( fileContent )
 {
 }

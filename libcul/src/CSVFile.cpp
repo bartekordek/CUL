@@ -4,42 +4,10 @@
 using namespace CUL;
 using namespace FS;
 
-
-CSVFile::CSVFile( const CSVFile& rhv ):
-    ICSVFile( rhv.m_path ),
-    m_delimeter( rhv.m_delimeter ),
-    m_path( rhv.m_path ),
-    m_rows( rhv.m_rows ),
-    m_cached( rhv.m_cached ),
-    m_keepLineEndingCharacter( rhv.m_keepLineEndingCharacter )
-{
-}
-
-CSVFile::CSVFile( const String& fPath ):
-    ICSVFile( fPath ),
+CSVFile::CSVFile( const String& fPath, CULInterface* interface ):
+    ICSVFile( fPath, interface ),
     m_path( fPath )
 {
-}
-
-CSVFile& CSVFile::operator=( const CSVFile& rhv )
-{
-    if( &rhv != this )
-    {
-        m_delimeter = rhv.m_delimeter;
-        m_path = rhv.m_path;
-        m_rows = rhv.m_rows;
-        m_cached = rhv.m_cached;
-        m_keepLineEndingCharacter = rhv.m_keepLineEndingCharacter;
-        IFile::setPath( rhv.m_path );
-    }
-    return *this;
-}
-
-CSVFile& CSVFile::operator=( const String& rPath )
-{
-    changePath( rPath );
-    IFile::setPath( rPath );
-    return *this;
 }
 
 void CSVFile::changePath( const Path& newPath )

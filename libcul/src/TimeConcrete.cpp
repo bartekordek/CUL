@@ -1,4 +1,4 @@
-#include "TimeConcrete.hpp"
+#include "CUL/TimeConcrete.hpp"
 
 using namespace CUL;
 
@@ -11,10 +11,6 @@ TimeConcrete::TimeConcrete( const TimeConcrete& tc ):
 {
 }
 
-TimeConcrete::~TimeConcrete()
-{
-}
-
 TimeConcrete& TimeConcrete::operator=( const TimeConcrete& rhv )
 {
     if( &rhv != this )
@@ -24,37 +20,72 @@ TimeConcrete& TimeConcrete::operator=( const TimeConcrete& rhv )
     return *this;
 }
 
-void TimeConcrete::setTimeMs( const double time )
+void TimeConcrete::setTimeMs( const unsigned int time )
 {
-    m_us = 1.0 * time / 1000.0;
+    m_us = time / 1000;
 }
 
-void TimeConcrete::setTimeUs( const double us )
+void TimeConcrete::setTimeUs( const unsigned int us )
 {
     m_us = us;
 }
 
-double TimeConcrete::getMs() const
+unsigned int TimeConcrete::getMs() const
 {
-    return m_us * 1000.0;
+    return m_us / 1000;
 }
 
-double TimeConcrete::getS() const
+unsigned int TimeConcrete::getS() const
 {
-    return m_us / ( 1000 * 1000 );
+    return m_us / ( 1000u * 1000u );
 }
 
-double TimeConcrete::getM() const
+unsigned int TimeConcrete::getM() const
 {
-    return m_us / ( 60000 * 1000 );
+    return m_us / ( 60000u * 1000u );
 }
 
-double TimeConcrete::getH() const
+unsigned int TimeConcrete::getH() const
 {
-    return m_us / ( 3600000.0 * 1000.0 );
+    return m_us / ( 3600000u * 1000u );
 }
 
-double TimeConcrete::getUs() const
+unsigned int TimeConcrete::getUs() const
 {
     return m_us;
+}
+
+bool TimeConcrete::operator==( const ITime& arg ) const
+{
+    return m_us == arg.getUs();
+}
+
+bool TimeConcrete::operator<( const ITime& arg ) const
+{
+    return m_us < arg.getUs();
+}
+
+bool TimeConcrete::operator>( const ITime& arg ) const
+{
+    return m_us > arg.getUs();
+}
+
+ITime* TimeConcrete::copy() const
+{
+    auto result = new TimeConcrete();
+    result->setTimeUs( m_us );
+    return result;
+}
+
+ITime& TimeConcrete::operator=( const ITime& arg )
+{
+    if( this != &arg )
+    {
+        m_us = arg.getUs();
+    }
+    return *this;
+}
+
+TimeConcrete::~TimeConcrete()
+{
 }

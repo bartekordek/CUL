@@ -1,5 +1,6 @@
 #include "CUL/CULInterface.hpp"
 #include "CUL/Log/ILogContainer.hpp"
+#include "GenericUtils/IConfigFileConcrete.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Filesystem/FS.hpp"
 
@@ -12,12 +13,12 @@ CULInterface* CULInterface::createInstance()
 
 CULInterface::CULInterface()
 {
-    m_fileFactory = new FS::FileFactory();
+    m_fileFactory = new FS::FileFactory( this );
 
     m_logger = LOG::LOG_CONTAINER::getLogger();
     m_logger->log( "Initialized logger." );
 
-    m_fsApi = new FS::FSApi( m_fileFactory.get() );
+    m_fsApi = new FS::FSApi( m_fileFactory.get(), this );
 
     m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi, m_logger );
 }
@@ -42,6 +43,10 @@ FS::FileFactory* CULInterface::getFF()
     return m_fileFactory;
 }
 
+GUTILS::IConfigFile* CULInterface::createConfigFile( const FS::Path& path )
+{
+    return new GUTILS::IConfigFileConcrete( path, this );
+}
 
 CULInterface::~CULInterface()
 {

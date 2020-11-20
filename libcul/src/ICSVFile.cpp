@@ -2,8 +2,8 @@
 
 using namespace CUL::FS;
 
-ICSVFile::ICSVFile( const String& path ):
-    IFile( path )
+ICSVFile::ICSVFile( const String& path, CULInterface* interface ):
+    IFile( path, interface )
 {
 }
 

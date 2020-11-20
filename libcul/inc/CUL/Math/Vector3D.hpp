@@ -1,7 +1,7 @@
 #pragma once
 
+#include "CUL/ISerializable.hpp"
 #include "CUL/Math/Epsilon.hpp"
-#include "CUL/CUL.hpp"
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Math/Axis.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
@@ -24,7 +24,8 @@ using ST = TriangleRectangularSimple2D;
 #endif
 template <typename Type>
 class Vector3D:
-    public Epsilon<Type>
+    public Epsilon<Type>,
+    public ISerializable
 {
 public:
     Vector3D()
@@ -62,6 +63,23 @@ public:
             m_vals[ (size_t) index] = static_cast<Type>( right[index] );
             m_rotationTraingles[ (size_t) indexR] = right.getTriangle( indexR );
         }
+    }
+
+    const String serialize() const
+    {
+        String result   = "{\n";
+        result = result + "    \"pos\": {\n";
+        result = result + "        \"x\": " + String( m_vals[0] ) + ",\n";
+        result = result + "        \"y\": " + String( m_vals[1] ) + ",\n";
+        result = result + "        \"z\": " + String( m_vals[2] ) + "\n";
+        result = result + "    },\n";
+        result = result + "    \"rotation\":{\n";
+        result = result + "        \"yaw\": " + String( m_rotationTraingles[(size_t) RotationType::YAW].getAngle().getValueF() ) + ",\n";
+        result = result + "        \"pitch\": " + String( m_rotationTraingles[(size_t) RotationType::PITCH].getAngle().getValueF() ) + ",\n";
+        result = result + "        \"roll\": " + String( m_rotationTraingles[(size_t) RotationType::ROLL].getAngle().getValueF() ) + "\n";
+        result = result + "    }\n";
+        result = result + "}\n";
+        return result;
     }
 
     virtual ~Vector3D() = default;

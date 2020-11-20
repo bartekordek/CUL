@@ -41,6 +41,7 @@
     <ClCompile Include="src\Graphics\Position3DDMutexedImpl.cpp" />
     <ClCompile Include="src\Graphics\Size3DDMutexed.cpp" />
     <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp" />
+    <ClCompile Include="src\ISerializable.cpp" />
     <ClCompile Include="src\JSON\DataValue.cpp" />
     <ClCompile Include="src\JSON\IJSONFile.cpp" />
     <ClCompile Include="src\JSON\INodeImpl.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="inc\CUL\Graphics\Size3DDMutexed.hpp" />
     <ClInclude Include="inc\CUL\ICSVFile.hpp" />
     <ClInclude Include="inc\CUL\IName.hpp" />
+    <ClInclude Include="inc\CUL\ISerializable.hpp" />
     <ClInclude Include="inc\CUL\Iterator.hpp" />
     <ClInclude Include="inc\CUL\ITime.hpp" />
     <ClInclude Include="inc\CUL\ITimer.hpp" />
@@ -182,6 +184,7 @@
     <ClInclude Include="inc\CUL\String.hpp" />
     <ClInclude Include="inc\CUL\ThreadUtils.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
+    <ClInclude Include="inc\CUL\TimeConcrete.hpp" />
     <ClInclude Include="inc\CUL\UselessMacros.hpp" />
     <ClInclude Include="inc\CUL\Video\IFPSCounter.hpp" />
     <ClInclude Include="inc\CUL\Video\IFPSObservable.hpp" />
@@ -212,7 +215,6 @@
     <ClInclude Include="src\STDCodecvt.hpp" />
     <ClInclude Include="src\ThreadUtilityDummy.hpp" />
     <ClInclude Include="src\ThreadUtilityWindows.hpp" />
-    <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />
     <ClInclude Include="src\Video\FPSCounterConcrete.hpp" />
   </ItemGroup>

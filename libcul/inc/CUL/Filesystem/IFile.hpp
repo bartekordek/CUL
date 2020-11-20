@@ -1,7 +1,9 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
 #include "CUL/Filesystem/Path.hpp"
+#include "CUL/TimeConcrete.hpp"
+#include "CUL/GenericUtils/DumbPtr.hpp"
+
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 
@@ -9,6 +11,7 @@ using Cunt = const unsigned int;
 using Cbool = const bool;
 
 NAMESPACE_BEGIN( CUL )
+class CULInterface;
 NAMESPACE_BEGIN( FS )
 
 enum class FileType: short
@@ -22,12 +25,12 @@ enum class FileType: short
 
 class CULLib_API IFile;
 
-using FileList = std::set<IFile*>;
+using FileList = std::set< GUTILS::DumbPtr<IFile>>;
 
 class CULLib_API IFile
 {
 public:
-    IFile( const String& fPath );
+    IFile( const String& fPath, CUL::CULInterface* interface );
 
     void setPath( const String& fPath );
 
@@ -37,6 +40,9 @@ public:
     virtual void reload( Cbool keepLineEndingCharacter = false ) = 0;
     virtual void load( Cbool keepLineEndingCharacter = false ) = 0;
     virtual void unload() = 0;
+
+    TimeConcrete getCreationTime();
+    TimeConcrete getLastModificationTime();
 
     virtual const String& firstLine() const = 0;
     virtual const String& lastLine() const = 0;
@@ -50,16 +56,20 @@ public:
     const FileList& getChildList() const;
     void addChild( IFile* file );
 
-    bool operator==( const IFile* arg ) const;
-    bool operator<( const IFile* arg ) const;
+    bool operator==( const IFile& arg ) const;
+    bool operator<( const IFile& arg ) const;
+    bool operator>( const IFile& arg ) const;
 
     virtual ~IFile();
 
 protected:
+    CUL::CULInterface* p_cullInterface = nullptr;
 
 private:
     FileList m_fileList;
     String m_path;
+    TimeConcrete m_creationTime;
+    TimeConcrete m_lastModificationTime;
 
 private: // Deleted:
     IFile() = delete;
