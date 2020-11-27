@@ -32,6 +32,7 @@ src/ICSVFile.cpp
 src/IHttpRequest.cpp
 src/IName.cpp
 src/IPivot.cpp
+src/ISerializable.cpp
 src/ITime.cpp
 src/ITimer.cpp
 src/JSON/DataValue.cpp

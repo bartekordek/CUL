@@ -86,6 +86,7 @@ src/ICSVFile.cpp
 src/IHttpRequest.cpp
 src/IName.cpp
 src/IPivot.cpp
+src/ISerializable.cpp
 src/ITime.cpp
 src/ITimer.cpp
 src/JSON/DataValue.cpp
@@ -114,6 +115,7 @@ src/TimerChrono.cpp
 src/Video/FPSCounterConcrete.cpp
 src/Video/IFPSCounter.cpp
 src/Video/IFPSObservable.cpp
+
 )
 
 #set_target_properties(cul PROPERTIES PUBLIC_HEADER
@@ -153,6 +155,7 @@ inc/CUL/Graphics/Size2D.hpp
 inc/CUL/Graphics/Size3DDMutexed.hpp
 inc/CUL/ICSVFile.hpp
 inc/CUL/IName.hpp
+inc/CUL/ISerializable.hpp
 inc/CUL/Iterator.hpp
 inc/CUL/ITime.hpp
 inc/CUL/ITimer.hpp
@@ -174,15 +177,18 @@ inc/CUL/Math/Matrix2D.hpp
 inc/CUL/Math/MultiPoint.hpp
 inc/CUL/Math/Point.hpp
 inc/CUL/Math/PosTable.hpp
+inc/CUL/Math/Primitives/Quad.hpp
+inc/CUL/Math/Primitives/Triangle.hpp
+inc/CUL/Math/Primitives/Triangle3D.hpp
 inc/CUL/Math/Quaternion.hpp
 inc/CUL/Math/RotationType.hpp
 inc/CUL/Math/SquareMatrix2D.hpp
-inc/CUL/Math/Primitives/Triangle3D.hpp
 inc/CUL/Math/TriangleRectangularSimple2D.hpp
 inc/CUL/Math/Vector3D.hpp
 inc/CUL/Named.hpp
 inc/CUL/Network/IHttpRequest.hpp
 inc/CUL/OSUtils/ISystemFonts.hpp
+inc/CUL/OtherImports/import_gsl.hpp
 inc/CUL/STL_IMPORTS/STD_algorithm.hpp
 inc/CUL/STL_IMPORTS/STD_array.hpp
 inc/CUL/STL_IMPORTS/STD_atomic.hpp
@@ -215,6 +221,7 @@ inc/CUL/STL_IMPORTS/STD_vector.hpp
 inc/CUL/String.hpp
 inc/CUL/ThreadUtils.hpp
 inc/CUL/ThreadWrap.hpp
+inc/CUL/TimeConcrete.hpp
 inc/CUL/UselessMacros.hpp
 inc/CUL/Video/IFPSCounter.hpp
 inc/CUL/Video/IFPSObservable.hpp
@@ -249,7 +256,6 @@ src/STDCodecvt.hpp
 src/STD_chrono.hpp
 src/ThreadUtilityDummy.hpp
 src/ThreadUtilityWindows.hpp
-src/TimeConcrete.hpp
 src/TimerChrono.hpp
 src/Video/FPSCounterConcrete.hpp
 )
@@ -263,4 +269,6 @@ endif()
 target_include_directories(${EXEC} PUBLIC inc)
 target_include_directories(${EXEC} PRIVATE src)
 
-set_target_properties(${EXEC} PROPERTIES LINK_FLAGS "/INCREMENTAL:NO")
+if (MSVC)
+    set_target_properties(${EXEC} PROPERTIES LINK_FLAGS "/INCREMENTAL:NO")
+endif()

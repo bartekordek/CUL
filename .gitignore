@@ -40,3 +40,7 @@ private*.xml
 runTestsDir/*.so
 *.a
 /deps/Makefile
+
+CMakeCache.txt
+GPUs.txt
+libcul/deps/Makefile
