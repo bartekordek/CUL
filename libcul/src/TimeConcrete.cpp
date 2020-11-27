@@ -7,6 +7,7 @@ TimeConcrete::TimeConcrete()
 }
 
 TimeConcrete::TimeConcrete( const TimeConcrete& tc ):
+    ITime(),
     m_us( tc.m_us )
 {
 }

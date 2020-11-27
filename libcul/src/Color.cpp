@@ -44,6 +44,10 @@ void ColorS::setFromEnum( const ColorE& color )
     {
         setFloat( 1.0f, 1.0f, 1.0f, 0.0f );
     }
+    else if( ColorE::YELLOW == color )
+    {
+        setFloat( 1.0f, 1.0f, 0.0f, 0.0f );
+    }
 }
 
 float ColorS::getRF() const

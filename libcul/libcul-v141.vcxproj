@@ -27,6 +27,7 @@
     <ClCompile Include="src\GenericUtils\IArgumentsPair.cpp" />
     <ClCompile Include="src\GenericUtils\IConfigFile.cpp" />
     <ClCompile Include="src\GenericUtils\IConfigFileConcrete.cpp" />
+    <ClCompile Include="src\GenericUtils\IOnChange.cpp" />
     <ClCompile Include="src\Graphics\IImage.cpp" />
     <ClCompile Include="src\Graphics\IImageLoader.cpp" />
     <ClCompile Include="src\Graphics\ImageConcrete.cpp" />
@@ -67,7 +68,7 @@
     <ClCompile Include="src\JSON\INode.cpp" />
     <ClCompile Include="src\JSON\JSONFileConcrete.cpp" />
     <ClCompile Include="src\Math\Axis.cpp" />
-    <ClCompile Include="src\Math\IAngle.cpp" />
+    <ClCompile Include="src\Math\Angle.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\Math\TriangleRectangularSimple2D.cpp" />
     <ClCompile Include="src\Named.cpp" />
@@ -97,9 +98,11 @@
     <ClInclude Include="inc\CUL\GenericUtils\DumbPtr.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\IArgumentsList.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\IConfigFile.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\IOnChange.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\ITask.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\LckPrim.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\SimpleAssert.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\ValueChangeHook.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Color.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IImage.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IImageLoader.hpp" />

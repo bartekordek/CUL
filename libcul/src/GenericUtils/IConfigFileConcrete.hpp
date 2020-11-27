@@ -5,7 +5,9 @@
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 
 NAMESPACE_BEGIN( CUL )
-class FS::IFile;
+NAMESPACE_BEGIN( FS )
+class IFile;
+NAMESPACE_END( FS )
 class CULInterface;
 NAMESPACE_BEGIN( GUTILS )
 

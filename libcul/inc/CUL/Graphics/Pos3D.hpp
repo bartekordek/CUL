@@ -40,13 +40,16 @@ public:
     {
     }
 
-    const String serialize() const
+    String getSerializationContent( CounterType tabsSize, const bool = false ) const
     {
-        String result   = "{\n";
-        result = result + "    \"x\": " + String( x ) + ",\n";
-        result = result + "    \"y\": " + String( y ) + ",\n";
-        result = result + "    \"z\": " + String( z ) + "\n";
-        result = result + "}\n";
+        String tabs = getTab( tabsSize );
+
+        String result;
+        result = result + tabs + "\"name\": \"Position3D\",\n";
+        result = result + tabs + "\"x\": " + String( x ) + ",\n";
+        result = result + tabs + "\"y\": " + String( y ) + ",\n";
+        result = result + tabs + "\"z\": " + String( z ) + "\n";
+
         return result;
     }
 

@@ -40,6 +40,7 @@ public:
     uint64_t getFileSize() const;
 
     bool operator==( const Path& rhv ) const;
+    bool operator!=( const Path& rhv ) const;
     bool operator<( const Path& rhv ) const;
     bool operator>( const Path& rhv ) const;
 

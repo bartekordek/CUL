@@ -40,7 +40,7 @@ struct CULLib_API ImageInfo
     int pitch = 0;
 };
 #if _MSC_VER
-__pragma( warning( pop ) )
+#pragma warning( pop )
 #endif
 
 class CULLib_API IImage

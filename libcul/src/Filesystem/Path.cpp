@@ -184,6 +184,11 @@ bool Path::operator==( const Path& rhv ) const
     return m_fullPath == rhv.m_fullPath;
 }
 
+bool Path::operator!=( const Path& rhv ) const
+{
+    return m_fullPath != rhv.m_fullPath;
+}
+
 bool Path::operator<( const Path& rhv ) const
 {
     return m_fullPath < rhv.m_fullPath;

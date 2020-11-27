@@ -78,7 +78,7 @@ TimeConcrete FSApi::getLastModificationTime( const Path& path )
     const auto count = timeSinceEpoch.count();
     const auto seconds = count * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
     const auto microSeconds = seconds * 100000;
-    timeConcrete.setTimeUs( (const unsigned int) microSeconds );
+    timeConcrete.setTimeUs( (unsigned int) microSeconds );
     return timeConcrete;
 }
 

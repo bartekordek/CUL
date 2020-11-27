@@ -150,9 +150,6 @@
     <ClCompile Include="src\Math\Axis.cpp">
       <Filter>src\Math</Filter>
     </ClCompile>
-    <ClCompile Include="src\Math\IAngle.cpp">
-      <Filter>src\Math</Filter>
-    </ClCompile>
     <ClCompile Include="src\Math\Math.cpp">
       <Filter>src\Math</Filter>
     </ClCompile>
@@ -269,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="src\TimeConcrete.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GenericUtils\IOnChange.cpp">
+      <Filter>src\GenericUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math\Angle.cpp">
+      <Filter>src\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -670,6 +673,12 @@
     </ClInclude>
     <ClInclude Include="inc\CUL\TimeConcrete.hpp">
       <Filter>inc\CUL</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\GenericUtils\IOnChange.hpp">
+      <Filter>inc\CUL\GenericUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CUL\GenericUtils\ValueChangeHook.hpp">
+      <Filter>inc\CUL\GenericUtils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

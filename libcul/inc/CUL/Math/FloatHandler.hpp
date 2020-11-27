@@ -41,22 +41,22 @@ public:
         return value;
     }
 
-    const bool operator==( const FloatHandler<Type>& arg ) const
+    bool operator==( const FloatHandler<Type>& arg ) const
     {
         return std::abs( value - arg.value ) <= epsilon;
     }
 
-    const bool operator==( const Type arg ) const
+    bool operator==( const Type arg ) const
     {
         return std::abs( value - arg ) <= epsilon;
     }
 
-    const bool operator<( const FloatHandler<Type>& arg ) const
+    bool operator<( const FloatHandler<Type>& arg ) const
     {
         return value < arg.value;
     }
 
-    const bool operator<( const Type arg )const
+    bool operator<( const Type arg )const
     {
         return value < arg;
     }

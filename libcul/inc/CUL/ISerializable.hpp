@@ -4,16 +4,24 @@
 
 NAMESPACE_BEGIN( CUL )
 
+using CounterType = unsigned;
+
 class CULLib_API ISerializable
 {
 public:
     ISerializable();
 
-    virtual const String serialize() const = 0;
+    String serialize( CounterType tabsSize, const bool separator = false ) const;
 
     virtual ~ISerializable();
 protected:
+
+    static String getTab( CounterType tabsSize );
+
 private:
+    virtual String getSerializationContent( CounterType tabsSize, const bool separator = false ) const = 0;
+
+    static CounterType s_spacesInTab;
 
     // Deleted:
     ISerializable( const ISerializable& arg ) = delete;

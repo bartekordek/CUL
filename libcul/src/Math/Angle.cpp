@@ -1,25 +1,21 @@
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Math/Math.hpp"
 
-using Angle = CUL::MATH::Angle;
-using Type = CUL::MATH::Angle::Type;
+using namespace CUL;
+using namespace MATH;
 
 Angle::Angle()
 {
 }
 
-Angle::Angle( const double value, const Type type )
+Angle::Angle( Cdouble value, const Type type )
 {
     setValue( value, type );
 }
 
-Angle::Angle( const int value, const Type type )
+Angle::Angle( Cint value, const Type type )
 {
     setValue( value, type );
-}
-
-Angle::~Angle()
-{
 }
 
 int Angle::getValueI( const Type type ) const
@@ -27,27 +23,27 @@ int Angle::getValueI( const Type type ) const
     return static_cast<int>( getValueD( type ) );
 }
 
-void Angle::setValue( const int value, const Type type )
+void Angle::setValue( Cint value, const Type type )
 {
     setValue( static_cast<double>( value ), type );
 }
 
-void Angle::setIncrementValue( const unsigned int value )
+void Angle::setIncrementValue( Cunt value )
 {
     setIncrementValue( static_cast<double>( value ) );
 }
 
-void Angle::setIncrementValue( const int value )
+void Angle::setIncrementValue( Cint value )
 {
     setIncrementValue( static_cast<double>( value ) );
 }
 
-void Angle::setIncrementValue( const double value )
+void Angle::setIncrementValue( Cdouble value )
 {
     m_incrementValue = value;
 }
 
-Type Angle::getCurrentType() const
+Angle::Type Angle::getCurrentType() const
 {
     return m_type;
 }
@@ -57,76 +53,76 @@ void Angle::setCurrentType( const Type type )
     m_type = type;
 }
 
-Angle& Angle::operator+=( const unsigned int val )
+Angle& Angle::operator+=( Cunt val )
 {
     add( static_cast<double>( val ) );
     return *this;
 }
 
-Angle& Angle::operator+=( const int val )
+Angle& Angle::operator+=( Cint val )
 {
     add( static_cast<double>( val ) );
     return *this;
 }
 
-Angle& Angle::operator+=( const double value )
+Angle& Angle::operator+=( Cdouble value )
 {
     add( value );
     return *this;
 }
 
-Angle& Angle::operator-=( const unsigned int val )
+Angle& Angle::operator-=( Cunt val )
 {
     subtrackt( static_cast<double>( val ) );
     return *this;
 }
 
-Angle& Angle::operator-=( const int val )
+Angle& Angle::operator-=( Cint val )
 {
     subtrackt( static_cast<double>( val ) );
     return *this;
 }
 
-Angle Angle::operator/( const double val )
+Angle Angle::operator/( Cdouble val )
 {
     Angle result( *this );
     result /= val;
     return result;
 }
 
-Angle Angle::operator/( const int val )
+Angle Angle::operator/( Cint val )
 {
     Angle result( *this );
     result /= val;
     return result;
 }
 
-Angle Angle::operator/( const unsigned int val )
+Angle Angle::operator/( Cunt val )
 {
     Angle result( *this );
     result /= val;
     return result;
 }
 
-Angle& Angle::operator/=( const double value )
+Angle& Angle::operator/=( Cdouble value )
 {
     divide( static_cast<double>( value ) );
     return *this;
 }
 
-Angle& Angle::operator/=( const int val )
+Angle& Angle::operator/=( Cint val )
 {
     divide( static_cast<double>( val ) );
     return *this;
 }
 
-Angle& Angle::operator/=( const unsigned int val )
+Angle& Angle::operator/=( Cunt val )
 {
     divide( static_cast<double>( val ) );
     return *this;
 }
 
-void Angle::divide( const double value )
+void Angle::divide( Cdouble value )
 {
     if( Type::RADIAN == m_type )
     {
@@ -140,25 +136,25 @@ void Angle::divide( const double value )
     }
 }
 
-Angle& Angle::operator*=( const double val )
+Angle& Angle::operator*=( Cdouble val )
 {
     multiply( static_cast<double>( val ) );
     return *this;
 }
 
-Angle& Angle::operator*=( const int val )
+Angle& Angle::operator*=( Cint val )
 {
     multiply( static_cast<double>( val ) );
     return *this;
 }
 
-Angle& Angle::operator*=( const unsigned int val )
+Angle& Angle::operator*=( Cunt val )
 {
     multiply( static_cast<double>( val ) );
     return *this;
 }
 
-void Angle::add( const double value )
+void Angle::add( Cdouble value )
 {
     if( Type::RADIAN == m_type )
     {
@@ -172,7 +168,7 @@ void Angle::add( const double value )
     }
 }
 
-void Angle::subtrackt( const double value )
+void Angle::subtrackt( Cdouble value )
 {
     if( Type::RADIAN == m_type )
     {
@@ -186,7 +182,7 @@ void Angle::subtrackt( const double value )
     }
 }
 
-void Angle::multiply( const double value )
+void Angle::multiply( Cdouble value )
 {
     if( Type::RADIAN == m_type )
     {
@@ -200,21 +196,21 @@ void Angle::multiply( const double value )
     }
 }
 
-Angle Angle::operator*( const double val )
+Angle Angle::operator*( Cdouble val )
 {
     Angle result( *this );
     result *= val;
     return result;
 }
 
-Angle Angle::operator*( const int val )
+Angle Angle::operator*( Cint val )
 {
     Angle result( *this );
     result *= val;
     return result;
 }
 
-Angle Angle::operator*( const unsigned int val )
+Angle Angle::operator*( Cunt val )
 {
     Angle result( *this );
     result *= val;
@@ -271,7 +267,7 @@ void Angle::decrement()
     }
 }
 
-Angle& Angle::operator-=( const double value )
+Angle& Angle::operator-=( Cdouble value )
 {
     if( Type::RADIAN == m_type )
     {
@@ -286,12 +282,12 @@ Angle& Angle::operator-=( const double value )
     return *this;
 }
 
-void Angle::setValue( const unsigned int value, const Type type )
+void Angle::setValue( Cunt value, const Type type )
 {
     setValue( static_cast<double>( value ), type );
 }
 
-void Angle::setValue( const double value, const Type type )
+void Angle::setValue( Cdouble value, const Type type )
 {
     if( Type::RADIAN == type )
     {
@@ -337,12 +333,18 @@ Angle::operator int() const
     return static_cast<int>( m_valueDeg );
 }
 
-double CUL::MATH::radian2degree( const double radian )
+
+Angle::~Angle()
+{
+}
+
+
+double CUL::MATH::radian2degree( Cdouble radian )
 {
     return radian * 180.0 / CUL::MATH::UTIL::Constants::PI;
 }
 
-double CUL::MATH::degree2radian( const double degree )
+double CUL::MATH::degree2radian( Cdouble degree )
 {
     return degree * CUL::MATH::UTIL::Constants::PI / 180.0;
 }

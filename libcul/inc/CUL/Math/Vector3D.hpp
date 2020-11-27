@@ -5,8 +5,9 @@
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Math/Axis.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "CUL/Math/RotationType.hpp"
+#include "CUL/GenericUtils/IOnChange.hpp"
 #include "CUL/Math/TriangleRectangularSimple2D.hpp"
+#include "CUL/Math/RotationType.hpp"
 
 #include "CUL/STL_IMPORTS/STD_cmath.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
@@ -25,7 +26,8 @@ using ST = TriangleRectangularSimple2D;
 template <typename Type>
 class Vector3D:
     public Epsilon<Type>,
-    public ISerializable
+    public ISerializable,
+    public GUTILS::IOnChange
 {
 public:
     Vector3D()
@@ -43,9 +45,20 @@ public:
     }
 
     Vector3D( const Vector3D<Type>& v2 ):
-        m_vals( v2.m_vals ),
-        m_rotationTraingles( v2.m_rotationTraingles )
+        ISerializable(),
+        GUTILS::IOnChange()
     {
+        copyFromOtherVector( v2 );
+    }
+
+    void copyFromOtherVector( const Vector3D<Type>& arg )
+    {
+        if( this != & arg )
+        {
+            m_vals = arg.m_vals;
+            m_rotationTraingles = arg.m_rotationTraingles;
+            m_width = arg.m_width;
+        }
     }
 
     template <class someOtherClass>
@@ -65,20 +78,23 @@ public:
         }
     }
 
-    const String serialize() const
+    String getSerializationContent( CounterType tabsSize, const bool = false ) const override
     {
-        String result   = "{\n";
-        result = result + "    \"pos\": {\n";
-        result = result + "        \"x\": " + String( m_vals[0] ) + ",\n";
-        result = result + "        \"y\": " + String( m_vals[1] ) + ",\n";
-        result = result + "        \"z\": " + String( m_vals[2] ) + "\n";
-        result = result + "    },\n";
-        result = result + "    \"rotation\":{\n";
-        result = result + "        \"yaw\": " + String( m_rotationTraingles[(size_t) RotationType::YAW].getAngle().getValueF() ) + ",\n";
-        result = result + "        \"pitch\": " + String( m_rotationTraingles[(size_t) RotationType::PITCH].getAngle().getValueF() ) + ",\n";
-        result = result + "        \"roll\": " + String( m_rotationTraingles[(size_t) RotationType::ROLL].getAngle().getValueF() ) + "\n";
-        result = result + "    }\n";
-        result = result + "}\n";
+        String tabs = getTab( tabsSize );
+
+        String result;
+        result = result + tabs + "\"pos\":\n";
+        result = result + tabs + "{\n";
+        result = result + tabs + "    \"x\": " + String( m_vals[0] ) + ",\n";
+        result = result + tabs + "    \"y\": " + String( m_vals[1] ) + ",\n";
+        result = result + tabs + "    \"z\": " + String( m_vals[2] ) + "\n";
+        result = result + tabs + "},\n";
+        result = result + tabs + "\"rotation\":\n";
+        result = result + tabs + "{\n";
+        result = result + tabs + "    \"yaw\": " + String( m_rotationTraingles[(size_t) RotationType::YAW].getAngle().getValueF() ) + ",\n";
+        result = result + tabs + "    \"pitch\": " + String( m_rotationTraingles[(size_t) RotationType::PITCH].getAngle().getValueF() ) + ",\n";
+        result = result + tabs + "    \"roll\": " + String( m_rotationTraingles[(size_t) RotationType::ROLL].getAngle().getValueF() ) + "\n";
+        result = result + tabs + "}\n";
         return result;
     }
 
@@ -150,7 +166,7 @@ public:
 
     const ST& getTriangle( const RotationType rt ) const
     {
-        return m_rotationTraingles.at( rt );
+        return m_rotationTraingles.at( (size_t)rt );
     }
 
     void rotate( const Angle& angle, const RotationType rt )
@@ -271,6 +287,7 @@ public:
         return result;
     }
 
+    //TODO:
     Vector3D<Type>& operator-=( const Vector3D<Type>& right )
     {
         auto index = static_cast<AxisCarthesian>( 0 );
@@ -287,6 +304,8 @@ public:
         if( this != &right )
         {
             m_vals = right.m_vals;
+            m_rotationTraingles = right.m_rotationTraingles;
+            m_width = right.m_width;
         }
         return *this;
     }
@@ -413,7 +432,7 @@ private:
             const auto xW = m_vals[ (size_t) AxisCarthesian::X];
             const auto yW = m_vals[ (size_t) AxisCarthesian::Y];
             m_width[ (size_t) rt] = std::sqrt( 1.0 * xW * xW + 1.0 * yW * yW );
-            m_rotationTraingles[rt].setOpposite( m_width[ (size_t) rt] );
+            m_rotationTraingles[(size_t) rt].setOpposite( m_width[ (size_t) rt] );
         }
         else if( RotationType::PITCH == rt )
         {
@@ -453,6 +472,7 @@ private:
 using Vector3Dd = Vector3D<double>;
 using Vector3Di = Vector3D<int>;
 using Vector3Du = Vector3D<unsigned>;
+using Vector3Df = Vector3D<float>;
 
 #ifdef _MSC_VER
 // Yes, I know that is a Spectre mitigation.

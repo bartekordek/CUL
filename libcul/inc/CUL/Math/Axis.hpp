@@ -22,7 +22,8 @@ using Size = unsigned;
 #pragma warning( pop )
 #endif
 
-enum class AxisCarthesian: size_t
+using AxisCarthesianDType = unsigned short;
+enum class AxisCarthesian: AxisCarthesianDType
 {
     X = 0,
     Y,

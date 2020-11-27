@@ -202,7 +202,7 @@
     <ProjectGuid>{a44b1777-b335-4580-ae9e-89cb3779f81e}</ProjectGuid>
     <RootNamespace>PFS</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>libcul-v142</ProjectName>
+    <ProjectName>libcul</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

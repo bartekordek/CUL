@@ -1,12 +1,13 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/ISerializable.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
 template <typename Type>
-class CULLib_API Size2D
+class CULLib_API Size2D:
+    public CUL::ISerializable
 {
 public:
     Size2D()
@@ -14,6 +15,7 @@ public:
     }
 
     Size2D( const Size2D& s2 ):
+        CUL::ISerializable(),
         m_width( s2.m_width ),
         m_height( s2.m_height )
     {
@@ -25,10 +27,6 @@ public:
     {
     }
 
-    virtual ~Size2D()
-    {
-    }
-
     Size2D& operator=( const Size2D& rhv )
     {
         if( this != &rhv )
@@ -37,6 +35,15 @@ public:
             m_height = rhv.m_height;
         }
         return *this;
+    }
+
+    bool operator==( const Size2D& arg ) const
+    {
+        if( this == &arg )
+        {
+            return true;
+        }
+        return m_width == arg.m_width && m_height == arg.m_height;
     }
 
     void setWidth( const Type width )
@@ -68,6 +75,21 @@ public:
     const Type getRatio() const
     {
         return m_width / m_height;
+    }
+
+    String getSerializationContent( CounterType tabsSize, const bool = false ) const override
+    {
+        String tabs = getTab( tabsSize );
+
+        String result;
+        result = result + tabs + "    \"width\": " + String( m_width ) + ",\n";
+        result = result + tabs + "    \"height\": " + String( m_height ) + "\n";
+
+        return result;
+    }
+
+    virtual ~Size2D()
+    {
     }
 
 protected:

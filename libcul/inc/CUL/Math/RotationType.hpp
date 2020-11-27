@@ -5,7 +5,9 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 
-enum class RotationType: size_t
+using RotationTypeType = unsigned short;
+
+enum class RotationType: RotationTypeType
 {
     ROLL = 0, // X - Y
     PITCH, // X - Z

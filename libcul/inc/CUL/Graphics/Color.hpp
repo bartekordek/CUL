@@ -13,7 +13,8 @@ enum class ColorE: short
     WHITE,
     RED,
     GREEN,
-    BLUE
+    BLUE,
+    YELLOW
 };
 
 enum class ColorComponent: short

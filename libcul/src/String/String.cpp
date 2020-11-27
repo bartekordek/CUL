@@ -1,5 +1,6 @@
 #include "CUL/String.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 
 using namespace CUL;
 
@@ -370,7 +371,7 @@ String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )
 {
     String left( arg1 );
     String result = left + arg2;
-   
+
     return result;
 }
 

@@ -19,20 +19,18 @@ void OSUtilsTests::SetUp()
 {
 }
 
-
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4189 )
 #endif
 TEST_F( OSUtilsTests, genericCreation )
 {
+#if _WIN32 //TODO LINUX:
     auto sf = m_culInterface->getSystemFonts();
+    GTEST_ASSERT_EQ( sf != nullptr, true );
     auto& ff = sf->getFontFilesPaths();
     GTEST_ASSERT_GT( ff.size(), 0 );
-}
-
-OSUtilsTests::~OSUtilsTests()
-{
+#endif
 }
 
 void OSUtilsTests::TearDown()
@@ -42,6 +40,10 @@ void OSUtilsTests::TearDown()
 void OSUtilsTests::TearDownTestCase()
 {
     m_culInterface.release();
+}
+
+OSUtilsTests::~OSUtilsTests()
+{
 }
 
 #ifdef _MSC_VER

@@ -44,3 +44,4 @@ runTestsDir/*.so
 CMakeCache.txt
 GPUs.txt
 libcul/deps/Makefile
+libcul/libcul/Makefile
