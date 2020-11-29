@@ -35,8 +35,26 @@ file( GLOB SOURCES libculTests/src/*.cpp )
 
 add_executable(${EXEC} ${SOURCES})
 
+if (MSVC)
+    set_target_properties(
+        ${EXEC}
+        PROPERTIES
+            OUTPUT_NAME ${EXEC}
+            SUFFIX ".exe"
+    )
+else()
+    set_target_properties(
+        ${EXEC}
+        PROPERTIES
+            OUTPUT_NAME ${EXEC}
+            SUFFIX ".bin"
+    )
+endif()
+
 #target_link_libraries(${EXEC} -L/home/user/libs/somelibpath/)
 target_link_libraries(${EXEC} cul gtest gmock AdditionalDeps )
+
+
 
 target_include_directories(${EXEC} PRIVATE inc)
 target_include_directories(${EXEC} PRIVATE src)
