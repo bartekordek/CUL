@@ -27,6 +27,7 @@ public:
     }
 
     Pos3D( const Pos3D& arg ):
+        ISerializable(),
         x( arg.x ),
         y( arg.y ),
         z( arg.z )
