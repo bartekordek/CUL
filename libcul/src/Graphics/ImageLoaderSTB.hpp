@@ -13,9 +13,9 @@ class STBIImageLoader final:
 public:
     STBIImageLoader();
 
-    IImage* loadImage( const Path& path, Cbool rgba = false ) override;
-    void deleteImage( const Path& path ) override;
-    IImage* findImage( const Path& path ) override;
+    IImage* loadImage( const FS::Path& path, Cbool rgba = false ) override;
+    void deleteImage( const FS::Path& path ) override;
+    IImage* findImage( const FS::Path& path ) override;
 
     ~STBIImageLoader();
 

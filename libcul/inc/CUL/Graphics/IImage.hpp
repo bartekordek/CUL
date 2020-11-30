@@ -9,13 +9,13 @@ NAMESPACE_BEGIN( Graphics )
 using DataType = unsigned char;
 using SSize2Dui = Graphics::SSize2Dui;
 using SSize2Di = Graphics::SSize2Di;
-using Path = FS::Path;
+
 
 enum class PixelFormat: short
 {
     NONE = -1,
-    RGB,
-    RGBA,
+    RGB = 0x1907,
+    RGBA = 0x1908,
     ARGB,
     BGR,
     BGRA,
@@ -32,7 +32,7 @@ struct CULLib_API ImageInfo
 {
     ImageInfo();
 
-    Path path;
+    FS::Path path;
     SSize2Di size = { 0, 0 };
     String colorFormat = "";
     PixelFormat pixelFormat = PixelFormat::NONE;

@@ -17,7 +17,7 @@ const ImageInfo& ImageConcrete::getImageInfo() const
     return m_imageInfo;
 }
 
-void ImageConcrete::setPath( const Path& path )
+void ImageConcrete::setPath( const FS::Path& path )
 {
     m_imageInfo.path = path;
 }

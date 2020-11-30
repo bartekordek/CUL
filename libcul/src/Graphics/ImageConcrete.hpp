@@ -21,7 +21,7 @@ public:
     DataType* getData() const override;
     const ImageInfo& getImageInfo() const override;
 
-    void setPath( const Path& path );
+    void setPath( const FS::Path& path );
     void setData( DataType* data );
     void setImageInfo( const ImageInfo& ii );
 

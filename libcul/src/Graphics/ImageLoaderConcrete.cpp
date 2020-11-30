@@ -51,18 +51,18 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config )
 }
 
 
-IImage* ImageLoaderConcrete::loadImage( const Path& path, Cbool rgba )
+IImage* ImageLoaderConcrete::loadImage( const FS::Path& path, Cbool rgba )
 {
 
     return getLoader( path.getExtension() )->loadImage( path, rgba );
 }
 
-void ImageLoaderConcrete::deleteImage( const Path& path )
+void ImageLoaderConcrete::deleteImage( const FS::Path& path )
 {
     return getLoader( path )->deleteImage( path );
 }
 
-IImage* ImageLoaderConcrete::findImage( const Path& path )
+IImage* ImageLoaderConcrete::findImage( const FS::Path& path )
 {
     return getLoader( path )->findImage( path );
 }

@@ -13,11 +13,11 @@ class ImageLoaderBMP final:
 public:
     ImageLoaderBMP();
 
-    IImage* loadImage( const Path& path, Cbool rgba = false ) override;
-    IImage* loadImage2( const Path& path, Cbool rgba = false ) ;
-    void printFileSize( const CUL::Graphics::Path& path );
-    void deleteImage( const Path& path ) override;
-    IImage* findImage( const Path& path ) override;
+    IImage* loadImage( const FS::Path& path, Cbool rgba = false ) override;
+    IImage* loadImage2( const FS::Path& path, Cbool rgba = false ) ;
+    void printFileSize( const FS::Path& path );
+    void deleteImage( const FS::Path& path ) override;
+    IImage* findImage( const FS::Path& path ) override;
 
     ~ImageLoaderBMP();
 

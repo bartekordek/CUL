@@ -9,7 +9,6 @@
 using namespace CUL;
 
 using IFile = FS::IFile;
-using Path = FS::Path;
 using FileFactory = FS::FileFactory;
 using ICSVFile = FS::ICSVFile;
 using IJSONFile = JSON::IJSONFile;
@@ -35,7 +34,7 @@ IFile* FileFactory::createFileFromPath( const Path& path )
     else if(
         ext == ".bmp" ||
         ext == ".png" ||
-        ext == ".jpg" || 
+        ext == ".jpg" ||
         ext == ".jpeg" )
     {
         CUL::Assert::simple( false, "Not implemented." );

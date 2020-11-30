@@ -12,9 +12,9 @@ public:
     IImageLoader();
     virtual ~IImageLoader();
 
-    virtual IImage* loadImage( const Path& path, Cbool rgba = false ) = 0;
-    virtual IImage* findImage( const Path& path ) = 0;
-    virtual void deleteImage( const Path& path ) = 0;
+    virtual IImage* loadImage( const FS::Path& path, Cbool rgba = false ) = 0;
+    virtual IImage* findImage( const FS::Path& path ) = 0;
+    virtual void deleteImage( const FS::Path& path ) = 0;
 
     static IImageLoader* createConcrete( CUL::GUTILS::IConfigFile* config );
 

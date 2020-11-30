@@ -9,11 +9,13 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if (MSVC)
     set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Build-Windows )
-    message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+else()
+    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Build-Linux )
 endif()
+message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
 
 add_library(AdditionalDeps STATIC
     stb/deprecated/stb_image.c
@@ -63,8 +65,3 @@ endif()
 if ( MSVC )
     target_compile_options(${EXEC} PRIVATE "/W3")
 endif()
-
-#include_directories(${EXEC}
-#    stb,
-#    tiny-image/src/
-#)

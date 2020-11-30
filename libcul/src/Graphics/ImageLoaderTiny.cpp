@@ -11,14 +11,14 @@ TinyImageLoader::TinyImageLoader()
 
 }
 
-IImage* TinyImageLoader::loadImage( const Path& path, Cbool )
+IImage* TinyImageLoader::loadImage( const FS::Path& path, Cbool )
 {
     int width = 0, height = 0;
     auto type = TinyImgColorType::TINYIMG_RGB;
-    DataType* rawData = tinyimg_load( path.getPath().cStr(),
-                                          &width, &height,
-                                          type );
-
+    DataType* rawData = tinyimg_load(
+        path.getPath().cStr(),
+        &width, &height,
+        type );
 
     const auto error =  tinyimg_get_error();
     if( TINYIMG_OK != error )
@@ -55,7 +55,7 @@ IImage* TinyImageLoader::loadImage( const Path& path, Cbool )
     return iimage;
 }
 
-void TinyImageLoader::deleteImage( const Path& path )
+void TinyImageLoader::deleteImage( const FS::Path& path )
 {
     auto it = m_fileList.find( path.getPath() );
     if( it != m_fileList.end() )
@@ -64,7 +64,7 @@ void TinyImageLoader::deleteImage( const Path& path )
     }
 }
 
-IImage* TinyImageLoader::findImage( const Path& path )
+IImage* TinyImageLoader::findImage( const FS::Path& path )
 {
     IImage* result = nullptr;
 

@@ -11,7 +11,7 @@ STBIImageLoader::STBIImageLoader()
 
 }
 
-IImage* STBIImageLoader::loadImage( const Path& path, Cbool )
+IImage* STBIImageLoader::loadImage( const FS::Path& path, Cbool )
 {
     int req_format = STBI_rgb_alpha;
     int width = 0, height = 0, orig_format = 0;
@@ -46,7 +46,7 @@ IImage* STBIImageLoader::loadImage( const Path& path, Cbool )
     return iimage;
 }
 
-void STBIImageLoader::deleteImage( const Path& path )
+void STBIImageLoader::deleteImage( const FS::Path& path )
 {
     auto it = m_fileList.find( path.getPath() );
     if( it != m_fileList.end() )
@@ -55,7 +55,7 @@ void STBIImageLoader::deleteImage( const Path& path )
     }
 }
 
-IImage* STBIImageLoader::findImage( const Path& path )
+IImage* STBIImageLoader::findImage( const FS::Path& path )
 {
     IImage* result = nullptr;
 

@@ -73,7 +73,7 @@ ImageLoaderBMP::ImageLoaderBMP()
 void checkColorHeader( BMPColorHeader& bmp_color_header );
 uint32_t makeStrideAligned( uint32_t align_stride );
 
-IImage* ImageLoaderBMP::loadImage2( const Path& path, Cbool )
+IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, Cbool )
 {
     printFileSize( path );
 
@@ -115,7 +115,7 @@ IImage* ImageLoaderBMP::loadImage2( const Path& path, Cbool )
             inp.read( (char*) &bmpColorHeader, sizeof( bmpColorHeader ) );
             // Check if the pixel data is stored as BGRA and if the color space type is sRGB
             checkColorHeader( bmpColorHeader );
-            
+
         }
         else
         {
@@ -207,7 +207,7 @@ IImage* ImageLoaderBMP::loadImage2( const Path& path, Cbool )
 void check_color_header( BMPColorHeader& bmp_color_header );
 uint32_t make_stride_aligned( uint32_t align_stride );
 
-IImage* ImageLoaderBMP::loadImage( const Path& path, Cbool )
+IImage* ImageLoaderBMP::loadImage( const FS::Path& path, Cbool )
 {
     auto result = new ImageConcrete();
     ImageInfo imageInfo;
@@ -216,7 +216,7 @@ IImage* ImageLoaderBMP::loadImage( const Path& path, Cbool )
     return result;
 }
 
-IImage* loadImage2( const Path& path, Cbool )
+IImage* loadImage2( const FS::Path& path, Cbool )
 {
     auto result = new ImageConcrete();
     ImageInfo imageInfo;
@@ -358,7 +358,7 @@ void check_color_header( BMPColorHeader& bmp_color_header )
     }
 }
 
-void ImageLoaderBMP::printFileSize( const CUL::Graphics::Path& path )
+void ImageLoaderBMP::printFileSize( const FS::Path& path )
 {
     const auto fileSize = path.getFileSize();
     std::cout << "FILESIZE = " << fileSize << "\n";
@@ -393,7 +393,7 @@ uint32_t makeStrideAligned( uint32_t align_stride )
     return new_stride;
 }
 
-void ImageLoaderBMP::deleteImage( const Path& path )
+void ImageLoaderBMP::deleteImage( const FS::Path& path )
 {
     auto it = m_fileList.find( path.getPath() );
     if( it != m_fileList.end() )
@@ -402,7 +402,7 @@ void ImageLoaderBMP::deleteImage( const Path& path )
     }
 }
 
-IImage* ImageLoaderBMP::findImage( const Path& path )
+IImage* ImageLoaderBMP::findImage( const FS::Path& path )
 {
     IImage* result = nullptr;
 

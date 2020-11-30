@@ -6,7 +6,7 @@
         {
             "label": "Recreate Cmake libcul",
             "type": "shell",
-            "command": "clear;cd Build-Linux;rm -rf *; cmake -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug;time make -j",
+            "command": "clear;cd Build-Linux;rm -rf *; cmake -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug ..;time make -j22",
             "group": {
                 "kind": "build",
                 "isDefault": true

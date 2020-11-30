@@ -13,32 +13,18 @@ if( MSVC )
 
     set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Windows )
     message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
 else()
+    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Linux )
+    message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
+
 endif()
 
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
 
-include_directories( SYSTEM "../deps/boost/assert/include" )
-include_directories( SYSTEM "../deps/boost/circular_buffer/include" )
-include_directories( SYSTEM "../deps/boost/concept_check/include" )
-include_directories( SYSTEM "../deps/boost/config/include" )
-include_directories( SYSTEM "../deps/boost/container_hash/include" )
-include_directories( SYSTEM "../deps/boost/core/include" )
-include_directories( SYSTEM "../deps/boost/move/include" )
-include_directories( SYSTEM "../deps/boost/preprocessor/include" )
-include_directories( SYSTEM "../deps/boost/static_assert/include" )
-include_directories( SYSTEM "../deps/boost/throw_exception/include" )
-include_directories( SYSTEM "../deps/boost/type_index/include" )
-include_directories( SYSTEM "../deps/boost/type_traits/include" )
-include_directories( SYSTEM "../deps/boost/variant/include" )
-include_directories( SYSTEM "../deps/rapidjson/include" )
-include_directories( SYSTEM "../deps/spdlog/include" )
 include_directories( SYSTEM "../deps/stb" )
 include_directories( SYSTEM "../deps/tiny-image/src" )
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../deps ${CMAKE_CURRENT_BINARY_DIR}/../deps)
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -262,10 +248,18 @@ inc/CUL/String.hpp
 inc/CUL/Iterator.hpp
 )
 
+set( DEPENDENCIES
+AdditionalDeps
+boost_assert
+boost_circular_buffer
+boost_core
+spdlog
+)
+
 if (MSVC)
-    target_link_libraries( ${EXEC} AdditionalDeps )
+    target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
-    target_link_libraries( ${EXEC} AdditionalDeps stdc++fs )
+    target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
 endif()
 
 target_include_directories(${EXEC} PUBLIC inc)

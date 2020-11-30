@@ -21,30 +21,43 @@ NAMESPACE_BEGIN( GUTILS )
 class IConfigFile;
 NAMESPACE_END( GUTILS )
 
+NAMESPACE_BEGIN( Graphics )
+class IImageLoader;
+NAMESPACE_END( Graphics )
+
 class CULLib_API CULInterface final
 {
 public:
 
-    static CULInterface* createInstance();
+    static CULInterface* createInstance( const FS::Path& configFile = "" );
+
+    OSUtils::ISystemFonts* getSystemFonts();
+
     LOG::ILogger* getLogger();
     FS::FSApi* getFS();
-    OSUtils::ISystemFonts* getSystemFonts();
     FS::FileFactory* getFF();
-    GUTILS::IConfigFile* createConfigFile( const FS::Path& path );
+    Graphics::IImageLoader* getImageLoader();
+
+    GUTILS::IConfigFile* loadConfigFile( const FS::Path& path );
 
     ~CULInterface();
 protected:
 private:
-    explicit CULInterface();
+    explicit CULInterface( const FS::Path& configFile = "" );
+    void initialize();
     explicit CULInterface( const CULInterface& arg ) = delete;
     explicit CULInterface( CULInterface&& arg ) = delete;
     CULInterface& operator=( const CULInterface& arg ) = delete;
     CULInterface& operator=( CULInterface&& arg ) = delete;
 
+    FS::Path m_configFilePath;
+    CUL::GUTILS::IConfigFile* m_configFile = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     GUTILS::DumbPtr<FS::FileFactory> m_fileFactory;
     GUTILS::DumbPtr<FS::FSApi> m_fsApi;
     GUTILS::DumbPtr<OSUtils::ISystemFonts> m_sysFonts;
+    //GUTILS::DumbPtr<Graphics::IImageLoader> m_imageLoader;
+    std::unique_ptr< Graphics::IImageLoader> m_imageLoader;
 };
 
 NAMESPACE_END( CUL )
