@@ -30,6 +30,8 @@ class Vector3D:
     public GUTILS::IOnChange
 {
 public:
+    using ValueType = std::array<Type, 3>;
+
     Vector3D()
     {
     }
@@ -55,7 +57,7 @@ public:
     {
         if( this != & arg )
         {
-            m_vals = arg.m_vals;
+            m_values = arg.m_values;
             m_rotationTraingles = arg.m_rotationTraingles;
             m_width = arg.m_width;
         }
@@ -73,9 +75,14 @@ public:
         {
             index = static_cast<AxisCarthesian>( i );
             indexR = static_cast<RotationType>( i );
-            m_vals[ (size_t) index] = static_cast<Type>( right[index] );
+            m_values[ (size_t) index] = static_cast<Type>( right[index] );
             m_rotationTraingles[ (size_t) indexR] = right.getTriangle( indexR );
         }
+    }
+
+    ValueType getValues() const
+    {
+        return m_values;
     }
 
     String getSerializationContent( CounterType tabsSize, const bool = false ) const override
@@ -85,9 +92,9 @@ public:
         String result;
         result = result + tabs + "\"pos\":\n";
         result = result + tabs + "{\n";
-        result = result + tabs + "    \"x\": " + String( m_vals[0] ) + ",\n";
-        result = result + tabs + "    \"y\": " + String( m_vals[1] ) + ",\n";
-        result = result + tabs + "    \"z\": " + String( m_vals[2] ) + "\n";
+        result = result + tabs + "    \"x\": " + String( m_values[0] ) + ",\n";
+        result = result + tabs + "    \"y\": " + String( m_values[1] ) + ",\n";
+        result = result + tabs + "    \"z\": " + String( m_values[2] ) + "\n";
         result = result + tabs + "},\n";
         result = result + tabs + "\"rotation\":\n";
         result = result + tabs + "{\n";
@@ -102,12 +109,12 @@ public:
 
     const Type& operator[]( const AxisCarthesian axis ) const
     {
-        return m_vals.at( (size_t)axis );
+        return m_values.at( (size_t)axis );
     }
 
     Type& operator[]( const AxisCarthesian axis )
     {
-        return m_vals[ac2Size( axis )];
+        return m_values[ac2Size( axis )];
     }
 
     const Type operator[]( const unsigned axis ) const = delete;
@@ -154,7 +161,7 @@ public:
 
     void setXYZ( const Vector3D& object )
     {
-        m_vals = object.m_vals;
+        m_values = object.m_values;
         m_rotationTraingles = object.m_rotationTraingles;
         m_width = object.m_width;
     }
@@ -215,7 +222,7 @@ public:
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
             index = static_cast<AxisCarthesian>( i );
-            result.m_vals[index] *= t.m_vals.at( index );
+            result.m_values[index] *= t.m_values.at( index );
         }
         return result;
     }
@@ -231,9 +238,9 @@ public:
 
     Vector3D<Type>& operator*=( const Vector3D<Type>& t )
     {
-        m_vals[(size_t)AxisCarthesian::X] *= t.getX();
-        m_vals[(size_t)AxisCarthesian::Y] *= t.getY();
-        m_vals[(size_t)AxisCarthesian::Z] *= t.getZ();
+        m_values[(size_t)AxisCarthesian::X] *= t.getX();
+        m_values[(size_t)AxisCarthesian::Y] *= t.getY();
+        m_values[(size_t)AxisCarthesian::Z] *= t.getZ();
         return *this;
     }
 
@@ -257,7 +264,7 @@ public:
     {
         for( size_t i = static_cast<size_t>( AxisCarthesian::X ); i < static_cast<size_t>( AxisCarthesian::ERROR ); ++i )
         {
-            m_vals[ i ] *= t;
+            m_values[ i ] *= t;
         }
         return *this;
     }
@@ -274,9 +281,9 @@ public:
 
     Vector3D<Type>& operator+=( const Vector3D<Type>& right )
     {
-        m_vals[(size_t)AxisCarthesian::X] += right.getX();
-        m_vals[(size_t)AxisCarthesian::Y] += right.getY();
-        m_vals[(size_t)AxisCarthesian::Z] += right.getZ();
+        m_values[(size_t)AxisCarthesian::X] += right.getX();
+        m_values[(size_t)AxisCarthesian::Y] += right.getY();
+        m_values[(size_t)AxisCarthesian::Z] += right.getZ();
         return *this;
     }
 
@@ -294,7 +301,7 @@ public:
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
             index = static_cast<AxisCarthesian>( i );
-            m_vals[index] -= right.m_vals.at( index );
+            m_values[index] -= right.m_values.at( index );
         }
         return *this;
     }
@@ -303,7 +310,7 @@ public:
     {
         if( this != &right )
         {
-            m_vals = right.m_vals;
+            m_values = right.m_values;
             m_rotationTraingles = right.m_rotationTraingles;
             m_width = right.m_width;
         }
@@ -323,7 +330,7 @@ public:
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
             index = static_cast<AxisCarthesian>( i );
-            m_vals[index] /= right.m_vals.at( index );
+            m_values[index] /= right.m_values.at( index );
         }
         return *this;
     }
@@ -333,7 +340,7 @@ public:
         Vector3D<Type> result( *this );
         for( unsigned i = 0; i < 3; ++i )
         {
-            result.m_vals[i] /= t;
+            result.m_values[i] /= t;
         }
         return result;
     }
@@ -342,7 +349,7 @@ public:
     {
         for( unsigned i = 0; i < 3; ++i )
         {
-            m_vals[i] /= t;
+            m_values[i] /= t;
         }
         return *this;
     }
@@ -373,7 +380,7 @@ public:
 
     void setAxisValue( const AxisCarthesian axis, const Type value )
     {
-        m_vals[(size_t)axis] = value;
+        m_values[(size_t)axis] = value;
         if( AxisCarthesian::X == axis )
         {
             m_rotationTraingles[(size_t)RotationType::PITCH].setOpposite( static_cast<double>( value ) );
@@ -393,12 +400,12 @@ public:
 
     const Type getAxis( const AxisCarthesian axis ) const
     {
-        return m_vals.at( axis );
+        return m_values.at( axis );
     }
 
     const Type getAxis( const Axis axis ) const
     {
-        return m_vals.at( (size_t) UTIL::normal2Carthesian( axis ) );
+        return m_values.at( (size_t) UTIL::normal2Carthesian( axis ) );
     }
 
     template <class someOtherClass>
@@ -408,7 +415,7 @@ public:
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
             index = static_cast<AxisCarthesian>( i );
-            m_vals[ (size_t) index] = static_cast<Type>( right[ (size_t) index] );
+            m_values[ (size_t) index] = static_cast<Type>( right[ (size_t) index] );
         }
         return *this;
     }
@@ -429,26 +436,26 @@ private:
     {
         if( RotationType::ROLL == rt )
         {
-            const auto xW = m_vals[ (size_t) AxisCarthesian::X];
-            const auto yW = m_vals[ (size_t) AxisCarthesian::Y];
+            const auto xW = m_values[ (size_t) AxisCarthesian::X];
+            const auto yW = m_values[ (size_t) AxisCarthesian::Y];
             m_width[ (size_t) rt] = std::sqrt( 1.0 * xW * xW + 1.0 * yW * yW );
             m_rotationTraingles[(size_t) rt].setOpposite( m_width[ (size_t) rt] );
         }
         else if( RotationType::PITCH == rt )
         {
-            const auto xW = m_vals[AxisCarthesian::X];
-            const auto zW = m_vals[AxisCarthesian::Z];
+            const auto xW = m_values[AxisCarthesian::X];
+            const auto zW = m_values[AxisCarthesian::Z];
             m_width[ (size_t) rt] = std::sqrt( 1.0 * xW * xW + 1.0 * zW * zW );
         }
         else
         {
-            const auto yW = m_vals[ (size_t) AxisCarthesian::Y];
-            const auto zW = m_vals[ (size_t) AxisCarthesian::Z];
+            const auto yW = m_values[ (size_t) AxisCarthesian::Y];
+            const auto zW = m_values[ (size_t) AxisCarthesian::Z];
             m_width[ (size_t) RotationType::YAW] = std::sqrt( 1.0 * yW * yW + 1.0 * zW * zW );
         }
     }
 
-    std::array<Type, 3> m_vals =
+    ValueType m_values =
     {
         static_cast<Type>( 0 ),
         static_cast<Type>( 0 ),

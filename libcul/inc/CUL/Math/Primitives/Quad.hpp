@@ -7,22 +7,28 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 NAMESPACE_BEGIN( Primitives )
 
+struct SimplePos
+{
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+};
+
 template <typename Type>
 class Quad:
     public ISerializable
 {
 public:
+    using PointType = SimplePos;
+    using DataType = std::array< PointType, 4 >;
+
     Quad()
     {
 
     }
 
-
     Quad( const Quad& arg ):
-        p1( arg.p1 ),
-        p2( arg.p2 ),
-        p3( arg.p3 ),
-        p4( arg.p4 )
+        data( arg.data )
     {
     }
 
@@ -30,20 +36,53 @@ public:
     {
         if( this != &arg )
         {
-            p1 = arg.p1;
-            p2 = arg.p2;
-            p3 = arg.p3;
-            p4 = arg.p4;
+            data = arg.data;
         }
         return *this;
     }
 
+    const PointType& p1() const
+    {
+        return data[ 0 ];
+    }
 
-    Vector3D<Type> p1;
-    Vector3D<Type> p2;
-    Vector3D<Type> p3;
-    Vector3D<Type> p4;
+    const PointType& p2() const
+    {
+        return data[ 1 ];
+    }
 
+    const PointType& p3() const
+    {
+        return data[ 2 ];
+    }
+
+    const PointType& p4() const
+    {
+        return data[ 3 ];
+    }
+
+    PointType& p1()
+    {
+        return data[ 0 ];
+    }
+
+    PointType& p2()
+    {
+        return data[ 1 ];
+    }
+
+    PointType& p3()
+    {
+        return data[ 2 ];
+    }
+
+    PointType& p4()
+    {
+        return data[ 3 ];
+    }
+
+
+    DataType data;
 
     virtual ~Quad()
     {
@@ -56,12 +95,22 @@ private:
     {
         String tabs = getTab( tabsSize );
 
+        auto convertPoint = []( const PointType& value ){
+            return String( "{ " ) +
+                String( value.x ) +
+                String( ", " ) + 
+                String( value.y ) +
+                String( ", " ) + 
+                String( value.z ) +
+                String( " }" );
+        };
+
         String result;
         result = result + tabs + "    \"name\":\"Quad\"\n";
-        result = result + tabs + "    \"p1\":\n" + p1.serialize( tabsSize + 1, true );
-        result = result + tabs + "    \"p2\":\n" + p2.serialize( tabsSize + 1, true );
-        result = result + tabs + "    \"p3\":\n" + p3.serialize( tabsSize + 1, true );
-        result = result + tabs + "    \"p4\":\n" + p4.serialize( tabsSize + 1 );
+        result = result + tabs + "    \"p1\": " + convertPoint( data[0] );
+        result = result + tabs + "    \"p2\": " + convertPoint( data[1] );
+        result = result + tabs + "    \"p3\": " + convertPoint( data[2] );
+        result = result + tabs + "    \"p4\": " + convertPoint( data[3] );
 
         return result;
     }

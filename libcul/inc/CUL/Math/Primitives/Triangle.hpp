@@ -12,9 +12,10 @@ class Triangle:
     public ISerializable
 {
 public:
-    Vector3D<Type> p1;
-    Vector3D<Type> p2;
-    Vector3D<Type> p3;
+    using PointType = Vector3D<Type>;
+    using ValuesType = std::array< PointType, 3 >;
+
+    ValuesType vals;
 
     Triangle()
     {
@@ -22,9 +23,7 @@ public:
     }
 
     Triangle( const Triangle& arg ):
-        p1( arg.p1 ),
-        p2( arg.p2 ),
-        p3( arg.p3 )
+        vals( arg.vals )
     {
 
     }
@@ -33,11 +32,44 @@ public:
     {
         if( this != &arg )
         {
-            p1 = arg.p1;
-            p2 = arg.p2;
-            p3 = arg.p3;
+            vals = arg.vals;
         }
         return *this;
+    }
+
+    const PointType& p1() const
+    {
+        return vals[ 0 ];
+    }
+
+    const PointType& p2() const
+    {
+        return vals[ 1 ];
+    }
+
+    const PointType& p3() const
+    {
+        return vals[ 2 ];
+    }
+
+    const PointType& p4() const
+    {
+        return vals[ 3 ];
+    }
+
+    PointType& p1()
+    {
+        return vals[ 0 ];
+    }
+
+    PointType& p2()
+    {
+        return vals[ 1 ];
+    }
+
+    PointType& p3()
+    {
+        return vals[ 2 ];
     }
 
     virtual ~Triangle()
@@ -51,11 +83,21 @@ private:
     {
         String tabs = getTab( tabsSize );
 
+        auto convertPoint = []( const PointType& value ){
+            return String( "{ " ) +
+                String( value.getX() ) +
+                String( ", " ) + 
+                String( value.getY() ) +
+                String( ", " ) + 
+                String( value.getZ() ) +
+                String( " }" );
+        };
+
         String result;
         result = result + tabs + "    \"name\":\"Triangle\"\n";
-        result = result + tabs + "    \"p1\":\n" + p1.serialize( tabsSize + 1, true );
-        result = result + tabs + "    \"p2\":\n" + p2.serialize( tabsSize + 1, true );
-        result = result + tabs + "    \"p3\":\n" + p3.serialize( tabsSize + 1 );
+        result = result + tabs + "    \"p1\": " + convertPoint( vals[0] );
+        result = result + tabs + "    \"p2\": " + convertPoint( vals[1] );
+        result = result + tabs + "    \"p3\": " + convertPoint( vals[2] );
 
         return result;
     }
