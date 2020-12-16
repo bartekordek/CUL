@@ -24,12 +24,14 @@ public:
 
     Quad()
     {
-
+        updateData();
     }
 
     Quad( const Quad& arg ):
+        ISerializable(),
         data( arg.data )
     {
+        updateData();
     }
 
     Quad& operator=( const Quad& arg )
@@ -37,6 +39,7 @@ public:
         if( this != &arg )
         {
             data = arg.data;
+            updateData();
         }
         return *this;
     }
@@ -81,8 +84,14 @@ public:
         return data[ 3 ];
     }
 
+    void* dataVoid()
+    {
+        return dataAsVoid;
+    }
+
 
     DataType data;
+    void* dataAsVoid = nullptr;
 
     virtual ~Quad()
     {
@@ -90,6 +99,11 @@ public:
     }
 protected:
 private:
+    void updateData()
+    {
+        auto convertedToVoid = reinterpret_cast<const void*>(&data);
+        dataAsVoid = const_cast<void*>(convertedToVoid);
+    }
 
     String getSerializationContent( CounterType tabsSize, const bool = false ) const override
     {
@@ -98,19 +112,19 @@ private:
         auto convertPoint = []( const PointType& value ){
             return String( "{ " ) +
                 String( value.x ) +
-                String( ", " ) + 
+                String( ", " ) +
                 String( value.y ) +
-                String( ", " ) + 
+                String( ", " ) +
                 String( value.z ) +
                 String( " }" );
         };
 
         String result;
-        result = result + tabs + "    \"name\":\"Quad\"\n";
-        result = result + tabs + "    \"p1\": " + convertPoint( data[0] );
-        result = result + tabs + "    \"p2\": " + convertPoint( data[1] );
-        result = result + tabs + "    \"p3\": " + convertPoint( data[2] );
-        result = result + tabs + "    \"p4\": " + convertPoint( data[3] );
+        result = result + tabs + "    \"name\":\"Quad\",\n";
+        result = result + tabs + "    \"p1\": " + convertPoint( data[0] ) + ",\n";
+        result = result + tabs + "    \"p2\": " + convertPoint( data[1] ) + ",\n";
+        result = result + tabs + "    \"p3\": " + convertPoint( data[2] ) + ",\n";
+        result = result + tabs + "    \"p4\": " + convertPoint( data[3] ) + "\n";
 
         return result;
     }

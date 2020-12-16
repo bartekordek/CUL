@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,7 +19,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CULInterface.cpp" />
+    <ClCompile Include="src\Filesystem\Directory.cpp" />
     <ClCompile Include="src\Filesystem\FSUtils.cpp" />
+    <ClCompile Include="src\GenericUtils\ArgumentsPairConcrete.cpp" />
+    <ClCompile Include="src\GenericUtils\ConsoleUtilities.cpp" />
+    <ClCompile Include="src\GenericUtils\IArgumentsPair.cpp" />
+    <ClCompile Include="src\GenericUtils\IConfigFile.cpp" />
+    <ClCompile Include="src\GenericUtils\IConfigFileConcrete.cpp" />
+    <ClCompile Include="src\GenericUtils\IOnChange.cpp" />
+    <ClCompile Include="src\Graphics\IImage.cpp" />
+    <ClCompile Include="src\Graphics\IImageLoader.cpp" />
+    <ClCompile Include="src\Graphics\ImageConcrete.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderBMP.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderConcrete.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderSTB.cpp" />
+    <ClCompile Include="src\Graphics\ImageLoaderTiny.cpp" />
+    <ClCompile Include="src\Graphics\IObject.cpp" />
+    <ClCompile Include="src\Graphics\IPosition3DD.cpp" />
+    <ClCompile Include="src\Graphics\ITexture.cpp" />
+    <ClCompile Include="src\Graphics\Position3DDMutexed.cpp" />
+    <ClCompile Include="src\Graphics\Position3DDMutexedImpl.cpp" />
+    <ClCompile Include="src\Graphics\Size3DDMutexed.cpp" />
+    <ClCompile Include="src\Graphics\Size3DDMutexedImpl.cpp" />
+    <ClCompile Include="src\ISerializable.cpp" />
+    <ClCompile Include="src\JSON\DataValue.cpp" />
+    <ClCompile Include="src\JSON\IJSONFile.cpp" />
+    <ClCompile Include="src\JSON\INodeImpl.cpp" />
     <ClCompile Include="src\Log\ILogContainer.cpp" />
     <ClCompile Include="src\Log\LoggerSimpleStandardOutput.cpp" />
     <ClCompile Include="src\STD_chrono.hpp" />
@@ -28,75 +54,65 @@
     <ClCompile Include="src\Filesystem\FS.cpp" />
     <ClCompile Include="src\Filesystem\IFile.cpp" />
     <ClCompile Include="src\Filesystem\Path.cpp" />
-    <ClCompile Include="src\Graphics\IObject.cpp" />
-    <ClCompile Include="src\Graphics\IPosition3DD.cpp" />
-    <ClCompile Include="src\Graphics\ITexture.cpp" />
-    <ClCompile Include="src\Graphics\Position3DDMutexedImpl.cpp" />
-    <ClCompile Include="src\Graphics\Position3DDMutexed.cpp" />
-    <ClCompile Include="src\Graphics\RawImageConcrete.cpp" />
-    <ClCompile Include="src\IArgumentsPair.cpp" />
-    <ClCompile Include="src\ArgumentsPairConcrete.cpp" />
     <ClCompile Include="src\Color.cpp" />
-    <ClCompile Include="src\ConsoleUtilities.cpp" />
     <ClCompile Include="src\CSVFile.cpp" />
     <ClCompile Include="src\FileCompileTest.cpp" />
-    <ClCompile Include="src\Frustum.cpp" />
     <ClCompile Include="src\ICSVFile.cpp" />
-    <ClCompile Include="src\ImageIL.cpp" />
-    <ClCompile Include="src\IMageUtility.cpp" />
     <ClCompile Include="src\IName.cpp" />
     <ClCompile Include="src\IPivot.cpp" />
     <ClCompile Include="src\Log\ILogger.cpp" />
+    <ClCompile Include="src\String\String.cpp" />
     <ClCompile Include="src\ThreadUtils.cpp" />
     <ClCompile Include="src\ITime.cpp" />
     <ClCompile Include="src\ITimer.cpp" />
-    <ClCompile Include="src\JSON\Array.cpp" />
-    <ClCompile Include="src\JSON\DataPair.cpp" />
     <ClCompile Include="src\JSON\INode.cpp" />
     <ClCompile Include="src\JSON\JSONFileConcrete.cpp" />
-    <ClCompile Include="src\JSON\Object.cpp" />
-    <ClCompile Include="src\Line.cpp" />
     <ClCompile Include="src\Math\Axis.cpp" />
-    <ClCompile Include="src\Math\IAngle.cpp" />
+    <ClCompile Include="src\Math\Angle.cpp" />
     <ClCompile Include="src\Math\Math.cpp" />
     <ClCompile Include="src\Math\TriangleRectangularSimple2D.cpp" />
-    <ClCompile Include="src\MyString.cpp" />
     <ClCompile Include="src\Named.cpp" />
     <ClCompile Include="src\OSUtils\ISystemFonts.cpp" />
     <ClCompile Include="src\OSUtils\SystemFontsWindows.cpp" />
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\SimpleAssert.cpp" />
-    <ClCompile Include="src\String\MyStringImpl.cpp" />
     <ClCompile Include="src\ThreadUtilityDummy.cpp" />
     <ClCompile Include="src\ThreadUtilityWindows.cpp" />
     <ClCompile Include="src\TimeConcrete.cpp" />
     <ClCompile Include="src\TimerChrono.cpp" />
-    <ClCompile Include="src\Value.cpp" />
     <ClCompile Include="src\Video\FPSCounterConcrete.cpp" />
     <ClCompile Include="src\Video\IFPSCounter.cpp" />
     <ClCompile Include="src\Video\IFPSObservable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\CUL\ConsoleUtilities.hpp" />
     <ClInclude Include="inc\CUL\CUL.hpp" />
+    <ClInclude Include="inc\CUL\CULInterface.hpp" />
+    <ClInclude Include="inc\CUL\Filesystem\Directory.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\FileFactory.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\FS.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\IFile.hpp" />
     <ClInclude Include="inc\CUL\Filesystem\Path.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\ConsoleUtilities.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\Conversion.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\DisableErros.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\DumbPtr.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\IArgumentsList.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\IConfigFile.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\IOnChange.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\ITask.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\LckPrim.hpp" />
     <ClInclude Include="inc\CUL\GenericUtils\SimpleAssert.hpp" />
+    <ClInclude Include="inc\CUL\GenericUtils\ValueChangeHook.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Color.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IImage.hpp" />
-    <ClInclude Include="inc\CUL\Graphics\IMageUtility.hpp" />
+    <ClInclude Include="inc\CUL\Graphics\IImageLoader.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IObject.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IObjectRegister.hpp" />
     <ClInclude Include="inc\CUL\Graphics\IPosition3DD.hpp" />
-    <ClInclude Include="inc\CUL\Graphics\IRawImage.hpp" />
     <ClInclude Include="inc\CUL\Graphics\ISize3DD.hpp" />
     <ClInclude Include="inc\CUL\Graphics\ITexture.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Pos2D.hpp" />
+    <ClInclude Include="inc\CUL\Graphics\Pos3D.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Position3DDMutexed.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Rect2D.hpp" />
     <ClInclude Include="inc\CUL\Graphics\SimplePos3D.hpp" />
@@ -104,30 +120,29 @@
     <ClInclude Include="inc\CUL\Graphics\SimpleSize3D.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Size2D.hpp" />
     <ClInclude Include="inc\CUL\Graphics\Size3DDMutexed.hpp" />
-    <ClInclude Include="inc\CUL\IArgumentsPair.hpp" />
     <ClInclude Include="inc\CUL\ICSVFile.hpp" />
     <ClInclude Include="inc\CUL\IName.hpp" />
+    <ClInclude Include="inc\CUL\ISerializable.hpp" />
     <ClInclude Include="inc\CUL\Iterator.hpp" />
     <ClInclude Include="inc\CUL\ITime.hpp" />
     <ClInclude Include="inc\CUL\ITimer.hpp" />
-    <ClInclude Include="inc\CUL\JSON\Array.hpp" />
-    <ClInclude Include="inc\CUL\JSON\DataPair.hpp" />
+    <ClInclude Include="inc\CUL\JSON\DataValue.hpp" />
     <ClInclude Include="inc\CUL\JSON\IJSON.hpp" />
     <ClInclude Include="inc\CUL\JSON\IJSONFile.hpp" />
     <ClInclude Include="inc\CUL\JSON\INode.hpp" />
-    <ClInclude Include="inc\CUL\JSON\Object.hpp" />
-    <ClInclude Include="inc\CUL\JSON\IParent.hpp" />
-    <ClInclude Include="inc\CUL\LckPrim.hpp" />
     <ClInclude Include="inc\CUL\List\IList.hpp" />
     <ClInclude Include="inc\CUL\Log\ILogContainer.hpp" />
     <ClInclude Include="inc\CUL\Log\ILogger.hpp" />
+    <ClInclude Include="inc\CUL\Math\FloatHandler.hpp" />
+    <ClInclude Include="inc\CUL\Math\Primitives\Quad.hpp" />
+    <ClInclude Include="inc\CUL\Math\Primitives\Triangle.hpp" />
+    <ClInclude Include="inc\CUL\Math\Primitives\Triangle3D.hpp" />
     <ClInclude Include="inc\CUL\Math\RotationType.hpp" />
     <ClInclude Include="inc\CUL\Math\TriangleRectangularSimple2D.hpp" />
-    <ClInclude Include="inc\CUL\MyString.hpp" />
     <ClInclude Include="inc\CUL\Named.hpp" />
     <ClInclude Include="inc\CUL\Network\IHttpRequest.hpp" />
-    <ClInclude Include="inc\CUL\Math\Triangle.hpp" />
     <ClInclude Include="inc\CUL\OSUtils\ISystemFonts.hpp" />
+    <ClInclude Include="inc\CUL\OtherImports\import_gsl.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_algorithm.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_array.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_atomic.hpp" />
@@ -140,24 +155,28 @@
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_fstream.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_functional.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_iomanip.hpp" />
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_iosfwd.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_iostream.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_map.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_memory.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_mutex.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_queue.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_set.hpp" />
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_sstream.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_stack.hpp" />
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_stddef.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_string.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_thread.hpp" />
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_typeinfo.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_type_traits.hpp" />
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_utility.hpp" />
+    <ClInclude Include="inc\CUL\STL_IMPORTS\STD_variant.hpp" />
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_vector.hpp" />
     <ClInclude Include="inc\CUL\Math\Axis.hpp" />
     <ClInclude Include="inc\CUL\Math\Epsilon.hpp" />
-    <ClInclude Include="inc\CUL\Math\Frustum.hpp" />
     <ClInclude Include="inc\CUL\Math\Angle.hpp" />
     <ClInclude Include="inc\CUL\Math\IPivot.hpp" />
     <ClInclude Include="inc\CUL\Math\IPivotObserver.hpp" />
-    <ClInclude Include="inc\CUL\Math\Line.hpp" />
     <ClInclude Include="inc\CUL\Math\Math.hpp" />
     <ClInclude Include="inc\CUL\Math\Matrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\MultiPoint.hpp" />
@@ -165,41 +184,49 @@
     <ClInclude Include="inc\CUL\Math\Quaternion.hpp" />
     <ClInclude Include="inc\CUL\Math\SquareMatrix2D.hpp" />
     <ClInclude Include="inc\CUL\Math\Vector3D.hpp" />
+    <ClInclude Include="inc\CUL\String.hpp" />
     <ClInclude Include="inc\CUL\ThreadUtils.hpp" />
     <ClInclude Include="inc\CUL\ThreadWrap.hpp" />
+    <ClInclude Include="inc\CUL\TimeConcrete.hpp" />
     <ClInclude Include="inc\CUL\UselessMacros.hpp" />
-    <ClInclude Include="inc\CUL\Value.hpp" />
     <ClInclude Include="inc\CUL\Video\IFPSCounter.hpp" />
     <ClInclude Include="inc\CUL\Video\IFPSObservable.hpp" />
     <ClInclude Include="inc\CUL\Windows\INCLUDE_dwrite.hpp" />
-    <ClInclude Include="src\ArgumentsPairConcrete.hpp" />
     <ClInclude Include="src\CSVFile.hpp" />
     <ClInclude Include="src\Filesystem\FileRegularImpl.hpp" />
     <ClInclude Include="src\Filesystem\FSUtils.hpp" />
-    <ClInclude Include="src\Graphics\IMPORT_Devil.hpp" />
+    <ClInclude Include="src\GenericUtils\ArgumentsPairConcrete.hpp" />
+    <ClInclude Include="src\GenericUtils\IConfigFileConcrete.hpp" />
+    <ClInclude Include="src\Graphics\ImageConcrete.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderBMP.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderConcrete.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderSTB.hpp" />
+    <ClInclude Include="src\Graphics\ImageLoaderTiny.hpp" />
+    <ClInclude Include="src\Graphics\IMPORT_Stb.hpp" />
+    <ClInclude Include="src\Graphics\IMPORT_Tiny.hpp" />
     <ClInclude Include="src\Graphics\Position3DDMutexedImpl.hpp" />
-    <ClInclude Include="src\Graphics\RawImageConcrete.hpp" />
-    <ClInclude Include="src\ImageIL.hpp" />
+    <ClInclude Include="src\Graphics\Size3DDMutexedImpl.hpp" />
     <ClInclude Include="src\IMPORT_boost_assert.hpp" />
+    <ClInclude Include="src\IMPORT_boost_variant.hpp" />
+    <ClInclude Include="src\IMPORT_devil.hpp" />
+    <ClInclude Include="src\JSON\INodeImpl.hpp" />
     <ClInclude Include="src\JSON\JSONFileConcrete.hpp" />
     <ClInclude Include="src\JSON\ImportRapidJSON.hpp" />
     <ClInclude Include="src\Log\IMPORT_spdlog.hpp" />
     <ClInclude Include="src\Log\LoggerSimpleStandardOutput.hpp" />
     <ClInclude Include="src\OSUtils\SystemFontsWindows.hpp" />
     <ClInclude Include="src\STDCodecvt.hpp" />
-    <ClInclude Include="src\String\MyStringImpl.hpp" />
     <ClInclude Include="src\ThreadUtilityDummy.hpp" />
     <ClInclude Include="src\ThreadUtilityWindows.hpp" />
-    <ClInclude Include="src\TimeConcrete.hpp" />
     <ClInclude Include="src\TimerChrono.hpp" />
     <ClInclude Include="src\Video\FPSCounterConcrete.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.git\config" />
+    <None Include="libcul-v141.ruleset" />
     <None Include="Makefile" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{a44b1777-b335-4580-ae9e-89cb3779f81e}</ProjectGuid>
+    <ProjectGuid>{243F1BE5-AB18-44A4-9E0B-3ED5E49980BA}</ProjectGuid>
     <RootNamespace>PFS</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>libcul</ProjectName>
@@ -254,24 +281,40 @@
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)\</OutDir>
     <IntDir>$(OutDir)intermediate\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <CodeAnalysisRuleSet>libcul-v141.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -280,15 +323,16 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\assert\include;$(ProjectDir)..\deps\circular_buffer\include;$(ProjectDir)..\deps\concept_check\include;$(ProjectDir)..\deps\core\include;$(ProjectDir)..\deps\config\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\move\include;$(ProjectDir)..\deps\preprocessor\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;$(ProjectDir)..\deps\static_assert\include;$(ProjectDir)..\deps\throw_exception\include;$(ProjectDir)..\deps\type_traits\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\GSL\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDataBaseFileName>
-      </ProgramDataBaseFileName>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Lib>
       <TargetMachine>MachineX86</TargetMachine>
@@ -296,15 +340,25 @@
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -313,30 +367,41 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\assert\include;$(ProjectDir)..\deps\circular_buffer\include;$(ProjectDir)..\deps\concept_check\include;$(ProjectDir)..\deps\core\include;$(ProjectDir)..\deps\config\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\move\include;$(ProjectDir)..\deps\preprocessor\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;$(ProjectDir)..\deps\static_assert\include;$(ProjectDir)..\deps\throw_exception\include;$(ProjectDir)..\deps\type_traits\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\GSL\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDataBaseFileName>
-      </ProgramDataBaseFileName>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <Link>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PreLinkEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -346,24 +411,26 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\assert\include;$(ProjectDir)..\deps\circular_buffer\include;$(ProjectDir)..\deps\concept_check\include;$(ProjectDir)..\deps\core\include;$(ProjectDir)..\deps\config\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\move\include;$(ProjectDir)..\deps\preprocessor\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;$(ProjectDir)..\deps\static_assert\include;$(ProjectDir)..\deps\throw_exception\include;$(ProjectDir)..\deps\type_traits\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\GSL\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <DebugInformationFormat>None</DebugInformationFormat>
       <SupportJustMyCode>true</SupportJustMyCode>
       <ProgramDataBaseFileName />
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile />
     </Link>
     <Lib>
@@ -371,8 +438,18 @@
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreLinkEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -382,32 +459,44 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\assert\include;$(ProjectDir)..\deps\circular_buffer\include;$(ProjectDir)..\deps\concept_check\include;$(ProjectDir)..\deps\core\include;$(ProjectDir)..\deps\config\include;$(ProjectDir)..\deps\DevIL\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\move\include;$(ProjectDir)..\deps\preprocessor\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;$(ProjectDir)..\deps\static_assert\include;$(ProjectDir)..\deps\throw_exception\include;$(ProjectDir)..\deps\type_traits\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\deps\tiny-image\src;$(ProjectDir)..\deps\stb;$(ProjectDir)src;$(ProjectDir)inc;$(ProjectDir)..\deps\boost\assert\include;$(ProjectDir)..\deps\boost\circular_buffer\include;$(ProjectDir)..\deps\boost\concept_check\include;$(ProjectDir)..\deps\boost\core\include;$(ProjectDir)..\deps\boost\container_hash\include;$(ProjectDir)..\deps\boost\config\include;$(ProjectDir)..\deps\boost\move\include;$(ProjectDir)..\deps\boost\preprocessor\include;$(ProjectDir)..\deps\boost\static_assert\include;$(ProjectDir)..\deps\boost\throw_exception\include;$(ProjectDir)..\deps\boost\type_index\include;$(ProjectDir)..\deps\boost\type_traits\include;$(ProjectDir)..\deps\boost\variant\include;$(ProjectDir)..\deps\glm;$(ProjectDir)..\deps\GSL\include;$(ProjectDir)..\deps\rapidjson\include;$(ProjectDir)..\deps\spdlog\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <PreprocessorDefinitions>_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>USE_DEVIL;_WINDLL;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DisableSpecificWarnings>4244;4710;4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4710;4711;26455;26440</DisableSpecificWarnings>
       <DebugInformationFormat>None</DebugInformationFormat>
       <SupportJustMyCode>true</SupportJustMyCode>
       <ProgramDataBaseFileName />
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnablePREfast>false</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(TargetPath)</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\Build-Windows\$(Platform)_$(Configuration)</AdditionalLibraryDirectories>
       <ImportLibrary>$(TargetDir)$(TargetName).lib </ImportLibrary>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>ILU.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>00-AdditionalDeps.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile />
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(HOME_BOOST_WINDOWS\Build-Windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <PreLinkEvent>
-      <Command>xcopy "$(ProjectDir)..\deps\DevIL\Build-Windows\$(Platform)\*.dll" "$(TargetDir)" /y</Command>
+      <Command>
+      </Command>
     </PreLinkEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Outputs>NonExistinngFile.SomeExtension</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

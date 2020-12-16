@@ -86,18 +86,18 @@ private:
         auto convertPoint = []( const PointType& value ){
             return String( "{ " ) +
                 String( value.getX() ) +
-                String( ", " ) + 
+                String( ", " ) +
                 String( value.getY() ) +
-                String( ", " ) + 
+                String( ", " ) +
                 String( value.getZ() ) +
                 String( " }" );
         };
 
         String result;
-        result = result + tabs + "    \"name\":\"Triangle\"\n";
-        result = result + tabs + "    \"p1\": " + convertPoint( vals[0] );
-        result = result + tabs + "    \"p2\": " + convertPoint( vals[1] );
-        result = result + tabs + "    \"p3\": " + convertPoint( vals[2] );
+        result = result + tabs + "    \"name\":\"Triangle\",\n";
+        result = result + tabs + "    \"p1\": " + convertPoint( vals[0] ) + ",\n";
+        result = result + tabs + "    \"p2\": " + convertPoint( vals[1] ) + ",\n";
+        result = result + tabs + "    \"p3\": " + convertPoint( vals[2] ) + "\n";
 
         return result;
     }
