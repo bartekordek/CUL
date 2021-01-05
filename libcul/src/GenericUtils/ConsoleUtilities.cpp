@@ -11,9 +11,6 @@ ConsoleUtilities::ConsoleUtilities():
 {
 }
 
-ConsoleUtilities::~ConsoleUtilities()
-{
-}
 #ifdef _MSC_VER
 #pragma warning( push, 0 )
 #pragma warning( disable: 5045 )
@@ -32,7 +29,7 @@ void ConsoleUtilities::printInputParameters()
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-const IArgumentsList& ConsoleUtilities::getArgs() const
+IArgumentsList& ConsoleUtilities::getArgs()
 {
     return *m_args;
 }
@@ -47,15 +44,6 @@ void ConsoleUtilities::setArgs( const int argc, char** argv )
     m_args->setArgs( argc, argv );
 }
 
-ConsoleUtilities& ConsoleUtilities::getInstance()
+ConsoleUtilities::~ConsoleUtilities()
 {
-    static ConsoleUtilities instance;
-    static ConsoleUtilities* oldAddr = nullptr;
-    static ConsoleUtilities* addr = &instance;
-    if( oldAddr )
-    {
-        Assert::simple( oldAddr == addr, "DLL PROBLEM! THERE ARE TWO INSTANCES OF SINGLETON!" );
-    }
-    oldAddr = addr;
-    return instance;
 }
