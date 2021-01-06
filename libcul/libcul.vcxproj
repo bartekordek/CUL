@@ -133,6 +133,7 @@
     <ClInclude Include="inc\CUL\List\IList.hpp" />
     <ClInclude Include="inc\CUL\Log\ILogContainer.hpp" />
     <ClInclude Include="inc\CUL\Log\ILogger.hpp" />
+    <ClInclude Include="inc\CUL\Math\BitOperations.hpp" />
     <ClInclude Include="inc\CUL\Math\FloatHandler.hpp" />
     <ClInclude Include="inc\CUL\Math\Primitives\Quad.hpp" />
     <ClInclude Include="inc\CUL\Math\Primitives\Triangle.hpp" />

@@ -677,6 +677,9 @@
     <ClInclude Include="inc\CUL\STL_IMPORTS\STD_unordered_map.hpp">
       <Filter>Header Files\STL_IMPORTS</Filter>
     </ClInclude>
+    <ClInclude Include="inc\CUL\Math\BitOperations.hpp">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />

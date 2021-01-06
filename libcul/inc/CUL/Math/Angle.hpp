@@ -21,7 +21,6 @@ public:
     Angle();
     Angle( Cdouble value, const Type type = Type::RADIAN );
     Angle( Cint value, const Type type = Type::RADIAN );
-    virtual ~Angle();
 
     double getValueD( const Type type = Type::RADIAN ) const;
     float getValueF( const Type type = Type::RADIAN ) const;
@@ -70,6 +69,8 @@ public:
 
     operator double() const;
     operator int() const;
+
+    virtual ~Angle();
 
 protected:
 private:
