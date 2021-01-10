@@ -276,3 +276,15 @@ target_include_directories(${EXEC} PRIVATE src)
 if (MSVC)
     set_target_properties(${EXEC} PROPERTIES LINK_FLAGS "/INCREMENTAL:NO")
 endif()
+
+if (MSVC)
+    macro(CmakeToWindow InputPath ResultingPath)
+        string(REGEX REPLACE "/" "\\\\\\\\" ${ResultingPath} "${InputPath}")
+    endmacro()
+
+    CmakeToWindow( "${OUTPUT_DIR}" OUTPUT_DIR_WINDOWS )
+    CmakeToWindow( "${CMAKE_SOURCE_DIR}" CMAKE_SOURCE_DIR_WINDOWS )
+
+    add_custom_command(TARGET ${EXEC} POST_BUILD
+        COMMAND "xcopy" "${OUTPUT_DIR_WINDOWS}" "${CMAKE_SOURCE_DIR_WINDOWS}\\\\Build-Windows" "/y" "/s" )
+endif()
