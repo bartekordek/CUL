@@ -22,7 +22,6 @@ if (MSVC)
     set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
     set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
     set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-
 else()
     # lots of warnings and all warnings as errors
     add_compile_options(-Wall -Wextra -pedantic -Werror)
@@ -62,6 +61,6 @@ target_include_directories(${EXEC} PRIVATE src)
 
 if (MSVC)
     set_target_properties( ${EXEC} PROPERTIES LINK_FLAGS "/INCREMENTAL:NO" )
-    set_target_properties( ${EXEC} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$(ProjectDir)..\\runDir" )
+    set_target_properties( ${EXEC} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../runDir" )
     set_target_properties( ${EXEC} PROPERTIES VS_DEBUGGER_COMMAND_ARGUMENTS  "--gtest_break_on_failure" )
 endif()

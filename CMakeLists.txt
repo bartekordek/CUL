@@ -19,6 +19,7 @@ add_subdirectory( deps/boost/throw_exception )
 add_subdirectory( deps/boost/type_index )
 add_subdirectory( deps/boost/type_traits )
 add_subdirectory( deps/boost/variant )
+add_subdirectory( deps/glm )
 add_subdirectory( deps/googletest )
 
 
