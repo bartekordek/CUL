@@ -9,19 +9,12 @@ project(${EXEC} LANGUAGES CXX)
 if( MSVC )
     string(REPLACE "/INCREMENTAL" "" tempFlag ${CMAKE_EXE_LINKER_FLAGS_DEBUG})
     set( CMAKE_EXE_LINKER_FLAGS_DEBUG ${tempFlag} )
-    message("CMAKE_EXE_LINKER_FLAGS_DEBUG=${CMAKE_EXE_LINKER_FLAGS_DEBUG}")
-
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Windows )
-    message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-else()
-    set( OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Build-Linux )
-    message( "Setting CMAKE_ARCHIVE_OUTPUT_DIRECTORY to: ${OUTPUT_DIR}" )
-
 endif()
 
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR} )
+message( "CUL_OUTPUT_DIR: ${CUL_OUTPUT_DIR}" )
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 
 include_directories( SYSTEM "../deps/stb" )
 include_directories( SYSTEM "../deps/tiny-image/src" )
@@ -44,6 +37,14 @@ else()
     add_compile_options( -Wall -Wextra -pedantic -Werror )
     add_definitions( -Wfatal-errors )
 endif()
+
+set(GLM_LIB_NAME "glm")
+set(GLM_INCLUDE_DIR deps/glm/glm)
+
+
+message( "3 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
+
+find_package( glm REQUIRED )
 
 add_library( ${EXEC} SHARED
 src/ThreadUtilityDummy.cpp
@@ -278,13 +279,11 @@ if (MSVC)
 endif()
 
 if (MSVC)
-    macro(CmakeToWindow InputPath ResultingPath)
-        string(REGEX REPLACE "/" "\\\\\\\\" ${ResultingPath} "${InputPath}")
-    endmacro()
-
-    CmakeToWindow( "${OUTPUT_DIR}" OUTPUT_DIR_WINDOWS )
-    CmakeToWindow( "${CMAKE_SOURCE_DIR}" CMAKE_SOURCE_DIR_WINDOWS )
+    CmakeToWindow( "${CUL_TESTS_RUN_DIR}" CUL_TESTS_RUN_DIR_WINDOWS )
+    CmakeToWindow( "${CUL_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/*.dll" CUL_DLLS )
+    CmakeToWindow( "${CUL_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/*.pdb" CUL_PDBS )
 
     add_custom_command(TARGET ${EXEC} POST_BUILD
-        COMMAND "xcopy" "${OUTPUT_DIR_WINDOWS}" "${CMAKE_SOURCE_DIR_WINDOWS}\\\\Build-Windows" "/y" "/s" )
+        COMMAND "xcopy" "${CUL_DLLS}" "${CUL_TESTS_RUN_DIR_WINDOWS}" "/y" "/s"
+        COMMAND "xcopy" "${CUL_PDBS}" "${CUL_TESTS_RUN_DIR_WINDOWS}" "/y" "/s" )
 endif()

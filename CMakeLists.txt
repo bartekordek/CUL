@@ -2,7 +2,20 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 project(cul_main)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+macro(CmakeToWindow InputPath OutputPath)
+    string(REGEX REPLACE "/" "\\\\" ${OutputPath} "${InputPath}")
+endmacro()
+
+message( "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}" )
+set( CMAKE_POSITION_INDEPENDENT_CODE ON )
+set( CUL_TESTS_RUN_DIR "${CMAKE_CURRENT_SOURCE_DIR}/runDir" )
+
+if( MSVC )
+    set( CUL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Build-Windows )
+else()
+    set( CUL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Build-Linux )
+endif()
 
 # Add sub directories
 add_subdirectory( deps )
@@ -19,7 +32,13 @@ add_subdirectory( deps/boost/throw_exception )
 add_subdirectory( deps/boost/type_index )
 add_subdirectory( deps/boost/type_traits )
 add_subdirectory( deps/boost/variant )
+
+message( "00 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps" )
+message( "01 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
+
 add_subdirectory( deps/glm )
+
 add_subdirectory( deps/googletest )
 
 
