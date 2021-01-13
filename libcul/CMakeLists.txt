@@ -284,6 +284,6 @@ if (MSVC)
     CmakeToWindow( "${CUL_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/*.pdb" CUL_PDBS )
 
     add_custom_command(TARGET ${EXEC} POST_BUILD
-        COMMAND "xcopy" "${CUL_DLLS}" "${CUL_TESTS_RUN_DIR_WINDOWS}" "/y" "/s"
-        COMMAND "xcopy" "${CUL_PDBS}" "${CUL_TESTS_RUN_DIR_WINDOWS}" "/y" "/s" )
+        COMMAND "xcopy" "${CUL_DLLS}" "${CUL_TESTS_RUN_DIR_WINDOWS}" "/y" "/s" "/f"
+        COMMAND "xcopy" "${CUL_PDBS}" "${CUL_TESTS_RUN_DIR_WINDOWS}" "/y" "/s" "/f" )
 endif()

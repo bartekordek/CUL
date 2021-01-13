@@ -17,6 +17,7 @@ else()
     set( CUL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Build-Linux )
 endif()
 
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps" )
 # Add sub directories
 add_subdirectory( deps )
 add_subdirectory( deps/boost/assert )
@@ -33,12 +34,9 @@ add_subdirectory( deps/boost/type_index )
 add_subdirectory( deps/boost/type_traits )
 add_subdirectory( deps/boost/variant )
 
-message( "00 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps" )
-message( "01 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
+
 
 add_subdirectory( deps/glm )
-
 add_subdirectory( deps/googletest )
 
 
@@ -48,6 +46,5 @@ add_subdirectory( deps/rapidjson )
 #add_library(lib1 lib1.cpp)
 #set_property(TARGET lib1 PROPERTY POSITION_INDEPENDENT_CODE ON)
 add_subdirectory( deps/spdlog )
-
 add_subdirectory( libcul )
 add_subdirectory( libculTests )
