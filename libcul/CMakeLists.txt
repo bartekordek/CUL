@@ -11,10 +11,12 @@ if( MSVC )
     set( CMAKE_EXE_LINKER_FLAGS_DEBUG ${tempFlag} )
 endif()
 
-message( "CUL_OUTPUT_DIR: ${CUL_OUTPUT_DIR}" )
+message( "[cul lib] OUTPUT LIB PATH: ${CUL_OUTPUT_DIR}" )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+
+message( "[cul lib] CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
 
 include_directories( SYSTEM "../deps/stb" )
 include_directories( SYSTEM "../deps/tiny-image/src" )
@@ -25,26 +27,24 @@ if( MSVC )
     add_compile_options( /MP )
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 
-    find_package( RapidJSON )
+    find_package( RapidJSON REQUIRED )
     if( RapidJSON_FOUND )
-        message( "YES! ${RapidJSON_INCLUDE_DIRS}" )
         include_directories( SYSTEM ${RapidJSON_INCLUDE_DIRS} )
-    else()
-        message( "NO!" )
-    endif()
+    endif( RapidJSON_FOUND )
 else()
     # lots of warnings and all warnings as errors
     add_compile_options( -Wall -Wextra -pedantic -Werror )
     add_definitions( -Wfatal-errors )
 endif()
 
-set(GLM_LIB_NAME "glm")
-set(GLM_INCLUDE_DIR deps/glm/glm)
-
-
-message( "3 CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}" )
-
 find_package( glm REQUIRED )
+
+set( ENV{GLM_INCLUDE_DIR} ${CUL_ROOT_DIR}/deps/glm )
+set( ENV{GLM_INCLUDE_DIRS} ${CUL_ROOT_DIR}/deps/glm )
+
+message( "[libcul] GLM_INCLUDE_DIR = $ENV{GLM_INCLUDE_DIR}" )
+
+
 
 add_library( ${EXEC} SHARED
 src/ThreadUtilityDummy.cpp

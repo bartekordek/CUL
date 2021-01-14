@@ -7,9 +7,17 @@ macro(CmakeToWindow InputPath OutputPath)
     string(REGEX REPLACE "/" "\\\\" ${OutputPath} "${InputPath}")
 endmacro()
 
-message( "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}" )
+message( "[cul] CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}" )
+message( "[cul] CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}" )
 set( CMAKE_POSITION_INDEPENDENT_CODE ON )
+set( CUL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} )
 set( CUL_TESTS_RUN_DIR "${CMAKE_CURRENT_SOURCE_DIR}/runDir" )
+
+set( ENV{CUL_ROOT_DIR} ${CUL_ROOT_DIR} )
+set( ENV{CUL_DLL} ${CUL_TESTS_RUN_DIR} )
+
+message( "[cul] CUL_ROOT_DIR: ${CUL_ROOT_DIR}" )
+message( "[cul] CUL_TESTS_RUN_DIR: ${CUL_TESTS_RUN_DIR}" )
 
 if( MSVC )
     set( CUL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Build-Windows )
@@ -17,7 +25,11 @@ else()
     set( CUL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Build-Linux )
 endif()
 
-set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/deps" )
+set( ENV{CUL_OUTPUT_DIR} ${CUL_OUTPUT_DIR} )
+
+message( "[cul] CMAKE_MODULE_PATH: [Before] ${CMAKE_MODULE_PATH}" )
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules" )
+message( "[cul] CMAKE_MODULE_PATH: [After] ${CMAKE_MODULE_PATH}" )
 # Add sub directories
 add_subdirectory( deps )
 add_subdirectory( deps/boost/assert )
