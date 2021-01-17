@@ -90,3 +90,6 @@
 [submodule "deps/GSL"]
 	path = deps/GSL
 	url = git@github.com:microsoft/GSL.git
+[submodule "deps/helpers"]
+	path = deps/helpers
+	url = git@github.com:bartekordek/helpers.git
