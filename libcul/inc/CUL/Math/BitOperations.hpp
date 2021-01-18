@@ -7,11 +7,12 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 
+using BinaryDigitType = unsigned char;
 template <typename Type>
-std::vector<int> toBin( const Type val )
+std::vector<BinaryDigitType> toBin( const Type val )
 {
     auto sizeOfType = sizeof( val ) * 8;
-    std::vector<int> result;
+    std::vector<BinaryDigitType> result;
     result.resize( sizeOfType );
     int tempDigit = 0;
     int digit = 0;
