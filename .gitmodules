@@ -93,3 +93,6 @@
 [submodule "deps/helpers"]
 	path = deps/helpers
 	url = git@github.com:bartekordek/helpers.git
+[submodule "deps/opencv"]
+	path = deps/opencv
+	url = git@github.com:opencv/opencv.git
