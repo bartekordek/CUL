@@ -131,6 +131,10 @@ else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
 endif()
 
+IF(NOT APPLE AND NOT MSVC)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+ENDIF()
+
 target_include_directories(${EXEC} PUBLIC inc)
 target_include_directories(${EXEC} PRIVATE src)
 
