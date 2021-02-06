@@ -45,6 +45,13 @@ add_subdirectory( deps/boost/throw_exception )
 add_subdirectory( deps/boost/type_index )
 add_subdirectory( deps/boost/type_traits )
 add_subdirectory( deps/boost/variant )
+
+option( BUILD_TESTS "Disable testing" OFF )
+option( BUILD_JAVA "Disable java" OFF )
+option( BUILD_PERF_TESTS "Disable tests" OFF )
+option( BUILD_opencv_python2 "" OFF )
+option( BUILD_opencv_python3 "" OFF )
+option( BUILD_EXAMPLES "Disable examples" OFF )
 add_subdirectory( deps/opencv )
 
 
