@@ -60,7 +60,8 @@ add_subdirectory( deps/glm )
 add_subdirectory( deps/googletest )
 
 
-option(RAPIDJSON_BUILD_TESTS "Enable testing" OFF)
+option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
+option( RAPIDJSON_BUILD_EXAMPLES "Build examples." OFF )
 add_subdirectory( deps/rapidjson )
 
 #add_library(lib1 lib1.cpp)
