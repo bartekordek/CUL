@@ -53,10 +53,9 @@ endif()
 target_include_directories(${EXEC} PUBLIC stb tiny-image/src/)
 target_include_directories(${EXEC} PRIVATE src)
 
-if ( CMAKE_COMPILER_IS_GNUCC )
-    target_compile_options(${EXEC} PRIVATE "-w")
-endif()
-
+# Code is not my own, i don't wish to see external warnings.
 if ( MSVC )
-    target_compile_options(${EXEC} PRIVATE "/W3")
+    target_compile_options(${EXEC} PRIVATE "/W0")
+else()
+    target_compile_options(${EXEC} PRIVATE "-w")
 endif()
