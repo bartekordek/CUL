@@ -7,7 +7,7 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 
 template <typename Type>
-class Point final
+class CULLib_API Point final
 {
 public:
     Type x = static_cast<Type>( 0 );

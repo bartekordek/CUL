@@ -53,6 +53,13 @@ void Angle::setCurrentType( const Type type )
     m_type = type;
 }
 
+Angle& Angle::operator+=( const Angle& right )
+{
+    m_valueRad += right.m_valueRad;
+    m_valueDeg += right.m_valueDeg;
+    return *this;
+}
+
 Angle& Angle::operator+=( Cunt val )
 {
     add( static_cast<double>( val ) );
@@ -69,6 +76,13 @@ Angle& Angle::operator+=( Cdouble value )
 {
     add( value );
     return *this;
+}
+
+Angle Angle::operator+( const Angle& right ) const
+{
+    Angle result = *this;
+    result += right;
+    return result;
 }
 
 Angle& Angle::operator-=( Cunt val )
@@ -320,25 +334,6 @@ float Angle::getValueF( const Type type ) const
     return static_cast<float>( m_valueDeg );
 }
 
-// ASUMPTION!
-// We are returning radian.
-// Why? Mostly, if people want Degrees, they want them to be integer.
-Angle::operator double() const
-{
-    return m_valueRad;
-}
-
-Angle::operator int() const
-{
-    return static_cast<int>( m_valueDeg );
-}
-
-
-Angle::~Angle()
-{
-}
-
-
 double CUL::MATH::radian2degree( Cdouble radian )
 {
     return radian * 180.0 / CUL::MATH::UTIL::Constants::PI;
@@ -357,4 +352,8 @@ float CUL::MATH::radian2degree( const float radian )
 float CUL::MATH::degree2radian( const float degree )
 {
     return degree * static_cast<float>( CUL::MATH::UTIL::Constants::PI ) / 180.0f;
+}
+
+Angle::~Angle()
+{
 }

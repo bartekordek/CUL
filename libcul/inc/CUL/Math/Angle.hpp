@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
@@ -9,6 +10,14 @@ NAMESPACE_BEGIN( MATH )
 #pragma warning( push )
 #pragma warning( disable: 4820 )
 #endif
+
+enum class EulerAngles: uint8_t
+{
+    YAW = 0, // X-Y [Z]
+    PITCH,   // X-Z [Y]
+    ROLL     // Y-Z [X]
+};
+
 class CULLib_API Angle
 {
 public:
@@ -37,9 +46,12 @@ public:
     Type getCurrentType() const;
     void setCurrentType( const Type type );
 
+    Angle& operator+=( const Angle& right );
     Angle& operator+=( Cunt val );
     Angle& operator+=( Cint val );
     Angle& operator+=( Cdouble val );
+
+    Angle operator+( const Angle& right ) const;
 
     Angle& operator-=( Cunt val );
     Angle& operator-=( Cint val );
@@ -66,9 +78,6 @@ public:
 
     Angle operator++( int );
     Angle operator--( int );
-
-    operator double() const;
-    operator int() const;
 
     virtual ~Angle();
 

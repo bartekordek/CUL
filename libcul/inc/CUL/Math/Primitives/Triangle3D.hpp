@@ -14,6 +14,7 @@ NAMESPACE_BEGIN( Primitives )
 #pragma warning( disable : 4820 )
 #endif
 
+using ValuesArray = std::array<std::array<float,3>,3>;
 template <typename Type>
 class Triangle3D
 {
@@ -115,7 +116,7 @@ public:
 
     void setP2( const Point<Type>& val )
     {
-         m_p[1] = val;
+        m_p[1] = val;
     }
 
     void setP3( const Point<Type>& val )
@@ -126,6 +127,20 @@ public:
     const Point<Type>& getCentralPosition() const
     {
         return m_center;
+    }
+
+    void setValues( const ValuesArray& values )
+    {
+        const auto size = values.size();
+        for( size_t i = 0; i < size; ++i )
+        {
+            m_p[i].x = values[i][0];
+            m_p[i].y = values[i][1];
+            m_p[i].z = values[i][2];
+        }
+
+        calculateDimensions();
+        calculateCenter();
     }
 
     virtual ~Triangle3D()
@@ -154,7 +169,7 @@ private:
                 m_p[1].getValue( cartIndex ),
                 m_p[2].getValue( cartIndex ) ) );
 
-            m_max.setAxisValue( cartIndex, UTIL::max( 
+            m_max.setAxisValue( cartIndex, UTIL::max(
                 m_p[0].getValue( cartIndex ),
                 m_p[1].getValue( cartIndex ),
                 m_p[2].getValue( cartIndex ) ) );
