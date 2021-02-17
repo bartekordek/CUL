@@ -16,7 +16,7 @@ public:
     virtual IImage* findImage( const FS::Path& path ) = 0;
     virtual void deleteImage( const FS::Path& path ) = 0;
 
-    static IImageLoader* createConcrete( CUL::GUTILS::IConfigFile* config );
+    static IImageLoader* createConcrete( CUL::GUTILS::IConfigFile* config = nullptr );
 
 protected:
 private: // Deleted
