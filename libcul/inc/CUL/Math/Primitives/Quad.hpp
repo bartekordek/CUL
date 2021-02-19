@@ -89,6 +89,20 @@ public:
         return dataAsVoid;
     }
 
+    void setData( const std::array< std::array<Type, 3>, 4 >& dataIn )
+    {
+        auto setPoint = []( PointType& point, const std::array<Type, 3>& rhv ){
+            point.x = rhv[0];
+            point.y = rhv[1];
+            point.z = rhv[2];
+        };
+
+        for( size_t i = 0; i < data.size(); ++i )
+        {
+            setPoint( data[i], dataIn[i] );
+        }
+    }
+
 
     DataType data;
     void* dataAsVoid = nullptr;
