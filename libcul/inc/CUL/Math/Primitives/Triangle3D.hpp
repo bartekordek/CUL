@@ -14,16 +14,17 @@ NAMESPACE_BEGIN( Primitives )
 #pragma warning( disable : 4820 )
 #endif
 
-using ValuesArray = std::array<std::array<float,3>,3>;
-template <typename Type>
-class Triangle3D
+using PointType = CUL::MATH::Point;
+using TriangleData = std::array<PointType,3>;
+
+class Triangle3D final
 {
 public:
     Triangle3D()
     {
     }
 
-    Triangle3D( const Triangle3D<Type>& rhv ):
+    Triangle3D( const Triangle3D& rhv ):
         m_dimensions( rhv.m_dimensions ),
         m_p( rhv.m_p ),
         m_min( rhv.m_min ),
@@ -34,9 +35,9 @@ public:
     }
 
     Triangle3D(
-        const Point<Type>& p1,
-        const Point<Type>& p2,
-        const Point<Type>& p3 )
+        const Point& p1,
+        const Point& p2,
+        const Point& p3 )
     {
         m_p[0] = p1;
         m_p[1] = p2;
@@ -46,7 +47,7 @@ public:
         calculateCenter();
     }
 
-    Triangle3D& operator=( const Triangle3D<Type>& rhv )
+    Triangle3D& operator=( const Triangle3D& rhv )
     {
         if( this != &rhv )
         {
@@ -58,7 +59,7 @@ public:
         return *this;
     }
 
-    Triangle3D& operator +=( const Point<Type>& translationVector )
+    Triangle3D& operator +=( const Point& translationVector )
     {
         for( auto& point: m_p )
         {
@@ -69,74 +70,72 @@ public:
         return *this;
     }
 
-    const Point<Type>& getSize() const
+    const Point& getSize() const
     {
         return m_dimensions;
     }
 
-    const Type getDimension( const AxisCarthesian type ) const
+    const Point::Type getDimension( const AxisCarthesian type ) const
     {
-        return m_dimensions[type];
+        return m_dimensions[static_cast<size_t>( type )];
     }
 
-    const Type getDimension( const Axis type ) const
+    const Point::Type getDimension( const Axis type ) const
     {
-        return m_dimensions[static_cast<AxisCarthesian>( type )];
+        return m_dimensions[static_cast<size_t>( type )];
     }
 
     void setPoint(
-        const Point<Type>& point,
+        const Point& point,
         const AxisCarthesian axis )
     {
-        Point<Type>& pointIn = m_p[static_cast<unsigned>( axis )];
+        Point& pointIn = m_p[static_cast<unsigned>( axis )];
         pointIn = point;
         calculateDimensions();
         calculateCenter();
     }
 
-    const Point<Type>& getP1() const
+    const Point& getP1() const
     {
         return m_p.at( 0 );
     }
 
-    const Point<Type>& getP2() const
+    const Point& getP2() const
     {
         return m_p.at( 1 );
     }
 
-    const Point<Type>& getP3() const
+    const Point& getP3() const
     {
         return m_p.at( 2 );
     }
 
-    void setP1( const Point<Type>& val )
+    void setP1( const Point& val )
     {
         m_p[0] = val;
     }
 
-    void setP2( const Point<Type>& val )
+    void setP2( const Point& val )
     {
         m_p[1] = val;
     }
 
-    void setP3( const Point<Type>& val )
+    void setP3( const Point& val )
     {
         m_p[2] = val;
     }
 
-    const Point<Type>& getCentralPosition() const
+    const Point& getCentralPosition() const
     {
         return m_center;
     }
 
-    void setValues( const ValuesArray& values )
+    void setValues( const TriangleData& values )
     {
         const auto size = values.size();
         for( size_t i = 0; i < size; ++i )
         {
-            m_p[i].x = values[i][0];
-            m_p[i].y = values[i][1];
-            m_p[i].z = values[i][2];
+            m_p[ i ] = values[ i ];
         }
 
         calculateDimensions();
@@ -182,25 +181,21 @@ private:
 #endif
     void calculateCenter()
     {
-        auto x = ( m_p[0].x + m_p[1].x + m_p[2].x ) / m_three;
-        auto y = ( m_p[0].y + m_p[1].y + m_p[2].y ) / m_three;
-        auto z = ( m_p[0].z + m_p[1].z + m_p[2].z ) / m_three;
-        m_center.x = x;
-        m_center.y = y;
-        m_center.z = z;
+        auto x = ( m_p[0][0] + m_p[1][0] + m_p[2][0] ) / m_three;
+        auto y = ( m_p[0][1] + m_p[1][1] + m_p[2][1] ) / m_three;
+        auto z = ( m_p[0][2] + m_p[1][2] + m_p[2][2] ) / m_three;
+        m_center.x() = x;
+        m_center.y() = y;
+        m_center.z() = z;
     }
 
-    Point<Type> m_dimensions;
-    std::array<Point<Type>, 3> m_p;
-    Type m_three = static_cast<Type>( 3 );
-    Point<Type> m_center;
-    Point<Type> m_min;
-    Point<Type> m_max;
+    Point m_dimensions;
+    std::array<Point, 3> m_p;
+    Point::Type m_three = 3.f;
+    Point m_center;
+    Point m_min;
+    Point m_max;
 };
-
-using Triangle3DI = Triangle3D<int>;
-using Triangle3DD = Triangle3D<double>;
-using Triangle3DF = Triangle3D<float>;
 
 #ifdef _MSC_VER
 #pragma warning( pop )

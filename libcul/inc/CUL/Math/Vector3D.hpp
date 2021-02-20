@@ -117,7 +117,10 @@ public:
         return m_values[ac2Size( axis )];
     }
 
-    const Type operator[]( const unsigned axis ) const = delete;
+    const Type operator[]( size_t index ) const
+    {
+        return m_values[ index ];
+    }
 
     const Type getX() const
     {

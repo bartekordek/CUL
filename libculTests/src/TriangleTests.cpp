@@ -100,27 +100,27 @@ TEST_F( TriangleTests, degressTest270 )
 
 TEST_F( TriangleTests, initializationTest )
 {
-    auto p1xyz = 1;
-    auto p2xyz = 2;
-    auto p3xyz = 3;
+    auto p1xyz = 1.f;
+    auto p2xyz = 2.f;
+    auto p3xyz = 3.f;
 
-    CUL::MATH::PointI p1( p1xyz, p1xyz, p1xyz );
-    CUL::MATH::PointI p2( p2xyz, p2xyz, p2xyz );
-    CUL::MATH::PointI p3( p3xyz, p3xyz, p3xyz );
+    CUL::MATH::Point p1( p1xyz, p1xyz, p1xyz );
+    CUL::MATH::Point p2( p2xyz, p2xyz, p2xyz );
+    CUL::MATH::Point p3( p3xyz, p3xyz, p3xyz );
 
-    CUL::MATH::Primitives::Triangle3DI triangle3D( p1, p2, p3 );
+    CUL::MATH::Primitives::Triangle3D triangle3D( p1, p2, p3 );
 
-    GTEST_ASSERT_EQ( triangle3D.getP1().getX(), p1xyz );
-    GTEST_ASSERT_EQ( triangle3D.getP1().getY(), p1xyz );
-    GTEST_ASSERT_EQ( triangle3D.getP1().getZ(), p1xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP1().x(), p1xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP1().y(), p1xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP1().z(), p1xyz );
 
-    GTEST_ASSERT_EQ( triangle3D.getP2().getX(), p2xyz );
-    GTEST_ASSERT_EQ( triangle3D.getP2().getY(), p2xyz );
-    GTEST_ASSERT_EQ( triangle3D.getP2().getZ(), p2xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP2().x(), p2xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP2().y(), p2xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP2().z(), p2xyz );
 
-    GTEST_ASSERT_EQ( triangle3D.getP3().getX(), p3xyz );
-    GTEST_ASSERT_EQ( triangle3D.getP3().getY(), p3xyz );
-    GTEST_ASSERT_EQ( triangle3D.getP3().getZ(), p3xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP3().x(), p3xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP3().y(), p3xyz );
+    GTEST_ASSERT_EQ( triangle3D.getP3().z(), p3xyz );
 }
 
 // TODO:

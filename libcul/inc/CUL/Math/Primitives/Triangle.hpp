@@ -7,11 +7,11 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 NAMESPACE_BEGIN( Primitives )
 
-template <typename Type>
 class Triangle:
     public ISerializable
 {
 public:
+    using Type = float;
     using PointType = Vector3D<Type>;
     using ValuesType = std::array< PointType, 3 >;
 
@@ -37,39 +37,14 @@ public:
         return *this;
     }
 
-    const PointType& p1() const
+    PointType& operator[]( size_t index )
     {
-        return vals[ 0 ];
+        return vals[ index ];
     }
 
-    const PointType& p2() const
+    const PointType& operator[]( size_t index ) const
     {
-        return vals[ 1 ];
-    }
-
-    const PointType& p3() const
-    {
-        return vals[ 2 ];
-    }
-
-    const PointType& p4() const
-    {
-        return vals[ 3 ];
-    }
-
-    PointType& p1()
-    {
-        return vals[ 0 ];
-    }
-
-    PointType& p2()
-    {
-        return vals[ 1 ];
-    }
-
-    PointType& p3()
-    {
-        return vals[ 2 ];
+        return vals[ index ];
     }
 
     virtual ~Triangle()
@@ -106,11 +81,6 @@ private:
     Triangle( Triangle&& arg ) = delete;
     Triangle& operator=( Triangle&& arg ) = delete;
 };
-
-using TriangleF = Triangle<float>;
-using TriangleD = Triangle<double>;
-using TriangleI = Triangle<int>;
-using TriangleU = Triangle<unsigned int>;
 
 NAMESPACE_END( Primitives )
 NAMESPACE_END( MATH )

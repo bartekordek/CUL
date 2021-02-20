@@ -3,189 +3,77 @@
 #include "CUL/Math/Axis.hpp"
 #include "CUL/Math/Math.hpp"
 
+#include "CUL/STL_IMPORTS/STD_array.hpp"
+
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 
-template <typename Type>
 class CULLib_API Point final
 {
 public:
-    Type x = static_cast<Type>( 0 );
-    Type y = static_cast<Type>( 0 );
-    Type z = static_cast<Type>( 0 );
-    Type diagonal = static_cast<Type>( 0 );
+    using Type = float;
+    using PointData = std::array<Type, 3>;
 
-    const Type getX() const
+    PointData values;
+
+    Type diagonal = 0.f;
+
+    Point();
+    Point( Type val1, Type val2, Type val3 );
+    Point( const PointData& data );
+
+    Point& operator=( const PointData& data );
+
+    inline const Type x() const
     {
-        return x;
+        return values[0];
     }
 
-    const Type getY() const
+    inline Type& x()
     {
-        return y;
+        return values[0];
     }
 
-    const Type getZ() const
+    inline const Type y() const
     {
-        return z;
+        return values[1];
     }
 
-    Point()
+    inline Type& y()
     {
-
+        return values[1];
     }
 
-    Point(
-        const Type& val1,
-        const Type& val2,
-        const Type& val3 ):
-        x( val1 ),
-        y( val2 ),
-        z( val3 )
+    inline const Type z() const
     {
-        calculateDiagonal();
+        return values[2];
     }
 
-    Point( const Point& arg ):
-        x( arg.x ),
-        y( arg.y ),
-        z( arg.z ),
-        diagonal( arg.diagonal )
+    inline Type& z()
     {
+        return values[2];
     }
 
-    Point( Point&& arg ):
-        x( arg.x ),
-        y( arg.y ),
-        z( arg.z ),
-        diagonal( arg.diagonal )
-    {
+    Point( const Point& arg );
+    Point( Point&& arg );
+    Point& operator=( const Point& rhv );
+    Point& operator=( Point&& rhv );
+    Point& operator+=( const Point& rhv );
+    Point operator+( const Point& rhv );
+    Point& operator-=( const Point& rhv );
+    Point operator-( const Point& rhv );
+    bool operator<( const Point& rhv ) const;
 
-    }
+    Type& getValue( const AxisCarthesian axis );
+    void setAxisValue( AxisCarthesian axis, Type value );
 
-    Point& operator=( const Point& rhv )
-    {
-        if( this != &rhv )
-        {
-            x = rhv.x;
-            y = rhv.y;
-            z = rhv.z;
-            diagonal = rhv.diagonal;
-        }
-        return *this;
-    }
+    const Type operator[]( size_t index ) const;
+    Type& operator[]( size_t index );
 
-    Point& operator=( Point&& rhv )
-    {
-        if( this != &rhv )
-        {
-            x = rhv.x;
-            y = rhv.y;
-            z = rhv.z;
-            diagonal = rhv.diagonal;
-        }
-        return *this;
-    }
-
-    Point& operator+=( const Point& rhv )
-    {
-        if( this != &rhv )
-        {
-            x += rhv.x;
-            y += rhv.y;
-            z += rhv.z;
-            diagonal = rhv.diagonal;
-        }
-        return *this;
-    }
-
-    Point<Type> operator+( const Point& rhv )
-    {
-        Point result;
-        result.x += rhv.x;
-        result.y += rhv.y;
-        result.z += rhv.z;
-        diagonal = rhv.diagonal;
-        return result;
-    }
-
-    Point<Type>& operator-=( const Point& rhv )
-    {
-        if( this != &rhv )
-        {
-            x -= rhv.x;
-            y -= rhv.y;
-            z -= rhv.z;
-            diagonal = rhv.diagonal;
-        }
-        return *this;
-    }
-
-    Point operator-( const Point& rhv )
-    {
-        Point result;
-        result.x -= rhv.x;
-        result.y -= rhv.y;
-        result.z -= rhv.z;
-        result.diagonal = rhv.diagonal;
-        return result;
-    }
-
-    bool operator<( const Point& rhv ) const
-    {
-        return diagonal < rhv.diagonal;
-    }
-
-    Type& getValue( const AxisCarthesian axis )
-    {
-        if( AxisCarthesian::X == axis )
-        {
-            return x;
-        }
-        else if( AxisCarthesian::Y == axis )
-        {
-            return y;
-        }
-        else
-        {
-            return z;
-        }
-    }
-
-    void setAxisValue( const AxisCarthesian axis, const Type& value )
-    {
-        if( AxisCarthesian::X == axis )
-        {
-            x = value;
-        }
-        else if( AxisCarthesian::Y == axis )
-        {
-            y = value;
-        }
-        else if( AxisCarthesian::Z == axis )
-        {
-            z = value;
-        }
-        calculateDiagonal();
-    }
-
-    void calculateDiagonal()
-    {
-        diagonal = static_cast<Type>( std::sqrt( x * x + y * y + z * z ) );
-    }
-
-    ~Point()
-    {
-
-    }
+    ~Point();
 protected:
 private:
+    void calculateDiagonal();
 };
-
-
-using PointF = Point<float>;
-using PointD = Point<double>;
-using PointI = Point<int>;
-
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )
