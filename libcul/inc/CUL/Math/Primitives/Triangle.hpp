@@ -23,6 +23,7 @@ public:
     }
 
     Triangle( const Triangle& arg ):
+        ISerializable(),
         vals( arg.vals )
     {
 

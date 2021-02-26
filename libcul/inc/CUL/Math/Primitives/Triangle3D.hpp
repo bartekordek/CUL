@@ -75,12 +75,12 @@ public:
         return m_dimensions;
     }
 
-    const Point::Type getDimension( const AxisCarthesian type ) const
+    Point::Type getDimension( const AxisCarthesian type ) const
     {
         return m_dimensions[static_cast<size_t>( type )];
     }
 
-    const Point::Type getDimension( const Axis type ) const
+    Point::Type getDimension( const Axis type ) const
     {
         return m_dimensions[static_cast<size_t>( type )];
     }

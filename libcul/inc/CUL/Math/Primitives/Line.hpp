@@ -2,6 +2,8 @@
 
 #include "CUL/ISerializable.hpp"
 
+#include "CUL/STL_IMPORTS/STD_array.hpp"
+
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 NAMESPACE_BEGIN( Primitives )

@@ -24,7 +24,7 @@ public:
 
     Point& operator=( const PointData& data );
 
-    inline const Type x() const
+    inline Type x() const
     {
         return values[0];
     }
@@ -34,7 +34,7 @@ public:
         return values[0];
     }
 
-    inline const Type y() const
+    inline Type y() const
     {
         return values[1];
     }
@@ -44,7 +44,7 @@ public:
         return values[1];
     }
 
-    inline const Type z() const
+    inline Type z() const
     {
         return values[2];
     }
@@ -67,7 +67,7 @@ public:
     Type& getValue( const AxisCarthesian axis );
     void setAxisValue( AxisCarthesian axis, Type value );
 
-    const Type operator[]( size_t index ) const;
+    Type operator[]( size_t index ) const;
     Type& operator[]( size_t index );
 
     ~Point();

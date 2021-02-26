@@ -127,7 +127,7 @@ void Point::calculateDiagonal()
     diagonal = static_cast<Type>( std::sqrt( values[0] * values[0] + values[1] * values[1] + values[2] * values[2] ) );
 }
 
-const Point::Type Point::operator[]( size_t index ) const
+Point::Type Point::operator[]( size_t index ) const
 {
     return values[ index ];
 }
