@@ -5,22 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run cul test",
+            "name": "[Linux] Run tests",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/Build-Linux/culTests",
-            "args": [
-                "-w",
-                "1280",
-                "-h",
-                "960"
-            ],
+            "program": "${workspaceFolder}/Build-Linux/Debug/culTests.bin",
+            "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}/runDir",
+            "cwd": "${workspaceFolder}/deps/OpenGLWrapper/runDir",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "preLaunchTask": "Make Debug",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -28,6 +22,22 @@
                     "ignoreFailures": true
                 }
             ],
+            //"preLaunchTask": "g++ build active file",
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "[Windows] Run tests",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\Build-Windows\\Debug\\culTests.exe",
+            "cwd": "${workspaceRoot}/runDir",
+            "symbolSearchPath": "${workspaceRoot}/runDir",
+            "args": [ "-w", "1680", "-h", "900" ],
+            "externalConsole": false,
+            "logging": {
+                "moduleLoad": false,
+                "trace": true,
+            }
         }
     ]
 }

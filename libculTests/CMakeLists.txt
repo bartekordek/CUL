@@ -65,17 +65,18 @@ if (MSVC)
     set_target_properties( ${EXEC} PROPERTIES VS_DEBUGGER_COMMAND_ARGUMENTS  "--gtest_break_on_failure" )
 endif()
 
-if (MSVC)
-    CmakeToWindow( ${CUL_OUTPUT_DIR} CUL_OUTPUT_DIR_WINDOWS )
-    CmakeToWindow( ${CUL_DEPS_PATH} CUL_DEPS_PATH_WINDOWS )
-    CmakeToWindow( ${CUL_TESTS_RUN_DIR} CUL_TESTS_RUN_DIR_WINDOWS )
-    CmakeToWindow( ${CMAKE_SOURCE_DIR}/${BUILD_ROOT_POSTFIX} OUTER_BUILD_ROOT )
-    #message( "OUTER_BUILD_ROOT = ${OUTER_BUILD_ROOT}" )
-
-    set( CopyCommand ${CUL_DEPS_PATH_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat )
-    add_custom_command(TARGET ${EXEC} POST_BUILD
-        COMMAND ${CopyCommand} ${CUL_OUTPUT_DIR} ${CUL_TESTS_RUN_DIR_WINDOWS}
-        COMMAND ${CopyCommand} ${CUL_DEPS_PATH}  ${CUL_TESTS_RUN_DIR_WINDOWS}
-        COMMAND ${CopyCommand} ${OUTER_BUILD_ROOT} ${CUL_TESTS_RUN_DIR_WINDOWS}
-    )
-endif()
+# TODO: Do I need to copy it?
+#if (MSVC)
+#    CmakeToWindow( ${CUL_OUTPUT_DIR} CUL_OUTPUT_DIR_WINDOWS )
+#    CmakeToWindow( ${CUL_DEPS_PATH} CUL_DEPS_PATH_WINDOWS )
+#    CmakeToWindow( ${CUL_TESTS_RUN_DIR} CUL_TESTS_RUN_DIR_WINDOWS )
+#    CmakeToWindow( ${CMAKE_SOURCE_DIR}/${BUILD_ROOT_POSTFIX} OUTER_BUILD_ROOT )
+#    #message( "OUTER_BUILD_ROOT = ${OUTER_BUILD_ROOT}" )
+#
+#    set( CopyCommand ${CUL_DEPS_PATH_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat )
+#    add_custom_command(TARGET ${EXEC} POST_BUILD
+#        COMMAND ${CopyCommand} ${CUL_OUTPUT_DIR} ${CUL_TESTS_RUN_DIR_WINDOWS}
+#        COMMAND ${CopyCommand} ${CUL_DEPS_PATH}  ${CUL_TESTS_RUN_DIR_WINDOWS}
+#        COMMAND ${CopyCommand} ${OUTER_BUILD_ROOT} ${CUL_TESTS_RUN_DIR_WINDOWS}
+#    )
+#endif()
