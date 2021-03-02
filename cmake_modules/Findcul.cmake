@@ -12,6 +12,7 @@ if( NOT DEFINED ENV{CUL_ROOT_DIR} )
 endif( NOT DEFINED ENV{CUL_ROOT_DIR} )
 
 set( cul_INCLUDE_DIR $ENV{CUL_ROOT_DIR}/libcul/inc )
+set( ENV{cul_INCLUDE_DIR} ${cul_INCLUDE_DIR} )
 message("[Findcul.cmake] cul_INCLUDE_DIR: ${cul_INCLUDE_DIR}")
 
 list( APPEND CUL_LIB_PATHS $ENV{CUL_OUTPUT_DIR} )
@@ -30,6 +31,9 @@ endforeach()
 #message("[Findcul.cmake] cul_LIBRARY_TEMP: ${cul_LIBRARY_TEMP}")
 set( cul_LIBRARY_TEMP $ENV{CUL_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/cul.lib )
 set( cul_LIBRARY ${cul_LIBRARY_TEMP} )
+set( cul_BINARY $ENV{CUL_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/cul.dll )
+set( cul_SYMBOLS $ENV{CUL_OUTPUT_DIR}/${CMAKE_BUILD_TYPE}/cul.pdb )
+set( ENV{cul_LIBRARY} ${cul_LIBRARY} )
 set( cul_DIR $ENV{CUL_ROOT_DIR} )
 
 set( cul_FOUND true )

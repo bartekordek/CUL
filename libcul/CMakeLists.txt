@@ -15,6 +15,7 @@ endif()
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+set( CMAKE_ENABLE_EXPORTS true )
 
 include_directories( SYSTEM "../deps/stb" )
 include_directories( SYSTEM "../deps/tiny-image/src" )
@@ -44,10 +45,8 @@ file( GLOB_RECURSE SOURCES inc/*.hpp src/*.hpp src/*.cpp )
 
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 
-#add_library( ${EXEC} SHARED
-add_library( ${EXEC} STATIC
-${SOURCES}
-)
+add_library( ${EXEC}-static STATIC ${SOURCES} )
+add_library( ${EXEC} SHARED ${SOURCES} )
 
 set( DEPENDENCIES
 AdditionalDeps
@@ -58,11 +57,17 @@ spdlog
 )
 
 
+set_property( TARGET ${EXEC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 if (MSVC)
+    list(APPEND LIBS msvcmrtd )
+    target_link_libraries( ${EXEC}-static ${DEPENDENCIES} )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
+    target_link_libraries( ${EXEC}-static ${DEPENDENCIES} )
 endif()
+
+add_dependencies( ${EXEC} ${DEPENDENCIES} )
 
 IF(NOT APPLE AND NOT MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
