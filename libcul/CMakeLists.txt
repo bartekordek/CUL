@@ -19,6 +19,7 @@ set( CMAKE_ENABLE_EXPORTS true )
 
 include_directories( SYSTEM "../deps/stb" )
 include_directories( SYSTEM "../deps/tiny-image/src" )
+include_directories( SYSTEM "../deps/rapidjson/include" )
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -45,7 +46,6 @@ file( GLOB_RECURSE SOURCES inc/*.hpp src/*.hpp src/*.cpp )
 
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 
-add_library( ${EXEC}-static STATIC ${SOURCES} )
 add_library( ${EXEC} SHARED ${SOURCES} )
 
 set( DEPENDENCIES
@@ -60,14 +60,12 @@ spdlog
 set_property( TARGET ${EXEC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 if (MSVC)
     list(APPEND LIBS msvcmrtd )
-    target_link_libraries( ${EXEC}-static ${DEPENDENCIES} )
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
-    target_link_libraries( ${EXEC}-static ${DEPENDENCIES} stdc++fs )
 endif()
 
-add_dependencies( ${EXEC} ${DEPENDENCIES} )
+#add_dependencies( ${EXEC} ${DEPENDENCIES} )
 
 IF(NOT APPLE AND NOT MSVC)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
@@ -75,9 +73,6 @@ ENDIF()
 
 target_include_directories(${EXEC} PUBLIC inc)
 target_include_directories(${EXEC} PRIVATE src)
-
-target_include_directories(${EXEC}-static PUBLIC inc)
-target_include_directories(${EXEC}-static PRIVATE src)
 
 # TODO: Do I need to copy it?
 #if (MSVC)
