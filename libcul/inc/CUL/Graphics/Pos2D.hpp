@@ -15,6 +15,7 @@ public:
     }
 
     Pos2D( const Pos2D& val ):
+        ISerializable(),
         m_x( val.m_x ),
         m_y( val.m_y )
     {

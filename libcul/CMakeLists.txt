@@ -64,7 +64,7 @@ if (MSVC)
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
-    target_link_libraries( ${EXEC}-static ${DEPENDENCIES} )
+    target_link_libraries( ${EXEC}-static ${DEPENDENCIES} stdc++fs )
 endif()
 
 add_dependencies( ${EXEC} ${DEPENDENCIES} )
@@ -75,6 +75,9 @@ ENDIF()
 
 target_include_directories(${EXEC} PUBLIC inc)
 target_include_directories(${EXEC} PRIVATE src)
+
+target_include_directories(${EXEC}-static PUBLIC inc)
+target_include_directories(${EXEC}-static PRIVATE src)
 
 # TODO: Do I need to copy it?
 #if (MSVC)
