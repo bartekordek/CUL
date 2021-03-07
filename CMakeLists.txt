@@ -72,6 +72,8 @@ add_subdirectory( ${CUL_DEPS_PATH}/boost/variant )
 #add_subdirectory( ${CUL_DEPS_PATH}/opencv )
 
 add_subdirectory( ${CUL_DEPS_PATH}/glm )
+
+set( gtest_force_shared_crt ON CACHE BOOL "" FORCE )
 add_subdirectory( ${CUL_DEPS_PATH}/googletest )
 
 option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
