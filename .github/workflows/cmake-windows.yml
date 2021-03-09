@@ -28,28 +28,26 @@ jobs:
         private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Fetch dependencies - begin
-      shell: bash
+      shell: cmd
       working-directory: ${{github.workspace}}
       env:
                     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      run: time git submodule update --recursive --init && find . -name '*.git'
+      run: git submodule update --recursive --init
 
     - name: Fetch dependencies - second
-      shell: bash
+      shell: cmd
       working-directory: ${{github.workspace}}
-      env:
-                    SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      run: time git submodule update --recursive --init && find . -name '*.git'
+      run: git submodule update --recursive --init
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
-      shell: bash
+      shell: cmd
       working-directory: ${{github.workspace}}/Build-Windows
       # Note the current convention is to use the -S and -B options here to specify source
       # and build directories, but this is only available with CMake 3.13 and higher.
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: time cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
     - name: Build
       working-directory: ${{github.workspace}}//Build-Windows
