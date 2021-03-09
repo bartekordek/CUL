@@ -21,7 +21,7 @@ jobs:
       # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{github.workspace}}//Build-Windows
 
-    - uses: actions/checkout@v2
+    - uses: webfactory/ssh-agent@v0.5.0
     - name: Setup key
       uses: ./
       with:
