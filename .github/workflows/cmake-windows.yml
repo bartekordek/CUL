@@ -23,9 +23,9 @@ jobs:
 
     - uses: webfactory/ssh-agent@v0.5.0
     - name: Setup key
-      uses: ./
       with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: |
+            ${{ secrets.SSH_PRIVATE_KEY }}
 
 
     - name: Fetch dependencies - begin
