@@ -3,6 +3,7 @@
 #include "Graphics/ImageLoaderSTB.hpp"
 #include "Graphics/ImageLoaderTiny.hpp"
 #include "Graphics/ImageLoaderBMP.hpp"
+#include "Graphics/ImageLoaderData.hpp"
 
 using namespace CUL;
 using namespace Graphics;
@@ -48,13 +49,19 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config )
         std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader() );
         m_loaders["bmp"] = std::move( bmp );
     }
-}
 
+    std::unique_ptr<ImageLoaderData> data( new ImageLoaderData() );
+    m_loaders["data"] = std::move( data );
+}
 
 IImage* ImageLoaderConcrete::loadImage( const FS::Path& path, Cbool rgba )
 {
-
     return getLoader( path.getExtension() )->loadImage( path, rgba );
+}
+
+IImage* ImageLoaderConcrete::loadImage(DataType* data, unsigned width, unsigned height)
+{
+    return getLoader("data")->loadImage(data, width, height);
 }
 
 void ImageLoaderConcrete::deleteImage( const FS::Path& path )
@@ -79,6 +86,10 @@ IImageLoader* ImageLoaderConcrete::getLoader( const String& fileExt )
     else if( ext == ".bmp" || ext == "bmp" )
     {
         return m_loaders["bmp"].get();
+    }
+    else if (ext == "data")
+    {
+        return m_loaders["data"].get();
     }
     else
     {

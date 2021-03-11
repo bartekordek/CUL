@@ -13,6 +13,21 @@ IImageLoader* IImageLoader::createConcrete( CUL::GUTILS::IConfigFile* config )
     return new ImageLoaderConcrete( config );
 }
 
+IImage* loadImage( const FS::Path& , Cbool )
+{
+    return nullptr;
+}
+
+IImage* IImageLoader::loadImage( DataType*, unsigned, unsigned )
+{
+    return nullptr;
+}
+
+IImage* IImageLoader::loadImage(const FS::Path&, Cbool)
+{
+    return nullptr;
+}
+
 IImageLoader::~IImageLoader()
 {
 }
