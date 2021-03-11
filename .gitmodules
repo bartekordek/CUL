@@ -96,3 +96,6 @@
 [submodule "deps/opencv"]
 	path = deps/opencv
 	url = git@github.com:opencv/opencv.git
+[submodule "deps/cppcheck"]
+	path = deps/cppcheck
+	url = git@github.com:danmar/cppcheck.git
