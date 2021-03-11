@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for libcul-v141" Description="Code analysis rules for libcul-v141.vcxproj." ToolsVersion="15.0">
-  <IncludeAll Action="Warning" />
-  <Rules AnalyzerId="Microsoft.Analyzers.NativeCodeAnalysis" RuleNamespace="Microsoft.Rules.Native">
-    <Rule Id="C26439" Action="None" />
-    <Rule Id="C26440" Action="None" />
-  </Rules>
-</RuleSet>

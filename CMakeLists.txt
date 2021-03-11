@@ -46,6 +46,10 @@ endif()
 set( ENV{CUL_OUTPUT_DIR} ${CUL_OUTPUT_DIR} )
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules" )
 
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+
 set( CUL_DEPS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps )
 # Add sub directories
 add_subdirectory( ${CUL_DEPS_PATH} )
@@ -63,13 +67,8 @@ add_subdirectory( ${CUL_DEPS_PATH}/boost/type_index )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/type_traits )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/variant )
 
-#option( BUILD_TESTS "Disable testing" OFF )
-#option( BUILD_JAVA "Disable java" OFF )
-#option( BUILD_PERF_TESTS "Disable tests" OFF )
-#option( BUILD_opencv_python2 "" OFF )
-#option( BUILD_opencv_python3 "" OFF )
-#option( BUILD_EXAMPLES "Disable examples" OFF )
-#add_subdirectory( ${CUL_DEPS_PATH}/opencv )
+# TODO!
+#add_subdirectory( ${CUL_DEPS_PATH}/cppcheck )
 
 add_subdirectory( ${CUL_DEPS_PATH}/glm )
 
