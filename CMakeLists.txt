@@ -28,6 +28,9 @@ macro( add_sources_group SUBDIRS_LIST )
     endforeach( dir ${SUBDIRS_LIST} )
 endmacro()
 
+file( RELATIVE_PATH RENEGATE_DIR ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} )
+set( RENEGATE_DIR ${OGLW_OUTPUT_DIR}/${RENEGATE_DIR}/deps )
+
 set( CMAKE_POSITION_INDEPENDENT_CODE ON )
 set( CUL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} )
 set( CUL_TESTS_RUN_DIR "${CMAKE_CURRENT_SOURCE_DIR}/runDir" )
@@ -79,6 +82,20 @@ option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
 option( RAPIDJSON_BUILD_EXAMPLES "Build examples." OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/rapidjson )
 
+add_subdirectory( ${CUL_DEPS_PATH}/freeglut-3.2.1 )
+
+find_package( freeglut REQUIRED )
+set( FREEGLUT_BUILD_DEMOS "Override option" OFF )
+set( FREEGLUT_BUILD_SHARED_LIBS "Override option" OFF )
+
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
+add_subdirectory( ${CUL_DEPS_PATH}/zlib )
+add_subdirectory( ${CUL_DEPS_PATH}/libpng )
+find_package( PNG REQUIRED )
+
+option( BUILD_SHARED_LIBS OFF )
+add_subdirectory( ${CUL_DEPS_PATH}/DevIL/DevIL )
+find_package( DevIL REQUIRED )
+
 add_subdirectory( libcul )
 add_subdirectory( libculTests )

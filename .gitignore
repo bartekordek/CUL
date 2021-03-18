@@ -2,7 +2,6 @@
 *.a
 *.bin
 *.check_cache
-*.cmake
 *.dir*
 *.dll
 *.exp
@@ -39,10 +38,6 @@ deps/googletest
 deps/Makefile
 GPUs.txt
 intermediate
-libcul/deps/googletest
-libcul/deps/Makefile
-libcul/libcul/Makefile
-libcul/Makefile
 libcul/obj
 Makefile
 private*.xml

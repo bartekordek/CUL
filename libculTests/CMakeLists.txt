@@ -46,4 +46,24 @@ if (MSVC)
     message( "[cul test] Setting cul tests run dir to: ${CUL_TESTS_RUN_DIR}" )
     set_target_properties( ${EXEC} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CUL_TESTS_RUN_DIR}" )
     set_target_properties( ${EXEC} PROPERTIES VS_DEBUGGER_COMMAND_ARGUMENTS  "--gtest_break_on_failure" )
+
+    if( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+        set( GTEST_BIN gtestd )
+        set( GMOCK_BIN gmockd )
+    else()
+        set( GTEST_BIN gtest )
+        set( GMOCK_BIN gmock )
+    endif()
+
+    set( GTEST_OUTPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/bin/${CMAKE_BUILD_TYPE} )
+
+    add_custom_command(TARGET ${EXEC}
+        POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GTEST_BIN}.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GTEST_BIN}.pdb ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
+
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GMOCK_BIN}.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GMOCK_BIN}.pdb ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
+            )
+
 endif()

@@ -50,8 +50,9 @@ boost_assert
 boost_circular_buffer
 boost_core
 spdlog
+IL
+ILU
 )
-
 
 set_property( TARGET ${EXEC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 if (MSVC)
@@ -61,28 +62,17 @@ else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
 endif()
 
-#add_dependencies( ${EXEC} ${DEPENDENCIES} )
+if( MSVC )
+    foreach(DevIL_BINARY ${DevIL_BINARIES})
+        message( "DevIL_BINARY: ${DevIL_BINARY}" )
+        add_custom_command(TARGET ${EXEC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DevIL_BINARY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
+    endforeach(DevIL_BINARY)
 
-IF(NOT APPLE AND NOT MSVC)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-ENDIF()
+else()
+    if( NOT APPLE )
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+    endif()
+endif()
 
 target_include_directories(${EXEC} PUBLIC inc)
 target_include_directories(${EXEC} PRIVATE src)
-
-# TODO: Do I need to copy it?
-#if (MSVC)
-#    set_target_properties(${EXEC} PROPERTIES LINK_FLAGS "/INCREMENTAL:NO")
-#    CmakeToWindow( ${CUL_OUTPUT_DIR} CUL_OUTPUT_DIR_WINDOWS )
-#    CmakeToWindow( ${CUL_DEPS_PATH} CUL_DEPS_PATH_WINDOWS )
-#    CmakeToWindow( ${CUL_TESTS_RUN_DIR} CUL_TESTS_RUN_DIR_WINDOWS )
-#    CmakeToWindow( ${CMAKE_SOURCE_DIR}/${BUILD_ROOT_POSTFIX} OUTER_BUILD_ROOT )
-#    #message( "OUTER_BUILD_ROOT = ${OUTER_BUILD_ROOT}" )
-#
-#    set( CopyCommand ${CUL_DEPS_PATH_WINDOWS}\\helpers\\CopyLibraryBinaryAndSymbolsRecursive.bat )
-#    add_custom_command(TARGET ${EXEC} POST_BUILD
-#        COMMAND ${CopyCommand} ${CUL_OUTPUT_DIR} ${CUL_TESTS_RUN_DIR_WINDOWS}
-#        COMMAND ${CopyCommand} ${CUL_DEPS_PATH}  ${CUL_TESTS_RUN_DIR_WINDOWS}
-#        COMMAND ${CopyCommand} ${OUTER_BUILD_ROOT} ${CUL_TESTS_RUN_DIR_WINDOWS}
-#    )
-#endif()
