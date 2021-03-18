@@ -6,7 +6,7 @@
         {
             "label": "[LINUX] CMake create",
             "type": "shell",
-            "command": "pwd;rm -rf Build-Linux; mkdir Build-Linux; cd Build-Linux; cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug",
+            "command": "clear && cd Build-Linux && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -18,7 +18,7 @@
         {
             "label": "[LINUX] Make Debug",
             "type":"shell",
-            "command": "clear;cd Build-Linux;time make -j12",
+            "command": "clear && cd Build-Linux && time make -j12",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -28,9 +28,33 @@
             ]
         },
         {
-            "label": "[WINDOWS] CMake create",
+            "label": "[LINUX] CMake + Make debug",
+            "type":"shell",
+            "command": "clear && cd Build-Linux && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug && time make -j12",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "[LINUX] Clean CMake + Make debug",
+            "type":"shell",
+            "command": "clear && cd Build-Linux && rm -rfv * && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug && time make -j12",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "[WINDOWS] CMake",
             "type": "shell",
-            "command": "CreateDebugCmake",
+            "command": "cls && cd Build-Windows && cmake  --clean-first -DCMAKE_BUILD_TYPE=Debug .. -G \"Visual Studio 16 2019\"",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -42,8 +66,7 @@
         {
             "label": "[WINDOWS] Build All",
             "type":"shell",
-            "command": "BuildDebug",
-            "args": [ "Build-Windows\\cul_main.sln" ],
+            "command": "cls & cmake --build Build-Windows --config DEBUG -j16",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -55,8 +78,8 @@
         {
             "label": "[WINDOWS] Build Tests",
             "type":"shell",
-            "command": "BuildDebug",
-            "args": [ "Build-Windows\\libculTests\\culTests.vcxproj" ],
+            "command": "cls & cmake --build Build-Windows --config DEBUG -j16 --target culTests",
+            "args": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -64,6 +87,19 @@
             "problemMatcher": [
                 "$msCompile"
             ]
+        },
+        {
+            "label": "[WINDOWS] CMake + Build All ",
+            "type":"shell",
+            "command": "cls && cmake --build Build-Windows --config DEBUG -j16",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "dependsOn": "[WINDOWS] CMake create"
         }
     ]
 }
