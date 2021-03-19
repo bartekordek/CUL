@@ -28,8 +28,10 @@ macro( add_sources_group SUBDIRS_LIST )
     endforeach( dir ${SUBDIRS_LIST} )
 endmacro()
 
-file( RELATIVE_PATH RENEGATE_DIR ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} )
-set( RENEGATE_DIR ${OGLW_OUTPUT_DIR}/${RENEGATE_DIR}/deps )
+message( "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}" )
+message( "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}" )
+file( RELATIVE_PATH CUL_RENEGATE_DIR ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} )
+message( "CUL_RENEGATE_DIR: ${CUL_RENEGATE_DIR}" )
 
 set( CMAKE_POSITION_INDEPENDENT_CODE ON )
 set( CUL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -82,18 +84,20 @@ option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
 option( RAPIDJSON_BUILD_EXAMPLES "Build examples." OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/rapidjson )
 
+set( FREEGLUT_REPLACE_GLUT ON )
+set( FREEGLUT_BUILD_DEMOS OFF )
+set( FREEGLUT_BUILD_SHARED_LIBS OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/freeglut-3.2.1 )
 
 find_package( freeglut REQUIRED )
-set( FREEGLUT_BUILD_DEMOS "Override option" OFF )
-set( FREEGLUT_BUILD_SHARED_LIBS "Override option" OFF )
 
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
 add_subdirectory( ${CUL_DEPS_PATH}/zlib )
+set( PNG_TESTS OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/libpng )
 find_package( PNG REQUIRED )
 
-option( BUILD_SHARED_LIBS OFF )
+set( BUILD_SHARED_LIBS ON )
 add_subdirectory( ${CUL_DEPS_PATH}/DevIL/DevIL )
 find_package( DevIL REQUIRED )
 
