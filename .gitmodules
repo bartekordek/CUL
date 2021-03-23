@@ -103,6 +103,7 @@
 	path = deps/libpng
 	url = git@github.com:LuaDist/libpng.git
 [submodule "deps/zlib"]
+    ignore = dirty
 	path = deps/zlib
 	url = git@github.com:madler/zlib.git
 [submodule "deps/DevIL"]
