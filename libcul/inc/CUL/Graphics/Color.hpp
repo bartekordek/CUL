@@ -37,33 +37,29 @@ public:
     ColorS( const ColorE colorE );
 
     ColorS(
-        cfloat rr,
-        cfloat gg,
-        cfloat bb,
-        cfloat aalpha = 0.0f );
+        float rr,
+        float gg,
+        float bb,
+        float aalpha = 0.0f );
 
     ColorS& operator=( const ColorE color );
 
+    unsigned getRUI() const;
+    unsigned getGUI() const;
+    unsigned getBUI() const;
+    unsigned getAUI() const;
 
     float getRF() const;
     float getGF() const;
     float getBF() const;
     float getAF() const;
 
-    CDataType getRUI() const;
-    CDataType getGUI() const;
-    CDataType getBUI() const;
-    CDataType getAUI() const;
+    void setRF( float r );
+    void setGF( float g );
+    void setBF( float b );
+    void setAlphaF( float alpha );
 
-    void setRF( cfloat r );
-    void setGF( cfloat g );
-    void setBF( cfloat b );
-    void setAlphaF( cfloat alpha );
-
-    void setRCU( CDataType r );
-    void setGCU( CDataType g );
-    void setBCU( CDataType b );
-    void setAlphaCU( CDataType alpha );
+    std::array<float, 4>& getData();
 
     ~ColorS();
 
@@ -71,24 +67,16 @@ protected:
 private:
     void setFromEnum( const ColorE& color );
     void setFloat(
-        cfloat red,
-        cfloat green,
-        cfloat blue,
-        cfloat alpha );
-    void setRed( cfloat val );
-    void setGreen( cfloat val );
-    void setBlue( cfloat val );
-    void setAlpha( cfloat val );
+        float red,
+        float green,
+        float blue,
+        float alpha );
+    void setRed( float val );
+    void setGreen( float val );
+    void setBlue( float val );
+    void setAlpha( float val );
 
-    float m_redF = 0.0f;
-    float m_greenF = 0.0f;
-    float m_blueF = 0.0f;
-    float m_alphaF = 0.0f;
-
-    CDataType m_redUC = 0;
-    CDataType m_greenUC = 0;
-    CDataType m_blueUC = 0;
-    CDataType m_alphaUC = 0;
+    std::array<float, 4> m_colorValues;
 
 };
 NAMESPACE_END( Graphics )
