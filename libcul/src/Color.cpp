@@ -73,19 +73,20 @@ float ColorS::getAF() const
 
 unsigned ColorS::getRUI() const
 {
-    return (unsigned) m_colorValues[0] * 255;
+    return static_cast<unsigned>( m_colorValues[0] * 255.f );
 }
 unsigned ColorS::getGUI() const
 {
-    return (unsigned) m_colorValues[1] * 255;
+    return static_cast<unsigned>( m_colorValues[1] * 255.f );
 }
 unsigned ColorS::getBUI() const
 {
-    return (unsigned) m_colorValues[2] * 255;
+    return static_cast<unsigned>( m_colorValues[2] * 255.f );
 }
 unsigned ColorS::getAUI() const
 {
-    return (unsigned) m_colorValues[3] * 255;}
+    return static_cast<unsigned>( m_colorValues[3] * 255.f );
+}
 
 void ColorS::setRF( float v )
 {
