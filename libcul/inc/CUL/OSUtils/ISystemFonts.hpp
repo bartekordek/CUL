@@ -15,15 +15,17 @@ public:
     static ISystemFonts* createConcrete( CUL::FS::FSApi* fsApis, LOG::ILogger* logger );
 
     ISystemFonts() = default;
-    virtual ~ISystemFonts() = default;
 
     virtual const FontFilesPaths& getFontFilesPaths() = 0;
     virtual void addSearchPath( const FS::Path& dir ) = 0;
 
+    virtual ~ISystemFonts() = default;
 protected:
 private:
-    ISystemFonts& operator=( const ISystemFonts& rhv ) = delete;
     ISystemFonts( const ISystemFonts& rhv ) = delete;
+    ISystemFonts( ISystemFonts&& rhv ) = delete;
+    ISystemFonts& operator=( const ISystemFonts& rhv ) = delete;
+    ISystemFonts& operator=( ISystemFonts&& rhv ) = delete;
 };
 
 NAMESPACE_END( OSUtils )
