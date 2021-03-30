@@ -98,6 +98,7 @@
 	url = git@github.com:opencv/opencv.git
 [submodule "deps/cppcheck"]
 	path = deps/cppcheck
+	ignore = dirty
 	url = git@github.com:danmar/cppcheck.git
 [submodule "deps/libpng"]
 	path = deps/libpng
@@ -107,5 +108,6 @@
 	path = deps/zlib
 	url = git@github.com:madler/zlib.git
 [submodule "deps/DevIL"]
+	ignore = dirty
 	path = deps/DevIL
 	url = git@github.com:bartekordek/DevIL.git
