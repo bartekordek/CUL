@@ -1,9 +1,9 @@
 #cmake -DCMAKE_BUILD_TYPE=Debug
-cmake_minimum_required(VERSION 3.0.0)
 
+get_filename_component( basename ${CMAKE_CURRENT_SOURCE_DIR} NAME )
+project( ${basename} LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
-set(EXEC culTests)
-project(${EXEC} LANGUAGES CXX)
+set(EXEC ${PROJECT_NAME})
 
 if (MSVC)
     add_compile_options(/W4 /WX)
@@ -65,5 +65,4 @@ if (MSVC)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GMOCK_BIN}.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GMOCK_BIN}.pdb ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
             )
-
 endif()
