@@ -50,6 +50,14 @@ public:
     DumbPtr<Type>& operator=( DumbPtr<Type>& arg )
     {
         m_ptr = std::move( arg.m_ptr );
+        arg.m_destroyed = true;
+        return *this;
+    }
+
+    DumbPtr<Type>& operator=( DumbPtr<Type>&& arg )
+    {
+        m_ptr = std::move( arg.m_ptr );
+        arg.m_destroyed = true;
         return *this;
     }
 
