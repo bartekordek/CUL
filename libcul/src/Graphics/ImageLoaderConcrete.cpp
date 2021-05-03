@@ -54,7 +54,7 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config )
     m_loaders["data"] = std::move( data );
 }
 
-IImage* ImageLoaderConcrete::loadImage( const FS::Path& path, Cbool rgba )
+IImage* ImageLoaderConcrete::loadImage( const FS::Path& path, bool rgba )
 {
     return getLoader( path.getExtension() )->loadImage( path, rgba );
 }

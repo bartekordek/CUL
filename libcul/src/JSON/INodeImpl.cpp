@@ -30,31 +30,31 @@ void INodeImpl::setValue( const ChildrenNodes& value )
     m_type = ElementType::ARRAY;
 }
 
-void INodeImpl::setValue( Cbool value )
+void INodeImpl::setValue( bool value )
 {
     m_bool = value;
     m_type = ElementType::BOOL;
 }
 
-void INodeImpl::setValue( Cdouble value )
+void INodeImpl::setValue( double value )
 {
     m_double = value;
     m_type = ElementType::DOUBLE;
 }
 
-void INodeImpl::setValue( Cfloat value )
+void INodeImpl::setValue( float value )
 {
     m_float = value;
     m_type = ElementType::FLOAT;
 }
 
-void INodeImpl::setValue( Cint value )
+void INodeImpl::setValue( int value )
 {
     m_int = value;
     m_type = ElementType::INT;
 }
 
-void INodeImpl::setValue( Cint64 value )
+void INodeImpl::setValue( long int value )
 {
     m_int64 = value;
     m_type = ElementType::INT64;

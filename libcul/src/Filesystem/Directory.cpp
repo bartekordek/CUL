@@ -20,12 +20,12 @@ void Directory::changePath( const Path& newPath )
 }
 
 //TODO
-void Directory::reload( Cbool )
+void Directory::reload( bool )
 {
 }
 
 //TODO
-void Directory::load( Cbool )
+void Directory::load( bool )
 {
 }
 

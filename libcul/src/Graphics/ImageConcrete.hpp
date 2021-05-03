@@ -5,8 +5,6 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
-using Cunt = CUL::Cunt;
-
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4820 )

@@ -23,7 +23,6 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 
 using Position3DDMutexed = CUL::Graphics::Position3DDMutexed;
-using CDouble = const double;
 
 class CULLib_API IPivot
 {
@@ -38,18 +37,18 @@ public:
     virtual ~IPivot();
 
     virtual void setPivot(
-        CDouble px,
-        CDouble py,
-        CDouble pz,
+        double px,
+        double py,
+        double pz,
         const PivotType type = PivotType::NORMALIZED ) = 0;
     virtual void setPivotX(
-        CDouble val,
+        double val,
         const PivotType type = PivotType::NORMALIZED ) = 0;
     virtual void setPivotY(
-        CDouble val,
+        double val,
         const PivotType type = PivotType::NORMALIZED ) = 0;
     virtual void setPivotZ(
-        CDouble val,
+        double val,
         const PivotType type = PivotType::NORMALIZED ) = 0;
 
     virtual const Position3DDMutexed& getPivot(

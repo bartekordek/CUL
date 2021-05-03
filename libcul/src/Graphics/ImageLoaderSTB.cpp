@@ -11,7 +11,7 @@ STBIImageLoader::STBIImageLoader()
 
 }
 
-IImage* STBIImageLoader::loadImage( const FS::Path& path, Cbool )
+IImage* STBIImageLoader::loadImage( const FS::Path& path, bool )
 {
     int req_format = STBI_rgb_alpha;
     int width = 0, height = 0, orig_format = 0;

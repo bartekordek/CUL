@@ -12,7 +12,7 @@ public:
     IImageLoader();
     virtual ~IImageLoader();
 
-    virtual IImage* loadImage( const FS::Path& path, Cbool rgba = false );
+    virtual IImage* loadImage( const FS::Path& path, bool rgba = false );
     virtual IImage* loadImage(DataType * data, unsigned width, unsigned height );
     virtual IImage* findImage( const FS::Path& path ) = 0;
     virtual void deleteImage( const FS::Path& path ) = 0;

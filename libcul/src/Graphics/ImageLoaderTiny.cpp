@@ -11,7 +11,7 @@ TinyImageLoader::TinyImageLoader()
 
 }
 
-IImage* TinyImageLoader::loadImage( const FS::Path& path, Cbool )
+IImage* TinyImageLoader::loadImage( const FS::Path& path, bool )
 {
     int width = 0, height = 0;
     auto type = TinyImgColorType::TINYIMG_RGB;

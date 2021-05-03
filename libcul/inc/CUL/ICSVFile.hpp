@@ -16,10 +16,10 @@ public:
     virtual bool checkIfFileIsAllRight() const = 0;
     virtual unsigned rowsCount() const = 0;
     virtual unsigned colsCount() const = 0;
-    virtual const String& getVal( Cunt row, Cunt col ) const = 0;
-    virtual void setVal( const String& val, Cunt row, Cunt col ) = 0;
+    virtual const String& getVal( unsigned row, unsigned col ) const = 0;
+    virtual void setVal( const String& val, unsigned row, unsigned col ) = 0;
     virtual void setDelimeter( const String& delimeter ) = 0;
-    virtual void fileContainsQuotationMarks( Cbool containsQuotationMarks ) = 0;
+    virtual void fileContainsQuotationMarks( bool containsQuotationMarks ) = 0;
 
 protected:
 private:

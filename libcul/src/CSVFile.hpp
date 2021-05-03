@@ -28,13 +28,13 @@ public:
     bool checkIfFileIsAllRight() const override;
     unsigned rowsCount() const override;
     unsigned colsCount() const override;
-    const String& getVal( Cunt row, Cunt col ) const override;
-    void setVal( const String& val, Cunt row, Cunt col ) override;
+    const String& getVal( unsigned row, unsigned col ) const override;
+    void setVal( const String& val, unsigned row, unsigned col ) override;
 
     FileType getType() const override;
 
-    void reload( Cbool keepLineEndingCharacter = false ) override;
-    void load( Cbool keepLineEndingCharacter = false ) override;
+    void reload( bool keepLineEndingCharacter = false ) override;
+    void load( bool keepLineEndingCharacter = false ) override;
     void unload() override;
 
     const String& firstLine() const override;

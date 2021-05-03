@@ -182,31 +182,31 @@ INode::INode( const String& name, const ChildrenNodes& value ):
     setValue( value );
 }
 
-INode::INode( const String& name, Cbool value ):
+INode::INode( const String& name, bool value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, Cdouble value ):
+INode::INode( const String& name, double value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, Cfloat value ):
+INode::INode( const String& name, float value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, Cint value ):
+INode::INode( const String& name, int value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, Cint64 value ):
+INode::INode( const String& name, long int value ):
     m_name( name )
 {
     setValue( value );
@@ -269,31 +269,31 @@ void INode::setValue( const ChildrenNodes& value )
     m_type = ElementType::ARRAY;
 }
 
-void INode::setValue( Cbool value )
+void INode::setValue( bool value )
 {
     m_bool = value;
     m_type = ElementType::BOOL;
 }
 
-void INode::setValue( Cdouble value )
+void INode::setValue( double value )
 {
     m_double = value;
     m_type = ElementType::DOUBLE;
 }
 
-void INode::setValue( Cfloat value )
+void INode::setValue( float value )
 {
     m_float = value;
     m_type = ElementType::FLOAT;
 }
 
-void INode::setValue( Cint value )
+void INode::setValue( int value )
 {
     m_int = value;
     m_type = ElementType::INT;
 }
 
-void INode::setValue( Cint64 value )
+void INode::setValue( long int value )
 {
     m_int64 = value;
     m_type = ElementType::INT64;

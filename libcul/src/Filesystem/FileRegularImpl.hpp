@@ -26,8 +26,8 @@ private:
     void changePath( const Path& newPath ) override;
     const Path& getPath() const override;
 
-    void reload( Cbool keepLineEndingCharacter = false ) override;
-    void load( Cbool keepLineEndingCharacter = false ) override;
+    void reload( bool keepLineEndingCharacter = false ) override;
+    void load( bool keepLineEndingCharacter = false ) override;
     void unload() override;
     const String& firstLine() const override;
     const String& lastLine() const override;

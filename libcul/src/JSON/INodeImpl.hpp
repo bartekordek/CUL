@@ -21,11 +21,11 @@ public:
 
     void setValue( INode* val );
     void setValue( const ChildrenNodes& value );
-    void setValue( Cbool value );
-    void setValue( Cdouble value );
-    void setValue( Cfloat value );
-    void setValue( Cint value );
-    void setValue( Cint64 value );
+    void setValue( bool value );
+    void setValue( double value );
+    void setValue( float value );
+    void setValue( int value );
+    void setValue( long int value );
     void setValue( const String& value );
 
     ElementType getType() const;

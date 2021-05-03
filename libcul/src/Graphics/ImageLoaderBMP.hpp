@@ -13,8 +13,8 @@ class ImageLoaderBMP final:
 public:
     ImageLoaderBMP();
 
-    IImage* loadImage( const FS::Path& path, Cbool rgba = false ) override;
-    IImage* loadImage2( const FS::Path& path, Cbool rgba = false ) ;
+    IImage* loadImage( const FS::Path& path, bool rgba = false ) override;
+    IImage* loadImage2( const FS::Path& path, bool rgba = false ) ;
     void printFileSize( const FS::Path& path );
     void deleteImage( const FS::Path& path ) override;
     IImage* findImage( const FS::Path& path ) override;

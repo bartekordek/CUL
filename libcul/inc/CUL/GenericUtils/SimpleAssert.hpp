@@ -8,7 +8,7 @@ NAMESPACE_BEGIN( CUL )
 class CULLib_API Assert
 {
 public:
-    static void simple( Cbool val, const String& msg = String( "" ) );
+    static void simple( bool val, const String& msg = String( "" ) );
 protected:
 private:
 };

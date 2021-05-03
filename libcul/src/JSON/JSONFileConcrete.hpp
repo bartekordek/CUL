@@ -31,8 +31,8 @@ private:
 
     void changePath( const FS::Path& newPath ) override;
 
-    void reload( Cbool keepLineEndingCharacter = false ) override;
-    void load( Cbool keepLineEndingCharacter = false ) override;
+    void reload( bool keepLineEndingCharacter = false ) override;
+    void load( bool keepLineEndingCharacter = false ) override;
     void unload() override;
 
     const String& firstLine() const override;

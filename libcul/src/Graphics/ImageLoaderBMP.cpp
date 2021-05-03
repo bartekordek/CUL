@@ -73,7 +73,7 @@ ImageLoaderBMP::ImageLoaderBMP()
 void checkColorHeader( BMPColorHeader& bmp_color_header );
 uint32_t makeStrideAligned( uint32_t align_stride );
 
-IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, Cbool )
+IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
 {
     printFileSize( path );
 
@@ -207,7 +207,7 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, Cbool )
 void check_color_header( BMPColorHeader& bmp_color_header );
 uint32_t make_stride_aligned( uint32_t align_stride );
 
-IImage* ImageLoaderBMP::loadImage( const FS::Path& path, Cbool )
+IImage* ImageLoaderBMP::loadImage( const FS::Path& path, bool )
 {
     auto result = new ImageConcrete();
     ImageInfo imageInfo;
@@ -216,7 +216,7 @@ IImage* ImageLoaderBMP::loadImage( const FS::Path& path, Cbool )
     return result;
 }
 
-IImage* loadImage2( const FS::Path& path, Cbool )
+IImage* loadImage2( const FS::Path& path, bool )
 {
     auto result = new ImageConcrete();
     ImageInfo imageInfo;

@@ -24,13 +24,13 @@ const Path& FileRegularImpl::getPath() const
     return m_path;
 }
 
-void FileRegularImpl::reload( Cbool keepLineEndingCharacter )
+void FileRegularImpl::reload( bool keepLineEndingCharacter )
 {
     unload();
     load( keepLineEndingCharacter );
 }
 
-void FileRegularImpl::load( Cbool keepLineEndingCharacter )
+void FileRegularImpl::load( bool keepLineEndingCharacter )
 {
     CUL::Assert::simple( exists(), "Cannot open the file: " + m_path.getPath() );
 

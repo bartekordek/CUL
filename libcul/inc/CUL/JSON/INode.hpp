@@ -37,11 +37,11 @@ public:
     INode();
     explicit INode( const String& name, INode* val );
     explicit INode( const String& name, const ChildrenNodes& value );
-    explicit INode( const String& name, Cbool value );
-    explicit INode( const String& name, Cdouble value );
-    explicit INode( const String& name, Cfloat value );
-    explicit INode( const String& name, Cint value );
-    explicit INode( const String& name, Cint64 value );
+    explicit INode( const String& name, bool value );
+    explicit INode( const String& name, double value );
+    explicit INode( const String& name, float value );
+    explicit INode( const String& name, int value );
+    explicit INode( const String& name, long int value );
     explicit INode( const String& name, const char* value );
     explicit INode( const String& name, const String& value );
 
@@ -52,11 +52,11 @@ public:
 
     void setValue( INode* val );
     void setValue( const ChildrenNodes& value );
-    void setValue( Cbool value );
-    void setValue( Cdouble value );
-    void setValue( Cfloat value );
-    void setValue( Cint value );
-    void setValue( Cint64 value );
+    void setValue( bool value );
+    void setValue( double value );
+    void setValue( float value );
+    void setValue( int value );
+    void setValue( long int value );
     void setValue( const char* value );
     void setValue( const String& value );
 

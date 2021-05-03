@@ -32,12 +32,12 @@ unsigned CSVFile::colsCount() const
     return static_cast<unsigned>( m_rows[0].size() );
 }
 
-const String& CSVFile::getVal( Cunt row, Cunt col ) const
+const String& CSVFile::getVal( unsigned row, unsigned col ) const
 {
     return m_rows[row][col];
 }
 
-void CSVFile::setVal( const String& val, Cunt row, Cunt col )
+void CSVFile::setVal( const String& val, unsigned row, unsigned col )
 {
     m_rows[row][col] = val;
 }
@@ -52,13 +52,13 @@ void CSVFile::setDelimeter( const String& delimeter )
     m_delimeter = delimeter;
 }
 
-void CSVFile::reload( Cbool keepLineEndingCharacter )
+void CSVFile::reload( bool keepLineEndingCharacter )
 {
     unload();
     load( keepLineEndingCharacter );
 }
 
-void CSVFile::load( Cbool keepLineEndingCharacter )
+void CSVFile::load( bool keepLineEndingCharacter )
 {
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;

@@ -13,7 +13,7 @@ class ImageLoaderConcrete final:
 public:
     ImageLoaderConcrete( GUTILS::IConfigFile* file );
 
-    IImage* loadImage( const FS::Path& path, Cbool rgba = false ) override;
+    IImage* loadImage( const FS::Path& path, bool rgba = false ) override;
     IImage* loadImage(DataType* data, unsigned width, unsigned height) override;
     void deleteImage( const FS::Path& path ) override;
     IImage* findImage( const FS::Path& path ) override;

@@ -28,50 +28,50 @@ public:
     };
 
     Angle();
-    Angle( Cdouble value, const Type type = Type::RADIAN );
-    Angle( Cint value, const Type type = Type::RADIAN );
+    Angle( double value, const Type type = Type::RADIAN );
+    Angle( int value, const Type type = Type::RADIAN );
 
     double getValueD( const Type type = Type::RADIAN ) const;
     float getValueF( const Type type = Type::RADIAN ) const;
     int getValueI( const Type type = Type::RADIAN ) const;
 
-    void setValue( Cdouble value, const Type type = Type::RADIAN );
-    void setValue( Cunt value, const Type type = Type::RADIAN );
-    void setValue( Cint value, const Type type = Type::RADIAN );
+    void setValue( double value, const Type type = Type::RADIAN );
+    void setValue( unsigned value, const Type type = Type::RADIAN );
+    void setValue( int value, const Type type = Type::RADIAN );
 
-    void setIncrementValue( Cunt value );
-    void setIncrementValue( Cint value );
-    void setIncrementValue( Cdouble value );
+    void setIncrementValue( unsigned value );
+    void setIncrementValue( int value );
+    void setIncrementValue( double value );
 
     Type getCurrentType() const;
     void setCurrentType( const Type type );
 
     Angle& operator+=( const Angle& right );
-    Angle& operator+=( Cunt val );
-    Angle& operator+=( Cint val );
-    Angle& operator+=( Cdouble val );
+    Angle& operator+=( unsigned val );
+    Angle& operator+=( int val );
+    Angle& operator+=( double val );
 
     Angle operator+( const Angle& right ) const;
 
-    Angle& operator-=( Cunt val );
-    Angle& operator-=( Cint val );
-    Angle& operator-=( Cdouble val );
+    Angle& operator-=( unsigned val );
+    Angle& operator-=( int val );
+    Angle& operator-=( double val );
 
-    Angle operator/( Cdouble val );
-    Angle operator/( Cint val );
-    Angle operator/( Cunt val );
+    Angle operator/( double val );
+    Angle operator/( int val );
+    Angle operator/( unsigned val );
 
-    Angle& operator/=( Cdouble val );
-    Angle& operator/=( Cint val );
-    Angle& operator/=( Cunt val );
+    Angle& operator/=( double val );
+    Angle& operator/=( int val );
+    Angle& operator/=( unsigned val );
 
-    Angle& operator*=( Cdouble val );
-    Angle& operator*=( Cint val );
-    Angle& operator*=( Cunt val );
+    Angle& operator*=( double val );
+    Angle& operator*=( int val );
+    Angle& operator*=( unsigned val );
 
-    Angle operator*( Cdouble val );
-    Angle operator*( Cint val );
-    Angle operator*( Cunt val );
+    Angle operator*( double val );
+    Angle operator*( int val );
+    Angle operator*( unsigned val );
 
     Angle& operator++();
     Angle& operator--();
@@ -83,10 +83,10 @@ public:
 
 protected:
 private:
-    void add( Cdouble value );
-    void subtrackt( Cdouble value );
-    void multiply( Cdouble value );
-    void divide( Cdouble value );
+    void add( double value );
+    void subtrackt( double value );
+    void multiply( double value );
+    void divide( double value );
     void increment();
     void decrement();
 
@@ -98,11 +98,11 @@ private:
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-CULLib_API double radian2degree( Cdouble radian );
-CULLib_API double degree2radian( Cdouble degree );
+CULLib_API double radian2degree( double radian );
+CULLib_API double degree2radian( double degree );
 
-CULLib_API float radian2degree( Cfloat radian );
-CULLib_API float degree2radian( Cfloat degree );
+CULLib_API float radian2degree( float radian );
+CULLib_API float degree2radian( float degree );
 
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

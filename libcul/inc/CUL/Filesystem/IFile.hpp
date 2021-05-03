@@ -7,9 +7,6 @@
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 
-using Cunt = const unsigned int;
-using Cbool = const bool;
-
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
 NAMESPACE_BEGIN( FS )
@@ -37,8 +34,8 @@ public:
     virtual const Path& getPath() const = 0;
     bool exists() const;
     virtual void changePath( const Path& newPath ) = 0;
-    virtual void reload( Cbool keepLineEndingCharacter = false ) = 0;
-    virtual void load( Cbool keepLineEndingCharacter = false ) = 0;
+    virtual void reload( bool keepLineEndingCharacter = false ) = 0;
+    virtual void load( bool keepLineEndingCharacter = false ) = 0;
     virtual void unload() = 0;
 
     TimeConcrete getCreationTime();
