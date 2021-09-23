@@ -1,9 +1,11 @@
 #include "CUL/CULInterface.hpp"
+
+#include "CUL/Filesystem/FS.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 #include "GenericUtils/IConfigFileConcrete.hpp"
-#include "CUL/Graphics/IImageLoader.hpp"
-#include "CUL/Filesystem/FileFactory.hpp"
-#include "CUL/Filesystem/FS.hpp"
+#include "Threading/IThreadUtilConcrete.hpp"
 
 using namespace CUL;
 
@@ -14,10 +16,9 @@ CULInterface* CULInterface::createInstance( const FS::Path& configFile )
     return instance;
 }
 
-CULInterface::CULInterface( const FS::Path& configFilePath ):
-    m_configFilePath( configFilePath )
+CULInterface::CULInterface( const FS::Path& configFilePath )
+    : m_configFilePath( configFilePath )
 {
-   
 }
 
 void CULInterface::initialize()
@@ -26,14 +27,15 @@ void CULInterface::initialize()
     m_fsApi = new FS::FSApi( m_fileFactory.get(), this );
 
     m_configFile = loadConfigFile( m_configFilePath );
-    m_imageLoader.reset( Graphics::IImageLoader::createConcrete( m_configFile ) );
+    m_imageLoader.reset(
+        Graphics::IImageLoader::createConcrete( m_configFile ) );
 
     m_logger = LOG::LOG_CONTAINER::getLogger();
     m_logger->log( "Initialized logger." );
 
-
-
     m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi, m_logger );
+
+    m_threadUtil = new ThreadUtilConcrete();
 }
 
 CUL::LOG::ILogger* CULInterface::getLogger()
@@ -59,6 +61,11 @@ FS::FileFactory* CULInterface::getFF()
 Graphics::IImageLoader* CULInterface::getImageLoader()
 {
     return m_imageLoader.get();
+}
+
+IThreadUtil* CULInterface::getThreadUtil()
+{
+    return m_threadUtil;
 }
 
 GUTILS::IConfigFile* CULInterface::loadConfigFile( const FS::Path& path )
