@@ -65,6 +65,20 @@ TimeConcrete FSApi::getCreationTime( const Path& )
     return TimeConcrete();
 }
 
+std::vector<Path> FSApi::ListAllFiles( const Path& directory )
+{
+    std::vector<Path> result;
+    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string() ) )
+    {
+        const auto& entryPath = entry.path();
+        std::string pathAsString = entryPath.string();
+
+        Path culPath = pathAsString;
+        result.push_back( culPath );
+    }
+    return result;
+}
+
 TimeConcrete FSApi::getLastModificationTime( const Path& path )
 {
     if( false == m_culInterface->getFS()->fileExist( path ) )
