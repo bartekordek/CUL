@@ -35,6 +35,9 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config )
             std::unique_ptr<TinyImageLoader> png( new TinyImageLoader() );
             m_loaders["png"] = std::move( png );
         }
+        else if( pngLoader == "DevIL" )
+        {
+        }
         else
         {
             std::unique_ptr<STBIImageLoader> png( new STBIImageLoader() );
