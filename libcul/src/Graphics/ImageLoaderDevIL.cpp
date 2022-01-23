@@ -1,5 +1,6 @@
 #include "Graphics/ImageLoaderDevIL.hpp"
 #include "Graphics/IMPORT_DevIL.hpp"
+#include "Graphics/ImageConcrete.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
 using namespace CUL;
@@ -7,6 +8,9 @@ using namespace Graphics;
 
 ImageLoaderDevil::ImageLoaderDevil()
 {
+    ilInit();
+    iluInit();
+    ilClearColour( 255, 255, 255, 000 );
 }
 
 unsigned ImageLoaderDevil::powerOfTwo( unsigned num )
@@ -38,7 +42,7 @@ IImage* ImageLoaderDevil::loadImage( const FS::Path& path, bool )
     success = ilConvertImage( IL_RGBA, IL_UNSIGNED_BYTE );
     CUL::Assert::simple( success == IL_TRUE, "Cannot convert: " + path.getPath() );
 
-     // Initialize dimensions
+    // Initialize dimensions
     unsigned imgWidth = (unsigned)ilGetInteger( IL_IMAGE_WIDTH );
     unsigned imgHeight = (unsigned)ilGetInteger( IL_IMAGE_HEIGHT );
 
@@ -53,19 +57,41 @@ IImage* ImageLoaderDevil::loadImage( const FS::Path& path, bool )
         iluEnlargeCanvas( (int)texWidth, (int)texHeight, 1 );  // Resize image
     }
 
-    // Create texture from file pixels
-    loadTextureFromPixels32( (GLuint*)ilGetData(), imgWidth, imgHeight, texWidth, texHeight );
+    ImageConcrete* newImage = new ImageConcrete();
+    auto imgDataSize = (size_t)ilGetInteger( IL_IMAGE_SIZE_OF_DATA );
+    ILubyte* source = ilGetData();
+    auto sizeOfType = sizeof( decltype( *source ) );
+    auto sizeOfType2 = sizeof( ILubyte );
+    size_t amountToCopy = sizeOfType * imgDataSize;
+
+    ILubyte* dataCopy = new ILubyte[imgDataSize];
+    memcpy( dataCopy, source, amountToCopy );
+    newImage->setData( static_cast<CUL::Graphics::DataType*>( dataCopy ) );
+    newImage->setPath( path );
+    CUL::Graphics::ImageInfo imageInfo;
+    imageInfo.colorFormat = "?";
+    imageInfo.depth = ilGetInteger( IL_IMAGE_DEPTH );
+    auto formatName = ilGetString( IL_IMAGE_FORMAT );
+    imageInfo.size.width = texWidth;
+    imageInfo.size.height = texHeight;
+    imageInfo.BPP = ilGetInteger( IL_IMAGE_BPP );
+
+    newImage->setImageInfo( imageInfo );
 
     ilDeleteImages( 1, &imgID );
 
-    return nullptr;
+    return newImage;
 }
 
-void ImageLoaderDevil::deleteImage( const FS::Path& path )
+void ImageLoaderDevil::loadTextureFromPixels32( unsigned* , unsigned , unsigned , unsigned , unsigned  )
 {
 }
 
-IImage* ImageLoaderDevil::findImage( const FS::Path& path )
+void ImageLoaderDevil::deleteImage( const FS::Path& )
+{
+}
+
+IImage* ImageLoaderDevil::findImage( const FS::Path& )
 {
     return nullptr;
 }

@@ -38,6 +38,7 @@ struct CULLib_API ImageInfo
     PixelFormat pixelFormat = PixelFormat::NONE;
     int depth = 0;
     int pitch = 0;
+    unsigned BPP = 0;
 };
 #if _MSC_VER
 #pragma warning( pop )

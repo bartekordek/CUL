@@ -21,6 +21,7 @@ public:
 protected:
 private:
     unsigned powerOfTwo( unsigned num );
+    void loadTextureFromPixels32( unsigned* pixels, unsigned imgWidth, unsigned imgHeight, unsigned texWidth, unsigned texHeight );
 
     using FileList = std::map<String, std::unique_ptr<IImage>>;
     FileList m_fileList;
