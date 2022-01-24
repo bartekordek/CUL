@@ -4,6 +4,7 @@
 
 #include "CUL/CULInterface.hpp"
 #include "CUL/Log/ILogger.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
 using namespace CUL;
@@ -93,7 +94,7 @@ IImage* ImageLoaderDevil::loadImage( const FS::Path& path, bool )
     return newImage;
 }
 
-void ImageLoaderDevil::loadTextureFromPixels32( unsigned* , unsigned , unsigned , unsigned , unsigned  )
+void ImageLoaderDevil::loadTextureFromPixels32( unsigned*, unsigned, unsigned, unsigned, unsigned )
 {
 }
 
