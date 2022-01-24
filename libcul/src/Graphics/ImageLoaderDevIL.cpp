@@ -1,12 +1,15 @@
 #include "Graphics/ImageLoaderDevIL.hpp"
 #include "Graphics/IMPORT_DevIL.hpp"
 #include "Graphics/ImageConcrete.hpp"
+
+#include "CUL/CULInterface.hpp"
+#include "CUL/Log/ILogger.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
 using namespace CUL;
 using namespace Graphics;
 
-ImageLoaderDevil::ImageLoaderDevil()
+ImageLoaderDevil::ImageLoaderDevil( CULInterface* culInterface ) : IImageLoader( culInterface )
 {
     ilInit();
     iluInit();
@@ -72,8 +75,15 @@ IImage* ImageLoaderDevil::loadImage( const FS::Path& path, bool )
     imageInfo.colorFormat = "?";
     imageInfo.depth = ilGetInteger( IL_IMAGE_DEPTH );
     auto formatName = ilGetString( IL_IMAGE_FORMAT );
-    imageInfo.size.width = texWidth;
-    imageInfo.size.height = texHeight;
+    if( formatName )
+    {
+        getInterface()->getLogger()->log( "No format." );
+        sizeOfType2 = sizeOfType2 / 2;
+    }
+    imageInfo.size.width = imgWidth;
+    imageInfo.size.height = imgHeight;
+    imageInfo.canvasSize.width = texWidth;
+    imageInfo.canvasSize.height = texHeight;
     imageInfo.BPP = ilGetInteger( IL_IMAGE_BPP );
 
     newImage->setImageInfo( imageInfo );

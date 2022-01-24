@@ -11,7 +11,7 @@ class STBIImageLoader final:
     public IImageLoader
 {
 public:
-    STBIImageLoader();
+    STBIImageLoader( CULInterface* culInterface );
 
     IImage* loadImage( const FS::Path& path, bool rgba = false ) override;
     void deleteImage( const FS::Path& path ) override;

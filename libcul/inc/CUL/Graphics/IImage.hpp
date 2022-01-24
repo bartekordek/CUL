@@ -33,7 +33,8 @@ struct CULLib_API ImageInfo
     ImageInfo();
 
     FS::Path path;
-    SSize2Di size = { 0, 0 };
+    SSize2Di size;
+    SSize2Di canvasSize;
     String colorFormat = "";
     PixelFormat pixelFormat = PixelFormat::NONE;
     int depth = 0;

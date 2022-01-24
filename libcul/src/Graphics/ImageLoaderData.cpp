@@ -4,7 +4,7 @@
 using namespace CUL;
 using namespace Graphics;
 
-ImageLoaderData::ImageLoaderData()
+ImageLoaderData::ImageLoaderData( CULInterface* culInterface ) : IImageLoader( culInterface )
 {
 
 }

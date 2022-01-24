@@ -11,7 +11,7 @@ class ImageLoaderData final:
     public IImageLoader
 {
 public:
-    ImageLoaderData();
+    ImageLoaderData( CULInterface* culInterface );
 
     IImage* loadImage( DataType* data, unsigned width, unsigned height ) override;
     void deleteImage( const FS::Path& path ) override;

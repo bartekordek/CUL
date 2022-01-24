@@ -65,7 +65,7 @@ struct BMPColorHeader
 };
 
 
-ImageLoaderBMP::ImageLoaderBMP()
+ImageLoaderBMP::ImageLoaderBMP( CULInterface* culInterface ) : IImageLoader( culInterface )
 {
 
 }

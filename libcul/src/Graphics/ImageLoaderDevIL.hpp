@@ -10,7 +10,7 @@ NAMESPACE_BEGIN( Graphics )
 class ImageLoaderDevil final: public IImageLoader
 {
 public:
-    ImageLoaderDevil();
+    ImageLoaderDevil( CULInterface* culInterface );
 
     IImage* loadImage( const FS::Path& path, bool rgba = false ) override;
     void deleteImage( const FS::Path& path ) override;

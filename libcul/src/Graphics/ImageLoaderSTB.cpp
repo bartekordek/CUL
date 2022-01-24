@@ -6,7 +6,7 @@
 using namespace CUL;
 using namespace Graphics;
 
-STBIImageLoader::STBIImageLoader()
+STBIImageLoader::STBIImageLoader( CULInterface* culInterface ) : IImageLoader( culInterface )
 {
 
 }

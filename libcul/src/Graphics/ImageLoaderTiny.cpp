@@ -6,7 +6,7 @@
 using namespace CUL;
 using namespace Graphics;
 
-TinyImageLoader::TinyImageLoader()
+TinyImageLoader::TinyImageLoader( CULInterface* culInterface ) : IImageLoader( culInterface )
 {
 
 }

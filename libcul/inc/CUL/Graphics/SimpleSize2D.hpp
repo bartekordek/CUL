@@ -1,7 +1,6 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
-#include "CUL/UselessMacros.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -11,6 +10,11 @@ struct SimpleSize2D
 {
     Type width = static_cast<Type>( 0 );
     Type height = static_cast<Type>( 0 );
+    const String toString() const
+    {
+        String result = "( width: " + String( (unsigned)width ) + ", height: " + String( (unsigned)height ) + ")";
+        return result;
+    }
 };
 
 using SSize2Dui = SimpleSize2D<unsigned>;

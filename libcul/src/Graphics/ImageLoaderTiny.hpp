@@ -11,7 +11,7 @@ class TinyImageLoader final:
     public IImageLoader
 {
 public:
-    TinyImageLoader();
+    TinyImageLoader( CULInterface* culInterface );
 
     IImage* loadImage( const FS::Path& path, bool rgba = false ) override;
     void deleteImage( const FS::Path& path ) override;

@@ -4,13 +4,13 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
-IImageLoader::IImageLoader()
+IImageLoader::IImageLoader( CULInterface* culInterface ) : m_culInterface( culInterface )
 {
 }
 
-IImageLoader* IImageLoader::createConcrete( CUL::GUTILS::IConfigFile* config )
+IImageLoader* IImageLoader::createConcrete( CUL::GUTILS::IConfigFile* config, CULInterface* culInterface )
 {
-    return new ImageLoaderConcrete( config );
+    return new ImageLoaderConcrete( config, culInterface );
 }
 
 IImage* loadImage( const FS::Path& , bool )
@@ -26,6 +26,11 @@ IImage* IImageLoader::loadImage( DataType*, unsigned, unsigned )
 IImage* IImageLoader::loadImage(const FS::Path&, bool)
 {
     return nullptr;
+}
+
+CULInterface* IImageLoader::getInterface()
+{
+    return m_culInterface;
 }
 
 IImageLoader::~IImageLoader()

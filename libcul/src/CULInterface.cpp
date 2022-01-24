@@ -28,7 +28,7 @@ void CULInterface::initialize()
 
     m_configFile = loadConfigFile( m_configFilePath );
     m_imageLoader.reset(
-        Graphics::IImageLoader::createConcrete( m_configFile ) );
+        Graphics::IImageLoader::createConcrete( m_configFile, this ) );
 
     m_logger = LOG::LOG_CONTAINER::getLogger();
     m_logger->log( "Initialized logger." );

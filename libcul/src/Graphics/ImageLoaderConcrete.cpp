@@ -9,54 +9,54 @@
 using namespace CUL;
 using namespace Graphics;
 
-ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config )
+ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config, CULInterface* culInterface ) : IImageLoader( culInterface )
 {
     if( config )
     {
         const auto& bmpLoader = config->getValue( "BMP_LOADER" );
         if( bmpLoader == "TinyImageLoader" )
         {
-            std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader() );
+            std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader( culInterface ) );
             m_loaders["bmp"] = std::move( bmp );
         }
         else if( bmpLoader == "STBIImageLoader" )
         {
-            std::unique_ptr<STBIImageLoader> bmp( new STBIImageLoader() );
+            std::unique_ptr<STBIImageLoader> bmp( new STBIImageLoader( culInterface ) );
             m_loaders["bmp"] = std::move( bmp );
         }
         else
         {
-            std::unique_ptr<ImageLoaderBMP> bmp( new ImageLoaderBMP() );
+            std::unique_ptr<ImageLoaderBMP> bmp( new ImageLoaderBMP( culInterface ) );
             m_loaders["bmp"] = std::move( bmp );
         }
 
         const auto& pngLoader = config->getValue( "PNG_LOADER" );
         if( pngLoader == "TinyImageLoader" )
         {
-            std::unique_ptr<TinyImageLoader> png( new TinyImageLoader() );
+            std::unique_ptr<TinyImageLoader> png( new TinyImageLoader( culInterface ) );
             m_loaders["png"] = std::move( png );
         }
         else if( pngLoader == "DevIL" )
         {
-            std::unique_ptr<ImageLoaderDevil> png( new ImageLoaderDevil() );
+            std::unique_ptr<ImageLoaderDevil> png( new ImageLoaderDevil( culInterface ) );
             m_loaders["png"] = std::move( png );
         }
         else
         {
-            std::unique_ptr<STBIImageLoader> png( new STBIImageLoader() );
+            std::unique_ptr<STBIImageLoader> png( new STBIImageLoader( culInterface ) );
             m_loaders["png"] = std::move( png );
         }
     }
     else
     {
-        std::unique_ptr<STBIImageLoader> png( new STBIImageLoader() );
+        std::unique_ptr<STBIImageLoader> png( new STBIImageLoader( culInterface ) );
         m_loaders["png"] = std::move( png );
 
-        std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader() );
+        std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader( culInterface ) );
         m_loaders["bmp"] = std::move( bmp );
     }
 
-    std::unique_ptr<ImageLoaderData> data( new ImageLoaderData() );
+    std::unique_ptr<ImageLoaderData> data( new ImageLoaderData( culInterface ) );
     m_loaders["data"] = std::move( data );
 }
 

@@ -11,7 +11,7 @@ class ImageLoaderBMP final:
     public IImageLoader
 {
 public:
-    ImageLoaderBMP();
+    ImageLoaderBMP( CULInterface* culInterface );
 
     IImage* loadImage( const FS::Path& path, bool rgba = false ) override;
     IImage* loadImage2( const FS::Path& path, bool rgba = false ) ;
