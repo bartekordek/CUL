@@ -11,11 +11,6 @@ LoggerSimpleStandardOutput::LoggerSimpleStandardOutput()
     log( "Iniatializing LoggerSimpleStandardOutput... Done." );
 }
 
-LoggerSimpleStandardOutput::~LoggerSimpleStandardOutput()
-{
-    log( "Destroying LoggerSimpleStandardOutput... Done." );
-}
-
 void LoggerSimpleStandardOutput::log(
     const String& text,
     const Severity severity )
@@ -36,4 +31,10 @@ void LoggerSimpleStandardOutput::log(
     case Severity::INFO:
         spdlog::info( message );
     }
+}
+
+
+LoggerSimpleStandardOutput::~LoggerSimpleStandardOutput()
+{
+    log( "Destroying LoggerSimpleStandardOutput... Done." );
 }
