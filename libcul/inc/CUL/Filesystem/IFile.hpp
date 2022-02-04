@@ -1,17 +1,16 @@
 #pragma once
 
 #include "CUL/Filesystem/Path.hpp"
-#include "CUL/TimeConcrete.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
-
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
+#include "CUL/TimeConcrete.hpp"
 
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
 NAMESPACE_BEGIN( FS )
 
-enum class FileType: short
+enum class FileType : short
 {
     NONE = 0,
     TXT,
@@ -22,7 +21,7 @@ enum class FileType: short
 
 class CULLib_API IFile;
 
-using FileList = std::set< GUTILS::DumbPtr<IFile>>;
+using FileList = std::set<GUTILS::DumbPtr<IFile>>;
 
 class CULLib_API IFile
 {
@@ -40,6 +39,9 @@ public:
 
     TimeConcrete getCreationTime();
     TimeConcrete getLastModificationTime();
+
+    const String& getMD5();
+    unsigned getSizeBytes();
 
     virtual const String& firstLine() const = 0;
     virtual const String& lastLine() const = 0;
@@ -63,19 +65,22 @@ protected:
     CUL::CULInterface* p_cullInterface = nullptr;
 
 private:
+    void calculateMD5();
+    void calculateSizeBytes();
     FileList m_fileList;
     String m_path;
+    String m_md5;
+    unsigned m_sizeBytes = 0u;
     TimeConcrete m_creationTime;
     TimeConcrete m_lastModificationTime;
 
-private: // Deleted:
+private:  // Deleted:
     IFile() = delete;
     IFile( const IFile& file ) = delete;
     IFile( IFile&& file ) = delete;
     IFile& operator=( const String& rPath ) = delete;
     IFile& operator=( const IFile& file ) = delete;
     IFile& operator=( IFile&& file ) = delete;
-
 };
 
 NAMESPACE_END( FS )

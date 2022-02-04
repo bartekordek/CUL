@@ -19,6 +19,7 @@ public:
     TimeConcrete getCreationTime( const Path& path );
     TimeConcrete getLastModificationTime( const Path& path );
     bool fileExist( const Path& path );
+    static bool isDirectory( const Path& path );
 
     std::vector<Path> ListAllFiles( const Path& directory );
 

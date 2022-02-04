@@ -1,13 +1,15 @@
 #include "CUL/Filesystem/IFile.hpp"
+
 #include "CUL/CULInterface.hpp"
 #include "CUL/TimeConcrete.hpp"
+#include "CUL/STL_IMPORTS/STD_fstream.hpp"
+#include "CUL/STL_IMPORTS/STD_iterator.hpp"
+#include "IMPORT_hash_library.hpp"
 
 using namespace CUL;
 using namespace FS;
 
-IFile::IFile( const String& fPath, CUL::CULInterface* interface ):
-    p_cullInterface( interface ),
-    m_path( fPath )
+IFile::IFile( const String& fPath, CUL::CULInterface* interface ) : p_cullInterface( interface ), m_path( fPath )
 {
     m_lastModificationTime = p_cullInterface->getFS()->getLastModificationTime( fPath );
 }
@@ -59,6 +61,47 @@ TimeConcrete IFile::getLastModificationTime()
         m_lastModificationTime = p_cullInterface->getFS()->getLastModificationTime( m_path );
     }
     return m_lastModificationTime;
+}
+
+const String& IFile::getMD5()
+{
+    if( m_md5.empty() )
+    {
+        calculateMD5();
+    }
+    return m_md5;
+}
+
+void IFile::calculateMD5()
+{
+    std::ifstream file( m_path.cStr(), std::ios::binary );
+    file.unsetf( std::ios::skipws );
+
+    unsigned fileSizeAsNumber = getSizeBytes();
+    p_cullInterface->getLogger()->log( String( (unsigned)fileSizeAsNumber ) );
+    std::vector<unsigned char> vec;
+    vec.reserve( fileSizeAsNumber );
+    vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );
+
+    SHA256 sha256;
+    m_md5 = sha256( vec.data(), fileSizeAsNumber );
+
+    return;
+}
+
+unsigned IFile::getSizeBytes()
+{
+    if( m_sizeBytes == 0u )
+    {
+        calculateSizeBytes();
+    }
+    return m_sizeBytes;
+}
+
+void IFile::calculateSizeBytes()
+{
+    std::ifstream in( m_path.cStr(), std::ifstream::ate | std::ifstream::binary );
+    m_sizeBytes = in.tellg();
 }
 
 IFile::~IFile()

@@ -10,11 +10,11 @@ using namespace FS;
 
 using FF = FileFactory;
 
-bool isRegularFile( const char* path );
+bool isRegularFileImpl( const char* path );
 bool isRegularFile( const wchar_t* path );
 
-bool isDirectory( const char* path );
-bool isDirectory( const wchar_t* path );
+bool isDirectoryImpl( const char* path );
+bool isDirectoryImpl( const wchar_t* path );
 
 FSApi::FSApi( FileFactory* ff, CULInterface* culInterface ):
     m_fileFactory( ff ),
@@ -43,7 +43,7 @@ IFile* FSApi::getDirectory( const Path& directory )
     {
         const auto& pathIt = it->path();
         const auto filePath = pathIt.string();
-        if( isRegularFile( filePath.c_str() ) )
+        if( isRegularFileImpl( filePath.c_str() ) )
         {
             auto child = m_fileFactory->createFileFromPath( filePath );
             result->addChild( child );
@@ -98,10 +98,15 @@ TimeConcrete FSApi::getLastModificationTime( const Path& path )
 
 bool FSApi::fileExist( const Path& path )
 {
-    return isRegularFile( path.getPath().cStr() );
+    return isRegularFileImpl( path.getPath().cStr() );
 }
 
-bool isRegularFile( const char* path )
+bool FSApi::isDirectory( const Path& path )
+{
+    return isDirectoryImpl( path.getPath().cStr() );
+}
+
+bool isRegularFileImpl( const char* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_regular_file( path );
@@ -110,7 +115,7 @@ bool isRegularFile( const char* path )
 #endif
 }
 
-bool isRegularFile( const wchar_t* path )
+bool isRegularFileImpl( const wchar_t* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_regular_file( path );
@@ -120,7 +125,7 @@ bool isRegularFile( const wchar_t* path )
 }
 
 
-bool isDirectory( const char* path )
+bool isDirectoryImpl( const char* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_directory( path );
@@ -129,7 +134,7 @@ bool isDirectory( const char* path )
 #endif
 }
 
-bool isDirectory( const wchar_t* path )
+bool isDirectoryImpl( const wchar_t* path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_directory( path );
