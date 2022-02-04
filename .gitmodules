@@ -111,3 +111,6 @@
 	ignore = dirty
 	path = deps/DevIL
 	url = git@github.com:bartekordek/DevIL.git
+[submodule "deps/hash-library"]
+	path = deps/hash-library
+	url = git@github.com:stbrumme/hash-library.git
