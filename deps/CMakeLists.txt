@@ -11,10 +11,21 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 
+file(GLOB HASH_LIBRARY_SOURCES "hash-library/*.cpp")
+file(GLOB HASH_LIBRARY_INCLUDES "hash-library/*.h")
+file(GLOB STB_SOURCES "stb/*.h" "stb/*.c" "stb/deprecated/*.h" "stb/deprecated/*.c")
+file(GLOB TINY_IMAGE_SOURCES "tiny-image/src/*.cpp" "tiny-image/src/*.h" )
+
+set(SOURCES_ALL
+${STB_SOURCES}
+${TINY_IMAGE_SOURCES}
+${HASH_LIBRARY_INCLUDES}
+${HASH_LIBRARY_SOURCES})
+
+source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES_ALL} )
+
 add_library(AdditionalDeps STATIC
-    stb/deprecated/stb_image.c
-    stb/stb_vorbis.c
-    tiny-image/src/tinyimage.cpp
+    ${SOURCES_ALL}
 )
 
 set(HEADERS_PUBLIC
@@ -41,6 +52,7 @@ set(HEADERS_PUBLIC
     stb/stb_voxel_render.h
     stb/stretchy_buffer.h
     tiny-image/src/tinyimage.h
+    ${HASH_LIBRARY_INCLUDES}
 )
 
 if (MSVC)
