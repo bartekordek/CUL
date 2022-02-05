@@ -8,6 +8,7 @@ NAMESPACE_BEGIN( MATH )
 NAMESPACE_BEGIN( ALG )
 
 CULLib_API std::vector<unsigned> fibonacciLinear( unsigned n );
+CULLib_API unsigned nearestPowerOfTwo( unsigned n );
 
 NAMESPACE_END( ALG )
 NAMESPACE_END( MATH )
