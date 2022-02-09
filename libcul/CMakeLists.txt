@@ -21,7 +21,7 @@ include_directories( SYSTEM "../deps/DevIL/DevIL/include" )
 
 if( MSVC )
     # warning level 4 and all warnings as errors
-    add_compile_options( /W4 /WX )
+    add_compile_options( /Wall /WX )
     add_compile_options( /MP )
 
     find_package( RapidJSON REQUIRED )

@@ -3,6 +3,11 @@
 using namespace CUL;
 using namespace MATH;
 
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 5045 )
+#endif
+
 Point::Point()
 {
 
@@ -141,3 +146,7 @@ Point::~Point()
 {
 
 }
+
+#if _MSC_VER
+#pragma warning( pop )
+#endif
