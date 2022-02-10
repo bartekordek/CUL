@@ -23,6 +23,8 @@ if( MSVC )
     # warning level 4 and all warnings as errors
     add_compile_options( /Wall /WX )
     add_compile_options( /MP )
+    add_compile_options( "/wd4266" )
+    add_compile_options( "/wd4820" )
 
     find_package( RapidJSON REQUIRED )
     if( RapidJSON_FOUND )

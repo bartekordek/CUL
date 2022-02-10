@@ -101,7 +101,7 @@ unsigned IFile::getSizeBytes()
 void IFile::calculateSizeBytes()
 {
     std::ifstream in( m_path.cStr(), std::ifstream::ate | std::ifstream::binary );
-    m_sizeBytes = in.tellg();
+    m_sizeBytes = static_cast<unsigned>(in.tellg());
 }
 
 IFile::~IFile()

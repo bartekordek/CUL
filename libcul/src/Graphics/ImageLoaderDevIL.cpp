@@ -58,7 +58,8 @@ IImage* ImageLoaderDevil::loadImage( const FS::Path& path, bool )
     if( imgWidth != texWidth || imgHeight != texHeight )
     {
         iluImageParameter( ILU_PLACEMENT, ILU_UPPER_LEFT );    // Place image at upper left
-        iluEnlargeCanvas( (int)texWidth, (int)texHeight, 1 );  // Resize image
+        iluEnlargeCanvas( (ILuint)texWidth, (ILuint)texHeight,
+                          1 );  // Resize image
     }
 
     ImageConcrete* newImage = new ImageConcrete();
@@ -81,11 +82,16 @@ IImage* ImageLoaderDevil::loadImage( const FS::Path& path, bool )
         getInterface()->getLogger()->log( "No format." );
         sizeOfType2 = sizeOfType2 / 2;
     }
-    imageInfo.size.width = imgWidth;
-    imageInfo.size.height = imgHeight;
-    imageInfo.canvasSize.width = texWidth;
-    imageInfo.canvasSize.height = texHeight;
-    imageInfo.BPP = ilGetInteger( IL_IMAGE_BPP );
+    imageInfo.size.width =
+        static_cast<decltype( imageInfo.size.width )>( imgWidth );
+    imageInfo.size.height =
+        static_cast<decltype( imageInfo.size.height )>( imgHeight );
+    imageInfo.canvasSize.width =
+        static_cast<decltype( imageInfo.canvasSize.width )>( texWidth );
+    imageInfo.canvasSize.height =
+        static_cast<decltype( imageInfo.canvasSize.height )>( texHeight );
+    imageInfo.BPP =
+        static_cast<decltype( imageInfo.BPP )>( ilGetInteger( IL_IMAGE_BPP ) );
 
     newImage->setImageInfo( imageInfo );
 

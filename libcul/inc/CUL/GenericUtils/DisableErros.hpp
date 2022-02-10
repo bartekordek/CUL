@@ -9,6 +9,7 @@
 #pragma warning( disable: 4623 )
 #pragma warning( disable: 4625 )
 #pragma warning( disable: 4626 )
+#pragma warning( disable: 4668 )
 #pragma warning( disable: 4710 )
 #pragma warning( disable: 4711 )
 #pragma warning( disable: 4715 )

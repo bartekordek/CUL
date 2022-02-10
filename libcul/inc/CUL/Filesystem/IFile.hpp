@@ -70,9 +70,11 @@ private:
     FileList m_fileList;
     String m_path;
     String m_md5;
-    unsigned m_sizeBytes = 0u;
+
     TimeConcrete m_creationTime;
     TimeConcrete m_lastModificationTime;
+
+    unsigned m_sizeBytes = 0u;
 
 private:  // Deleted:
     IFile() = delete;
