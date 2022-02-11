@@ -133,7 +133,7 @@ public:
 
 protected:
 private:
-    std::mutex mtx;
+    mutable std::mutex mtx;
     Type value = static_cast<Type>( 0 );
 };
 
