@@ -26,7 +26,7 @@ jobs:
       - name: Prepare fetch
         uses: LuisEnMarroquin/setup-ssh-action@v2.0.0
         with:
-          SSHKEY: ${{ secrets.SSH }} # ----- BEGIN RSA PRIVATE KEY----- ...
+          SSHKEY: ${{ secrets.SSH }}
       - run: ssh -T git@github.com || true
 
       - name: Fetch dependencies - begin
