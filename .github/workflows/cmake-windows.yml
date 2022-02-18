@@ -44,5 +44,5 @@ jobs:
 
       - name: Build
         # Build your program with the given configuration
-        working-directory: ${{github.workspace}}/Build-Windows
-        run: cmake --build .. -j16
+        working-directory: ${{github.workspace}}
+        run: cmake --build Build-Windows
