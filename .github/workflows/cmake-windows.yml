@@ -24,11 +24,10 @@ jobs:
         run: cmake -E make_directory ${{github.workspace}}//Build-Windows
 
       - name: Prepare fetch
-        uses: kielabokkie/ssh-key-and-known-hosts-action@v1
-	uses: ./
+        uses: LuisEnMarroquin/setup-ssh-action@v2.0.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-host: github.com
+          SSHKEY: ${{ secrets.SSH }} # ----- BEGIN RSA PRIVATE KEY----- ...
+      - run: ssh -T git@github.com || true
 
       - name: Fetch dependencies - begin
         shell: bash
