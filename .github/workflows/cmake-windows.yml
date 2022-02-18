@@ -37,4 +37,5 @@ jobs:
 
       - name: Build
         # Build your program with the given configuration
+	working-directory: ${{github.workspace}}/Build-Windows
         run: cmake --build . --config $BUILD_TYPE -j16
