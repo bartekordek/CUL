@@ -1,5 +1,6 @@
 .vs
 *.a
+*.bak
 *.bin
 *.check_cache
 *.dir*
