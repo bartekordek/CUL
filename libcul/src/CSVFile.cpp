@@ -21,15 +21,15 @@ bool CSVFile::checkIfFileIsAllRight() const
     return true;//TODO
 }
 
-unsigned CSVFile::rowsCount() const
+unsigned CSVFile::getRowsCount() const
 {
     return static_cast<unsigned>( m_rows.size() );
 }
 
-unsigned CSVFile::colsCount() const
+unsigned CSVFile::getColsCount() const
 {
     //TODO: what if there are no rows?
-    return static_cast<unsigned>( m_rows[0].size() );
+    return m_columnsCount;
 }
 
 const String& CSVFile::getVal( unsigned row, unsigned col ) const
@@ -55,6 +55,12 @@ void CSVFile::setDelimeter( const String& delimeter )
 void CSVFile::reload( bool keepLineEndingCharacter )
 {
     unload();
+    load( keepLineEndingCharacter );
+}
+
+void CSVFile::loadCSV( bool valuesContainQuotationMarks, bool keepLineEndingCharacter )
+{
+    m_cellsContainQuotationMarks = valuesContainQuotationMarks;
     load( keepLineEndingCharacter );
 }
 
@@ -87,7 +93,7 @@ void CSVFile::parseLine( const String& line )
 {
     Row inRow;//TODO: there is a problem with parsing.
     auto lineCp = line;//huj
-    auto delimeterPos = line.string().find( m_delimeter.string() );
+    size_t delimeterPos = line.string().find( m_delimeter.string() );
     std::string cell;
     while( delimeterPos != std::string::npos )
     {
@@ -98,7 +104,7 @@ void CSVFile::parseLine( const String& line )
             static_cast<size_t>( 1 ) : static_cast<size_t>( 0 );
 
         size_t newCellOffset = m_cellsContainQuotationMarks ?
-            static_cast<size_t>( 3 ) : static_cast<size_t>( 0 );
+            static_cast<size_t>( 3 ) : static_cast<size_t>( 1 );
 
         cell = lineCp.string().substr( cellStart, cellEnd );
         inRow.push_back( cell );
@@ -114,9 +120,16 @@ void CSVFile::parseLine( const String& line )
     {
         cell = lineCp.string().substr( 0, lineCp.string().size() );
     }
-    inRow.push_back( cell );
 
-    m_rows.push_back( inRow );
+    if( !cell.empty() )
+    {
+        inRow.push_back( cell );
+        m_columnsCount = std::max( m_columnsCount, (unsigned)inRow.size() );
+    }
+    if( !inRow.empty() )
+    {
+        m_rows.push_back( inRow );
+    }
 }
 
 void CSVFile::unload()

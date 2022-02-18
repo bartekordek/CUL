@@ -25,7 +25,7 @@ TEST_F( CSVFileTests, Load )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
     filePtr->load();
-    GTEST_ASSERT_GT( filePtr->rowsCount(), 0 );
+    GTEST_ASSERT_GT( filePtr->getRowsCount(), 0 );
 }
 
 TEST_F( CSVFileTests, UnLoad )
@@ -33,7 +33,7 @@ TEST_F( CSVFileTests, UnLoad )
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
     filePtr->load();
     filePtr->unload();
-    GTEST_ASSERT_EQ( filePtr->rowsCount(), 0 );
+    GTEST_ASSERT_EQ( filePtr->getRowsCount(), 0 );
 }
 
 TEST_F( CSVFileTests, ReadFirstVal )
@@ -48,7 +48,7 @@ TEST_F( CSVFileTests, LineCount )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
     filePtr->load();
-    auto rowCount = filePtr->rowsCount();
+    auto rowCount = filePtr->getRowsCount();
     auto lineCount = filePtr->getLinesCount();
     GTEST_ASSERT_EQ( rowCount, lineCount );
 }

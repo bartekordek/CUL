@@ -14,12 +14,14 @@ public:
     virtual ~ICSVFile();
 
     virtual bool checkIfFileIsAllRight() const = 0;
-    virtual unsigned rowsCount() const = 0;
-    virtual unsigned colsCount() const = 0;
+    virtual unsigned getRowsCount() const = 0;
+    virtual unsigned getColsCount() const = 0;
     virtual const String& getVal( unsigned row, unsigned col ) const = 0;
     virtual void setVal( const String& val, unsigned row, unsigned col ) = 0;
     virtual void setDelimeter( const String& delimeter ) = 0;
     virtual void fileContainsQuotationMarks( bool containsQuotationMarks ) = 0;
+    virtual void loadCSV( bool valuesContainQuotationMarks, bool keepLineEndingCharacter = false ) = 0;
+
 
 protected:
 private:

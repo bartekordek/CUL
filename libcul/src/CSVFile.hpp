@@ -26,8 +26,6 @@ public:
     const Path& getPath() const override;
 
     bool checkIfFileIsAllRight() const override;
-    unsigned rowsCount() const override;
-    unsigned colsCount() const override;
     const String& getVal( unsigned row, unsigned col ) const override;
     void setVal( const String& val, unsigned row, unsigned col ) override;
 
@@ -51,6 +49,9 @@ public:
 
 protected:
 private:
+    unsigned getRowsCount() const override;
+    unsigned getColsCount() const override;
+    void loadCSV( bool valuesContainQuotationMarks, bool keepLineEndingCharacter = false ) override;
     void parseLine( const String& line );
     void cacheFile();
 
@@ -58,6 +59,7 @@ private:
     bool m_cellsContainQuotationMarks = true;
     Path m_path;
     Rows m_rows;
+    unsigned m_columnsCount = 0;
     String m_cached;
     bool m_keepLineEndingCharacter = false;
 
