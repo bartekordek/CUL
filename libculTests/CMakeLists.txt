@@ -59,6 +59,7 @@ if (MSVC)
 
     add_custom_command(TARGET ${EXEC}
         POST_BUILD
+            COMMAND dir /s /b
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GTEST_BIN}.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${GTEST_OUTPUT_DIR}/${GTEST_BIN}.pdb ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}
 
