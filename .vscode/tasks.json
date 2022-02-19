@@ -52,16 +52,24 @@
             ]
         },
         {
-            "label": "[WINDOWS] CMake",
+            "label": "[WINDOWS][CMAKE][CREATE]",
             "type": "shell",
-            "command": "cls && cd Build-Windows && cmake  --clean-first -DCMAKE_BUILD_TYPE=Debug .. -G \"Visual Studio 16 2019\"",
+            "command": "cmake .. -DCMAKE_BUILD_TYPE=Debug",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": [
-                "$gradle"
-            ]
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "Build-Windows"
+            }
         },
         {
             "label": "[WINDOWS] Build All",
