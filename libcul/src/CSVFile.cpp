@@ -124,8 +124,10 @@ void CSVFile::parseLine( const String& line )
     if( !cell.empty() )
     {
         inRow.push_back( cell );
-        m_columnsCount = std::max( m_columnsCount, (unsigned)inRow.size() );
     }
+
+    m_columnsCount = std::max( m_columnsCount, (unsigned)inRow.size() );
+
     if( !inRow.empty() )
     {
         m_rows.push_back( inRow );
