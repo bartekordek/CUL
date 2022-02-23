@@ -29,25 +29,26 @@ ColorS& ColorS::operator=( const ColorE color )
 
 void ColorS::setFromEnum( const ColorE& color )
 {
-    if( ColorE::BLUE == color )
+    switch (color)
     {
-        setFloat( 0.0f, 0.0f, 1.0f, 0.0f );
-    }
-    else if( ColorE::GREEN == color )
-    {
-        setFloat( 0.0f, 1.0f, 0.0f, 0.0f );
-    }
-    else if( ColorE::RED == color )
-    {
-        setFloat( 1.0f, 0.0f, 0.0f, 0.0f );
-    }
-    else if( ColorE::WHITE == color )
-    {
-        setFloat( 1.0f, 1.0f, 1.0f, 0.0f );
-    }
-    else if( ColorE::YELLOW == color )
-    {
-        setFloat( 1.0f, 1.0f, 0.0f, 0.0f );
+        case ColorE::BLUE:
+            setFloat( 0.0f, 0.0f, 1.0f, 0.0f );
+            break;
+        case ColorE::GREEN:
+            setFloat( 0.0f, 1.0f, 0.0f, 0.0f );
+            break;
+        case ColorE::RED:
+            setFloat( 1.0f, 0.0f, 0.0f, 0.0f );
+            break;
+        case ColorE::WHITE:
+            setFloat( 1.0f, 1.0f, 1.0f, 0.0f );
+            break;
+        case ColorE::YELLOW:
+            setFloat( 1.0f, 1.0f, 0.0f, 0.0f );
+            break;
+        case ColorE::BLACK:
+            setFloat( 0.0f, 0.0f, 0.0f, 1.0f );
+            break;
     }
 }
 
