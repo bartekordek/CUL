@@ -19,6 +19,7 @@ class FileRegularImpl final:
 {
 public:
     FileRegularImpl( const String& path, CULInterface* interface );
+
     ~FileRegularImpl();
 
 protected:

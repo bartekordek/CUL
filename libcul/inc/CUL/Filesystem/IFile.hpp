@@ -55,6 +55,8 @@ public:
     const FileList& getChildList() const;
     void addChild( IFile* file );
 
+    virtual void load( const String& contents );
+
     bool operator==( const IFile& arg ) const;
     bool operator<( const IFile& arg ) const;
     bool operator>( const IFile& arg ) const;

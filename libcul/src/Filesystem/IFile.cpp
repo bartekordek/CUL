@@ -19,6 +19,11 @@ void IFile::setPath( const String& fPath )
     m_path = fPath;
 }
 
+void IFile::load( const String& contents )
+{
+
+}
+
 bool IFile::exists() const
 {
     return getPath().exists();
