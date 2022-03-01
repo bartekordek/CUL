@@ -19,7 +19,7 @@ void IFile::setPath( const String& fPath )
     m_path = fPath;
 }
 
-void IFile::load( const String& contents )
+void IFile::loadFromString( const String& )
 {
 
 }

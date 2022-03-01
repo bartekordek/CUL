@@ -100,6 +100,12 @@ FileType FileRegularImpl::getType() const
     return FileType::TXT;
 }
 
+void FileRegularImpl::loadFromString( const String& stringContent )
+{
+    rows.push_back(stringContent);
+    cacheFile();
+}
+
 unsigned FileRegularImpl::getLinesCount() const
 {
     return static_cast<unsigned>( rows.size() );

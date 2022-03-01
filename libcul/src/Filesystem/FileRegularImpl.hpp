@@ -37,6 +37,7 @@ private:
     unsigned getLinesCount() const override;
     void cacheFile();
     FileType getType() const override;
+    void loadFromString( const String& stringContent ) override;
 
     Path m_path;
     std::vector<String> rows;

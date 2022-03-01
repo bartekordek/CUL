@@ -19,7 +19,6 @@ class CSVFile final:
 {
 public:
     CSVFile( const String& fPath, CULInterface* interface );
-    ~CSVFile();
 
     void changePath( const Path& newPath ) override;
 
@@ -47,6 +46,7 @@ public:
 
     void fileContainsQuotationMarks( const bool containsQuotationMarks ) override;
 
+    ~CSVFile();
 protected:
 private:
     unsigned getRowsCount() const override;
