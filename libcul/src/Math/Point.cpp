@@ -142,6 +142,15 @@ Point::Type& Point::operator[]( size_t index )
     return values[ index ];
 }
 
+glm::vec3 Point::toGlmVec() const
+{
+    glm::vec3 result;
+    result.x = values[0];
+    result.y = values[1];
+    result.z = values[2];
+    return result;
+}
+
 Point::~Point()
 {
 

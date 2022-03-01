@@ -3,6 +3,7 @@
 #include "CUL/Math/Axis.hpp"
 #include "CUL/Math/Math.hpp"
 
+#include "CUL/IMPORT_GLM.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -53,6 +54,8 @@ public:
     {
         return values[2];
     }
+
+    glm::vec3 toGlmVec() const;
 
     Point( const Point& arg );
     Point( Point&& arg );
