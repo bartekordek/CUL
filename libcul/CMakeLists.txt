@@ -53,6 +53,7 @@ AdditionalDeps
 boost_assert
 boost_circular_buffer
 boost_core
+glm
 spdlog
 IL
 ILU
