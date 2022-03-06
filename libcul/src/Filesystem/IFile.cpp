@@ -83,7 +83,6 @@ void IFile::calculateMD5()
     file.unsetf( std::ios::skipws );
 
     unsigned fileSizeAsNumber = getSizeBytes();
-    p_cullInterface->getLogger()->log( String( (unsigned)fileSizeAsNumber ) );
     std::vector<unsigned char> vec;
     vec.reserve( fileSizeAsNumber );
     vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );

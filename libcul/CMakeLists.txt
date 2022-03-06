@@ -21,7 +21,8 @@ include_directories( SYSTEM "../deps/DevIL/DevIL/include" )
 
 if( MSVC )
     # warning level 4 and all warnings as errors
-    add_compile_options( /Wall /WX )
+    add_compile_options( /Wall )
+    #add_compile_options( /WX ) # error on warning.
     add_compile_options( /MP )
     add_compile_options( "/wd4266" )
     add_compile_options( "/wd4820" )
