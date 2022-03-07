@@ -106,6 +106,24 @@ void FileRegularImpl::loadFromString( const String& stringContent )
     cacheFile();
 }
 
+void FileRegularImpl::addLine( const String& line )
+{
+    rows.push_back( line );
+    cacheFile();
+}
+
+void FileRegularImpl::saveFile()
+{
+    std::ofstream file( m_path.getPath().cStr());
+    const size_t rowsCount = rows.size();
+    for( size_t i = 0; i < rowsCount; ++i )
+    {
+        const String& line = rows[i];
+        file << line.cStr() << "\n";
+    }
+    file.close();
+}
+
 unsigned FileRegularImpl::getLinesCount() const
 {
     return static_cast<unsigned>( rows.size() );

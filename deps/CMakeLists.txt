@@ -11,22 +11,38 @@ set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 
+set( SQLITE3_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/sqlite-amalgamation-3340000 )
+
+file(GLOB SQLITE_SOURCES ${SQLITE3_ROOT}/*.c)
+file(GLOB SQLITE_HEADERS ${SQLITE3_ROOT}/*.h)
+
 file(GLOB HASH_LIBRARY_SOURCES "hash-library/*.cpp")
 file(GLOB HASH_LIBRARY_INCLUDES "hash-library/*.h")
 file(GLOB STB_SOURCES "stb/*.h" "stb/*.c" "stb/deprecated/*.h" "stb/deprecated/*.c")
 file(GLOB TINY_IMAGE_SOURCES "tiny-image/src/*.cpp" "tiny-image/src/*.h" )
 
 set(SOURCES_ALL
+${SQLITE_SOURCES}
+${SQLITE_HEADERS}
 ${STB_SOURCES}
 ${TINY_IMAGE_SOURCES}
 ${HASH_LIBRARY_INCLUDES}
 ${HASH_LIBRARY_SOURCES})
 
+
+message( "[Additional deps] SQLITE_HEADERS: ${SQLITE_HEADERS}" )
+
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES_ALL} )
 
-add_library(AdditionalDeps STATIC
-    ${SOURCES_ALL}
+add_library(AdditionalDeps STATIC ${SOURCES_ALL})
+
+set(INCLUDE_PATHS
+${CMAKE_CURRENT_SOURCE_DIR}/stb
+${CMAKE_CURRENT_SOURCE_DIR}/tiny-image/src/
+${CMAKE_CURRENT_SOURCE_DIR}/sqlite-amalgamation-3340000/src
 )
+
+message( "[Additional deps] INCLUDE_PATHS: ${INCLUDE_PATHS}" )
 
 set(HEADERS_PUBLIC
     stb/deprecated/rrsprintf.h
@@ -53,6 +69,7 @@ set(HEADERS_PUBLIC
     stb/stretchy_buffer.h
     tiny-image/src/tinyimage.h
     ${HASH_LIBRARY_INCLUDES}
+    ${SQLITE_HEADERS}
 )
 
 if (MSVC)
@@ -61,7 +78,7 @@ else()
     target_link_libraries( ${EXEC} stdc++fs )
 endif()
 
-target_include_directories(${EXEC} PUBLIC stb tiny-image/src/)
+target_include_directories(${EXEC} PUBLIC ${INCLUDE_PATHS})
 target_include_directories(${EXEC} PRIVATE src)
 
 # Code is not my own, i don't wish to see external warnings.

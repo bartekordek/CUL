@@ -38,6 +38,8 @@ private:
     void cacheFile();
     FileType getType() const override;
     void loadFromString( const String& stringContent ) override;
+    void addLine( const String& line ) override;
+    void saveFile() override;
 
     Path m_path;
     std::vector<String> rows;

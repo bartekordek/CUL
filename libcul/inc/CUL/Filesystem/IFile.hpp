@@ -29,6 +29,8 @@ public:
     IFile( const String& fPath, CUL::CULInterface* interface );
 
     void setPath( const String& fPath );
+    virtual void addLine( const String& line);
+    virtual void saveFile();
 
     virtual const Path& getPath() const = 0;
     bool exists() const;

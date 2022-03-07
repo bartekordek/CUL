@@ -26,7 +26,11 @@ void CULInterface::initialize()
     m_fileFactory = new FS::FileFactory( this );
     m_fsApi = new FS::FSApi( m_fileFactory.get(), this );
 
-    m_configFile = loadConfigFile( m_configFilePath );
+    if( !m_configFilePath.getPath().empty() )
+    {
+        m_configFile = loadConfigFile( m_configFilePath );
+    }
+
     m_imageLoader.reset(
         Graphics::IImageLoader::createConcrete( m_configFile, this ) );
 

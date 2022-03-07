@@ -19,6 +19,14 @@ void IFile::setPath( const String& fPath )
     m_path = fPath;
 }
 
+void IFile::addLine( const String& )
+{
+}
+
+void IFile::saveFile()
+{
+}
+
 void IFile::loadFromString( const String& )
 {
 
@@ -61,6 +69,11 @@ TimeConcrete IFile::getCreationTime()
 
 TimeConcrete IFile::getLastModificationTime()
 {
+    if( m_lastModificationTime.getUs() > 0u )
+    {
+        return m_lastModificationTime;
+    }
+
     if( p_cullInterface->getFS()->fileExist( m_path ) )
     {
         m_lastModificationTime = p_cullInterface->getFS()->getLastModificationTime( m_path );
