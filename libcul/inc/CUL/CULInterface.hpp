@@ -53,7 +53,7 @@ private:
     CUL::GUTILS::IConfigFile* m_configFile = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     GUTILS::DumbPtr<FS::FileFactory> m_fileFactory;
-    GUTILS::DumbPtr<FS::FSApi> m_fsApi;
+    std::unique_ptr<FS::FSApi> m_fsApi;
     GUTILS::DumbPtr<OSUtils::ISystemFonts> m_sysFonts;
     // GUTILS::DumbPtr<Graphics::IImageLoader> m_imageLoader;
     std::unique_ptr<Graphics::IImageLoader> m_imageLoader;

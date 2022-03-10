@@ -16,6 +16,7 @@ Path::Path()
 }
 
 Path::Path( const Path& path ):
+    m_isDir( path.m_isDir ),
     m_fullPath( path.m_fullPath ),
     m_extension( path.m_extension ),
     m_baseName( path.m_baseName ),
@@ -24,7 +25,7 @@ Path::Path( const Path& path ):
     normalizePaths();
 }
 
-Path::Path( Path&& path ):
+Path::Path( Path&& path ): m_isDir( path.m_isDir ),
     m_fullPath( std::move( path.m_fullPath ) ),
     m_extension( std::move( path.m_extension ) ),
     m_baseName( std::move( path.m_baseName ) ),
@@ -33,22 +34,20 @@ Path::Path( Path&& path ):
     normalizePaths();
 }
 
-Path::Path( const String& path ):
+Path::Path( const String& path ) :
     m_fullPath( path )
 {
     preparePaths();
     normalizePaths();
 }
 
-Path::Path( const std::string& path ):
-    m_fullPath( path )
+Path::Path( const std::string& path ) : m_fullPath( path )
 {
     preparePaths();
     normalizePaths();
 }
 
-Path::Path( const char* r ):
-    m_fullPath( r )
+Path::Path( const char* r ): m_fullPath( r )
 {
     preparePaths();
 }
@@ -69,6 +68,7 @@ Path& Path::operator=( Path&& path )
 {
     if( this != &path )
     {
+        m_isDir = path.m_isDir;
         m_fullPath = std::move( path.m_fullPath );
         m_extension = std::move( path.m_extension );
         m_baseName = std::move( path.m_baseName );
@@ -89,9 +89,10 @@ Path& Path::operator=( const String& path )
 
 Path& Path::operator=( const char* r )
 {
-    if( m_fullPath != r )
+    String right = r;
+    if( m_fullPath != right )
     {
-        m_fullPath = r;
+        m_fullPath = right;
         preparePaths();
     }
     return *this;
@@ -99,9 +100,10 @@ Path& Path::operator=( const char* r )
 
 Path& Path::operator=( const std::string& rhv )
 {
-    if( m_fullPath != rhv )
+    String right = rhv;
+    if( m_fullPath != right )
     {
-        m_fullPath = rhv;
+        m_fullPath = right;
         preparePaths();
     }
     return *this;
@@ -171,12 +173,26 @@ const String& Path::getDir() const
 
 uint64_t Path::getFileSize() const
 {
+#ifdef _MSC_VER
+    FsPath file( m_fullPath.wstring() );
+#else
     FsPath file( m_fullPath.cStr() );
+#endif
 #if defined( _MSC_VER ) && _MSC_VER < 1920
     return std::experimental::filesystem::file_size( file );
 #else
     return std::filesystem::file_size( file );
 #endif
+}
+
+void Path::setIsDir( bool isDir )
+{
+    m_isDir = isDir;
+}
+
+bool Path::getIsDir() const
+{
+    return m_isDir;
 }
 
 bool Path::operator==( const Path& rhv ) const
@@ -206,12 +222,18 @@ Path::operator const String() const
 
 void Path::preparePaths()
 {
-    FsPath bPath( m_fullPath.cStr() );
-#if defined CUL_WINDOWS
-    m_baseName = ws2s( bPath.stem().c_str() );
-    m_extension = ws2s( bPath.extension().c_str() );
-    m_dir = ws2s( bPath.parent_path().c_str() );
+    if( m_fullPath.empty() )
+    {
+        return;
+    }
+
+#if defined _MSC_VER
+    FsPath bPath( m_fullPath.wstring() );
+    m_baseName = bPath.stem();
+    m_extension = bPath.extension();
+    m_dir = bPath.parent_path();
 #else
+    FsPath bPath( m_fullPath.string() );
     m_baseName = bPath.stem().c_str();
     m_extension = bPath.extension().c_str();
     m_dir = bPath.parent_path().c_str();
@@ -227,7 +249,11 @@ void Path::normalizePaths()
 
 void Path::normalizePath( String& path )
 {
+#ifdef _MSC_VER
+    path.replace( std::wstring( L"\\" ), std::wstring( L"/" ) );
+#else
     path.replace( "\\", "/" );
+#endif
 }
 
 bool Path::exists() const

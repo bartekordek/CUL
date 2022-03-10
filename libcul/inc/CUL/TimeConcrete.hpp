@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/ITime.hpp"
+#include "CUL/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -29,10 +30,13 @@ public:
     ITime* copy() const override;
     ITime& operator=( const ITime& arg ) override;
 
+    const CUL::String& toString();
+
     ~TimeConcrete();
 protected:
 private:
     unsigned int m_us = 0;
+    CUL::String m_asString;
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

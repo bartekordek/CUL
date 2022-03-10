@@ -4,7 +4,7 @@
 using namespace CUL;
 using namespace FS;
 
-CSVFile::CSVFile( const String& fPath, CULInterface* interface ):
+CSVFile::CSVFile( const String& fPath, CULInterface* interface ) :
     ICSVFile( fPath, interface ),
     m_path( fPath )
 {
@@ -93,8 +93,8 @@ void CSVFile::parseLine( const String& line )
 {
     Row inRow;//TODO: there is a problem with parsing.
     auto lineCp = line;//huj
-    size_t delimeterPos = line.string().find( m_delimeter.string() );
-    std::string cell;
+    size_t delimeterPos = line.find( m_delimeter );
+    String cell;
     while( delimeterPos != std::string::npos )
     {
         size_t cellEnd = m_cellsContainQuotationMarks ?
@@ -106,19 +106,19 @@ void CSVFile::parseLine( const String& line )
         size_t newCellOffset = m_cellsContainQuotationMarks ?
             static_cast<size_t>( 3 ) : static_cast<size_t>( 1 );
 
-        cell = lineCp.string().substr( cellStart, cellEnd );
+        cell = lineCp.substr( cellStart, cellEnd );
         inRow.push_back( cell );
-        lineCp = lineCp.string().substr( cellEnd + newCellOffset );
-        delimeterPos = lineCp.string().find( m_delimeter.string() );
+        lineCp = lineCp.substr( cellEnd + newCellOffset );
+        delimeterPos = lineCp.find( m_delimeter );
     }
 
     if( m_cellsContainQuotationMarks )
     {
-        cell = lineCp.string().substr( 1, lineCp.string().size() - 2 );
+        cell = lineCp.substr( 1, lineCp.size() - 2 );
     }
     else
     {
-        cell = lineCp.string().substr( 0, lineCp.string().size() );
+        cell = lineCp.substr( 0, lineCp.size() );
     }
 
     if( !cell.empty() )

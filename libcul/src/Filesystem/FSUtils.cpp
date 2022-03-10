@@ -23,15 +23,35 @@ using namespace CUL::FS;
 #include "CUL/IMPORT_stringapiset.hpp"
 #endif
 
-
-CUL::String CUL::FS::ws2s( const std::wstring& wstr )
+std::string CUL::FS::ws2s( const std::wstring& wstr )
 {
     if( wstr.empty() )
         return std::string();
-    int size_needed = WideCharToMultiByte( CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL );
+    UINT codePage = CP_UTF8;
+    DWORD dwFlags = WC_COMPOSITECHECK;
+    int size_needed = WideCharToMultiByte( codePage, dwFlags, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL );
     std::string strTo( (size_t)size_needed, 0 );
-    WideCharToMultiByte( CP_ACP, 0, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL );
+    WideCharToMultiByte( codePage, dwFlags, &wstr[0], (int)wstr.size(), &strTo[0], size_needed, NULL, NULL );
     return strTo;
+}
+
+std::wstring CUL::FS::s2ws( const std::string& str )
+{
+    if( str.empty() )
+    {
+        return std::wstring();
+    }
+
+    std::wstring result;
+    UINT codePage = CP_UTF8;
+    DWORD dwFlags = 0;
+    int cbMultiByte = -1;
+    int wchars_num = MultiByteToWideChar( codePage, dwFlags, str.c_str(), cbMultiByte, NULL, 0 );
+    wchar_t* wstr = new wchar_t[static_cast<size_t>(wchars_num)];
+    MultiByteToWideChar( codePage, dwFlags, str.c_str(), cbMultiByte, wstr, wchars_num );
+    result = wstr;
+    delete[] wstr;
+    return result;
 }
 
 #ifdef _MSC_VER

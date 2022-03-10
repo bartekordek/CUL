@@ -26,10 +26,10 @@ using FileList = std::set<GUTILS::DumbPtr<IFile>>;
 class CULLib_API IFile
 {
 public:
-    IFile( const String& fPath, CUL::CULInterface* interface );
+    IFile( const String& fPath, CUL::CULInterface* culInterface );
 
     void setPath( const String& fPath );
-    virtual void addLine( const String& line);
+    virtual void addLine( const String& line );
     virtual void saveFile();
 
     virtual const Path& getPath() const = 0;
@@ -43,7 +43,7 @@ public:
     TimeConcrete getLastModificationTime();
 
     const String& getMD5();
-    unsigned getSizeBytes();
+    const String& getSizeBytes();
 
     virtual const String& firstLine() const = 0;
     virtual const String& lastLine() const = 0;
@@ -78,7 +78,7 @@ private:
     TimeConcrete m_creationTime;
     TimeConcrete m_lastModificationTime;
 
-    unsigned m_sizeBytes = 0u;
+    String m_sizeBytes;
 
 private:  // Deleted:
     IFile() = delete;

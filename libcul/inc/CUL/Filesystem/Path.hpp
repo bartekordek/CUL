@@ -1,6 +1,7 @@
 #pragma once
-#include "CUL/CUL.hpp"
-#include "CUL/String.hpp"
+
+#include "CUL/Filesystem/FS.hpp"
+
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4251)
@@ -39,6 +40,9 @@ public:
 
     uint64_t getFileSize() const;
 
+    void setIsDir(bool isDir);
+    bool getIsDir() const;
+
     bool operator==( const Path& rhv ) const;
     bool operator!=( const Path& rhv ) const;
     bool operator<( const Path& rhv ) const;
@@ -57,6 +61,8 @@ private:
     void preparePaths();
     void normalizePaths();
     void normalizePath( String& path );
+
+    bool m_isDir = false;
 
     String m_fullPath;
     String m_extension;

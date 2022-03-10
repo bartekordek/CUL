@@ -1,10 +1,19 @@
 #pragma once
 
-#include "CUL/Log/ILogger.hpp"
-#include "CUL/Filesystem/FS.hpp"
+#include "CUL/Filesystem/Path.hpp"
+
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 
 NAMESPACE_BEGIN( CUL )
+
+NAMESPACE_BEGIN( FS )
+class FSApi;
+NAMESPACE_END( FS )
+
+NAMESPACE_BEGIN( LOG )
+class ILogger;
+NAMESPACE_END( LOG )
+
 NAMESPACE_BEGIN( OSUtils )
 
 using FontFilesPaths = std::set<FS::Path>;

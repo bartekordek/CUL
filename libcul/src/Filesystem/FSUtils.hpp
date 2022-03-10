@@ -18,7 +18,8 @@ using FsPath = std::filesystem::path;
 using DirectoryIterator = std::filesystem::directory_iterator;
 #endif
 
-CUL::String ws2s( const std::wstring& wstr );
+std::string ws2s( const std::wstring& wstr );
+std::wstring s2ws( const std::string& str );
 
 NAMESPACE_END( FS )
 NAMESPACE_END( CUL )

@@ -1,4 +1,5 @@
 #include "CUL/Filesystem/IFile.hpp"
+#include "CUL/Filesystem/FSApi.hpp"
 
 #include "CUL/CULInterface.hpp"
 #include "CUL/TimeConcrete.hpp"
@@ -95,7 +96,7 @@ void IFile::calculateMD5()
     std::ifstream file( m_path.cStr(), std::ios::binary );
     file.unsetf( std::ios::skipws );
 
-    unsigned fileSizeAsNumber = getSizeBytes();
+    unsigned fileSizeAsNumber = getSizeBytes().toUInt();
     std::vector<unsigned char> vec;
     vec.reserve( fileSizeAsNumber );
     vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );
@@ -106,9 +107,9 @@ void IFile::calculateMD5()
     return;
 }
 
-unsigned IFile::getSizeBytes()
+const String& IFile::getSizeBytes()
 {
-    if( m_sizeBytes == 0u )
+    if( m_sizeBytes.empty() )
     {
         calculateSizeBytes();
     }
@@ -117,8 +118,9 @@ unsigned IFile::getSizeBytes()
 
 void IFile::calculateSizeBytes()
 {
-    std::ifstream in( m_path.cStr(), std::ifstream::ate | std::ifstream::binary );
-    m_sizeBytes = static_cast<unsigned>(in.tellg());
+    /*std::ifstream in( m_path.cStr(), std::ifstream::ate | std::ifstream::binary );
+    m_sizeBytes = static_cast<unsigned>(in.tellg());*/
+    m_sizeBytes = p_cullInterface->getFS()->getFileSize( m_path );
 }
 
 IFile::~IFile()

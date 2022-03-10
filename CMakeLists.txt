@@ -72,6 +72,11 @@ add_subdirectory( ${CUL_DEPS_PATH}/boost/type_index )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/type_traits )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/variant )
 
+set(OPTION_BUILD_TESTS OFF CACHE BOOL "Disable testing" FORCE)
+set(PROJECT_BINARY_DIR ${CUL_OUTPUT_DIR} FORCE)
+set(cppfs_BINARY_DIR ${CUL_OUTPUT_DIR})
+add_subdirectory( ${CUL_DEPS_PATH}/cppfs )
+
 # TODO!
 #add_subdirectory( ${CUL_DEPS_PATH}/cppcheck )
 

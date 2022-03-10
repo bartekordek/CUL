@@ -1,11 +1,13 @@
 #include "CUL/CULInterface.hpp"
 
-#include "CUL/Filesystem/FS.hpp"
+#include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 #include "GenericUtils/IConfigFileConcrete.hpp"
 #include "Threading/IThreadUtilConcrete.hpp"
+
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
 
 using namespace CUL;
 
@@ -24,7 +26,7 @@ CULInterface::CULInterface( const FS::Path& configFilePath )
 void CULInterface::initialize()
 {
     m_fileFactory = new FS::FileFactory( this );
-    m_fsApi = new FS::FSApi( m_fileFactory.get(), this );
+    m_fsApi.reset( FS::FSApi::crateInstance( "FSApiFS", m_fileFactory.get(), this ) );
 
     if( !m_configFilePath.getPath().empty() )
     {
@@ -37,7 +39,7 @@ void CULInterface::initialize()
     m_logger = LOG::LOG_CONTAINER::getLogger();
     m_logger->log( "Initialized logger." );
 
-    m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi, m_logger );
+    m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
     m_threadUtil = new ThreadUtilConcrete();
 }
@@ -49,7 +51,7 @@ CUL::LOG::ILogger* CULInterface::getLogger()
 
 FS::FSApi* CULInterface::getFS()
 {
-    return m_fsApi;
+    return m_fsApi.get();
 }
 
 OSUtils::ISystemFonts* CULInterface::getSystemFonts()

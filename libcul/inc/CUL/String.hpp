@@ -16,28 +16,38 @@ class StringImpl;
 class CULLib_API String final
 {
 public:
+#ifdef _MSC_VER
+    using UnderlyingType = std::wstring;
+    using UnderlyingChar = wchar_t;
+#else
+    using UnderlyingType = std::string;
+    using UnderlyingChar = char;
+#endif
+
     explicit String();
     String( const String& arg );
     String( String&& arg );
     String( const bool arg );
     String( const char* arg );
-    String( const unsigned char* arg );
+    String( unsigned char* arg );
     String( const std::string& arg );
-    String( const float arg );
-    String( const double arg );
-    String( const int arg );
-    String( const unsigned int arg );
+    String( const std::wstring& arg );
+    String( float arg );
+    String( double arg );
+    String( int arg );
+    String( unsigned int arg );
 
     String& operator=( const String& arg );
     String& operator=( String&& arg );
     String& operator=( const bool arg );
     String& operator=( const char* arg );
-    String& operator=( const unsigned char* arg );
+    String& operator=( unsigned char* arg );
     String& operator=( const std::string& arg );
-    String& operator=( const float arg );
-    String& operator=( const double arg );
-    String& operator=( const int arg );
-    String& operator=( const unsigned arg );
+    String& operator=( const std::wstring& arg );
+    String& operator=( float arg );
+    String& operator=( double arg );
+    String& operator=( int arg );
+    String& operator=( unsigned arg );
 
     String operator+( const String& arg ) const;
 
@@ -52,20 +62,23 @@ public:
     bool operator==( const char* arg ) const;
     bool operator!=( const char* arg ) const;
 
-    bool operator!=( const int arg ) const;
-    bool operator==( const int arg ) const;
+    bool operator!=( int arg ) const;
+    bool operator==( int arg ) const;
 
-    bool operator!=( const unsigned int arg ) const;
-    bool operator==( const unsigned int arg ) const;
+    bool operator!=( unsigned int arg ) const;
+    bool operator==( unsigned int arg ) const;
 
-    bool operator!=( const float arg ) const;
-    bool operator==( const float arg ) const;
+    bool operator!=( float arg ) const;
+    bool operator==( float arg ) const;
 
-    bool operator!=( const double arg ) const;
-    bool operator==( const double arg ) const;
+    bool operator!=( double arg ) const;
+    bool operator==( double arg ) const;
 
     bool operator<( const String& arg ) const;
     bool operator>( const String& arg ) const;
+
+    size_t find( const String& arg ) const;
+    String substr( size_t pos = 0, size_t len = UnderlyingType::npos ) const;
 
     void toLower();
     void toUpper();
@@ -74,23 +87,31 @@ public:
     bool contains( const char* inputString ) const;
 
     void replace( const String& inWhat, const String& inFor );
+    void replace( const char inWhat, const char inFor );
+    void replace( const wchar_t inWhat, const wchar_t inFor );
+    void removeAll( const char inWhat );
 
     bool equals( const char* arg ) const;
     bool equals( const std::string& arg ) const;
     bool equals( const String& arg ) const;
 
-    const std::string& string() const;
-    std::string& string();
+    bool doesEndWith( const UnderlyingType& end ) const;
+
+    std::string string() const;
+
+    std::wstring wstring() const;
 
     const char* cStr() const;
+    const wchar_t* wCstr() const;
 
     float toFloat() const;
     double toDouble() const;
-    int toInt() const;
+    int toInt();
     unsigned int toUInt() const;
 
 
     Length length() const;
+    size_t size() const;
     Length capacity() const;
     void clear();
     bool empty() const;
@@ -99,7 +120,7 @@ public:
 
 protected:
 private:
-    std::string m_value;
+    UnderlyingType m_value;
 };
 
 
@@ -107,12 +128,12 @@ String CULLib_API operator+( const char* arg1, const String& arg2 );
 
 bool CULLib_API operator==( const char* arg1, const String& arg2 );
 
-bool CULLib_API operator==( const int arg1, const String& arg2 );
+bool CULLib_API operator==( int arg1, const String& arg2 );
 
-bool CULLib_API operator==( const unsigned int arg1, const String& arg2 );
+bool CULLib_API operator==( unsigned int arg1, const String& arg2 );
 
-bool CULLib_API operator==( const float arg1, const String& arg2 );
+bool CULLib_API operator==( float arg1, const String& arg2 );
 
-bool CULLib_API operator==( const double arg1, const String& arg2 );
+bool CULLib_API operator==( double arg1, const String& arg2 );
 
 NAMESPACE_END( CUL )
