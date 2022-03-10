@@ -26,6 +26,7 @@ if( MSVC )
     add_compile_options( /MP )
     add_compile_options( "/wd4266" )
     add_compile_options( "/wd4820" )
+    add_compile_options( "/wd5045" )
 
     find_package( RapidJSON REQUIRED )
     if( RapidJSON_FOUND )
@@ -54,6 +55,7 @@ AdditionalDeps
 boost_assert
 boost_circular_buffer
 boost_core
+cppfs
 glm
 spdlog
 IL
@@ -73,7 +75,9 @@ if( MSVC )
         message( "DevIL_BINARY: ${DevIL_BINARY}" )
         add_custom_command(TARGET ${EXEC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DevIL_BINARY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
     endforeach(DevIL_BINARY)
+#CUL_OUTPUT_DIR
 
+    add_custom_command(TARGET ${EXEC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CUL_OUTPUT_DIR}/deps/CUL/deps/cppfs/${CMAKE_BUILD_TYPE}/cppfsd.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
 else()
     if( NOT APPLE )
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
