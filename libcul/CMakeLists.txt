@@ -7,8 +7,6 @@ set( EXEC cul )
 project(${EXEC} LANGUAGES CXX)
 
 if( MSVC )
-    string(REPLACE "/INCREMENTAL" "" tempFlag ${CMAKE_EXE_LINKER_FLAGS_DEBUG})
-    set( CMAKE_EXE_LINKER_FLAGS_DEBUG ${tempFlag} )
 endif()
 
 set( CMAKE_ENABLE_EXPORTS true )
@@ -65,6 +63,7 @@ ILU
 set_property( TARGET ${EXEC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 if (MSVC)
     list(APPEND LIBS msvcmrtd )
+    target_link_options(${EXEC} PUBLIC "/INCREMENTAL:NO")
     target_link_libraries( ${EXEC} ${DEPENDENCIES} )
 else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
@@ -77,7 +76,13 @@ if( MSVC )
     endforeach(DevIL_BINARY)
 #CUL_OUTPUT_DIR
 
-    add_custom_command(TARGET ${EXEC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CUL_OUTPUT_DIR}/deps/CUL/deps/cppfs/${CMAKE_BUILD_TYPE}/cppfsd.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
+    set( CPPFSSOURCE ${CUL_OUTPUT_DIR}/deps/CUL/deps/cppfs/${CMAKE_BUILD_TYPE}/*.dll )
+    set( CPPFSTARGET ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/ )
+
+    file(TO_NATIVE_PATH ${CPPFSSOURCE} CPPFSSOURCE)
+    file(TO_NATIVE_PATH ${CPPFSTARGET} CPPFSTARGET)
+
+    add_custom_command(TARGET ${EXEC} POST_BUILD COMMAND xcopy /Y ${CPPFSSOURCE} ${CPPFSTARGET} )
 else()
     if( NOT APPLE )
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")

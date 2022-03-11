@@ -75,7 +75,7 @@ set(HEADERS_PUBLIC
 if (MSVC)
     target_link_libraries( ${EXEC} )
 else()
-    target_link_libraries( ${EXEC} stdc++fs )
+    target_link_libraries( ${EXEC} stdc++fs dl)
 endif()
 
 target_include_directories(${EXEC} PUBLIC ${INCLUDE_PATHS})
