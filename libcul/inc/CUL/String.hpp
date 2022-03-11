@@ -101,8 +101,11 @@ public:
 
     std::wstring wstring() const;
 
+    UnderlyingType getString() const;
+
     const char* cStr() const;
     const wchar_t* wCstr() const;
+    const UnderlyingChar* getChar() const;
 
     float toFloat() const;
     double toDouble() const;

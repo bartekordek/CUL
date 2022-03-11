@@ -124,7 +124,7 @@ String& String::operator=( unsigned char* arg )
     auto len = strlen( (const char*)arg );
     std::string tmp;
     tmp.resize( len );
-    
+
     for( unsigned i = 0; i < len; ++i )
     {
         tmp[i] = static_cast<char>( arg[i] );
@@ -509,12 +509,18 @@ std::wstring String::wstring() const
 #endif
 }
 
+String::UnderlyingType String::getString() const
+{
+    return m_value;
+}
+
 const char* String::cStr() const
 {
 #ifdef _MSC_VER
     std::string resultString = FS::ws2s(m_value);
-    char* result = new char[resultString.size()];
-    strcpy(result,resultString.c_str());
+    const size_t size = resultString.size();
+    char* result = new char[size+1];
+    std::strcpy(result, resultString.c_str());
 
     return result;
 #else
@@ -529,8 +535,14 @@ const wchar_t* String::wCstr() const
 #else
     std::wstring resultString = FS::s2ws(m_value);
     wchar_t* result = new wchar_t[resultString.size()];
-    strcpy
+    mbstowcs(result, m_value.c_str(), resultString.size());
+    return result;
 #endif
+}
+
+const String::UnderlyingChar* String::getChar() const
+{
+    return m_value.c_str();
 }
 
 float String::toFloat() const
