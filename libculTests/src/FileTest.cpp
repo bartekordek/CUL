@@ -3,6 +3,7 @@
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/Filesystem/FS.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/Filesystem/FSApi.hpp"
 
 CUL::GUTILS::DumbPtr<CUL::CULInterface> FileTest::m_culInterface = nullptr;
 CUL::FS::FSApi* FileTest::m_fsApi = nullptr;

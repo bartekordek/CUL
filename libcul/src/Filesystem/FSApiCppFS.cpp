@@ -29,7 +29,7 @@ std::vector<Path> FSApiCppFS::ListAllFiles(const Path& directory)
         {
             std::string path = directory.getPath().string() + "/" + * it;
             cppfs::FileHandle file = cppfs::fs::open( path );
-            
+
             if( file.isDirectory() )
             {
                 std::vector<Path> dirFiles = ListAllFiles( path );
@@ -98,7 +98,7 @@ String FSApiCppFS::getCurrentDir()
     auto currentDir = std::filesystem::current_path();
 #endif
     FsPath full_path( currentDir );
-    return full_path;
+    return full_path.string();
 }
 
 FSApiCppFS::~FSApiCppFS()

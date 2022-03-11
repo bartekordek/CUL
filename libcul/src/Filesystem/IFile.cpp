@@ -93,7 +93,7 @@ const String& IFile::getMD5()
 
 void IFile::calculateMD5()
 {
-    std::ifstream file( m_path.cStr(), std::ios::binary );
+    std::ifstream file( m_path.getString(), std::ios::binary );
     file.unsetf( std::ios::skipws );
 
     unsigned fileSizeAsNumber = getSizeBytes().toUInt();

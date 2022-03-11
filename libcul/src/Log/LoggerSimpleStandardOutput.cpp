@@ -16,7 +16,7 @@ void LoggerSimpleStandardOutput::log(
     const Severity severity )
 {
     std::lock_guard<std::mutex> logGuard( m_logMtx );
-    const auto& message = text.cStr();
+    const auto message = text.cStr();
     switch( severity )
     {
     case Severity::CRITICAL:

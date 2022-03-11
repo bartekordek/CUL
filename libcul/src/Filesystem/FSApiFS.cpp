@@ -14,6 +14,7 @@ using namespace FS;
 using FF = FileFactory;
 
 bool isRegularFileImpl( const char* path );
+bool isRegularFileImpl( const wchar_t* path );
 bool isRegularFile( const wchar_t* path );
 
 bool isDirectoryImpl( const FsPath& path );
@@ -34,7 +35,7 @@ String FSApiFS::getCurrentDir()
     auto currentDir = std::filesystem::current_path();
 #endif
     FsPath full_path( currentDir );
-    return full_path;
+    return full_path.string();
 }
 
 IFile* FSApiFS::getDirectory( const Path& directory )
@@ -120,7 +121,7 @@ String FSApiFS::getFileSize( const Path& path )
 
 bool FSApiFS::fileExist( const Path& path )
 {
-    return isRegularFileImpl( path.getPath().cStr() );
+    return isRegularFileImpl( path.getPath().getChar() );
 }
 
 bool FSApiFS::isDirectory( const Path& path )
