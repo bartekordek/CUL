@@ -5,6 +5,7 @@
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 #include "GenericUtils/IConfigFileConcrete.hpp"
+#include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "Threading/IThreadUtilConcrete.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
@@ -42,6 +43,8 @@ void CULInterface::initialize()
     m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
     m_threadUtil = new ThreadUtilConcrete();
+
+    m_args.reset( new GUTILS::ConsoleUtilities());
 }
 
 CUL::LOG::ILogger* CULInterface::getLogger()
@@ -72,6 +75,11 @@ Graphics::IImageLoader* CULInterface::getImageLoader()
 IThreadUtil* CULInterface::getThreadUtil()
 {
     return m_threadUtil;
+}
+
+GUTILS::ConsoleUtilities* CULInterface::getConsoleUtils()
+{
+    return m_args.get();
 }
 
 GUTILS::IConfigFile* CULInterface::loadConfigFile( const FS::Path& path )

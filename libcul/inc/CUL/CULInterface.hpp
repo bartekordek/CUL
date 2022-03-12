@@ -23,6 +23,10 @@ NAMESPACE_BEGIN( Graphics )
 class IImageLoader;
 NAMESPACE_END( Graphics )
 
+NAMESPACE_BEGIN( GUTILS )
+class ConsoleUtilities;
+NAMESPACE_END( GUTILS )
+
 class CULLib_API CULInterface final
 {
 public:
@@ -35,6 +39,7 @@ public:
     FS::FileFactory* getFF();
     Graphics::IImageLoader* getImageLoader();
     IThreadUtil* getThreadUtil();
+    GUTILS::ConsoleUtilities* getConsoleUtils();
 
     GUTILS::IConfigFile* loadConfigFile( const FS::Path& path );
 
@@ -58,6 +63,7 @@ private:
     // GUTILS::DumbPtr<Graphics::IImageLoader> m_imageLoader;
     std::unique_ptr<Graphics::IImageLoader> m_imageLoader;
     GUTILS::DumbPtr<IThreadUtil> m_threadUtil;
+    std::unique_ptr<GUTILS::ConsoleUtilities> m_args;
 };
 
 NAMESPACE_END( CUL )
