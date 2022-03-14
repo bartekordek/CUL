@@ -7,6 +7,7 @@
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 #include "CUL/Filesystem/IFile.hpp"
+#include "CUL/Filesystem/FSApi.hpp"
 
 using namespace CUL;
 using SystemFontsWindows = OSUtils::SystemFontsWindows;
@@ -31,21 +32,21 @@ void SystemFontsWindows::addSearchPath( const FS::Path& dir )
 
 void SystemFontsWindows::updateFontFilesList()
 {
-    //getWindowsPath();
-    //for( const auto& dir : m_defaultDirsWithFonts )
-    //{
-    //    const auto directory = m_fsApi->getDirectory( dir );
-    //    const auto& files = directory->getChildList();
-    //    for( const auto& file : files )
-    //    {
-    //        const FS::Path& path = file->getPath();
-    //        if( path.getExtension() == ".ttf" )
-    //        {
-    //            m_fontFilesList.insert( path );
-    //        }
-    //    }
-    //    delete directory;
-    //}
+    getWindowsPath();
+    for( const auto& dir : m_defaultDirsWithFonts )
+    {
+        const auto directory = m_fsApi->getDirectory( dir );
+        const auto& files = directory->getChildList();
+        for( const auto& file : files )
+        {
+            const FS::Path& path = file->getPath();
+            if( path.getExtension() == ".ttf" )
+            {
+                m_fontFilesList.insert( path );
+            }
+        }
+        delete directory;
+    }
 }
 
 CHOOSEFONT ShowSelectFont()
