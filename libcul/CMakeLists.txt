@@ -58,6 +58,7 @@ glm
 spdlog
 IL
 ILU
+udp-discovery
 )
 
 set_property( TARGET ${EXEC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )

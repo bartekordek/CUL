@@ -21,13 +21,16 @@ file(GLOB HASH_LIBRARY_INCLUDES "hash-library/*.h")
 file(GLOB STB_SOURCES "stb/*.h" "stb/*.c" "stb/deprecated/*.h" "stb/deprecated/*.c")
 file(GLOB TINY_IMAGE_SOURCES "tiny-image/src/*.cpp" "tiny-image/src/*.h" )
 
+set(UDP_DISCOVERY_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/udp-discovery-cpp)
+
 set(SOURCES_ALL
 ${SQLITE_SOURCES}
 ${SQLITE_HEADERS}
 ${STB_SOURCES}
 ${TINY_IMAGE_SOURCES}
 ${HASH_LIBRARY_INCLUDES}
-${HASH_LIBRARY_SOURCES})
+${HASH_LIBRARY_SOURCES}
+)
 
 
 message( "[Additional deps] SQLITE_HEADERS: ${SQLITE_HEADERS}" )
@@ -73,7 +76,7 @@ set(HEADERS_PUBLIC
 )
 
 if (MSVC)
-    target_link_libraries( ${EXEC} )
+    target_link_libraries( ${EXEC} Ws2_32.Lib )
 else()
     target_link_libraries( ${EXEC} stdc++fs dl)
 endif()

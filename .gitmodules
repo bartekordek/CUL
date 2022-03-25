@@ -117,3 +117,6 @@
 [submodule "deps/cppfs"]
 	path = deps/cppfs
 	url = git@github.com:cginternals/cppfs.git
+[submodule "deps/udp-discovery-cpp"]
+	path = deps/udp-discovery-cpp
+	url = git@github.com:bartekordek/udp-discovery-cpp.git
