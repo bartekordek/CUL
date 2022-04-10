@@ -99,6 +99,9 @@ add_subdirectory( ${CUL_DEPS_PATH}/freeglut-3.2.1 )
 find_package( freeglut REQUIRED )
 
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
+
+set(BUILD_EXAMPLE OFF)
+set(BUILD_TOOL OFF)
 add_subdirectory(${CUL_DEPS_PATH}/udp-discovery-cpp)
 add_subdirectory( ${CUL_DEPS_PATH}/zlib )
 set( PNG_TESTS OFF )
