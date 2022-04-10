@@ -21,8 +21,6 @@ file(GLOB HASH_LIBRARY_INCLUDES "hash-library/*.h")
 file(GLOB STB_SOURCES "stb/*.h" "stb/*.c" "stb/deprecated/*.h" "stb/deprecated/*.c")
 file(GLOB TINY_IMAGE_SOURCES "tiny-image/src/*.cpp" "tiny-image/src/*.h" )
 
-set(UDP_DISCOVERY_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/udp-discovery-cpp)
-
 set(SOURCES_ALL
 ${SQLITE_SOURCES}
 ${SQLITE_HEADERS}
