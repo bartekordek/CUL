@@ -8,7 +8,7 @@ using namespace CUL;
 
 void Assert::simple( bool val, const String& msg, LOG::ILogger* loggerIn )
 {
-    if( val )
+    if( !val )
     {
         if(loggerIn)
         {
