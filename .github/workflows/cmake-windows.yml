@@ -44,7 +44,12 @@ jobs:
       - name: Build
         # Build your program with the given configuration
         working-directory: ${{github.workspace}}
-        run: cmake --build Build-Windows --config Debug
+        run: cmake --build Build-Windows --config Debug --target libculTests
+
+      - name: ListFiles
+        # Build your program with the given configuration
+        working-directory: ${{github.workspace}}
+        run: tree
 
       - name: Test
         working-directory: ${{github.workspace}}/runDir
