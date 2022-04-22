@@ -29,7 +29,7 @@ jobs:
       - run: ssh -T git@github.com || true
 
       - name: Fetch dependencies - begin
-        shell: bash
+        shell: cmd
         working-directory: ${{github.workspace}}
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -47,10 +47,12 @@ jobs:
         run: cmake --build Build-Windows --config Debug --target libculTests
 
       - name: ListFiles
+        shell: cmd
         # Build your program with the given configuration
         working-directory: ${{github.workspace}}
         run: tree /F /A
 
       - name: Test
+        shell: cmd
         working-directory: ${{github.workspace}}/runDir
         run: ..\\Build-Windows\\Debug\\libculTests.exe
