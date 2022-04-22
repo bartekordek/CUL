@@ -75,8 +75,9 @@ add_subdirectory( ${CUL_DEPS_PATH}/boost/variant )
 set(OPTION_BUILD_TESTS OFF CACHE BOOL "Disable testing" FORCE)
 set(PROJECT_BINARY_DIR ${CUL_OUTPUT_DIR} FORCE)
 set(cppfs_BINARY_DIR ${CUL_OUTPUT_DIR})
-set(BUILD_SHARED_LIBS OFF)
+set(BUILD_SHARED_LIBS false)
 set(OPTION_SELF_CONTAINED ON)
+set(OPTION_BUILD_EXAMPLES OFF)
 add_subdirectory( ${CUL_DEPS_PATH}/cppfs )
 
 # TODO!
