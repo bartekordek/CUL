@@ -1,5 +1,5 @@
 #include "ThreadUtilityDummy.hpp"
 
-void CUL::ThreadUtils::setCurrentThreadNameDummy( const String& )
+void setCurrentThreadNameDummy( const CUL::String& )
 {
 }

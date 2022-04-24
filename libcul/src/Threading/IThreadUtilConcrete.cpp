@@ -41,9 +41,9 @@ void ThreadUtilConcrete::setCurrentThreadName( const String& name )
     m_threads.insert( { currentThreadId, name } );
 
 #ifdef _MSC_VER
-    CUL::ThreadUtils::setCurrentThreadNameWin( name );
+    setCurrentThreadNameWin( name );
 #else
-    CUL::ThreadUtils::setCurrentThreadNameDummy( name );
+    setCurrentThreadNameDummy( name );
 #endif
 }
 

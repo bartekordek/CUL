@@ -27,6 +27,8 @@ NAMESPACE_BEGIN( GUTILS )
 class ConsoleUtilities;
 NAMESPACE_END( GUTILS )
 
+class ThreadUtils;
+
 class CULLib_API CULInterface final
 {
 public:
@@ -38,8 +40,8 @@ public:
     FS::FSApi* getFS();
     FS::FileFactory* getFF();
     Graphics::IImageLoader* getImageLoader();
-    IThreadUtil* getThreadUtil();
     GUTILS::ConsoleUtilities* getConsoleUtils();
+    ThreadUtils& getThreadUtils();
 
     GUTILS::IConfigFile* loadConfigFile( const FS::Path& path );
 
@@ -62,8 +64,8 @@ private:
     GUTILS::DumbPtr<OSUtils::ISystemFonts> m_sysFonts;
     // GUTILS::DumbPtr<Graphics::IImageLoader> m_imageLoader;
     std::unique_ptr<Graphics::IImageLoader> m_imageLoader;
-    GUTILS::DumbPtr<IThreadUtil> m_threadUtil;
     std::unique_ptr<GUTILS::ConsoleUtilities> m_args;
+    ThreadUtils* m_threadUtils = nullptr;
 };
 
 NAMESPACE_END( CUL )

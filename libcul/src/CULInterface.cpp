@@ -1,5 +1,6 @@
 #include "CUL/CULInterface.hpp"
 
+#include "CUL/ThreadUtils.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
@@ -42,9 +43,9 @@ void CULInterface::initialize()
 
     m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
-    m_threadUtil = new ThreadUtilConcrete();
-
     m_args.reset( new GUTILS::ConsoleUtilities());
+
+    m_threadUtils = new ThreadUtils();
 }
 
 CUL::LOG::ILogger* CULInterface::getLogger()
@@ -72,14 +73,14 @@ Graphics::IImageLoader* CULInterface::getImageLoader()
     return m_imageLoader.get();
 }
 
-IThreadUtil* CULInterface::getThreadUtil()
-{
-    return m_threadUtil;
-}
-
 GUTILS::ConsoleUtilities* CULInterface::getConsoleUtils()
 {
     return m_args.get();
+}
+
+ThreadUtils& CULInterface::getThreadUtils()
+{
+    return *m_threadUtils;
 }
 
 GUTILS::IConfigFile* CULInterface::loadConfigFile( const FS::Path& path )
@@ -89,6 +90,8 @@ GUTILS::IConfigFile* CULInterface::loadConfigFile( const FS::Path& path )
 
 CULInterface::~CULInterface()
 {
+    delete m_threadUtils;
+    m_threadUtils = nullptr;
     LOG::LOG_CONTAINER::destroyLogger();
     m_logger = nullptr;
 }
