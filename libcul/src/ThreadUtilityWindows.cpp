@@ -1,5 +1,5 @@
 #include "ThreadUtilityWindows.hpp"
-#ifdef _MSC_VER //compile only on windows.
+#ifdef _WIN32 //compile only on windows.
 #include "GUARD_windows.hpp"
 
 const DWORD MS_VC_EXCEPTION = 0x406D1388;
@@ -34,9 +34,5 @@ void setCurrentThreadNameWin( const CUL::String& name )
     {
     }
 #pragma warning(pop)
-}
-#else
-void CUL::ThreadUtils::setCurrentThreadNameWin( const String& )
-{
 }
 #endif

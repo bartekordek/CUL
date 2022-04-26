@@ -1,4 +1,7 @@
 #include "CUL/ThreadUtils.hpp"
+
+#include "CUL/STL_IMPORTS/STD_algorithm.hpp"
+
 #ifdef _MSC_VER
 #include "ThreadUtilityWindows.hpp"
 #else

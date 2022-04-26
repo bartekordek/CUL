@@ -28,20 +28,23 @@ public:
     };
 
     Angle();
-    Angle( double value, const Type type = Type::RADIAN );
-    Angle( int value, const Type type = Type::RADIAN );
+    Angle( double value, const Type type );
+    Angle( int value, const Type type  );
 
-    double getValueD( const Type type = Type::RADIAN ) const;
-    float getValueF( const Type type = Type::RADIAN ) const;
-    int getValueI( const Type type = Type::RADIAN ) const;
+    double getValueD( const Type type ) const;
+    float getValueF( const Type type  ) const;
+    int getValueI( const Type type ) const;
 
-    void setValue( double value, const Type type = Type::RADIAN );
-    void setValue( unsigned value, const Type type = Type::RADIAN );
-    void setValue( int value, const Type type = Type::RADIAN );
+    void setValue( double value, const Type type);
+    void setValue( unsigned value, const Type type );
+    void setValue( int value, const Type type);
 
     void setIncrementValue( unsigned value );
     void setIncrementValue( int value );
     void setIncrementValue( double value );
+
+    float getRad();
+    float getDeg();
 
     Type getCurrentType() const;
     void setCurrentType( const Type type );

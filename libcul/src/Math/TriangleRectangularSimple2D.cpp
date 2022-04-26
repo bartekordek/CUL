@@ -121,7 +121,7 @@ void TriangleRectangularSimple2D::calculateAngle()
         const auto height = m_opposite;
         if( isLessThanEpislon( height ) )
         {
-            m_angle.setValue( 0 );
+            m_angle.setValue( 0, CUL::MATH::Angle::Type::DEGREE );
         }
         else if( height > 0 )
         {
@@ -139,7 +139,7 @@ void TriangleRectangularSimple2D::calculateAngle()
             const auto width = std::max( m_adjacent, m_hypotenuse );
             if( width > 0 )
             {
-                m_angle.setValue( 0 );
+                m_angle.setValue( 0, Angle::Type::DEGREE );
             }
             else
             {

@@ -334,6 +334,16 @@ float Angle::getValueF( const Type type ) const
     return static_cast<float>( m_valueDeg );
 }
 
+float Angle::getRad()
+{
+    return m_valueRad;
+}
+
+float Angle::getDeg()
+{
+    return m_valueDeg;
+}
+
 double CUL::MATH::radian2degree( double radian )
 {
     return radian * 180.0 / CUL::MATH::UTIL::Constants::PI;

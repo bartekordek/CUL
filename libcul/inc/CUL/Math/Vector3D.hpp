@@ -88,7 +88,7 @@ public:
     String getSerializationContent( CounterType tabsSize, const bool = false ) const override
     {
         String tabs = getTab( tabsSize );
-
+        static CUL::MATH::Angle::Type angleType = CUL::MATH::Angle::Type::RADIAN;
         String result;
         result = result + tabs + "\"pos\":\n";
         result = result + tabs + "{\n";
@@ -98,9 +98,12 @@ public:
         result = result + tabs + "},\n";
         result = result + tabs + "\"rotation\":\n";
         result = result + tabs + "{\n";
-        result = result + tabs + "    \"yaw\": " + String( m_rotationTraingles[(size_t) RotationType::YAW].getAngle().getValueF() ) + ",\n";
-        result = result + tabs + "    \"pitch\": " + String( m_rotationTraingles[(size_t) RotationType::PITCH].getAngle().getValueF() ) + ",\n";
-        result = result + tabs + "    \"roll\": " + String( m_rotationTraingles[(size_t) RotationType::ROLL].getAngle().getValueF() ) + "\n";
+        result = result + tabs +
+        "    \"yaw\": " + String( m_rotationTraingles[(size_t)RotationType::YAW].getAngle().getValueF( angleType ) ) + ",\n";
+        result = result + tabs +
+        "    \"pitch\": " + String( m_rotationTraingles[(size_t)RotationType::PITCH].getAngle().getValueF( angleType ) ) + ",\n";
+        result = result + tabs +
+        "    \"roll\": " + String( m_rotationTraingles[(size_t)RotationType::ROLL].getAngle().getValueF( angleType ) ) + "\n";
         result = result + tabs + "}\n";
         return result;
     }
