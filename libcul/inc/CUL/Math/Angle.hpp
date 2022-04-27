@@ -50,6 +50,9 @@ public:
     void setCurrentType( const Type type );
 
     Angle& operator+=( const Angle& right );
+    Angle& operator-=( const Angle& right );
+
+
     Angle& operator+=( unsigned val );
     Angle& operator+=( int val );
     Angle& operator+=( double val );

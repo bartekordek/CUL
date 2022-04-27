@@ -25,6 +25,34 @@ public:
 
     Point& operator=( const PointData& data );
 
+    inline Point operator+(const Point& rhv) const
+    {
+        Point result = *this;
+
+        for( size_t i = 0; i < values.size(); ++i )
+        {
+            result.values[i] += rhv.values[i];
+        }
+
+        result.calculateDiagonal();
+
+        return result;
+    }
+
+    inline Point operator-( const Point& rhv ) const
+    {
+        Point result = *this;
+
+        for( size_t i = 0; i < values.size(); ++i )
+        {
+            result.values[i] -= rhv.values[i];
+        }
+
+        result.calculateDiagonal();
+
+        return result;
+    }
+
     inline Type x() const
     {
         return values[0];

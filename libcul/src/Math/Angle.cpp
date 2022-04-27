@@ -60,6 +60,13 @@ Angle& Angle::operator+=( const Angle& right )
     return *this;
 }
 
+Angle& Angle::operator-=( const Angle& right )
+{
+    m_valueRad -= right.m_valueRad;
+    m_valueDeg -= right.m_valueDeg;
+    return *this;
+}
+
 Angle& Angle::operator+=( unsigned val )
 {
     add( static_cast<double>( val ) );
@@ -336,12 +343,12 @@ float Angle::getValueF( const Type type ) const
 
 float Angle::getRad()
 {
-    return m_valueRad;
+    return (float)m_valueRad;
 }
 
 float Angle::getDeg()
 {
-    return m_valueDeg;
+    return (float)m_valueDeg;
 }
 
 double CUL::MATH::radian2degree( double radian )

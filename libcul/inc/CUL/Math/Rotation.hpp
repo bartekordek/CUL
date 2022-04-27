@@ -12,6 +12,24 @@ public:
     Angle pitch;
     Angle roll;
 
+    inline Rotation& operator+=( const Rotation & rhv )
+    {
+        yaw += rhv.yaw;
+        pitch += rhv.pitch;
+        roll += rhv.roll;
+
+        return *this;
+    }
+
+    inline Rotation& operator-=( const Rotation& rhv )
+    {
+        yaw -= rhv.yaw;
+        pitch -= rhv.pitch;
+        roll -= rhv.roll;
+
+        return *this;
+    }
+
 protected:
 private:
 };
