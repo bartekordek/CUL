@@ -341,12 +341,12 @@ float Angle::getValueF( const Type type ) const
     return static_cast<float>( m_valueDeg );
 }
 
-float Angle::getRad()
+float Angle::getRad() const
 {
     return (float)m_valueRad;
 }
 
-float Angle::getDeg()
+float Angle::getDeg() const
 {
     return (float)m_valueDeg;
 }

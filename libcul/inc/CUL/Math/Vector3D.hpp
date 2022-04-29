@@ -184,8 +184,8 @@ public:
 
     void rotate( const Angle& angle, const RotationType rt )
     {
-        auto s = std::sin( angle.getValueD() );
-        auto c = std::cos( angle.getValueD() );
+        auto s = std::sin( angle.getRad() );
+        auto c = std::cos( angle.getRad() );
 
         if( RotationType::ROLL == rt )
         {

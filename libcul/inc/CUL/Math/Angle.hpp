@@ -43,8 +43,8 @@ public:
     void setIncrementValue( int value );
     void setIncrementValue( double value );
 
-    float getRad();
-    float getDeg();
+    float getRad() const;
+    float getDeg() const;
 
     Type getCurrentType() const;
     void setCurrentType( const Type type );
