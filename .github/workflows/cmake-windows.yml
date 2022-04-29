@@ -46,13 +46,12 @@ jobs:
         working-directory: ${{github.workspace}}
         run: cmake --build Build-Windows --config Debug --target libculTests
 
-      - name: ListFiles
+      - name: Check binary
         shell: cmd
-        # Build your program with the given configuration
-        working-directory: ${{github.workspace}}
+        working-directory: ${{github.workspace}}/Build-Windows/Debug
         run: tree /F /A
 
       - name: Test
         shell: cmd
-        working-directory: ${{github.workspace}}\runDir
-        run: ..\Build-Windows\Debug\libculTests.exe
+        working-directory: ${{github.workspace}}/runDir
+        run: ../Build-Windows/Debug/libculTests.exe
