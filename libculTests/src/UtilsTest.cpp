@@ -122,15 +122,6 @@ TEST_F( UtilsTest, triangleWidth )
     GTEST_ASSERT_EQ( 0, value.getZ() );
 }
 
-TEST_F( UtilsTest, rad )
-{
-    CUL::MATH::Angle rad;
-    rad.setCurrentType( CUL::MATH::Angle::Type::RADIAN );
-    rad += 0.3;
-    rad -= -0.1;
-    const auto val = rad.getValueD();
-    CUL::MATH::Angle rad2( val );
-}
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
