@@ -4,8 +4,6 @@
 
 #ifdef _MSC_VER
 #include "ThreadUtilityWindows.hpp"
-#else
-#include "ThreadUtilityDummy.hpp"
 #endif
 
 using namespace CUL;
@@ -19,8 +17,6 @@ void ThreadUtils::setCurrentThreadName( const String& name )
 {
 #ifdef _MSC_VER
     setCurrentThreadNameWin( name );
-#else
-    setCurrentThreadNameDummy( name );
 #endif
 
     const std::thread::id thread_id = std::this_thread::get_id();

@@ -2,8 +2,6 @@
 
 #ifdef _MSC_VER
 #include "ThreadUtilityWindows.hpp"
-#else
-#include "ThreadUtilityDummy.hpp"
 #endif
 
 using namespace CUL;
@@ -42,8 +40,6 @@ void ThreadUtilConcrete::setCurrentThreadName( const String& name )
 
 #ifdef _MSC_VER
     setCurrentThreadNameWin( name );
-#else
-    setCurrentThreadNameDummy( name );
 #endif
 }
 
