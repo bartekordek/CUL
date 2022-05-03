@@ -81,6 +81,7 @@ public:
     String substr( size_t pos = 0, size_t len = UnderlyingType::npos ) const;
 
     void toLower();
+    String toLowerR()const;
     void toUpper();
 
     bool contains( const String& inputString ) const;
@@ -111,6 +112,7 @@ public:
     double toDouble() const;
     int toInt();
     unsigned int toUInt() const;
+    bool toBool() const;
 
 
     Length length() const;

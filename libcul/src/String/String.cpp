@@ -356,6 +356,15 @@ void String::toLower()
 #endif
 }
 
+String String::toLowerR() const
+{
+    String result = *this;
+
+    result.toLower();
+
+    return result;
+}
+
 void String::toUpper()
 {
 #if _MSC_VER
@@ -564,6 +573,21 @@ int String::toInt()
 unsigned int String::toUInt() const
 {
     return m_value.empty() ? 0u : std::stoul( m_value, nullptr, 0 );
+}
+
+bool String::toBool() const
+{
+    if( m_value.empty() )
+    {
+        return false;
+    }
+
+    if( toLowerR() == "true" )
+    {
+        return true;
+    }
+
+    return false;
 }
 
 Length String::length() const
