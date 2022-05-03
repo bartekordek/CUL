@@ -54,4 +54,4 @@ jobs:
       - name: Test
         shell: cmd
         working-directory: ${{github.workspace}}/runDir
-        run: ../Build-Windows/Debug/libculTests.exe
+        run: ..\Build-Windows\Debug\libculTests.exe
