@@ -2,6 +2,7 @@
 
 #include "CUL/ISerializable.hpp"
 #include "CUL/STL_IMPORTS/STD_utility.hpp"
+#include "CUL/IMPORT_GLM.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -34,6 +35,10 @@ public:
     {
     }
 
+    Pos3D( const glm::vec3& arg ) : ISerializable(), x( arg.x ), y( arg.y ), z( arg.z )
+    {
+    }
+
     Pos3D( Pos3D&& arg ):
         x( std::move( arg.x ) ),
         y( std::move( arg.y ) ),
@@ -55,6 +60,17 @@ public:
     }
 
     Pos3D& operator=( const Pos3D& rhv )
+    {
+        if( this != &rhv )
+        {
+            x = rhv.x;
+            y = rhv.y;
+            z = rhv.z;
+        }
+        return *this;
+    }
+
+    Pos3D& operator=( const glm::vec3& rhv )
     {
         if( this != &rhv )
         {
