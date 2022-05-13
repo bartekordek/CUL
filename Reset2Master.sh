@@ -1,5 +1,9 @@
 #!/bin/bash 
+
 time git checkout -f master
 time git reset --hard origin/master
 time git submodule update --recursive --init
+
+echo "Update helpers..."
 cd deps/helpers && ./Reset2Master.sh
+echo "Update helpers... done."
