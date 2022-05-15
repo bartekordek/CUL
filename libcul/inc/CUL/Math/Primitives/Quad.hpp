@@ -16,8 +16,10 @@ public:
 
     Quad();
     Quad( const Quad& arg );
+    Quad( const QuadData& dataIn );
 
     Quad& operator=( const Quad& arg );
+    Quad& operator=( const QuadData& dataIn );
 
     void* dataVoid();
 
