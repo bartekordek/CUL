@@ -34,6 +34,7 @@ public:
     ~Quad();
 protected:
 private:
+    void initializeData();
     void updateData();
     String getSerializationContent( CounterType tabsSize, const bool = false ) const override;
 

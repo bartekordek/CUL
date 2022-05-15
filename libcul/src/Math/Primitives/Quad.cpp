@@ -6,14 +6,30 @@ using namespace Primitives;
 
 Quad::Quad()
 {
+    initializeData();
     updateData();
 }
 
-Quad::Quad( const Quad& arg ):
-    ISerializable(),
-    data( arg.data )
+Quad::Quad( const Quad& arg ) : ISerializable(), data( arg.data )
 {
+    initializeData();
     updateData();
+}
+
+Quad::Quad( const QuadData& dataIn )
+{
+    setData( dataIn );
+}
+
+void Quad::initializeData()
+{
+    for( auto& point: data )
+    {
+        for( auto& value: point )
+        {
+            value = 0.f;
+        }
+    }
 }
 
 Quad& Quad::operator=( const Quad& arg )
@@ -23,6 +39,13 @@ Quad& Quad::operator=( const Quad& arg )
         data = arg.data;
         updateData();
     }
+    return *this;
+}
+
+
+Quad& Quad::operator=(const QuadData& dataIn)
+{
+    setData(dataIn);
     return *this;
 }
 
@@ -38,32 +61,28 @@ void Quad::setData( const QuadData& dataIn )
 
 Quad::PointType& Quad::operator[]( size_t index )
 {
-    return data[ index ];
+    return data[index];
 }
 
 const Quad::PointType& Quad::operator[]( size_t index ) const
 {
-    return data[ index ];
+    return data[index];
 }
 
 void Quad::updateData()
 {
-    auto convertedToVoid = reinterpret_cast<const void*>(&data);
-    dataAsVoid = const_cast<void*>(convertedToVoid);
+    auto convertedToVoid = reinterpret_cast<const void*>( &data );
+    dataAsVoid = const_cast<void*>( convertedToVoid );
 }
 
 String Quad::getSerializationContent( CounterType tabsSize, const bool ) const
 {
     String tabs = getTab( tabsSize );
 
-    auto convertPoint = []( const PointType& value ){
-        return String( "{ " ) +
-            String( value[0] ) +
-            String( ", " ) +
-            String( value[1] ) +
-            String( ", " ) +
-            String( value[2] ) +
-            String( " }" );
+    auto convertPoint = []( const PointType& value )
+    {
+        return String( "{ " ) + String( value[0] ) + String( ", " ) + String( value[1] ) + String( ", " ) + String( value[2] ) +
+               String( " }" );
     };
 
     String result;
@@ -78,5 +97,4 @@ String Quad::getSerializationContent( CounterType tabsSize, const bool ) const
 
 Quad::~Quad()
 {
-
 }
