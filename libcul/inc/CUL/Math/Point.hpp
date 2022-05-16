@@ -20,10 +20,14 @@ public:
     Type diagonal = 0.f;
 
     Point();
+    Point( const glm::vec3& vec );
     Point( Type val1, Type val2, Type val3 );
     Point( const PointData& data );
 
     Point& operator=( const PointData& data );
+    Point& operator=( const glm::vec3& vec );
+
+    operator glm::vec3();
 
     inline Point operator+(const Point& rhv) const
     {

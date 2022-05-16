@@ -13,6 +13,11 @@ Point::Point()
 
 }
 
+Point::Point( const glm::vec3& vec ) : values( {vec.x, vec.y, vec.z} )
+{
+    calculateDiagonal();
+}
+
 Point::Point(
     Point::Type inx,
     Point::Type iny,
@@ -34,6 +39,25 @@ Point& Point::operator=( const PointData& data )
         values = data;
     }
     return *this;
+}
+
+Point& Point::operator=( const glm::vec3& vec )
+{
+    values[0] = vec.x;
+    values[1] = vec.y;
+    values[2] = vec.z;
+
+    calculateDiagonal();
+    return *this;
+}
+
+Point::operator glm::vec3()
+{
+    glm::vec3 result;
+    result.x = values[0];
+    result.y = values[1];
+    result.z = values[2];
+    return result;
 }
 
 Point::Point( const Point& arg ):

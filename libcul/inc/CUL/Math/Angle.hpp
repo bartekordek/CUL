@@ -49,6 +49,8 @@ public:
     Type getCurrentType() const;
     void setCurrentType( const Type type );
 
+    Angle& operator=( float value );
+
     Angle& operator+=( const Angle& right );
     Angle& operator-=( const Angle& right );
 

@@ -53,6 +53,12 @@ void Angle::setCurrentType( const Type type )
     m_type = type;
 }
 
+Angle& Angle::operator=( float value )
+{
+    setValue( value, Type::RADIAN );
+    return *this;
+}
+
 Angle& Angle::operator+=( const Angle& right )
 {
     m_valueRad += right.m_valueRad;
