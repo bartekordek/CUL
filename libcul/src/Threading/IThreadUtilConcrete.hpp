@@ -1,6 +1,6 @@
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
-#include "CUL/IThreadUtil.hpp"
+#include "CUL/Threading/IThreadUtil.hpp"
 
 NAMESPACE_BEGIN( CUL )
 

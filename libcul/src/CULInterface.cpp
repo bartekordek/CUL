@@ -1,6 +1,6 @@
 #include "CUL/CULInterface.hpp"
 
-#include "CUL/ThreadUtils.hpp"
+#include "CUL/Threading/ThreadUtils.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
