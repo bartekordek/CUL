@@ -9,8 +9,8 @@ NAMESPACE_BEGIN( CUL )
 class ThreadWrapper final
 {
 public:
-    CULLib_API ThreadWrapper( std::function<void( void )> threadBody );
-
+    CULLib_API ThreadWrapper();
+    CULLib_API void setBody( std::function<void( void )> threadBody );
     CULLib_API void run();
     CULLib_API void waitForCompletion();
 
@@ -18,6 +18,7 @@ public:
 
 protected:
 private:
+    void threadBody();
     std::thread m_mainThread;
     std::function<void( void )> m_body;
 

@@ -2,12 +2,21 @@
 
 using namespace CUL;
 
-ThreadWrapper::ThreadWrapper( std::function<void( void )> threadBody ) : m_body( threadBody )
+ThreadWrapper::ThreadWrapper()
 {
-    m_mainThread = std::thread( &ThreadWrapper::run, this );
+}
+
+void ThreadWrapper::setBody( std::function<void( void )> threadBody )
+{
+    m_body = threadBody;
 }
 
 void ThreadWrapper::run()
+{
+    m_mainThread = std::thread( &ThreadWrapper::threadBody, this );
+}
+
+void ThreadWrapper::threadBody()
 {
     m_body();
 }
