@@ -35,7 +35,8 @@ public:
     virtual const Path& getPath() const = 0;
     bool exists() const;
     virtual void changePath( const Path& newPath ) = 0;
-    virtual void reload( bool keepLineEndingCharacter = false ) = 0;
+    virtual void reload( bool keepLineEndingCharacter ) = 0;
+    virtual void reload() = 0;
     virtual void load( bool keepLineEndingCharacter = false ) = 0;
     virtual void unload() = 0;
 

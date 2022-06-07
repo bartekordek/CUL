@@ -24,6 +24,10 @@ void Directory::reload( bool )
 {
 }
 
+void Directory::reload()
+{
+}
+
 //TODO
 void Directory::load( bool )
 {

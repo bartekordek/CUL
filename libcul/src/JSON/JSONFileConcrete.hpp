@@ -31,7 +31,8 @@ private:
 
     void changePath( const FS::Path& newPath ) override;
 
-    void reload( bool keepLineEndingCharacter = false ) override;
+    void reload( bool keepLineEndingCharacter ) override;
+    void reload() override;
     void load( bool keepLineEndingCharacter = false ) override;
     void unload() override;
 
@@ -52,6 +53,8 @@ private:
 private: // Deleted
     JSONFileConcrete( const JSONFileConcrete& rhv ) = delete;
     JSONFileConcrete& operator=( const JSONFileConcrete& rhv ) = delete;
+
+    bool m_keepLineEndingCharacter = false;
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

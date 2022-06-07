@@ -29,12 +29,20 @@ void JSONFileConcrete::changePath( const FS::Path& newPath )
 
 void JSONFileConcrete::reload( bool keepLineEndingCharacter )
 {
+    m_keepLineEndingCharacter = keepLineEndingCharacter;
     m_fileContents->reload( keepLineEndingCharacter );
+    parse();
+}
+
+void JSONFileConcrete::reload()
+{
+    m_fileContents->reload( m_keepLineEndingCharacter );
     parse();
 }
 
 void JSONFileConcrete::load( bool keepLineEndingCharacter )
 {
+    m_keepLineEndingCharacter = keepLineEndingCharacter;
     m_fileContents->load( keepLineEndingCharacter );
     parse();
 }

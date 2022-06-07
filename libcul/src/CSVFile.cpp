@@ -58,6 +58,12 @@ void CSVFile::reload( bool keepLineEndingCharacter )
     load( keepLineEndingCharacter );
 }
 
+void CSVFile::reload()
+{
+    unload();
+    load( m_keepLineEndingCharacter );
+}
+
 void CSVFile::loadCSV( bool valuesContainQuotationMarks, bool keepLineEndingCharacter )
 {
     m_cellsContainQuotationMarks = valuesContainQuotationMarks;

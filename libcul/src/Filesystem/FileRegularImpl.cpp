@@ -30,6 +30,12 @@ void FileRegularImpl::reload( bool keepLineEndingCharacter )
     load( keepLineEndingCharacter );
 }
 
+void FileRegularImpl::reload()
+{
+    unload();
+    load( m_keepLineEndingCharacter );
+}
+
 void FileRegularImpl::load( bool keepLineEndingCharacter )
 {
     CUL::Assert::simple( exists(), "Cannot open the file: " + m_path.getPath() );

@@ -15,6 +15,10 @@ void TextFile::reload( bool  )
 {
 }
 
+void TextFile::reload()
+{
+}
+
 void TextFile::load( bool  )
 {
 }
