@@ -16,7 +16,8 @@ endif()
 find_package( cul REQUIRED )
 
 include_directories(src)
-file( GLOB SOURCES src/*.cpp )
+file( GLOB_RECURSE SOURCES inc/*.hpp src/*.hpp src/*.cpp )
+source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 
 add_executable(${EXEC} ${SOURCES})
 
@@ -56,9 +57,4 @@ if (MSVC)
     endif()
 
     set( GTEST_OUTPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/bin/${CMAKE_BUILD_TYPE} )
-
-    add_custom_command(TARGET ${EXEC}
-        POST_BUILD
-            COMMAND tree ${CUL_BUILD_ROOT}
-            )
 endif()

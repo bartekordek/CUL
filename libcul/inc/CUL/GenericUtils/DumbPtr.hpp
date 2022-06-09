@@ -2,12 +2,13 @@
 
 #include "CUL/GenericUtils/LckPrim.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/Memory/MemoryPool.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
 
 template <class Type>
-class CULLib_API DumbPtr
+class DumbPtr
 {
 public:
     DumbPtr()
@@ -23,6 +24,11 @@ public:
     DumbPtr( Type* value ):
         m_ptr( value )
     {
+    }
+
+    void setMemoryPool( Memory::MemoryPool* mp )
+    {
+        s_memoryPool = mp;
     }
 
     Type& operator*()
@@ -43,21 +49,18 @@ public:
     DumbPtr<Type>& operator=( const Type* rhv )
     {
         m_ptr = const_cast<Type*>( rhv );
-        m_destroyed = false;
         return *this;
     }
 
     DumbPtr<Type>& operator=( DumbPtr<Type>& arg )
     {
         m_ptr = std::move( arg.m_ptr );
-        arg.m_destroyed = true;
         return *this;
     }
 
     DumbPtr<Type>& operator=( DumbPtr<Type>&& arg )
     {
         m_ptr = std::move( arg.m_ptr );
-        arg.m_destroyed = true;
         return *this;
     }
 
@@ -78,8 +81,24 @@ public:
         return m_ptr;
     }
 
+    void set( Type* value, Memory::MemoryPool* mp = nullptr )
+    {
+        if( value == nullptr )
+        {
+            release();
+        }
+
+        m_ptr = value;
+        s_memoryPool = mp;
+    }
+
     void reset( Type* value )
     {
+        if( value == nullptr )
+        {
+            release();
+        }
+
         m_ptr = value;
     }
 
@@ -115,13 +134,32 @@ public:
 
     void release()
     {
-        delete m_ptr;
+        if( isReleased() )
+        {
+            return;
+        }
+
+        if( s_memoryPool )
+        {
+            m_ptr->~Type();
+            s_memoryPool->release( m_ptr );
+        }
+        else
+        {
+            delete m_ptr;
+        }
+
         m_ptr = nullptr;
     }
 
     bool isReleased()
     {
-        return m_destroyed;
+        return m_ptr == nullptr;
+    }
+
+    static void registerMemoryPool( Memory::MemoryPool* memoryPool )
+    {
+        s_memoryPool = memoryPool;
     }
 
 private:
@@ -129,8 +167,12 @@ private:
     DumbPtr& operator=( const DumbPtr& value ) = delete;
 
     Type* m_ptr = nullptr;
-    LckBool m_destroyed = false;
+
+    static Memory::MemoryPool* s_memoryPool;
 };
+
+template <class Type>
+Memory::MemoryPool* DumbPtr<Type>::s_memoryPool = nullptr;
 
 NAMESPACE_END( GUTILS )
 NAMESPACE_END( CUL )
