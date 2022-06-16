@@ -28,8 +28,10 @@ enum class PixelFormat: short
 #pragma warning( disable: 4251 )
 #pragma warning( disable: 4820 )
 #endif
-struct CULLib_API ImageInfo
+
+class CULLib_API ImageInfo
 {
+public:
     ImageInfo();
 
     FS::Path path;
