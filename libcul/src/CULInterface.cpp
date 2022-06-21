@@ -28,7 +28,7 @@ CULInterface::CULInterface( const FS::Path& configFilePath )
 void CULInterface::initialize()
 {
     m_fileFactory = new FS::FileFactory( this );
-    m_fsApi.reset( FS::FSApi::crateInstance( "FSApiFS", m_fileFactory.get(), this ) );
+    m_fsApi.reset( FS::FSApi::crateInstance( "FSApiFS", m_fileFactory, this ) );
 
     if( !m_configFilePath.getPath().empty() )
     {
@@ -90,6 +90,9 @@ GUTILS::IConfigFile* CULInterface::loadConfigFile( const FS::Path& path )
 
 CULInterface::~CULInterface()
 {
+    delete m_sysFonts;
+    m_sysFonts = nullptr;
+
     delete m_threadUtils;
     m_threadUtils = nullptr;
     LOG::LOG_CONTAINER::destroyLogger();

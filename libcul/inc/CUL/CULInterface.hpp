@@ -1,5 +1,5 @@
 #pragma once
-#include "CUL/Filesystem/FileFactory.hpp"
+
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/OSUtils/ISystemFonts.hpp"
@@ -12,6 +12,7 @@ using UniquePtr = std::unique_ptr<Type>;
 
 NAMESPACE_BEGIN( FS )
 class FSApi;
+class FileFactory;
 NAMESPACE_END( FS )
 
 NAMESPACE_BEGIN( GUTILS )
@@ -58,9 +59,9 @@ private:
     FS::Path m_configFilePath;
     CUL::GUTILS::IConfigFile* m_configFile = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
-    GUTILS::DumbPtr<FS::FileFactory> m_fileFactory;
+    FS::FileFactory* m_fileFactory = nullptr;
     std::unique_ptr<FS::FSApi> m_fsApi;
-    GUTILS::DumbPtr<OSUtils::ISystemFonts> m_sysFonts;
+    OSUtils::ISystemFonts* m_sysFonts = nullptr;
     // GUTILS::DumbPtr<Graphics::IImageLoader> m_imageLoader;
     std::unique_ptr<Graphics::IImageLoader> m_imageLoader;
     std::unique_ptr<GUTILS::ConsoleUtilities> m_args;

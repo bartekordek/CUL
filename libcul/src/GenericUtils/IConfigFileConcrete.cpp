@@ -1,6 +1,7 @@
 #include "GenericUtils/IConfigFileConcrete.hpp"
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
 
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_iosfwd.hpp"
