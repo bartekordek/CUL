@@ -4,7 +4,7 @@ using namespace CUL::Graphics;
 
 ColorS::ColorS()
 {
-    m_colorValues = { 0.f, 0.f, 0.f, 0.f };
+    //m_colorValues = { 0.f, 0.f, 0.f, 0.f };
 }
 
 ColorS::ColorS( const ColorE colorE )
@@ -109,11 +109,6 @@ void ColorS::setAlphaF( float v )
     setAlpha( v );
 }
 
-std::array<float, 4>& ColorS::getData()
-{
-    return m_colorValues;
-}
-
 void ColorS::setFloat( float red, float green, float blue, float alpha )
 {
     setRed( red );
@@ -140,6 +135,11 @@ void ColorS::setBlue( float val )
 void ColorS::setAlpha( float val )
 {
     m_colorValues[3] = val;
+}
+
+const glm::vec4& ColorS::getVec4() const
+{
+    return m_colorValues;
 }
 
 ColorS::~ColorS()

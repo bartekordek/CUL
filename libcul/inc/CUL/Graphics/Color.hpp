@@ -1,8 +1,11 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
+
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+
+#include "CUL/IMPORT_GLM.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -29,39 +32,39 @@ using cfloat = const float;
 using cuint8_t = const uint8_t;
 using CDataType = unsigned char;
 
-class CULLib_API ColorS final
+class ColorS final
 {
 public:
-    ColorS();
+    CULLib_API ColorS();
 
-    ColorS( const ColorE colorE );
+    CULLib_API ColorS( const ColorE colorE );
 
-    ColorS(
+    CULLib_API ColorS(
         float rr,
         float gg,
         float bb,
         float aalpha = 0.0f );
 
-    ColorS& operator=( const ColorE color );
+    CULLib_API ColorS& operator=( const ColorE color );
 
-    unsigned getRUI() const;
-    unsigned getGUI() const;
-    unsigned getBUI() const;
-    unsigned getAUI() const;
+    CULLib_API unsigned getRUI() const;
+    CULLib_API unsigned getGUI() const;
+    CULLib_API unsigned getBUI() const;
+    CULLib_API unsigned getAUI() const;
 
-    float getRF() const;
-    float getGF() const;
-    float getBF() const;
-    float getAF() const;
+    CULLib_API float getRF() const;
+    CULLib_API float getGF() const;
+    CULLib_API float getBF() const;
+    CULLib_API float getAF() const;
 
-    void setRF( float r );
-    void setGF( float g );
-    void setBF( float b );
-    void setAlphaF( float alpha );
+    CULLib_API void setRF( float r );
+    CULLib_API void setGF( float g );
+    CULLib_API void setBF( float b );
+    CULLib_API void setAlphaF( float alpha );
 
-    std::array<float, 4>& getData();
+    CULLib_API const glm::vec4& getVec4() const;
 
-    ~ColorS();
+    CULLib_API ~ColorS();
 
 protected:
 private:
@@ -76,7 +79,7 @@ private:
     void setBlue( float val );
     void setAlpha( float val );
 
-    std::array<float, 4> m_colorValues;
+    glm::vec4 m_colorValues = { 0.f, 0.f, 0.f, 0.f };
 
 };
 NAMESPACE_END( Graphics )
