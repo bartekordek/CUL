@@ -1,9 +1,12 @@
 #include "FilesystemTests.hpp"
+
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/Filesystem/FS.hpp"
 #include "CUL/Log/ILogContainer.hpp"
-#include "CUL/STL_IMPORTS/STD_memory.hpp"
+#include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
+
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 using Path = CUL::FS::Path;
 
