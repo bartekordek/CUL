@@ -18,11 +18,11 @@ public:
     TimeConcrete& operator=( const TimeConcrete& rhv );
     void setTimeMs( const unsigned int ms ) override;
     void setTimeUs( const unsigned int us ) override;
-    unsigned int getMs() const override;
-    unsigned int getS() const override;
-    unsigned int getM() const override;
-    unsigned int getH() const override;
-    unsigned int getUs() const override;
+    float getMs() const override;
+    float getS() const override;
+    float getM() const override;
+    float getH() const override;
+    float getUs() const override;
 
     bool operator==( const ITime& arg ) const override;
     bool operator<( const ITime& arg ) const override;
@@ -35,7 +35,7 @@ public:
     ~TimeConcrete();
 protected:
 private:
-    unsigned int m_us = 0;
+    float m_us = 0;
     CUL::String m_asString;
 };
 #ifdef _MSC_VER

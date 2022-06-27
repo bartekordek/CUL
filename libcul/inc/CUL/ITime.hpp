@@ -12,11 +12,11 @@ public:
 
     virtual void setTimeMs( const unsigned int time ) = 0;
     virtual void setTimeUs( const unsigned int us ) = 0;
-    virtual unsigned int getMs() const = 0;
-    virtual unsigned int getS() const = 0;
-    virtual unsigned int getM() const = 0;
-    virtual unsigned int getH() const = 0;
-    virtual unsigned int getUs() const = 0;
+    virtual float getMs() const = 0;
+    virtual float getS() const = 0;
+    virtual float getM() const = 0;
+    virtual float getH() const = 0;
+    virtual float getUs() const = 0;
     virtual bool operator==( const ITime& ) const = 0;
     virtual bool operator<( const ITime& ) const = 0;
     virtual bool operator>( const ITime& ) const = 0;

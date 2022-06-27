@@ -31,27 +31,27 @@ void TimeConcrete::setTimeUs( const unsigned int us )
     m_us = us;
 }
 
-unsigned int TimeConcrete::getMs() const
+float TimeConcrete::getMs() const
 {
     return m_us / 1000;
 }
 
-unsigned int TimeConcrete::getS() const
+float TimeConcrete::getS() const
 {
-    return m_us / ( 1000u * 1000u );
+    return m_us / ( 1000.f * 1000.f );
 }
 
-unsigned int TimeConcrete::getM() const
+float TimeConcrete::getM() const
 {
-    return m_us / ( 60000u * 1000u );
+    return m_us / ( 60000.f * 1000.f );
 }
 
-unsigned int TimeConcrete::getH() const
+float TimeConcrete::getH() const
 {
-    return m_us / ( 3600000u * 1000u );
+    return m_us / ( 3600000.f * 1000.f );
 }
 
-unsigned int TimeConcrete::getUs() const
+float TimeConcrete::getUs() const
 {
     return m_us;
 }
