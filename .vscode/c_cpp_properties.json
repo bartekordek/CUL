@@ -36,6 +36,8 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
+                "/usr/include",
+                "/usr/include/c++/9/bits",
                 "${workspaceFolder}/libculTests",
                 "${workspaceFolder}/libcul/inc",
                 "${workspaceFolder}/libcul/src/",
@@ -48,7 +50,8 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "CUL_GLOBAL_MEMORY_POOL"
             ],
             "cStandard": "c11",
             "cppStandard": "c++17",

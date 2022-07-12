@@ -10,6 +10,7 @@ CUL::GUTILS::DumbPtr<CUL::CULInterface> JSONTests::m_culInterface = nullptr;
 
 JSONTests::JSONTests()
 {
+    jsonTestFileName = { "test.json" };
 }
 
 void JSONTests::SetUpTestCase()

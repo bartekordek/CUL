@@ -77,7 +77,7 @@ CHOOSEFONT ShowSelectFont()
 #pragma warning( disable: 5045 )
 #endif
 
-bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
+bool GetFontData1( const HFONT fontHandle, std::string& data )
 {
     bool result = false;
     HDC hdc = ::CreateCompatibleDC( NULL );
@@ -88,6 +88,7 @@ bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
         if( size > 0 )
         {
             char* buffer = new char[size];
+            std::memset( buffer, '0', size );
             if( ::GetFontData(
                 hdc,
                 0,
@@ -96,6 +97,13 @@ bool GetFontData1( const HFONT fontHandle, std::vector<char>& data )
                 static_cast<DWORD>( size ) ) == static_cast<DWORD>( size ) )
             {
                 data.resize( size );
+
+                //for( size_t i = 0; i < size; ++i )
+                //{
+                //    //data[i] = buffer[i];
+                //    data.push_back( buffer[i] );
+                //}
+
                 memcpy( &data[0], buffer, size );
                 result = true;
             }
@@ -134,7 +142,9 @@ void SystemFontsWindows::getWindowsPath()
     auto defaultGuiFontStockObject = GetStockObject( DEFAULT_GUI_FONT );
     auto defaultFontName = static_cast<HFONT>(defaultGuiFontStockObject);
     std::vector<char> data;
-    GetFontData1( defaultFontName, data );
+    std::string dataAsString;
+    //GetFontData1( defaultFontName, data );
+    GetFontData1( defaultFontName, dataAsString );
 
     DWORD table;
     DWORD offset;

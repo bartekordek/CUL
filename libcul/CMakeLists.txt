@@ -35,7 +35,9 @@ if( MSVC )
     endif( RapidJSON_FOUND )
 else()
     # lots of warnings and all warnings as errors
-    add_compile_options( -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -Wno-sized-deallocation )
+    add_compile_options( -Wall -Wextra -pedantic -Werror -Wno-unused-parameter )
+    # -Wno-sized-deallocation
+    add_compile_options( -Wno-unused-variable )
     add_definitions( -Wfatal-errors )
 endif()
 
@@ -68,7 +70,7 @@ udp-discovery
 set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES COMPILE_DEFINITIONS "")
-target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1 CUL_MEMORY_POOL=1 )
+target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1 CUL_GLOBAL_MEMORY_POOL=1 )
 
 if (MSVC)
     list(APPEND LIBS msvcmrtd )

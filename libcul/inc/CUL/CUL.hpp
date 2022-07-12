@@ -14,11 +14,11 @@
 #define CUL_EXPORT
 #endif // _WIN32
 
-#if defined CUL_MEMORY_POOL
-#define CUL_MEMORY_POOL 1
+#if defined CUL_GLOBAL_MEMORY_POOL
+#define CUL_GLOBAL_MEMORY_POOL 1
 #else
-#define CUL_MEMORY_POOL 0
-#endif // CUL_MEMORY_POOL
+#define CUL_GLOBAL_MEMORY_POOL 0
+#endif // CUL_GLOBAL_MEMORY_POOL
 
 #if defined CUL_EXPORT && defined CUL_LINUX
 #define CULLib_API

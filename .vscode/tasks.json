@@ -136,7 +136,8 @@
             },
             "problemMatcher": [
                 "$gcc"
-            ]
+            ],
+            "dependsOn":"[LINUX][CMAKE][CREATE][DEBUG]"
         },
     ]
 }

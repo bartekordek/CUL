@@ -6,19 +6,24 @@
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_cassert.hpp"
+
+#define assertm(exp, msg) assert(((void)msg, exp))
 
 using namespace CUL;
 using namespace Memory;
 
-static std::array<std::byte, 8192> g_buffer;
-static std::array<std::byte, 8192> g_bufferBlocks;
 
-static std::pmr::monotonic_buffer_resource g_buffer_src( &g_bufferBlocks, sizeof( g_bufferBlocks ) );
-static std::pmr::vector<BlockInfo> g_allocatedBlocks( &g_buffer_src );
-bool MemoryPool::s_initialized = false;
+//bool MemoryPool::s_initialized = false;
 CUL::LOG::ILogger* MemoryPool::s_logger = nullptr;
 
-MemoryPool::MemoryPool()
+MemoryPool& MemoryPool::getInstance()
+{
+    static MemoryPool g_instance;
+    return g_instance;
+}
+
+MemoryPool::MemoryPool() : m_buffer_src( &m_bufferBlocks, sizeof( m_bufferBlocks ) ), m_allocatedBlocks( &m_buffer_src )
 {
     init();
 }
@@ -26,20 +31,16 @@ MemoryPool::MemoryPool()
 void MemoryPool::init()
 {
     std::lock_guard<std::mutex> mtxGuard( m_access );
-    if( !s_initialized )
+    if( !m_initialized )
     {
         std::memset( g_buffer.data(), 0, sizeof( *g_buffer.begin() ) * g_buffer.size() );
-        s_initialized = true;
+        std::cout << "Stack begin: " << g_buffer.data() << "\n";
+        m_initialized = true;
     }
 }
 
 void* MemoryPool::getMemory( size_t sizeInBytes )
 {
-    if( !s_initialized )
-    {
-        return nullptr;
-    }
-
     GUTILS::ScopeExit onExit( [this]() {
         m_access.unlock();
     } );
@@ -48,7 +49,7 @@ void* MemoryPool::getMemory( size_t sizeInBytes )
     {
     }
 
-    if( g_allocatedBlocks.empty() )
+    if( m_allocatedBlocks.empty() )
     {
         if( g_buffer.size() > sizeInBytes )
         {
@@ -62,18 +63,18 @@ void* MemoryPool::getMemory( size_t sizeInBytes )
     }
     else
     {
-        const size_t blocksSize = g_allocatedBlocks.size();
+        const size_t blocksSize = m_allocatedBlocks.size();
         BlockInfo* lastBlock = nullptr;
         if( blocksSize == 1 )
         {
-            lastBlock = &g_allocatedBlocks[0];
+            lastBlock = &m_allocatedBlocks[0];
         }
         else
         {
             for( size_t i = 1; i < blocksSize; ++i )
             {
-                const BlockInfo& brockPrev = g_allocatedBlocks[i - 1];
-                const BlockInfo& block = g_allocatedBlocks[i];
+                const BlockInfo& brockPrev = m_allocatedBlocks[i - 1];
+                const BlockInfo& block = m_allocatedBlocks[i];
                 const auto diff = block.start - brockPrev.end - 1;
                 if( diff != 0 )
                 {
@@ -89,7 +90,7 @@ void* MemoryPool::getMemory( size_t sizeInBytes )
                         return bi.ptr;
                     }
                 }
-                lastBlock = &g_allocatedBlocks[i];
+                lastBlock = &m_allocatedBlocks[i];
             }
         }
 
@@ -105,23 +106,52 @@ void* MemoryPool::getMemory( size_t sizeInBytes )
         }
     }
 
-    std::cerr << "Stack pool is full, creating on heap.\n";
+    //std::cerr << "Stack pool is full, creating on heap [" << ++m_heapAllocCounter  << "].\n";
     return nullptr;
 }
 
 void MemoryPool::addBlock( BlockInfo* block )
 {
-    g_allocatedBlocks.push_back( *block );
-    std::sort( g_allocatedBlocks.begin(), g_allocatedBlocks.end(),
+    m_allocatedBlocks.push_back( *block );
+    std::sort( m_allocatedBlocks.begin(), m_allocatedBlocks.end(),
                []( const BlockInfo& b1, const BlockInfo& b2 )
                {
                    return b1.start < b2.start;
     } );
 }
 
+bool MemoryPool::isInitialized() const
+{
+    return m_initialized;
+}
+
+bool MemoryPool::exist( void* target ) const
+{
+    auto it = std::find_if( m_allocatedBlocks.begin(), m_allocatedBlocks.end(), [target]( const BlockInfo& bi ) {
+        return bi.ptr == target;
+    } );
+    return it != m_allocatedBlocks.end();
+}
+
+bool MemoryPool::release( void* target, const size_t size )
+{
+    size_t howManyTimes = size / 8;
+    void* startAdd = target;
+    for( size_t i = 0; i < howManyTimes; ++i )
+    {
+        if( !release( startAdd ) )
+        {
+            return false;
+        }
+        startAdd = static_cast<char*>(startAdd) + 1;
+    }
+
+    return true;
+}
+
 bool MemoryPool::release( void* target )
 {
-    if( !s_initialized )
+    if( !m_initialized )
     {
         return false;
     }
@@ -134,12 +164,12 @@ bool MemoryPool::release( void* target )
     {
     }
 
-    auto it = std::find_if( g_allocatedBlocks.begin(), g_allocatedBlocks.end(),
+    auto it = std::find_if( m_allocatedBlocks.begin(), m_allocatedBlocks.end(),
                          [target]( const BlockInfo& bi )
                          {
                              return bi.ptr == target;
                          } );
-    if( it == g_allocatedBlocks.end() )
+    if( it == m_allocatedBlocks.end() )
     {
         for( int i = 0; i < 10; ++i )
         {
@@ -154,7 +184,7 @@ bool MemoryPool::release( void* target )
             g_buffer[i] = std::byte{ 0 };
         }
 
-        g_allocatedBlocks.erase( it );
+        m_allocatedBlocks.erase( it );
         return true;
     }
     return false;
@@ -167,4 +197,5 @@ size_t MemoryPool::getBufferSize() const
 
 MemoryPool::~MemoryPool()
 {
+
 }

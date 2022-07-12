@@ -12,14 +12,42 @@
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_new.hpp"
+#include "CUL/STL_IMPORTS/STD_memory_resource.hpp"
 
-#if CUL_MEMORY_POOL
-CUL::Memory::MemoryPool g_mainMemoryPool;
-#endif  // #ifdef CUL_MEMORY_POOL
+static std::array<std::byte, 8192> g_bufferBlocks;
+static std::pmr::monotonic_buffer_resource g_buffer_src( &g_bufferBlocks, sizeof( g_bufferBlocks ) );
+static std::pmr::vector<void*> g_allocatedBlocks( &g_buffer_src );
 
 static CUL::LOG::ILogger* g_logger = nullptr;
 
 using namespace CUL;
+
+#if CUL_GLOBAL_MEMORY_POOL
+//bool findMe(void* target)
+//{
+//    return false;
+//    auto it = std::find_if( g_allocatedBlocks.begin(), g_allocatedBlocks.end(), [target]( const void* bi ) {
+//        return bi == target;
+//    } );
+//
+//    if( it != g_allocatedBlocks.end() )
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+//
+//void addMe( void* target )
+//{
+//    if( !findMe( target ) )
+//    {
+//        g_allocatedBlocks.push_back( target );
+//    }
+//}
+#endif  // #ifdef CUL_GLOBAL_MEMORY_POOL
 
 CULInterface* CULInterface::createInstance( const FS::Path& configFile )
 {
@@ -51,9 +79,9 @@ void CULInterface::initialize()
         g_logger = m_logger;
     }
 
-#if CUL_MEMORY_POOL
+#if CUL_GLOBAL_MEMORY_POOL
     CUL::Memory::MemoryPool::s_logger = m_logger;
-#endif  // #if CUL_MEMORY_POOL
+#endif  // #if CUL_GLOBAL_MEMORY_POOL
 
     m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
@@ -111,79 +139,121 @@ CULInterface::~CULInterface()
     m_threadUtils = nullptr;
     LOG::LOG_CONTAINER::destroyLogger();
 
-#if CUL_MEMORY_POOL
+#if CUL_GLOBAL_MEMORY_POOL
     Memory::MemoryPool::s_logger = m_logger;
-#endif  // #if CUL_MEMORY_POOL
+#endif  // #if CUL_GLOBAL_MEMORY_POOL
     g_logger = nullptr;
     m_logger = nullptr;
 }
 
-#if CUL_MEMORY_POOL
+#if CUL_GLOBAL_MEMORY_POOL
 
 void* operator new( std::size_t size )
 {
-    void* stackPool = g_mainMemoryPool.getMemory( size );
-    if( stackPool )
+    if( Memory::MemoryPool::getInstance().isInitialized() )
     {
-        return stackPool;
+        void* result = Memory::MemoryPool::getInstance().getMemory( size );
+        if( result )
+        {
+            //addMe( result );
+            return result;
+        }
+        else
+        {
+            return std::malloc( size );
+        }
     }
-
-    //if( g_logger )
-    //{
-    //    g_logger->log( CUL::String( "Stack pool is full, creating on heap" ) );
-    //}
-
-    void* p = std::malloc( size );
-    return p;
-}
-
-// void operator delete( void* p, std::size_t targetSize ) throw()
-// {
-//     if( !g_mainMemoryPool.release( p ) )
-//     {
-//         std::free( p );
-//     }
-// }
-
-void operator delete( void* p ) throw()
-{
-    if( !g_mainMemoryPool.release( p ) )
+    else
     {
-        std::free( p );
+        void* p = std::malloc( size );
+        return p;
     }
 }
 
 void* operator new[]( std::size_t size )
 {
-    void* stackPool = g_mainMemoryPool.getMemory( size );
-    if( stackPool )
+    if( Memory::MemoryPool::getInstance().isInitialized() )
     {
-        return stackPool;
+        void* result = Memory::MemoryPool::getInstance().getMemory( size );
+        if( result )
+        {
+            //addMe( result );
+            return result;
+        }
+        else
+        {
+            return std::malloc( size );
+        }
     }
-
-    //if( g_logger )
-    //{
-    //    g_logger->log( CUL::String( "Stack pool is full, creating on heap" ) );
-    //}
-
-    void* p = std::malloc( size );
-    return p;
+    else
+    {
+        void* p = std::malloc( size );
+        return p;
+    }
 }
 
-void operator delete[]( void* p ) throw()
+void operator delete( void* p ) throw()
 {
-    if( !g_mainMemoryPool.release( p ) )
+    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist( p ) )
     {
+        Memory::MemoryPool::getInstance().release( p );
+    }
+    else
+    {
+        //if( findMe( p ) )
+        //{
+        //    std::cerr << "Trying to release old stack ptr.\n";
+        //}
         std::free( p );
     }
 }
 
-// void operator delete[]( void* p, std::size_t targetSize ) throw()
-// {
-//     if( !g_mainMemoryPool.release( p ) )
-//     {
-//         std::free( p );
-//     }
-// }
+void operator delete( void* p, std::size_t targetSize ) throw()
+{
+    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist(p) )
+    {
+        Memory::MemoryPool::getInstance().release( p, targetSize );
+    }
+    else
+    {
+        //if( findMe(p) )
+        //{
+        //    std::cerr << "Trying to release old stack ptr.\n";
+        //}
+        std::free( p );
+    }
+}
 
-#endif  // #ifdef CUL_MEMORY_POOL
+void operator delete[]( void* p ) throw()
+{
+    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist( p ) )
+    {
+        Memory::MemoryPool::getInstance().release( p );
+    }
+    else
+    {
+        //if( findMe( p ) )
+        //{
+        //    std::cerr << "Trying to release old stack ptr.\n";
+        //}
+        std::free( p );
+    }
+}
+
+void operator delete[]( void* p, std::size_t targetSize ) throw()
+{
+    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist( p ) )
+    {
+        Memory::MemoryPool::getInstance().release( p );
+    }
+    else
+    {
+        //if( findMe( p ) )
+        //{
+        //    std::cerr << "Trying to release old stack ptr.\n";
+        //}
+        std::free( p );
+    }
+}
+
+#endif  // #ifdef CUL_GLOBAL_MEMORY_POOL
