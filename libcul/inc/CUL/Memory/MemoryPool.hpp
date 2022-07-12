@@ -7,6 +7,7 @@
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_memory_resource.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
+#include "CUL/STL_IMPORTS/STD_mutex.hpp"
 
 NAMESPACE_BEGIN( CUL )
 

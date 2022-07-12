@@ -15,7 +15,6 @@ static std::array<std::byte, 8192> g_bufferBlocks;
 
 static std::pmr::monotonic_buffer_resource g_buffer_src( &g_bufferBlocks, sizeof( g_bufferBlocks ) );
 static std::pmr::vector<BlockInfo> g_allocatedBlocks( &g_buffer_src );
-
 bool MemoryPool::s_initialized = false;
 CUL::LOG::ILogger* MemoryPool::s_logger = nullptr;
 
