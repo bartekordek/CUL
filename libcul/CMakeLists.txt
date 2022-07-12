@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.0.0)
 set( CMAKE_CXX_STANDARD 17 )
 set( EXEC cul )
 
+set( PROJECT_NAME_DYNAMIC cul )
+set( PROJECT_NAME_STATIC cul-static )
+
 project(${EXEC} LANGUAGES CXX)
 
 if( MSVC )
@@ -32,7 +35,7 @@ if( MSVC )
     endif( RapidJSON_FOUND )
 else()
     # lots of warnings and all warnings as errors
-    add_compile_options( -Wall -Wextra -pedantic -Werror )
+    add_compile_options( -Wall -Wextra -pedantic -Werror -Wno-unused-parameter -Wno-sized-deallocation )
     add_definitions( -Wfatal-errors )
 endif()
 
@@ -46,7 +49,8 @@ file( GLOB_RECURSE SOURCES inc/*.hpp src/*.hpp src/*.cpp )
 
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 
-add_library( ${EXEC} ${SOURCES} )
+add_library( ${PROJECT_NAME_DYNAMIC} SHARED ${SOURCES} )
+add_library( ${PROJECT_NAME_STATIC} STATIC ${SOURCES} )
 
 set( DEPENDENCIES
 AdditionalDeps
@@ -61,19 +65,29 @@ ILU
 udp-discovery
 )
 
-set_property( TARGET ${EXEC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
+set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
+set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
+set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES COMPILE_DEFINITIONS "")
+target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1 CUL_MEMORY_POOL=1 )
+
 if (MSVC)
     list(APPEND LIBS msvcmrtd )
-    target_link_options(${EXEC} PUBLIC "/INCREMENTAL:NO")
-    target_link_libraries( ${EXEC} ${DEPENDENCIES} )
+    target_link_options(${PROJECT_NAME_DYNAMIC} PUBLIC "/INCREMENTAL:NO")
+    target_link_options(${PROJECT_NAME_STATIC} PUBLIC "/INCREMENTAL:NO")
+    target_link_libraries( ${PROJECT_NAME_DYNAMIC} ${DEPENDENCIES} )
+    target_link_libraries( ${PROJECT_NAME_STATIC} ${DEPENDENCIES} )
 else()
-    target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs )
+    target_link_libraries( ${PROJECT_NAME_DYNAMIC} ${DEPENDENCIES} stdc++fs )
+    target_link_libraries( ${PROJECT_NAME_STATIC} ${DEPENDENCIES} stdc++fs )
 endif()
 
 if( MSVC )
     foreach(DevIL_BINARY ${DevIL_BINARIES})
         message( "DevIL_BINARY: ${DevIL_BINARY}" )
-        add_custom_command(TARGET ${EXEC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DevIL_BINARY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
+
+        add_custom_command(TARGET ${PROJECT_NAME_DYNAMIC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DevIL_BINARY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
+
+        add_custom_command(TARGET ${PROJECT_NAME_STATIC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DevIL_BINARY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
     endforeach(DevIL_BINARY)
 #CUL_OUTPUT_DIR
 
@@ -88,5 +102,8 @@ else()
     endif()
 endif()
 
-target_include_directories(${EXEC} PUBLIC inc)
-target_include_directories(${EXEC} PRIVATE src)
+target_include_directories(${PROJECT_NAME_DYNAMIC} PUBLIC inc)
+target_include_directories(${PROJECT_NAME_DYNAMIC} PRIVATE src)
+
+target_include_directories(${PROJECT_NAME_STATIC} PUBLIC inc)
+target_include_directories(${PROJECT_NAME_STATIC} PRIVATE src)

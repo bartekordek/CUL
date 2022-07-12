@@ -1,5 +1,6 @@
 #include "CUL/CULInterface.hpp"
 
+#include "CUL/Memory/MemoryPool.hpp"
 #include "CUL/Threading/ThreadUtils.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
@@ -10,6 +11,13 @@
 #include "Threading/IThreadUtilConcrete.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_new.hpp"
+
+#if CUL_MEMORY_POOL
+CUL::Memory::MemoryPool g_mainMemoryPool;
+#endif  // #ifdef CUL_MEMORY_POOL
+
+static CUL::LOG::ILogger* g_logger = nullptr;
 
 using namespace CUL;
 
@@ -20,8 +28,7 @@ CULInterface* CULInterface::createInstance( const FS::Path& configFile )
     return instance;
 }
 
-CULInterface::CULInterface( const FS::Path& configFilePath )
-    : m_configFilePath( configFilePath )
+CULInterface::CULInterface( const FS::Path& configFilePath ) : m_configFilePath( configFilePath )
 {
 }
 
@@ -35,15 +42,22 @@ void CULInterface::initialize()
         m_configFile = loadConfigFile( m_configFilePath );
     }
 
-    m_imageLoader.reset(
-        Graphics::IImageLoader::createConcrete( m_configFile, this ) );
+    m_imageLoader.reset( Graphics::IImageLoader::createConcrete( m_configFile, this ) );
 
     m_logger = LOG::LOG_CONTAINER::getLogger();
     m_logger->log( "Initialized logger." );
+    if( !g_logger )
+    {
+        g_logger = m_logger;
+    }
+
+#if CUL_MEMORY_POOL
+    CUL::Memory::MemoryPool::s_logger = m_logger;
+#endif  // #if CUL_MEMORY_POOL
 
     m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
-    m_args.reset( new GUTILS::ConsoleUtilities());
+    m_args.reset( new GUTILS::ConsoleUtilities() );
 
     m_threadUtils = new ThreadUtils();
 }
@@ -96,5 +110,80 @@ CULInterface::~CULInterface()
     delete m_threadUtils;
     m_threadUtils = nullptr;
     LOG::LOG_CONTAINER::destroyLogger();
+
+#if CUL_MEMORY_POOL
+    Memory::MemoryPool::s_logger = m_logger;
+#endif  // #if CUL_MEMORY_POOL
+    g_logger = nullptr;
     m_logger = nullptr;
 }
+
+#if CUL_MEMORY_POOL
+
+void* operator new( std::size_t size )
+{
+    void* stackPool = g_mainMemoryPool.getMemory( size );
+    if( stackPool )
+    {
+        return stackPool;
+    }
+
+    //if( g_logger )
+    //{
+    //    g_logger->log( CUL::String( "Stack pool is full, creating on heap" ) );
+    //}
+
+    void* p = std::malloc( size );
+    return p;
+}
+
+// void operator delete( void* p, std::size_t targetSize ) throw()
+// {
+//     if( !g_mainMemoryPool.release( p ) )
+//     {
+//         std::free( p );
+//     }
+// }
+
+void operator delete( void* p ) throw()
+{
+    if( !g_mainMemoryPool.release( p ) )
+    {
+        std::free( p );
+    }
+}
+
+void* operator new[]( std::size_t size )
+{
+    void* stackPool = g_mainMemoryPool.getMemory( size );
+    if( stackPool )
+    {
+        return stackPool;
+    }
+
+    //if( g_logger )
+    //{
+    //    g_logger->log( CUL::String( "Stack pool is full, creating on heap" ) );
+    //}
+
+    void* p = std::malloc( size );
+    return p;
+}
+
+void operator delete[]( void* p ) throw()
+{
+    if( !g_mainMemoryPool.release( p ) )
+    {
+        std::free( p );
+    }
+}
+
+// void operator delete[]( void* p, std::size_t targetSize ) throw()
+// {
+//     if( !g_mainMemoryPool.release( p ) )
+//     {
+//         std::free( p );
+//     }
+// }
+
+#endif  // #ifdef CUL_MEMORY_POOL
