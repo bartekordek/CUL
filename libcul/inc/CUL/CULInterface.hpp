@@ -3,6 +3,7 @@
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/OSUtils/ISystemFonts.hpp"
+
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 NAMESPACE_BEGIN( CUL )

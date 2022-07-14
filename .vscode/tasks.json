@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "[LINUX][CMAKE][CREATE][DEBUG]",
+            "label": "[LINUX][CMAKE][CREATE DIR]",
             "type": "shell",
-            "command": "cd Build-Linux && cmake .. -DCMAKE_BUILD_TYPE=Debug",
+            "command": "mkdir -p Build-Linux",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -16,48 +16,15 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "dedicated",
-                "showReuseMessage": false,
+                "showReuseMessage": true,
                 "clear": true
             },
             "problemMatcher": [
                 "$gcc"
-            ]
-        },
-        {
-            "label": "[LINUX] Make Debug",
-            "type":"shell",
-            "command": "clear && cd Build-Linux && time make -j12",
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
             },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "[LINUX] CMake + Make debug",
-            "type":"shell",
-            "command": "clear && cd Build-Linux && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug && time make -j12",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "[LINUX] Clean CMake + Make debug",
-            "type":"shell",
-            "command": "clear && cd Build-Linux && rm -rfv * && cmake .. -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug && time make -j12",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
         },
         {
             "label": "[WINDOWS][CMAKE][CREATE DIR]",
@@ -75,9 +42,30 @@
                 "showReuseMessage": true,
                 "clear": true
             },
-            "problemMatcher": [
-                "$gradle"
-            ]
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+        },
+        {
+            "label": "[LINUX][CMAKE][CREATE][DEBUG]",
+            "type": "shell",
+            "command": "cmake .. -DCMAKE_BUILD_TYPE=Debug",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/Build-Linux"
+            },
+            "dependsOn": "[LINUX][CMAKE][CREATE DIR]"
         },
         {
             "label": "[WINDOWS][CMAKE][CREATE][DEBUG]",
@@ -96,47 +84,60 @@
                 "clear": true
             },
             "options": {
-                "cwd": "Build-Windows"
+                "cwd": "${workspaceFolder}/Build-Windows"
             },
-            "dependsOn":"[WINDOWS][CMAKE][CREATE DIR]"
+            "dependsOn": "[WINDOWS][CMAKE][CREATE DIR]"
         },
         {
-            "label": "[WINDOWS] Build All",
-            "type":"shell",
-            "command": "cls & cmake --build Build-Windows --config DEBUG -j16",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
-        },
-        {
-            "label": "[WINDOWS] Build Tests",
-            "type":"shell",
-            "command": "cls & cmake --build Build-Windows --config DEBUG -j16 --target culTests",
-            "args": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
-        },
-        {
-            "label": "[WINDOWS] CMake + Build All ",
-            "type":"shell",
-            "command": "cls && cmake --build Build-Windows --config DEBUG -j16",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$msCompile"
+            "label": "[WINDOWS][DEBUG][BUILLD][libculTests]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build-Windows",
+                "--config",
+                "DEBUG",
+                "-j16",
+                "--target",
+                "libculTests"
             ],
-            "dependsOn": "[WINDOWS] CMake create"
-        }
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "[LINUX][DEBUG][BUILLD][libculTests]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build-Linux",
+                "--config",
+                "DEBUG",
+                "-j16",
+                "--target",
+                "libculTests"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "dependsOn":"[LINUX][CMAKE][CREATE][DEBUG]"
+        },
     ]
 }

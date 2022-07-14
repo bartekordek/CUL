@@ -234,9 +234,27 @@ void Path::preparePaths()
     m_dir = bPath.parent_path();
 #else
     FsPath bPath( m_fullPath.string() );
-    m_baseName = bPath.stem().c_str();
-    m_extension = bPath.extension().c_str();
-    m_dir = bPath.parent_path().c_str();
+    auto bPathAsString = bPath.string();
+    if( bPathAsString.empty() )
+    {
+        auto x = 0;
+    }
+
+    auto stem = bPath.stem();
+    m_baseName = stem.c_str();
+    auto extension = bPath.extension();
+    m_extension = extension.c_str();
+
+    auto parentPath = bPath.parent_path();
+
+    if (parentPath.empty())
+    {
+        auto x = 0;
+    }
+
+    auto parentPathAsString = parentPath.string();
+
+    m_dir = parentPathAsString;
 #endif
     normalizePaths();
 }

@@ -5,13 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[Linux] Run tests",
+            "name": "[LINUX][RUN TESTS][DEBUG]",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/Build-Linux/Debug/culTests.bin",
+            "program": "${workspaceFolder}/Build-Linux/libculTests.bin",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/deps/OpenGLWrapper/runDir",
+            "cwd": "${workspaceFolder}/runDir",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
@@ -22,7 +22,7 @@
                     "ignoreFailures": true
                 }
             ],
-            //"preLaunchTask": "g++ build active file",
+            "preLaunchTask": "[LINUX][DEBUG][BUILLD][libculTests]",
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
@@ -32,7 +32,12 @@
             "program": "${workspaceFolder}\\Build-Windows\\Debug\\culTests.exe",
             "cwd": "${workspaceRoot}/runDir",
             "symbolSearchPath": "${workspaceRoot}/runDir",
-            "args": [ "-w", "1680", "-h", "900" ],
+            "args": [
+                "-w",
+                "1680",
+                "-h",
+                "900"
+            ],
             "externalConsole": false,
             "logging": {
                 "moduleLoad": false,

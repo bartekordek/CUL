@@ -25,7 +25,7 @@ public:
     {
     }
 
-    void setMemoryPool( Memory::MemoryPool* mp )
+    void setMemoryPool( CUL::Memory::MemoryPool* mp )
     {
         s_memoryPool = mp;
     }

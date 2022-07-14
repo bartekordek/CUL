@@ -1,27 +1,59 @@
 #include "CUL/Memory/MemoryPool.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/Log/ILogger.hpp"
+#include "CUL/GenericUtils/ScopeExit.hpp"
 
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_cassert.hpp"
+
+#define assertm(exp, msg) assert(((void)msg, exp))
 
 using namespace CUL;
 using namespace Memory;
 
-MemoryPool::MemoryPool()
+CUL::LOG::ILogger* MemoryPool::s_logger = nullptr;
+
+MemoryPool& MemoryPool::getInstance()
 {
-    std::memset( m_buffer.data(), 0, sizeof( *m_buffer.begin() ) * m_buffer.size() );
+    static MemoryPool g_instance;
+    return g_instance;
+}
+
+MemoryPool::MemoryPool() : m_buffer_src( &m_bufferBlocks, sizeof( m_bufferBlocks ) ), m_allocatedBlocks( &m_buffer_src )
+{
+    init();
+}
+
+void MemoryPool::init()
+{
+    std::lock_guard<std::mutex> mtxGuard( m_access );
+    if( !m_initialized )
+    {
+        std::memset( g_buffer.data(), 0, sizeof( *g_buffer.begin() ) * g_buffer.size() );
+        m_initialized = true;
+    }
 }
 
 void* MemoryPool::getMemory( size_t sizeInBytes )
 {
+    GUTILS::ScopeExit onExit( [this]() {
+        m_access.unlock();
+    } );
+
+    while( !m_access.try_lock() )
+    {
+    }
+
     if( m_allocatedBlocks.empty() )
     {
-        if( m_buffer.size() > sizeInBytes )
+        if( g_buffer.size() > sizeInBytes )
         {
             BlockInfo bi;
             bi.start = 0;
             bi.end = sizeInBytes - 1;
-            bi.ptr = (void*)&m_buffer[0];
+            bi.ptr = (void*)&g_buffer[0];
             addBlock( &bi );
             return bi.ptr;
         }
@@ -49,8 +81,9 @@ void* MemoryPool::getMemory( size_t sizeInBytes )
                         BlockInfo bi;
                         bi.start = brockPrev.end + 1;
                         bi.end = brockPrev.end + sizeInBytes;
-                        bi.ptr = (void*)( &m_buffer[bi.start] );
+                        bi.ptr = (void*)( &g_buffer[bi.start] );
                         addBlock( &bi );
+
                         return bi.ptr;
                     }
                 }
@@ -58,13 +91,13 @@ void* MemoryPool::getMemory( size_t sizeInBytes )
             }
         }
 
-        const size_t leftSpace = (m_buffer.size() - lastBlock->end) - 1;
+        const size_t leftSpace = ( g_buffer.size() - lastBlock->end ) - 1;
         if( lastBlock && leftSpace > sizeInBytes )
         {
             BlockInfo bi;
             bi.start = lastBlock->end + 1;
             bi.end = lastBlock->end + sizeInBytes;
-            bi.ptr = (void*)( &m_buffer[bi.start] );
+            bi.ptr = (void*)( &g_buffer[bi.start] );
             addBlock( &bi );
             return bi.ptr;
         }
@@ -83,8 +116,50 @@ void MemoryPool::addBlock( BlockInfo* block )
     } );
 }
 
-void MemoryPool::release( void* target )
+bool MemoryPool::isInitialized() const
 {
+    return m_initialized;
+}
+
+bool MemoryPool::exist( void* target ) const
+{
+    auto it = std::find_if( m_allocatedBlocks.begin(), m_allocatedBlocks.end(), [target]( const BlockInfo& bi ) {
+        return bi.ptr == target;
+    } );
+    return it != m_allocatedBlocks.end();
+}
+
+bool MemoryPool::release( void* target, const size_t size )
+{
+    size_t howManyTimes = size / 8;
+    void* startAdd = target;
+    for( size_t i = 0; i < howManyTimes; ++i )
+    {
+        if( !release( startAdd ) )
+        {
+            return false;
+        }
+        startAdd = static_cast<char*>(startAdd) + 1;
+    }
+
+    return true;
+}
+
+bool MemoryPool::release( void* target )
+{
+    if( !m_initialized )
+    {
+        return false;
+    }
+
+    GUTILS::ScopeExit onExit( [this]() {
+        m_access.unlock();
+    } );
+
+    while( !m_access.try_lock() )
+    {
+    }
+
     auto it = std::find_if( m_allocatedBlocks.begin(), m_allocatedBlocks.end(),
                          [target]( const BlockInfo& bi )
                          {
@@ -92,25 +167,31 @@ void MemoryPool::release( void* target )
                          } );
     if( it == m_allocatedBlocks.end() )
     {
-        Assert::simple( false, "Cannot find element on memory pool!" );
+        for( int i = 0; i < 10; ++i )
+        {
+
+        }
     }
     else
     {
         BlockInfo& targetI = *it;
         for( size_t i = targetI.start; i <= targetI.end; ++i )
         {
-            m_buffer[i] = std::byte{0};
+            g_buffer[i] = std::byte{ 0 };
         }
 
         m_allocatedBlocks.erase( it );
+        return true;
     }
+    return false;
 }
 
 size_t MemoryPool::getBufferSize() const
 {
-    return m_buffer.size();
+    return g_buffer.size();
 }
 
 MemoryPool::~MemoryPool()
 {
+
 }
