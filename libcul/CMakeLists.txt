@@ -5,6 +5,7 @@ set( CMAKE_CXX_STANDARD 17 )
 set( EXEC cul )
 
 set( PROJECT_NAME_DYNAMIC cul )
+set( PROJECT_NAME_STATIC_IMPL cul-static-impl )
 set( PROJECT_NAME_STATIC cul-static )
 
 project(${EXEC} LANGUAGES CXX)
