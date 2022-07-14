@@ -13,8 +13,6 @@
 using namespace CUL;
 using namespace Memory;
 
-
-//bool MemoryPool::s_initialized = false;
 CUL::LOG::ILogger* MemoryPool::s_logger = nullptr;
 
 MemoryPool& MemoryPool::getInstance()
@@ -34,7 +32,6 @@ void MemoryPool::init()
     if( !m_initialized )
     {
         std::memset( g_buffer.data(), 0, sizeof( *g_buffer.begin() ) * g_buffer.size() );
-        std::cout << "Stack begin: " << g_buffer.data() << "\n";
         m_initialized = true;
     }
 }
@@ -106,7 +103,6 @@ void* MemoryPool::getMemory( size_t sizeInBytes )
         }
     }
 
-    //std::cerr << "Stack pool is full, creating on heap [" << ++m_heapAllocCounter  << "].\n";
     return nullptr;
 }
 
