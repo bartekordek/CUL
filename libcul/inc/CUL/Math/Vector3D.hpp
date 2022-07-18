@@ -24,22 +24,23 @@ using ST = TriangleRectangularSimple2D;
 #pragma warning( disable: 4820 )
 #endif
 template <typename Type>
-class Vector3D:
-    public Epsilon<Type>,
-    public ISerializable,
-    public GUTILS::IOnChange
+class Vector3D: public Epsilon<Type>, public ISerializable, public GUTILS::IOnChange
 {
 public:
     using ValueType = std::array<Type, 3>;
 
     Vector3D()
     {
+        m_values[0] = { static_cast<Type>( 0 ) };
+        m_values[1] = { static_cast<Type>( 0 ) };
+        m_values[2] = { static_cast<Type>( 0 ) };
+
+        m_width[0] = 0.0;
+        m_width[1] = 0.0;
+        m_width[2] = 0.0;
     }
 
-    Vector3D(
-        const Type xVal,
-        const Type yVal,
-        const Type zVal )
+    Vector3D( const Type xVal, const Type yVal, const Type zVal )
     {
         setAxisValue( AxisCarthesian::X, xVal );
         setAxisValue( AxisCarthesian::Y, yVal );
@@ -55,7 +56,7 @@ public:
 
     void copyFromOtherVector( const Vector3D<Type>& arg )
     {
-        if( this != & arg )
+        if( this != &arg )
         {
             m_values = arg.m_values;
             m_rotationTraingles = arg.m_rotationTraingles;
@@ -75,8 +76,8 @@ public:
         {
             index = static_cast<AxisCarthesian>( i );
             indexR = static_cast<RotationType>( i );
-            m_values[ (size_t) index] = static_cast<Type>( right[index] );
-            m_rotationTraingles[ (size_t) indexR] = right.getTriangle( indexR );
+            m_values[(size_t)index] = static_cast<Type>( right[index] );
+            m_rotationTraingles[(size_t)indexR] = right.getTriangle( indexR );
         }
     }
 
@@ -122,7 +123,7 @@ public:
 
     const Type operator[]( size_t index ) const
     {
-        return m_values[ index ];
+        return m_values[index];
     }
 
     const Type getX() const
@@ -174,7 +175,7 @@ public:
 
     const Angle& getAngle( const RotationType rt ) const
     {
-        return m_rotationTraingles[ (size_t) rt ].getAngle();
+        return m_rotationTraingles[(size_t)rt].getAngle();
     }
 
     const ST& getTriangle( const RotationType rt ) const
@@ -390,17 +391,17 @@ public:
         if( AxisCarthesian::X == axis )
         {
             m_rotationTraingles[(size_t)RotationType::PITCH].setOpposite( static_cast<double>( value ) );
-            m_rotationTraingles[ (size_t) RotationType::ROLL].setAdjacent( static_cast<double>( value ) );
+            m_rotationTraingles[(size_t)RotationType::ROLL].setAdjacent( static_cast<double>( value ) );
         }
         else if( AxisCarthesian::Y == axis )
         {
-            m_rotationTraingles[ (size_t) RotationType::ROLL].setOpposite( static_cast<double>( value ) );
-            m_rotationTraingles[ (size_t) RotationType::YAW].setOpposite( static_cast<double>( value ) );
+            m_rotationTraingles[(size_t)RotationType::ROLL].setOpposite( static_cast<double>( value ) );
+            m_rotationTraingles[(size_t)RotationType::YAW].setOpposite( static_cast<double>( value ) );
         }
         else
         {
-            m_rotationTraingles[ (size_t) RotationType::YAW].setAdjacent( static_cast<double>( value ) );
-            m_rotationTraingles[ (size_t) RotationType::PITCH].setAdjacent( static_cast<double>( value ) );
+            m_rotationTraingles[(size_t)RotationType::YAW].setAdjacent( static_cast<double>( value ) );
+            m_rotationTraingles[(size_t)RotationType::PITCH].setAdjacent( static_cast<double>( value ) );
         }
     }
 
@@ -411,7 +412,7 @@ public:
 
     const Type getAxis( const Axis axis ) const
     {
-        return m_values.at( (size_t) UTIL::normal2Carthesian( axis ) );
+        return m_values.at( (size_t)UTIL::normal2Carthesian( axis ) );
     }
 
     template <class someOtherClass>
@@ -421,7 +422,7 @@ public:
         for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
             index = static_cast<AxisCarthesian>( i );
-            m_values[ (size_t) index] = static_cast<Type>( right[ (size_t) index] );
+            m_values[(size_t)index] = static_cast<Type>( right[(size_t)index] );
         }
         return *this;
     }
@@ -442,46 +443,36 @@ private:
     {
         if( RotationType::ROLL == rt )
         {
-            const auto xW = m_values[ (size_t) AxisCarthesian::X];
-            const auto yW = m_values[ (size_t) AxisCarthesian::Y];
-            m_width[ (size_t) rt] = std::sqrt( 1.0 * xW * xW + 1.0 * yW * yW );
-            m_rotationTraingles[(size_t) rt].setOpposite( m_width[ (size_t) rt] );
+            const auto xW = m_values[(size_t)AxisCarthesian::X];
+            const auto yW = m_values[(size_t)AxisCarthesian::Y];
+            m_width[(size_t)rt] = std::sqrt( 1.0 * xW * xW + 1.0 * yW * yW );
+            m_rotationTraingles[(size_t)rt].setOpposite( m_width[(size_t)rt] );
         }
         else if( RotationType::PITCH == rt )
         {
             const auto xW = m_values[AxisCarthesian::X];
             const auto zW = m_values[AxisCarthesian::Z];
-            m_width[ (size_t) rt] = std::sqrt( 1.0 * xW * xW + 1.0 * zW * zW );
+            m_width[(size_t)rt] = std::sqrt( 1.0 * xW * xW + 1.0 * zW * zW );
         }
         else
         {
-            const auto yW = m_values[ (size_t) AxisCarthesian::Y];
-            const auto zW = m_values[ (size_t) AxisCarthesian::Z];
-            m_width[ (size_t) RotationType::YAW] = std::sqrt( 1.0 * yW * yW + 1.0 * zW * zW );
+            const auto yW = m_values[(size_t)AxisCarthesian::Y];
+            const auto zW = m_values[(size_t)AxisCarthesian::Z];
+            m_width[(size_t)RotationType::YAW] = std::sqrt( 1.0 * yW * yW + 1.0 * zW * zW );
         }
     }
 
-    ValueType m_values =
-    {
-        static_cast<Type>( 0 ),
-        static_cast<Type>( 0 ),
-        static_cast<Type>( 0 )
-    };
+    ValueType m_values;
 
-    std::array<ST, 3> m_rotationTraingles =
-    {
-    };
+    std::array<ST, 3> m_rotationTraingles;
 
-    std::array<double, 3> m_width =
-    {
-        0.0,
-        0.0,
-        0.0
-    };
+    std::array<double, 3> m_width;
 };
+
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
+
 using Vector3Dd = Vector3D<double>;
 using Vector3Di = Vector3D<int>;
 using Vector3Du = Vector3D<unsigned>;
