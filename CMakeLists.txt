@@ -91,13 +91,6 @@ option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
 option( RAPIDJSON_BUILD_EXAMPLES "Build examples." OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/rapidjson )
 
-set( FREEGLUT_REPLACE_GLUT ON )
-set( FREEGLUT_BUILD_DEMOS OFF )
-set( FREEGLUT_BUILD_SHARED_LIBS OFF )
-add_subdirectory( ${CUL_DEPS_PATH}/freeglut-3.2.1 )
-
-find_package( freeglut REQUIRED )
-
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
 
 set(BUILD_EXAMPLE false)
