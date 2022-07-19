@@ -17,32 +17,47 @@ ITimer* TimerFactory::getChronoTimer()
     return new TimerChrono();
 }
 
-void ITimer::sleepSeconds( const unsigned int seconds )
+void ITimer::sleepSeconds( unsigned int seconds )
 {
     std::this_thread::sleep_for( std::chrono::seconds( seconds ) );
 }
 
-void ITimer::sleepMiliSeconds( const unsigned int mSeconds )
+void ITimer::sleepMiliSeconds( unsigned int mSeconds )
 {
     std::this_thread::sleep_for( std::chrono::milliseconds( mSeconds ) );
 }
 
-void ITimer::sleepMicroSeconds( const unsigned int uSeconds )
+void ITimer::sleepMicroSeconds( unsigned int uSeconds )
 {
     std::this_thread::sleep_for( std::chrono::microseconds( uSeconds ) );
 }
 
-void ITimer::sleepSeconds( const int seconds )
+void ITimer::sleepSeconds( int seconds )
 {
     std::this_thread::sleep_for( std::chrono::seconds( seconds ) );
 }
 
-void ITimer::sleepMiliSeconds( const int mSeconds )
+void ITimer::sleepMiliSeconds( int mSeconds )
 {
     std::this_thread::sleep_for( std::chrono::milliseconds( mSeconds ) );
 }
 
-void ITimer::sleepMicroSeconds( const int uSeconds )
+void ITimer::sleepMicroSeconds( int uSeconds )
 {
     std::this_thread::sleep_for( std::chrono::microseconds( uSeconds ) );
+}
+
+void ITimer::sleepSeconds( float seconds )
+{
+    std::this_thread::sleep_for( std::chrono::seconds( (int)seconds ) );
+}
+
+void ITimer::sleepMiliSeconds( float mSeconds )
+{
+    std::this_thread::sleep_for( std::chrono::milliseconds( (int)mSeconds ) );
+}
+
+void ITimer::sleepMicroSeconds( float uSeconds )
+{
+    std::this_thread::sleep_for( std::chrono::microseconds( (int)uSeconds ) );
 }

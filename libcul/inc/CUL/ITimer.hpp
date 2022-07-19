@@ -15,13 +15,17 @@ public:
     virtual void reset() = 0;
     virtual const ITime& getElapsed() const = 0;
 
-    static void sleepSeconds( const unsigned int seconds );
-    static void sleepMiliSeconds( const unsigned int mSeconds );
-    static void sleepMicroSeconds( const unsigned int uSeconds );
+    static void sleepSeconds( unsigned int seconds );
+    static void sleepMiliSeconds( unsigned int mSeconds );
+    static void sleepMicroSeconds( unsigned int uSeconds );
 
-    static void sleepSeconds( const int seconds );
-    static void sleepMiliSeconds( const int mSeconds );
-    static void sleepMicroSeconds( const int uSeconds );
+    static void sleepSeconds( int seconds );
+    static void sleepMiliSeconds( int mSeconds );
+    static void sleepMicroSeconds( int uSeconds );
+
+    static void sleepSeconds( float seconds );
+    static void sleepMiliSeconds( float mSeconds );
+    static void sleepMicroSeconds( float uSeconds );
 };
 
 class CULLib_API TimerFactory
