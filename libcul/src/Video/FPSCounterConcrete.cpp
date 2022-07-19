@@ -39,12 +39,12 @@ void FPSCounterConcrete::stop()
 
 void FPSCounterConcrete::increase()
 {
-    ++m_framesCount;
+    m_framesCount = m_framesCount + 1.f;
 }
 
 double FPSCounterConcrete::getCurrentFps() const
 {
-    return m_lastFrameValue * 1.0;
+    return m_lastFrameValue;
 }
 
 double FPSCounterConcrete::getAverageFps() const
@@ -70,7 +70,7 @@ void FPSCounterConcrete::counterLoop()
         m_lastFrameValue.store( m_framesCount );
         m_samples.push_front( m_lastFrameValue );
         m_averageFps = calculateAverageFps();
-        m_framesCount = 0;
+        m_framesCount = 0.f;
     }
 }
 

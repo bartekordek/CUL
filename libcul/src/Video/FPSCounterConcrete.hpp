@@ -45,9 +45,9 @@ private:
     std::unique_ptr<CUL::ITimer> m_timer;
     std::atomic<bool> m_isRunning = { false };//TODO: delegate thread
     //creation to separate class, to check if thread was created and is runing.
-    std::atomic<unsigned> m_framesCount = { 0 };
-    std::atomic<unsigned> m_lastFrameValue = { 0 };
-    boost::circular_buffer<unsigned> m_samples;
+    std::atomic<float> m_framesCount = { 0.f };
+    std::atomic<float> m_lastFrameValue = { 0.f };
+    boost::circular_buffer<float> m_samples;
     std::atomic<double> m_averageFps = { 0.0 };
     std::atomic<unsigned> m_sleepTimeMs = { 1000 };
 
