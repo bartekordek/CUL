@@ -74,6 +74,13 @@ public:
         return *this;
     }
 
+    LckPrim<Type>& operator/=( const Type val )
+    {
+        std::lock_guard<std::mutex> lock( mtx );
+        value /= val;
+        return *this;
+    }
+
     LckPrim<Type>& operator-=( const Type val )
     {
         std::lock_guard<std::mutex> lock( mtx );
