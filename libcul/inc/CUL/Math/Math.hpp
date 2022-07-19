@@ -60,6 +60,13 @@ const Type min( const Type val1, const Type val2, const Type val3 )
     }
     return val3;
 }
+
+template <typename Type>
+Type lerp(Type a, Type b, Type f)
+{
+    return a + f * ( b - a );
+}
+
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
