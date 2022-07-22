@@ -3,6 +3,8 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/Memory/MemoryPool.hpp"
 
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
+
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
 
@@ -126,6 +128,11 @@ public:
         return *m_ptr > *arg.m_ptr;
     }
 
+    void setDeleter( std::function<void(void*)> deleter )
+    {
+        m_customDestuction = deleter;
+    }
+
     virtual ~DumbPtr()
     {
         release();
@@ -145,7 +152,15 @@ public:
         }
         else
         {
-            delete m_ptr;
+            if( m_customDestuction )
+            {
+                m_ptr->~Type();
+                m_customDestuction( m_ptr );
+            }
+            else
+            {
+                delete m_ptr;
+            }
         }
 
         m_ptr = nullptr;
@@ -166,6 +181,7 @@ private:
     DumbPtr& operator=( const DumbPtr& value ) = delete;
 
     Type* m_ptr = nullptr;
+    std::function<void(void*)> m_customDestuction;
 
     static Memory::MemoryPool* s_memoryPool;
 };
