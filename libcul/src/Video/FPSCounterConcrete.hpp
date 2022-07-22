@@ -31,7 +31,7 @@ public:
     void increase() override;
     double getCurrentFps() const override;
     double getAverageFps() const override;
-    void setSampleSize( unsigned short sampleSize ) override;
+    void setSampleSize( size_t sampleSize ) override;
     void setMeasurePeriod( const unsigned periodMs ) override;
 
 protected:

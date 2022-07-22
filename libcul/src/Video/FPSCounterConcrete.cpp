@@ -69,7 +69,7 @@ double FPSCounterConcrete::getAverageFps() const
     return m_averageFps;
 }
 
-void FPSCounterConcrete::setSampleSize( unsigned short sampleSize )
+void FPSCounterConcrete::setSampleSize( size_t sampleSize )
 {
     m_samples.resize( sampleSize );
     m_bufferSize = sampleSize;
@@ -82,14 +82,7 @@ void FPSCounterConcrete::setMeasurePeriod( const unsigned periodMs )
 
 void FPSCounterConcrete::counterLoop()
 {
-    //while( m_isRunning )
-    //{
-    //    m_timer->sleepMiliSeconds( m_sleepTimeMs );
-    //    m_samples.push_front( m_lastFrameValue );
-    //    m_averageFps = calculateAverageFps();
-    //}
 }
-
 
 FPSCounterConcrete::~FPSCounterConcrete()
 {

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "CUL/UselessMacros.hpp"
 #include "CUL/CUL.hpp"
+
+#include "CUL/STL_IMPORTS/STD_stddef.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Video )
@@ -14,7 +15,7 @@ public:
 
     virtual double getCurrentFps() const = 0;
     virtual double getAverageFps() const = 0;
-    virtual void setSampleSize( unsigned short sampleSize ) = 0;
+    virtual void setSampleSize( size_t sampleSize ) = 0;
     virtual void setMeasurePeriod( const unsigned periodMs ) = 0;
 
     virtual void increase() = 0;
