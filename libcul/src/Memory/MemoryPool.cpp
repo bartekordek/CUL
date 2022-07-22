@@ -24,7 +24,6 @@ MemoryPool::MemoryPool():
 
 void MemoryPool::init()
 {
-    std::lock_guard<std::mutex> mtxGuard( m_access );
     if( !m_initialized )
     {
         std::memset( g_buffer.data(), 0, sizeof( *g_buffer.begin() ) * g_buffer.size() );
