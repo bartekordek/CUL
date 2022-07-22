@@ -31,6 +31,8 @@ constexpr size_t G_arraySize = 32768;
 class MemoryPool final
 {
 public:
+    CULLib_API MemoryPool();
+
     CULLib_API void* getMemory( size_t sizeInBytes );
     CULLib_API bool release( void* target );
     CULLib_API bool release( void* target, const size_t size );
@@ -41,6 +43,7 @@ public:
 
     static LOG::ILogger* s_logger;
 
+    CULLib_API ~MemoryPool();
 protected:
 private:
     void addBlock(BlockInfo* block);
@@ -55,9 +58,6 @@ private:
     std::array<std::byte, G_arraySize> g_buffer;
 
     size_t m_heapAllocCounter = 0;
-
-    CULLib_API MemoryPool();
-    CULLib_API ~MemoryPool();
 
     MemoryPool(const MemoryPool& arg) = delete;
     MemoryPool(MemoryPool&& arg) = delete;
