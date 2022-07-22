@@ -15,13 +15,9 @@ using namespace Memory;
 
 CUL::LOG::ILogger* MemoryPool::s_logger = nullptr;
 
-MemoryPool& MemoryPool::getInstance()
-{
-    static MemoryPool g_instance;
-    return g_instance;
-}
-
-MemoryPool::MemoryPool() : m_buffer_src( &m_bufferBlocks, sizeof( m_bufferBlocks ) ), m_allocatedBlocks( &m_buffer_src )
+MemoryPool::MemoryPool():
+    m_buffer_src( &m_bufferBlocks, sizeof( m_bufferBlocks ) ),
+    m_allocatedBlocks( &m_buffer_src )
 {
     init();
 }

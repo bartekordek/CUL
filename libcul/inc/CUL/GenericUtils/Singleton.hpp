@@ -8,15 +8,15 @@ template<class Type>
 class Singleton
 {
 public:
-    Type& getInstance()
+    static Type& getInstance()
     {
         static Type instance;
         return instance;
     }
 protected:
 private:
-    Singleton = default;
-    ~Singleton = default;
+    Singleton() = delete;
+    ~Singleton() = delete;
     Singleton(const Singleton& arg) = delete;
     Singleton(Singleton&& arg) = delete;
     Singleton& operator=(const Singleton& rhv) = delete;

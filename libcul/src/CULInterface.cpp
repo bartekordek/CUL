@@ -9,6 +9,7 @@
 #include "GenericUtils/IConfigFileConcrete.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "Threading/IThreadUtilConcrete.hpp"
+#include "CUL/GenericUtils/Singleton.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_new.hpp"
@@ -21,6 +22,9 @@ static std::pmr::vector<void*> g_allocatedBlocks( &g_buffer_src );
 static CUL::LOG::ILogger* g_logger = nullptr;
 
 using namespace CUL;
+#if CUL_GLOBAL_MEMORY_POOL
+    
+#endif // #if CUL_GLOBAL_MEMORY_POOL
 
 CULInterface* CULInterface::createInstance( const FS::Path& configFile )
 {
@@ -123,9 +127,9 @@ CULInterface::~CULInterface()
 
 void* operator new( std::size_t size )
 {
-    if( Memory::MemoryPool::getInstance().isInitialized() )
+    if( Singleton<Memory::MemoryPool>::getInstance().isInitialized() )
     {
-        void* result = Memory::MemoryPool::getInstance().getMemory( size );
+        void* result = Singleton<Memory::MemoryPool>::getInstance().getMemory( size );
         if( result )
         {
             //addMe( result );
@@ -145,9 +149,9 @@ void* operator new( std::size_t size )
 
 void* operator new[]( std::size_t size )
 {
-    if( Memory::MemoryPool::getInstance().isInitialized() )
+    if( Singleton<Memory::MemoryPool>::getInstance().isInitialized() )
     {
-        void* result = Memory::MemoryPool::getInstance().getMemory( size );
+        void* result = Singleton<Memory::MemoryPool>::getInstance().getMemory( size );
         if( result )
         {
             //addMe( result );
@@ -167,9 +171,9 @@ void* operator new[]( std::size_t size )
 
 void operator delete( void* p ) throw()
 {
-    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist( p ) )
+    if( Singleton<Memory::MemoryPool>::getInstance().isInitialized() && Singleton<Memory::MemoryPool>::getInstance().exist( p ) )
     {
-        Memory::MemoryPool::getInstance().release( p );
+        Singleton<Memory::MemoryPool>::getInstance().release( p );
     }
     else
     {
@@ -183,9 +187,9 @@ void operator delete( void* p ) throw()
 
 void operator delete( void* p, std::size_t targetSize ) throw()
 {
-    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist(p) )
+    if( Singleton<Memory::MemoryPool>::getInstance().isInitialized() && Singleton<Memory::MemoryPool>::getInstance().exist( p ) )
     {
-        Memory::MemoryPool::getInstance().release( p, targetSize );
+        Singleton<Memory::MemoryPool>::getInstance().release( p, targetSize );
     }
     else
     {
@@ -199,9 +203,9 @@ void operator delete( void* p, std::size_t targetSize ) throw()
 
 void operator delete[]( void* p ) throw()
 {
-    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist( p ) )
+    if( Singleton<Memory::MemoryPool>::getInstance().isInitialized() && Singleton<Memory::MemoryPool>::getInstance().exist( p ) )
     {
-        Memory::MemoryPool::getInstance().release( p );
+        Singleton<Memory::MemoryPool>::getInstance().release( p );
     }
     else
     {
@@ -213,11 +217,11 @@ void operator delete[]( void* p ) throw()
     }
 }
 
-void operator delete[]( void* p, std::size_t targetSize ) throw()
+void operator delete[]( void* p, std::size_t /* targetSize */ ) throw()
 {
-    if( Memory::MemoryPool::getInstance().isInitialized() && Memory::MemoryPool::getInstance().exist( p ) )
+    if( Singleton<Memory::MemoryPool>::getInstance().isInitialized() && Singleton<Memory::MemoryPool>::getInstance().exist( p ) )
     {
-        Memory::MemoryPool::getInstance().release( p );
+        Singleton<Memory::MemoryPool>::getInstance().release( p );
     }
     else
     {

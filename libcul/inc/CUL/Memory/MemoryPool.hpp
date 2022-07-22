@@ -31,8 +31,6 @@ constexpr size_t G_arraySize = 32768;
 class MemoryPool final
 {
 public:
-    CULLib_API static MemoryPool& getInstance();
-
     CULLib_API void* getMemory( size_t sizeInBytes );
     CULLib_API bool release( void* target );
     CULLib_API bool release( void* target, const size_t size );
