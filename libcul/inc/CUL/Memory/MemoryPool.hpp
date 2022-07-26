@@ -46,26 +46,6 @@ public:
         init();
     }
 
-    /*
-    CULLib_API MemoryPool( MemoryPool&& arg ):
-        m_bufferBlocks( std::move( arg.m_bufferBlocks ) )
-        m_buffer_src( std::move( arg.m_buffer_src ) ),
-        m_allocatedBlocks( std::move( arg.m_allocatedBlocks ) )
-    {
-    }
-
-    MemoryPool& operator=(MemoryPool&& arg)
-    {
-        if( this != &arg )
-        {
-            m_bufferBlocks = std::move( arg.m_bufferBlocks );
-            m_buffer_src = std::move( arg.m_buffer_src );
-            m_allocatedBlocks = std::move( arg.m_allocatedBlocks );
-        }
-        return *this;
-    }
-    */
-
     CULLib_API void* getMemory( size_t sizeInBytes )
     {
         GUTILS::ScopeExit onExit(
@@ -249,8 +229,9 @@ private:
     size_t m_heapAllocCounter = 0;
 
     MemoryPool( const MemoryPool& arg ) = delete;
-    //MemoryPool( MemoryPool&& arg ) = delete;
+    MemoryPool( MemoryPool&& arg ) = delete;
     MemoryPool& operator=( const MemoryPool& rhv ) = delete;
+    MemoryPool& operator=( MemoryPool&& rhv ) = delete;
 };
 
 NAMESPACE_END( Memory )
