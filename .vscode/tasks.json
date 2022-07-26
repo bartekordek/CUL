@@ -70,7 +70,7 @@
         {
             "label": "[WINDOWS][CMAKE][CREATE][DEBUG]",
             "type": "shell",
-            "command": "cmake .. -DCMAKE_BUILD_TYPE=Debug",
+            "command": "CreateProjects.bat Debug",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -84,9 +84,8 @@
                 "clear": true
             },
             "options": {
-                "cwd": "${workspaceFolder}/Build-Windows"
-            },
-            "dependsOn": "[WINDOWS][CMAKE][CREATE DIR]"
+                "cwd": "${workspaceFolder}"
+            }
         },
         {
             "label": "[WINDOWS][DEBUG][BUILLD][libculTests]",
