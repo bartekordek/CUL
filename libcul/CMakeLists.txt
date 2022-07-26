@@ -62,10 +62,10 @@ PUBLIC boost_circular_buffer
 PUBLIC boost_core
 PRIVATE cppfs
 PUBLIC glm
-PUBLIC spdlog
-PUBLIC IL
-PUBLIC ILU
-PUBLIC udp-discovery
+PRIVATE spdlog
+PRIVATE IL
+PRIVATE ILU
+PRIVATE udp-discovery
 PUBLIC zlibstatic
 )
 
