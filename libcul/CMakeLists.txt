@@ -56,16 +56,17 @@ add_library( ${PROJECT_NAME_DYNAMIC} SHARED ${SOURCES} )
 add_library( ${PROJECT_NAME_STATIC} STATIC ${SOURCES} )
 
 set( DEPENDENCIES
-AdditionalDeps
-boost_assert
-boost_circular_buffer
-boost_core
-cppfs
-glm
-spdlog
-IL
-ILU
-udp-discovery
+PUBLIC AdditionalDeps
+PUBLIC boost_assert
+PUBLIC boost_circular_buffer
+PUBLIC boost_core
+PRIVATE cppfs
+PUBLIC glm
+PUBLIC spdlog
+PUBLIC IL
+PUBLIC ILU
+PUBLIC udp-discovery
+PUBLIC zlibstatic
 )
 
 set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
