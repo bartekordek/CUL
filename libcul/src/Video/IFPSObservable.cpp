@@ -6,7 +6,7 @@ IFPSObservable::IFPSObservable()
 {
 }
 
-void IFPSObservable::addFPSCounter( IFPSCounter* counter )
+void IFPSObservable::addFPSCounter( FPSCounter* counter )
 {
     m_fpsCounter = counter;
 }

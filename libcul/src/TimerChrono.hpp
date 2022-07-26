@@ -1,4 +1,5 @@
 #pragma once
+
 #include "CUL/ITimer.hpp"
 #include "CUL/ITime.hpp"
 
@@ -18,14 +19,17 @@ class TimerChrono final:
 {
 public:
     TimerChrono();
-    ~TimerChrono();
 
-protected:
-private:
     void start() override;
     void stop() override;
     void reset() override;
     const ITime& getElapsed() const override;
+
+    ~TimerChrono();
+
+protected:
+private:
+
 
     std::chrono::high_resolution_clock clock;
     std::unique_ptr<ITime> time;

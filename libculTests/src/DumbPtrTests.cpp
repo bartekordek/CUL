@@ -1,5 +1,7 @@
 #include "DumbPtrTests.hpp"
+
 #include "CUL/GenericUtils/DumbPtr.hpp"
+#include "CUL/STL_IMPORTS/STD_array.hpp"
 
 int gval = 0;
 
@@ -71,3 +73,10 @@ TEST_F( DumbPtrTests, deAllocTest )
 
     GTEST_ASSERT_EQ( 0, gval );
 }
+
+constexpr size_t g_objectSize = 16;
+
+struct SomeObject
+{
+    std::array<std::byte, g_objectSize> someTable;
+};

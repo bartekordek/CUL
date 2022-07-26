@@ -1,5 +1,7 @@
 #include "TimerChrono.hpp"
 #include "CUL/TimeConcrete.hpp"
+
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 
 using namespace CUL;
@@ -7,6 +9,7 @@ using namespace CUL;
 TimerChrono::TimerChrono():
     time( new TimeConcrete() )
 {
+    std::cout << "TimerChrono()" << this << "\n";
 }
 
 void TimerChrono::start()
@@ -37,4 +40,5 @@ const ITime& TimerChrono::getElapsed() const
 
 TimerChrono::~TimerChrono()
 {
+    std::cout << "~TimerChrono()" << this << "\n";
 }

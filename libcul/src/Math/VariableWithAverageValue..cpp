@@ -22,12 +22,12 @@ void VariableWithAverageValue::add( float value )
     calculateAverage();
 }
 
-float VariableWithAverageValue::getAverage()
+float VariableWithAverageValue::getAverage() const
 {
     return m_average;
 }
 
-size_t VariableWithAverageValue::getcapacity() const
+size_t VariableWithAverageValue::size() const
 {
     return m_sampleCapacity;
 }

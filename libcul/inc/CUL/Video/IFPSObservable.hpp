@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/Video/IFPSCounter.hpp"
+#include "CUL/Video/FPSCounter.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Video )
@@ -10,7 +10,7 @@ class CULLib_API IFPSObservable
 public:
     IFPSObservable();
 
-    void addFPSCounter( IFPSCounter* counter );
+    void addFPSCounter( FPSCounter* counter );
     void frameHasEnded();
 
     virtual ~IFPSObservable();
@@ -22,7 +22,7 @@ private:
     IFPSObservable& operator=( const IFPSObservable& instance ) = delete;
     IFPSObservable& operator=( IFPSObservable&& instance ) = delete;
 
-    IFPSCounter* m_fpsCounter = nullptr;
+    FPSCounter* m_fpsCounter = nullptr;
 };
 
 NAMESPACE_END( Video )

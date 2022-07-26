@@ -1,5 +1,5 @@
 #include "FrameCounterTests.hpp"
-#include "CUL/Video/IFPSCounter.hpp"
+#include "CUL/Video/FPSCounter.hpp"
 #include "CUL/ITimer.hpp"
 
 using namespace CUL;
@@ -23,22 +23,20 @@ void FrameCounterTests::TearDownTestCase()
 
 TEST_F( FrameCounterTests, fpsCurrentCountShouldBe0 )
 {
-    auto fpsCounter = FPSCounterFactory::getConcreteFPSCounter();
-    std::unique_ptr<IFPSCounter> fpsCounterPtr( fpsCounter );
-    fpsCounter->setMeasurePeriod( measurePeriod );
-    fpsCounter->start();
-    fpsCounter->stop();
-    GTEST_ASSERT_EQ( 0, static_cast<unsigned>( fpsCounter->getCurrentFps() ) );
+    FPSCounter fpsCounter;
+    fpsCounter.setMeasurePeriod( measurePeriod );
+    fpsCounter.start();
+    fpsCounter.stop();
+    GTEST_ASSERT_EQ( 0, static_cast<unsigned>( fpsCounter.getCurrentFps() ) );
 }
 
 TEST_F( FrameCounterTests, fpsAverageCountShouldBe0 )
 {
-    auto fpsCounter = FPSCounterFactory::getConcreteFPSCounter();
-    std::unique_ptr<IFPSCounter> fpsCounterPtr( fpsCounter );
-    fpsCounter->setMeasurePeriod( measurePeriod );
-    fpsCounter->start();
-    fpsCounter->stop();
-    auto avgFps = static_cast<unsigned>( fpsCounter->getAverageFps() );
+    FPSCounter fpsCounter;
+    fpsCounter.setMeasurePeriod( measurePeriod );
+    fpsCounter.start();
+    fpsCounter.stop();
+    auto avgFps = static_cast<unsigned>( fpsCounter.getAverageFps() );
     GTEST_ASSERT_EQ( 0, avgFps );
 }
 #ifdef ALIENS_EXIST_TODO_IS_DONE
@@ -46,7 +44,7 @@ TEST_F( FrameCounterTests, fpsAverageCountShouldBe0 )
 TEST_F( FrameCounterTests, fpsCurrentCountShouldBe10 )
 {
     auto fpsCounter = FPSCounterFactory::getConcreteFPSCounter();
-    std::unique_ptr<IFPSCounter> fpsCounterPtr( fpsCounter );
+    std::unique_ptr<FPCounter> fpsCounterPtr( fpsCounter );
     fpsCounter->setMeasurePeriod( measurePeriod );
     fpsCounter->start();
     for( unsigned int i = 0; i < 10; ++i )
@@ -65,7 +63,7 @@ TEST_F( FrameCounterTests, fpsAverageCountShouldBe40 )
 {
     const auto fpsTarget = 40;
     auto fpsCounter = FPSCounterFactory::getConcreteFPSCounter();
-    std::unique_ptr<IFPSCounter> fpsCounterPtr( fpsCounter );
+    std::unique_ptr<FPCounter> fpsCounterPtr( fpsCounter );
     fpsCounter->setMeasurePeriod( measurePeriod );
     fpsCounter->start();
     for( unsigned int i = 0; i < fpsTarget; ++i )

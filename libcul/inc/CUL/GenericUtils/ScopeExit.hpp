@@ -7,14 +7,14 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
 
-class CULLib_API ScopeExit final
+class ScopeExit final
 {
 public:
-    ScopeExit( std::function<void( void )> inOnExit ) : m_onExit( inOnExit )
+    CULLib_API ScopeExit( std::function<void( void )> inOnExit ) : m_onExit( inOnExit )
     {
     }
 
-    ~ScopeExit()
+    CULLib_API ~ScopeExit()
     {
         m_onExit();
     }

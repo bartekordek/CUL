@@ -2,6 +2,7 @@
 
 #include "CUL/GenericUtils/DumbPtr.hpp"
 
+#include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_memory_resource.hpp"
 
 
@@ -16,9 +17,9 @@ public:
     VariableWithAverageValue();
 
     void add( float value );
-    float getAverage();
+    float getAverage() const;
 
-    size_t getcapacity() const;
+    size_t size() const;
     void setCapacity( size_t newCapacity );
 
     ~VariableWithAverageValue();
@@ -39,6 +40,7 @@ private:
     VariableWithAverageValue& operator=( const VariableWithAverageValue& arg ) = delete;
     VariableWithAverageValue& operator=( VariableWithAverageValue&& arg ) = delete;
 };
+
 
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )

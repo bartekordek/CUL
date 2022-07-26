@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "CUL/Memory/MemoryPool.hpp"
 
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 
@@ -25,11 +24,6 @@ public:
     DumbPtr( Type* value ):
         m_ptr( value )
     {
-    }
-
-    void setMemoryPool( CUL::Memory::MemoryPool* mp )
-    {
-        s_memoryPool = mp;
     }
 
     Type& operator*()
@@ -82,7 +76,7 @@ public:
         return m_ptr;
     }
 
-    void set( Type* value, Memory::MemoryPool* mp = nullptr )
+    void set( Type* value )
     {
         if( value == nullptr )
         {
@@ -90,7 +84,6 @@ public:
         }
 
         m_ptr = value;
-        s_memoryPool = mp;
     }
 
     void reset( Type* value )
@@ -145,23 +138,15 @@ public:
             return;
         }
 
-        if( s_memoryPool )
-        {
-            m_ptr->~Type();
-            s_memoryPool->release( m_ptr );
-        }
-        else
-        {
-            if( m_customDestuction )
-            {
-                m_ptr->~Type();
-                m_customDestuction( m_ptr );
-            }
-            else
-            {
-                delete m_ptr;
-            }
-        }
+    if( m_customDestuction )
+    {
+        m_ptr->~Type();
+        m_customDestuction( m_ptr );
+    }
+    else
+    {
+        delete m_ptr;
+    }
 
         m_ptr = nullptr;
     }
@@ -171,11 +156,6 @@ public:
         return m_ptr == nullptr;
     }
 
-    static void registerMemoryPool( Memory::MemoryPool* memoryPool )
-    {
-        s_memoryPool = memoryPool;
-    }
-
 private:
     DumbPtr( const DumbPtr& value ) = delete;
     DumbPtr& operator=( const DumbPtr& value ) = delete;
@@ -183,11 +163,7 @@ private:
     Type* m_ptr = nullptr;
     std::function<void(void*)> m_customDestuction;
 
-    static Memory::MemoryPool* s_memoryPool;
 };
-
-template <class Type>
-Memory::MemoryPool* DumbPtr<Type>::s_memoryPool = nullptr;
 
 NAMESPACE_END( GUTILS )
 NAMESPACE_END( CUL )
