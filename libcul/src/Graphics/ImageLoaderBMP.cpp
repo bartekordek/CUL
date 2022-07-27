@@ -2,9 +2,11 @@
 
 #include "Graphics/ImageConcrete.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 
 using namespace CUL;
 using namespace Graphics;
@@ -192,9 +194,7 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
         const int infoHeaderHeight = infoHeader.height;
         for( int y = 0; y < infoHeaderHeight; ++y )
         {
-            unsigned offset = row_stride * y;
-            unsigned ptr = (unsigned)data + offset;
-            inp.read( (char*)( ptr ), row_stride );
+            inp.read( (char*) ( data + row_stride * y ), row_stride );
             inp.read( (char*) padding_row.data(), ( std::streamsize ) padding_row.size() );
         }
         fileHeader.file_size += static_cast<uint32_t>( imageDataSize ) + infoHeader.height * static_cast<uint32_t>( padding_row.size() );
