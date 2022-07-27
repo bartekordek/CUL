@@ -10,14 +10,9 @@ NAMESPACE_BEGIN( GUTILS )
 class ScopeExit final
 {
 public:
-    CULLib_API ScopeExit( std::function<void( void )> inOnExit ) : m_onExit( inOnExit )
-    {
-    }
+    CULLib_API ScopeExit( std::function<void( void )> inOnExit );
 
-    CULLib_API ~ScopeExit()
-    {
-        m_onExit();
-    }
+    CULLib_API ~ScopeExit();
 
 protected:
 private:
