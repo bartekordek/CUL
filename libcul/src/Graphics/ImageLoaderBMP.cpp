@@ -192,7 +192,9 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
         const int infoHeaderHeight = infoHeader.height;
         for( int y = 0; y < infoHeaderHeight; ++y )
         {
-            inp.read( (char*) ( data + row_stride * y ), row_stride );
+            unsigned offset = row_stride * y;
+            unsigned ptr = (unsigned)data + offset;
+            inp.read( (char*)( ptr ), row_stride );
             inp.read( (char*) padding_row.data(), ( std::streamsize ) padding_row.size() );
         }
         fileHeader.file_size += static_cast<uint32_t>( imageDataSize ) + infoHeader.height * static_cast<uint32_t>( padding_row.size() );
@@ -287,6 +289,7 @@ IImage* loadImage2( const FS::Path& path, bool )
 
         const auto dataSize = bmp_info_header.width * bmp_info_header.height * bmp_info_header.bit_count / 8u;
         DataType* data = new DataType[dataSize];
+        std::memset( data, '0', dataSize );
 
         // Here we check if we need to take into account row padding
         if( bmp_info_header.width % 4 == 0 )

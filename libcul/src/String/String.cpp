@@ -7,41 +7,41 @@
 
 using namespace CUL;
 
-String::String()
+String::String() noexcept
 {
 }
 
-String::String( const String& arg ):
+String::String( const String& arg ) noexcept :
     m_value( arg.m_value )
 {
 }
 
-String::String( String&& arg ):
+String::String( String&& arg ) noexcept :
     m_value( std::move( arg.m_value ) )
 {
 }
 
-String::String( const bool arg )
+String::String( const bool arg ) noexcept
 {
     *this = arg;
 }
 
-String::String( const char* arg )
+String::String( const char* arg ) noexcept
 {
     *this = arg;
 }
 
-String::String( unsigned char* arg )
+String::String( unsigned char* arg ) noexcept
 {
     *this = arg;
 }
 
-String::String( const std::string& arg )
+String::String( const std::string& arg ) noexcept
 {
     *this = arg;
 }
 
-String::String( const std::wstring& arg )
+String::String( const std::wstring& arg ) noexcept
 {
 #ifdef _MSC_VER
     m_value = arg;
@@ -50,22 +50,22 @@ String::String( const std::wstring& arg )
 #endif
 }
 
-String::String( float arg )
+String::String( float arg ) noexcept
 {
     *this = arg;
 }
 
-String::String( double arg )
+String::String( double arg ) noexcept
 {
     *this = arg;
 }
 
-String::String( int arg )
+String::String( int arg ) noexcept
 {
     *this = arg;
 }
 
-String::String( unsigned int arg )
+String::String( unsigned int arg ) noexcept
 {
     *this = arg;
 }
@@ -79,7 +79,7 @@ String& String::operator=( const String& arg )
     return *this;
 }
 
-String& String::operator=( String&& arg )
+String& String::operator=( String&& arg ) noexcept
 {
     if( this != &arg )
     {

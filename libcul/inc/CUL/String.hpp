@@ -24,21 +24,21 @@ public:
     using UnderlyingChar = char;
 #endif
 
-    explicit String();
-    String( const String& arg );
-    String( String&& arg );
-    String( const bool arg );
-    String( const char* arg );
-    String( unsigned char* arg );
-    String( const std::string& arg );
-    String( const std::wstring& arg );
-    String( float arg );
-    String( double arg );
-    String( int arg );
-    String( unsigned int arg );
+    explicit String() noexcept;
+    String( const String& arg ) noexcept;
+    String( String&& arg ) noexcept;
+    String( const bool arg ) noexcept;
+    String( const char* arg ) noexcept;
+    String( unsigned char* arg ) noexcept;
+    String( const std::string& arg ) noexcept;
+    String( const std::wstring& arg ) noexcept;
+    String( float arg ) noexcept;
+    String( double arg ) noexcept;
+    String( int arg ) noexcept;
+    String( unsigned int arg ) noexcept;
 
     String& operator=( const String& arg );
-    String& operator=( String&& arg );
+    String& operator=( String&& arg ) noexcept;
     String& operator=( const bool arg );
     String& operator=( const char* arg );
     String& operator=( unsigned char* arg );

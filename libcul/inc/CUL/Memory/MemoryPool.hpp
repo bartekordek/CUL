@@ -103,15 +103,18 @@ public:
                 }
             }
 
-            const size_t leftSpace = ( g_buffer.size() - lastBlock->end ) - 1;
-            if( lastBlock && leftSpace > sizeInBytes )
+            if( lastBlock )
             {
-                BlockInfo bi;
-                bi.start = lastBlock->end + 1;
-                bi.end = lastBlock->end + sizeInBytes;
-                bi.ptr = (void*)( &g_buffer[bi.start] );
-                addBlock( &bi );
-                return bi.ptr;
+                const size_t leftSpace = ( g_buffer.size() - lastBlock->end ) - 1;
+                if( leftSpace > sizeInBytes )
+                {
+                    BlockInfo bi;
+                    bi.start = lastBlock->end + 1;
+                    bi.end = lastBlock->end + sizeInBytes;
+                    bi.ptr = (void*)( &g_buffer[bi.start] );
+                    addBlock( &bi );
+                    return bi.ptr;
+                }
             }
         }
 

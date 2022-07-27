@@ -19,10 +19,10 @@ public:
 
     Type diagonal = 0.f;
 
-    Point();
-    Point( const glm::vec3& vec );
-    Point( Type val1, Type val2, Type val3 );
-    Point( const PointData& data );
+    Point() noexcept;
+    Point( const glm::vec3& vec ) noexcept;
+    Point( Type val1, Type val2, Type val3 ) noexcept;
+    Point( const PointData& data ) noexcept;
 
     Point& operator=( const PointData& data );
     Point& operator=( const glm::vec3& vec );
@@ -89,10 +89,10 @@ public:
 
     glm::vec3 toGlmVec() const;
 
-    Point( const Point& arg );
-    Point( Point&& arg );
+    Point( const Point& arg ) noexcept;
+    Point( Point&& arg ) noexcept;
     Point& operator=( const Point& rhv );
-    Point& operator=( Point&& rhv );
+    Point& operator=( Point&& rhv ) noexcept;
     Point& operator+=( const Point& rhv );
     Point operator+( const Point& rhv );
     Point& operator-=( const Point& rhv );

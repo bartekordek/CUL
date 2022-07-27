@@ -8,26 +8,25 @@ using namespace MATH;
 #pragma warning( disable : 5045 )
 #endif
 
-Point::Point()
+Point::Point() noexcept
 {
 
 }
 
-Point::Point( const glm::vec3& vec ) : values( {vec.x, vec.y, vec.z} )
+Point::Point( const glm::vec3& vec ) noexcept : values( { vec.x, vec.y, vec.z } )
 {
     calculateDiagonal();
 }
 
 Point::Point(
     Point::Type inx,
-    Point::Type iny,
-    Point::Type inz ):
+    Point::Type iny, Point::Type inz ) noexcept :
     values( { inx, iny, inz } )
 {
     calculateDiagonal();
 }
 
-Point::Point( const PointData& data ):
+Point::Point( const PointData& data ) noexcept :
     values( data )
 {
 }
@@ -60,13 +59,13 @@ Point::operator glm::vec3()
     return result;
 }
 
-Point::Point( const Point& arg ):
+Point::Point( const Point& arg ) noexcept :
     values( arg.values ),
     diagonal( arg.diagonal )
 {
 }
 
-Point::Point( Point&& arg ):
+Point::Point( Point&& arg ) noexcept :
     values( std::move( arg.values ) ),
     diagonal( arg.diagonal )
 {
@@ -83,7 +82,7 @@ Point& Point::operator=( const Point& rhv )
     return *this;
 }
 
-Point& Point::operator=( Point&& rhv )
+Point& Point::operator=( Point&& rhv ) noexcept
 {
     if( this != &rhv )
     {

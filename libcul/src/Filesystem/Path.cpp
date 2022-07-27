@@ -11,11 +11,11 @@ const String& Path::getDirSeparator()
     return extensionSeparator;
 }
 
-Path::Path()
+Path::Path() noexcept
 {
 }
 
-Path::Path( const Path& path ):
+Path::Path( const Path& path ) noexcept:
     m_isDir( path.m_isDir ),
     m_fullPath( path.m_fullPath ),
     m_extension( path.m_extension ),
@@ -25,7 +25,8 @@ Path::Path( const Path& path ):
     normalizePaths();
 }
 
-Path::Path( Path&& path ): m_isDir( path.m_isDir ),
+Path::Path( Path&& path ) noexcept
+    : m_isDir( path.m_isDir ),
     m_fullPath( std::move( path.m_fullPath ) ),
     m_extension( std::move( path.m_extension ) ),
     m_baseName( std::move( path.m_baseName ) ),
@@ -34,20 +35,20 @@ Path::Path( Path&& path ): m_isDir( path.m_isDir ),
     normalizePaths();
 }
 
-Path::Path( const String& path ) :
+Path::Path( const String& path ) noexcept :
     m_fullPath( path )
 {
     preparePaths();
     normalizePaths();
 }
 
-Path::Path( const std::string& path ) : m_fullPath( path )
+Path::Path( const std::string& path ) noexcept : m_fullPath( path )
 {
     preparePaths();
     normalizePaths();
 }
 
-Path::Path( const char* r ): m_fullPath( r )
+Path::Path( const char* r ) noexcept : m_fullPath( r )
 {
     preparePaths();
 }
@@ -64,7 +65,7 @@ Path& Path::operator=( const Path& path )
     return *this;
 }
 
-Path& Path::operator=( Path&& path )
+Path& Path::operator=( Path&& path ) noexcept
 {
     if( this != &path )
     {

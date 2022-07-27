@@ -12,15 +12,15 @@ NAMESPACE_BEGIN( FS )
 class CULLib_API Path
 {
 public:
-    Path();
-    Path( const Path& path );
-    Path( Path&& path );
-    Path( const String& path );
-    Path( const std::string& path );
-    Path( const char* r );
+    Path() noexcept;
+    Path( const Path& path ) noexcept;
+    Path( Path&& path ) noexcept;
+    Path( const String& path ) noexcept;
+    Path( const std::string& path ) noexcept;
+    Path( const char* r ) noexcept;
 
     Path& operator=( const Path& path );
-    Path& operator=( Path&& path );
+    Path& operator=( Path&& path ) noexcept;
 
     Path& operator=( const String& r );
     Path& operator=( const char* r );
