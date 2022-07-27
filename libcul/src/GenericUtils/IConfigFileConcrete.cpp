@@ -3,6 +3,8 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 
+#include "CUL/Filesystem/FSApi.hpp"
+
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_iosfwd.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
@@ -14,7 +16,10 @@ IConfigFileConcrete::IConfigFileConcrete( const FS::Path& path, CULInterface* cu
     m_culInterface( culInterface ),
     m_path( path )
 {
+    auto currentDir = culInterface->getFS()->getCurrentDir();
+    culInterface->getLogger()->log( "Current dir: " + currentDir );
     Assert::simple( nullptr != culInterface, "CUL Is not initialized!" );
+    Assert::simple( path.exists(), path.getPath().string() + " does not exist!" );
     loadPath();
     m_file = culInterface->getFF()->createFileFromPath( path );
 }

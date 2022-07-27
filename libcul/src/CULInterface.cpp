@@ -42,6 +42,8 @@ void CULInterface::initialize()
     m_fileFactory = new FS::FileFactory( this );
     m_fsApi.reset( FS::FSApi::crateInstance( "FSApiFS", m_fileFactory, this ) );
 
+    m_logger = LOG::LOG_CONTAINER::getLogger();
+
     if( !m_configFilePath.getPath().empty() )
     {
         m_configFile = loadConfigFile( m_configFilePath );
@@ -49,7 +51,7 @@ void CULInterface::initialize()
 
     m_imageLoader.reset( Graphics::IImageLoader::createConcrete( m_configFile, this ) );
 
-    m_logger = LOG::LOG_CONTAINER::getLogger();
+    
     m_logger->log( "Initialized logger." );
     if( !g_logger )
     {
@@ -65,6 +67,11 @@ void CULInterface::initialize()
     m_args.reset( new GUTILS::ConsoleUtilities() );
 
     m_threadUtils = new ThreadUtils();
+}
+
+GUTILS::IConfigFile* CULInterface::getConfig() const
+{
+    return m_configFile;
 }
 
 CUL::LOG::ILogger* CULInterface::getLogger()

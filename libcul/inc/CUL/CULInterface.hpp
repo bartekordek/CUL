@@ -45,6 +45,7 @@ public:
     ThreadUtils& getThreadUtils();
 
     GUTILS::IConfigFile* loadConfigFile( const FS::Path& path );
+    GUTILS::IConfigFile* getConfig() const;
 
     ~CULInterface();
 
@@ -58,7 +59,7 @@ private:
     CULInterface& operator=( CULInterface&& arg ) = delete;
 
     FS::Path m_configFilePath;
-    CUL::GUTILS::IConfigFile* m_configFile = nullptr;
+    GUTILS::IConfigFile* m_configFile = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     FS::FileFactory* m_fileFactory = nullptr;
     std::unique_ptr<FS::FSApi> m_fsApi;
