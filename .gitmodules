@@ -120,3 +120,21 @@
 [submodule "deps/udp-discovery-cpp"]
 	path = deps/udp-discovery-cpp
 	url = git@github.com:bartekordek/udp-discovery-cpp.git
+[submodule "deps/boost/stacktrace"]
+	path = deps/boost/stacktrace
+	url = git@github.com:boostorg/stacktrace.git
+[submodule "deps/boost/array"]
+	path = deps/boost/array
+	url = git@github.com:boostorg/array.git
+[submodule "deps/boost/detail"]
+	path = deps/boost/detail
+	url = git@github.com:boostorg/detail.git
+[submodule "deps/boost/integer"]
+	path = deps/boost/integer
+	url = git@github.com:boostorg/integer.git
+[submodule "deps/boost/predef"]
+	path = deps/boost/predef
+	url = git@github.com:boostorg/predef.git
+[submodule "deps/boost/winapi"]
+	path = deps/boost/winapi
+	url = git@github.com:boostorg/winapi.git
