@@ -15,11 +15,11 @@ endif()
 
 set( CMAKE_ENABLE_EXPORTS true )
 
-include_directories( SYSTEM "../deps/stb" )
-include_directories( SYSTEM "../deps/tiny-image/src" )
-include_directories( SYSTEM "../deps/rapidjson/include" )
-include_directories( SYSTEM "../deps/hash-library" )
-include_directories( SYSTEM "../deps/DevIL/DevIL/include" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/stb" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tiny-image/src" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/rapidjson/include" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/hash-library" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/DevIL/DevIL/include" )
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -60,6 +60,7 @@ PUBLIC AdditionalDeps
 PUBLIC boost_assert
 PUBLIC boost_circular_buffer
 PUBLIC boost_core
+PRIVATE boost_stacktrace_basic
 PRIVATE cppfs
 PUBLIC glm
 PRIVATE spdlog
