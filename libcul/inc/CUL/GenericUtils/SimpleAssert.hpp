@@ -12,7 +12,7 @@ NAMESPACE_END( LOG )
 class CULLib_API Assert
 {
 public:
-    static void simple( bool val, const String& msg = String( "" ), LOG::ILogger* loggerIn = nullptr );
+    static void simple( bool val, const String& msg = String( "" ), LOG::ILogger* loggerIn = nullptr, bool generateStackTrace = true );
 protected:
 private:
 };
