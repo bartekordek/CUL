@@ -37,7 +37,7 @@ else()
     )
 endif()
 
-target_link_libraries(${EXEC} cul-static gtest gmock )
+target_link_libraries(${EXEC} cul_static gtest gmock )
 
 target_include_directories(${EXEC} PRIVATE inc)
 target_include_directories(${EXEC} PRIVATE src)

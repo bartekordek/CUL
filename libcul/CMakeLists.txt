@@ -6,7 +6,7 @@ set( EXEC cul )
 
 set( PROJECT_NAME_DYNAMIC cul )
 set( PROJECT_NAME_STATIC_IMPL cul-static-impl )
-set( PROJECT_NAME_STATIC cul-static )
+set( PROJECT_NAME_STATIC cul_static )
 
 project(${EXEC} LANGUAGES CXX)
 
