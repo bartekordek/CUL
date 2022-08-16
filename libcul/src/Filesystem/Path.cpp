@@ -280,7 +280,8 @@ bool Path::exists() const
 #if defined( _MSC_VER ) && _MSC_VER < 1920
     const bool result = std::experimental::filesystem::is_regular_file( m_fullPath.cStr() );
 #else
-    const bool result = std::filesystem::is_regular_file(m_fullPath.cStr());
+    const std::filesystem::path pathAsStdPath = m_fullPath.getString();
+    const bool result = std::filesystem::is_regular_file( pathAsStdPath );
 #endif
     return result;
 }
