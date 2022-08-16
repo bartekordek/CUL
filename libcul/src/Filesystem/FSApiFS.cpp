@@ -99,7 +99,8 @@ TimeConcrete FSApiFS::getLastModificationTime( const Path& path )
     }
 
     TimeConcrete timeConcrete;
-    const auto ftime = FSCpp::last_write_time( path.getPath().cStr() );
+    std::filesystem::path asPath = path.getPath().getString();
+    const auto ftime = FSCpp::last_write_time( asPath );
     const auto timeSinceEpoch = ftime.time_since_epoch();
     const auto count = timeSinceEpoch.count();
     const auto seconds = count * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
