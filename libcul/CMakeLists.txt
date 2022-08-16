@@ -2,13 +2,13 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 set( CMAKE_CXX_STANDARD 17 )
-set( EXEC cul )
 
-set( PROJECT_NAME_DYNAMIC cul )
+set( PROJECT_NAME_DYNAMIC cul_dynamic )
 set( PROJECT_NAME_STATIC_IMPL cul-static-impl )
 set( PROJECT_NAME_STATIC cul_static )
 
-project(${EXEC} LANGUAGES CXX)
+project(${PROJECT_NAME_DYNAMIC} LANGUAGES CXX)
+project(${PROJECT_NAME_STATIC} LANGUAGES CXX)
 
 if( MSVC )
 endif()
