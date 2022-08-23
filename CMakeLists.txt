@@ -99,8 +99,9 @@ add_subdirectory( ${CUL_DEPS_PATH}/rapidjson )
 
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
 
-set(BUILD_EXAMPLE false)
-set(BUILD_TOOL false)
+set(BUILD_EXAMPLE OFF CACHE BOOL "DISABLE EXAMPLE" FORCE)
+set(BUILD_TOOL OFF CACHE BOOL "DISABLE TOOL" FORCE)
+set(BUILD_TEST OFF CACHE BOOL "DISABLE TEST" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/udp-discovery-cpp )
 add_subdirectory( ${CUL_DEPS_PATH}/zlib )
 set( PNG_TESTS OFF )
