@@ -1,5 +1,4 @@
 [![Windows Build](https://github.com/bartekordek/CUL/actions/workflows/cmake-windows.yml/badge.svg?branch=master)](https://github.com/bartekordek/CUL/actions/workflows/cmake-windows.yml)
-
 [![Linux Build](https://github.com/bartekordek/CUL/actions/workflows/cmake.yml/badge.svg)](https://github.com/bartekordek/CUL/actions/workflows/cmake.yml)
 
 ## Synopsis

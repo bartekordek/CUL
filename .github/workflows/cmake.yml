@@ -75,10 +75,10 @@ jobs:
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config ${BUILD_TYPE} --target libculTests_static -j16
 
-    - name: Test
+    - name: Run libculTests_dynamic
       working-directory: ${{github.workspace}}/runDir
       run: ../Build-Linux/libculTests_dynamic.bin
 
-    - name: Test
+    - name: Run libculTests_static
       working-directory: ${{github.workspace}}/runDir
       run: ../Build-Linux/libculTests_static.bin

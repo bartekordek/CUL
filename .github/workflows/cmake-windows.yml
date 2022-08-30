@@ -52,12 +52,12 @@ jobs:
         working-directory: ${{github.workspace}}/Build-Windows/Debug
         run: tree /F /A
 
-      - name: Test libculTests_dynamic
+      - name: Run libculTests_dynamic
         shell: cmd
         working-directory: ${{github.workspace}}/runDir
         run: ..\Build-Windows\Debug\libculTests_dynamic.exe
 
-      - name: Test libculTests_static
+      - name: Run libculTests_static
         shell: cmd
         working-directory: ${{github.workspace}}/runDir
         run: ..\Build-Windows\Debug\libculTests_static.exe
