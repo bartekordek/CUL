@@ -66,14 +66,12 @@ jobs:
     - name: Build libculTests_dynamic
       working-directory: ${{github.workspace}}//Build-Linux
       shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_dynamic -j16
+      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_dynamic -j4
 
     - name: Build libculTests_static
       working-directory: ${{github.workspace}}//Build-Linux
       shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_static -j16
+      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_static -j4
 
     - name: Run libculTests_dynamic
       working-directory: ${{github.workspace}}/runDir
