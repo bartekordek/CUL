@@ -12,6 +12,7 @@ NAMESPACE_BEGIN( Primitives )
 #ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4820 )
+#pragma warning( disable : 4514 )
 #endif
 
 using PointType = CUL::MATH::Point;

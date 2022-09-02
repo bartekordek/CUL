@@ -7,6 +7,11 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 NAMESPACE_BEGIN( Primitives )
 
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4514 )
+#endif
+
 class Triangle:
     public ISerializable
 {
@@ -82,6 +87,10 @@ private:
     Triangle( Triangle&& arg ) = delete;
     Triangle& operator=( Triangle&& arg ) = delete;
 };
+
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 
 NAMESPACE_END( Primitives )
 NAMESPACE_END( MATH )

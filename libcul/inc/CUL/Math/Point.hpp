@@ -9,13 +9,18 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable : 5045 )
+#endif
+
 class CULLib_API Point final
 {
 public:
     using Type = float;
     using PointData = std::array<Type, 3>;
 
-    PointData values = { static_cast<Type>(0), static_cast<Type>( 0), static_cast<Type>( 0 ) };
+    PointData values = { static_cast<Type>( 0 ), static_cast<Type>( 0 ), static_cast<Type>( 0 ) };
 
     Type diagonal = 0.f;
 
@@ -29,7 +34,7 @@ public:
 
     operator glm::vec3();
 
-    inline Point operator+(const Point& rhv) const
+    inline Point operator+( const Point& rhv ) const
     {
         Point result = *this;
 
@@ -106,9 +111,15 @@ public:
     Type& operator[]( size_t index );
 
     ~Point();
+
 protected:
 private:
     void calculateDiagonal();
 };
+
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
+
 NAMESPACE_END( MATH )
 NAMESPACE_END( CUL )
