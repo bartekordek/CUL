@@ -12,7 +12,7 @@ NAMESPACE_BEGIN( Primitives )
 #pragma warning( disable: 4514 )
 #endif
 
-class Triangle:
+class Triangle final:
     public ISerializable
 {
 public:
@@ -22,66 +22,21 @@ public:
 
     ValuesType vals;
 
-    Triangle()
-    {
+    Triangle();
+    Triangle( const Triangle& arg );
 
-    }
+    Triangle& operator=( const Triangle& arg );
+    PointType& operator[]( size_t index );
 
-    Triangle( const Triangle& arg ):
-        ISerializable(),
-        vals( arg.vals )
-    {
+    const PointType& operator[]( size_t index ) const;
 
-    }
+    std::vector<float> toVectorOfFloat() const;
 
-    Triangle& operator=( const Triangle& arg )
-    {
-        if( this != &arg )
-        {
-            vals = arg.vals;
-        }
-        return *this;
-    }
-
-    PointType& operator[]( size_t index )
-    {
-        return vals[ index ];
-    }
-
-    const PointType& operator[]( size_t index ) const
-    {
-        return vals[ index ];
-    }
-
-    virtual ~Triangle()
-    {
-
-    }
+    ~Triangle();
 
 protected:
 private:
-    String getSerializationContent( CounterType tabsSize, const bool = false ) const override
-    {
-        String tabs = getTab( tabsSize );
-
-        auto convertPoint = []( const PointType& value ){
-            return String( "{ " ) +
-                String( value.getX() ) +
-                String( ", " ) +
-                String( value.getY() ) +
-                String( ", " ) +
-                String( value.getZ() ) +
-                String( " }" );
-        };
-
-        String result;
-        result = result + tabs + "    \"name\":\"Triangle\",\n";
-        result = result + tabs + "    \"p1\": " + convertPoint( vals[0] ) + ",\n";
-        result = result + tabs + "    \"p2\": " + convertPoint( vals[1] ) + ",\n";
-        result = result + tabs + "    \"p3\": " + convertPoint( vals[2] ) + "\n";
-
-        return result;
-    }
+    String getSerializationContent( CounterType tabsSize, const bool = false ) const override;
 
     // Deleted:
     Triangle( Triangle&& arg ) = delete;
