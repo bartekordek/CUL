@@ -12,7 +12,7 @@ NAMESPACE_BEGIN( Primitives )
 #pragma warning( disable: 4514 )
 #endif
 
-class Triangle final:
+class CULLib_API Triangle final:
     public ISerializable
 {
 public:
