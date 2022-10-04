@@ -3,6 +3,7 @@
 #include "CUL/ISerializable.hpp"
 
 #include "CUL/STL_IMPORTS/STD_array.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
@@ -23,6 +24,7 @@ public:
     void* dataVoid();
 
     void setData( const LineData& dataIn );
+    std::vector<float> toVectorOfFloat() const;
 
     PointType& operator[](size_t index);
     const PointType& operator[](size_t index) const;

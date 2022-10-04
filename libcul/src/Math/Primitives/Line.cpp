@@ -6,6 +6,8 @@ using namespace Primitives;
 
 Line::Line()
 {
+    data[0] = { 0.f, 0.f, 0.f };
+    data[1] = { 0.f, 0.f, 0.f };
     updateData();
 }
 
@@ -50,6 +52,21 @@ void Line::updateData()
 {
     auto convertedToVoid = reinterpret_cast<const void*>(&data);
     dataAsVoid = const_cast<void*>(convertedToVoid);
+}
+
+std::vector<float> Line::toVectorOfFloat() const
+{
+    std::vector<float> result;
+
+    result.push_back( data[0][0] );
+    result.push_back( data[0][1] );
+    result.push_back( data[0][2] );
+
+    result.push_back( data[1][0] );
+    result.push_back( data[1][1] );
+    result.push_back( data[1][2] );
+
+    return result;
 }
 
 String Line::getSerializationContent( CounterType tabsSize, const bool ) const
