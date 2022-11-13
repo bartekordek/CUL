@@ -2,6 +2,7 @@
 #include "CUL/Math/Vector3D.hpp"
 #include "CUL/Math/Primitives/Triangle3D.hpp"
 #include "UtilsTest.hpp"
+#include "CUL/ITimer.hpp"
 
 const int someBigValue = 1000;
 
@@ -120,6 +121,20 @@ TEST_F( UtilsTest, triangleWidth )
     GTEST_ASSERT_EQ( 1, value.getX() );
     GTEST_ASSERT_EQ( 1, value.getY() );
     GTEST_ASSERT_EQ( 0, value.getZ() );
+}
+
+
+TEST_F( UtilsTest, timerTest )
+{
+    auto chronoTimer = CUL::TimerFactory::getChronoTimer();
+    chronoTimer->runEveryPeriod( [] (){
+        std::cout << "Time!\n";
+    }, 1000 * 1000 );
+
+
+    CUL::ITimer::sleepSeconds( 3 );
+
+    delete chronoTimer;
 }
 
 #ifdef _MSC_VER

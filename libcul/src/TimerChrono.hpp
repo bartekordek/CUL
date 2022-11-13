@@ -3,9 +3,15 @@
 #include "CUL/ITimer.hpp"
 #include "CUL/ITime.hpp"
 
-#include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "STD_chrono.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
+
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
+#include "CUL/STL_IMPORTS/STD_atomic.hpp"
+#include "CUL/STL_IMPORTS/STD_map.hpp"
+#include "CUL/STL_IMPORTS/STD_mutex.hpp"
+#include "CUL/STL_IMPORTS/STD_thread.hpp"
+#include "CUL/STL_IMPORTS/STD_set.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -25,15 +31,34 @@ public:
     void reset() override;
     const ITime& getElapsed() const override;
 
+    void runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds ) override;
+
     ~TimerChrono();
 
 protected:
 private:
+    void timerLoop();
+    void threadWrap( size_t index );
+    void joinFinishedThreads();
 
+    unsigned getUniqueNumber();
+    void removeUniqueNumber( unsigned value );
+    std::set<unsigned> m_existingNumbers;
 
     std::chrono::high_resolution_clock clock;
     std::unique_ptr<ITime> time;
     std::chrono::high_resolution_clock::time_point startPoint;
+
+    std::thread m_timerThread;
+    std::atomic<bool> m_runLoop = false;
+    unsigned m_sleepUs = 0u;
+    std::function<void(void)> m_callback;
+
+    std::map<unsigned,std::thread*> m_threads;
+    std::vector<size_t> m_vectorsToRemove;
+    std::thread m_callbackThread;
+
+    std::mutex m_threadsVectorLock;
 
 private: // Deleted
     TimerChrono( const TimerChrono& tc ) = delete;

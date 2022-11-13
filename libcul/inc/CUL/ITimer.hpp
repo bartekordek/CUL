@@ -2,6 +2,8 @@
 
 #include "CUL/ITime.hpp"
 
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
+
 NAMESPACE_BEGIN( CUL )
 
 class CULLib_API ITimer
@@ -14,6 +16,8 @@ public:
     virtual void stop() = 0;
     virtual void reset() = 0;
     virtual const ITime& getElapsed() const = 0;
+
+    virtual void runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds ) = 0;
 
     static void sleepSeconds( unsigned int seconds );
     static void sleepMiliSeconds( unsigned int mSeconds );
