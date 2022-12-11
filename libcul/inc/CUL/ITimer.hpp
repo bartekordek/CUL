@@ -6,10 +6,14 @@
 
 NAMESPACE_BEGIN( CUL )
 
+NAMESPACE_BEGIN( LOG )
+class ILogger;
+NAMESPACE_END(LOG)
+
 class CULLib_API ITimer
 {
 public:
-    ITimer();
+    ITimer( LOG::ILogger* logger );
     virtual ~ITimer();
 
     virtual void start() = 0;
@@ -30,12 +34,18 @@ public:
     static void sleepSeconds( float seconds );
     static void sleepMiliSeconds( float mSeconds );
     static void sleepMicroSeconds( float uSeconds );
+
+protected:
+    LOG::ILogger* getLogger() const;
+
+private:
+    LOG::ILogger* m_logger = nullptr;
 };
 
 class CULLib_API TimerFactory
 {
 public:
-    static ITimer* getChronoTimer();
+    static ITimer* getChronoTimer( LOG::ILogger* logger );
 private:
 };
 

@@ -1,5 +1,7 @@
 #include "TimeTests.hpp"
 #include "CUL/ITimer.hpp"
+#include "CUL/Log/ILogger.hpp"
+#include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 using namespace CUL;
@@ -22,7 +24,8 @@ void TimeTests::TearDownTestCase()
 
 TEST_F( TimeTests, MeasureTime )
 {
-    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer() );
+    CUL::GUTILS::DumbPtr<CUL::LOG::ILogger> logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
+    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer( logger ) );
     timer->start();
     unsigned ms2Sleep = 1000;
     ITimer::sleepMiliSeconds( ms2Sleep );
@@ -32,7 +35,8 @@ TEST_F( TimeTests, MeasureTime )
 
 TEST_F( TimeTests, Reset )
 {
-    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer() );
+    CUL::GUTILS::DumbPtr<CUL::LOG::ILogger> logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
+    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer(logger ) );
     timer->start();
     unsigned ms2Sleep = 1000;
     ITimer::sleepMiliSeconds( ms2Sleep );

@@ -1,6 +1,7 @@
 #include "CSVFileTests.hpp"
 #include "CUL/Math/Vector3D.hpp"
 #include "CUL/Math/Primitives/Triangle3D.hpp"
+#include "CUL/Log/ILogger.hpp"
 #include "UtilsTest.hpp"
 #include "CUL/ITimer.hpp"
 
@@ -126,7 +127,8 @@ TEST_F( UtilsTest, triangleWidth )
 
 TEST_F( UtilsTest, timerTest )
 {
-    auto chronoTimer = CUL::TimerFactory::getChronoTimer();
+    auto logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
+    auto chronoTimer = CUL::TimerFactory::getChronoTimer(logger );
     chronoTimer->runEveryPeriod( [] (){
         std::cout << "Time!\n";
     }, 1000 * 1000 );
@@ -135,6 +137,7 @@ TEST_F( UtilsTest, timerTest )
     CUL::ITimer::sleepSeconds( 3 );
 
     delete chronoTimer;
+    delete logger;
 }
 
 #ifdef _MSC_VER

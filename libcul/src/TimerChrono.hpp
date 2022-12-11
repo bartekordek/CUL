@@ -24,7 +24,7 @@ class TimerChrono final:
     public ITimer
 {
 public:
-    TimerChrono();
+    TimerChrono( LOG::ILogger* logger );
 
     void start() override;
     void stop() override;
@@ -39,7 +39,7 @@ protected:
 private:
     void timerLoop();
     void threadWrap( size_t index );
-    void joinFinishedThreads();
+    void joinFinishedThreads( bool all = false );
 
     unsigned getUniqueNumber();
     void removeUniqueNumber( unsigned value );
