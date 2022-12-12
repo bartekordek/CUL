@@ -6,12 +6,13 @@
 using namespace CUL;
 using namespace Video;
 
-FPSCounter::FPSCounter()
+FPSCounter::FPSCounter( CUL::LOG::ILogger* logger )
 {
+    auto size = sizeof( TimerChrono );
     m_timer.create(
-        [](void* memory)
+        [&logger](void* memory)
         {
-            return new( memory ) TimerChrono();
+            return new( memory ) TimerChrono( logger );
         },
         []( TimerChrono* ptr )
         {

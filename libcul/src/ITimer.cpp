@@ -1,23 +1,29 @@
 #include "CUL/ITimer.hpp"
 #include "TimerChrono.hpp"
+#include "CUL/Log/ILogger.hpp"
 
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 
 using namespace CUL;
 
-ITimer::ITimer()
+ITimer::ITimer( LOG::ILogger* logger ):m_logger( logger )
 {
+}
+
+LOG::ILogger* ITimer::getLogger() const
+{
+    return m_logger;
 }
 
 ITimer::~ITimer()
 {
 }
 
-ITimer* TimerFactory::getChronoTimer()
+ITimer* TimerFactory::getChronoTimer( LOG::ILogger* logger )
 {
-    auto ptr = new TimerChrono();
-    std::cout << "TimerChrono size: " << sizeof( TimerChrono ) << "\n";
+    auto ptr = new TimerChrono( logger );
+
     return ptr;
 }
 

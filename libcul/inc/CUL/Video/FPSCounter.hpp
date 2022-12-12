@@ -14,12 +14,16 @@ NAMESPACE_BEGIN( CUL )
 
 class TimerChrono;
 
+NAMESPACE_BEGIN( LOG )
+class ILogger;
+NAMESPACE_END( LOG )
+
 NAMESPACE_BEGIN( Video )
 
 class CULLib_API FPSCounter
 {
 public:
-    FPSCounter();
+    FPSCounter( CUL::LOG::ILogger* logger );
 
     virtual double getCurrentFps() const;
     virtual double getAverageFps() const;
@@ -40,7 +44,7 @@ private:
     size_t m_bufferSize = 16;
 
     std::thread m_mainThread;
-    Memory::UniquePtrOnStack<TimerChrono, 48> m_timer;
+    Memory::UniquePtrOnStack<TimerChrono, 304> m_timer;
     std::atomic<bool> m_isRunning = { false };//TODO: delegate thread
     //creation to separate class, to check if thread was created and is runing.
     std::atomic<float> m_lastFrameValue = { 0.f };

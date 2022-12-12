@@ -1,7 +1,9 @@
 #include "CSVFileTests.hpp"
 #include "CUL/Math/Vector3D.hpp"
 #include "CUL/Math/Primitives/Triangle3D.hpp"
+#include "CUL/Log/ILogger.hpp"
 #include "UtilsTest.hpp"
+#include "CUL/ITimer.hpp"
 
 const int someBigValue = 1000;
 
@@ -120,6 +122,22 @@ TEST_F( UtilsTest, triangleWidth )
     GTEST_ASSERT_EQ( 1, value.getX() );
     GTEST_ASSERT_EQ( 1, value.getY() );
     GTEST_ASSERT_EQ( 0, value.getZ() );
+}
+
+
+TEST_F( UtilsTest, timerTest )
+{
+    auto logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
+    auto chronoTimer = CUL::TimerFactory::getChronoTimer(logger );
+    chronoTimer->runEveryPeriod( [] (){
+        std::cout << "Time!\n";
+    }, 1000 * 1000 );
+
+
+    CUL::ITimer::sleepSeconds( 3 );
+
+    delete chronoTimer;
+    delete logger;
 }
 
 #ifdef _MSC_VER
