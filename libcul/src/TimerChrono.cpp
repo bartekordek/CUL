@@ -3,6 +3,8 @@
 #include "CUL/Log/ILogger.hpp"
 
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_sstream.hpp"
 
 using namespace CUL;
 
