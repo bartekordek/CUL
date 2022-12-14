@@ -4,6 +4,7 @@
 #include "CUL/Log/ILogger.hpp"
 #include "UtilsTest.hpp"
 #include "CUL/ITimer.hpp"
+#include "CUL/Threading/Worker.hpp"
 
 const int someBigValue = 1000;
 
@@ -31,6 +32,17 @@ void UtilsTest::TearDownTestCase()
 #pragma warning( push )
 #pragma warning( disable: 5045 )
 #endif
+
+TEST_F( UtilsTest, Worker )
+{
+    CUL::Worker worker( nullptr );
+    worker.SleepMS = 1000;
+    worker.addTask( [] (){std::cout << "Hi there 00!\n"; } );
+    worker.addTask( [] (){std::cout << "Hi there 01!\n"; } );
+    worker.addTask( [] (){std::cout << "Hi there 02!\n"; } );
+    worker.run();
+}
+
 TEST_F( UtilsTest, vectHigher )
 {
     std::vector<CUL::MATH::Vector3Di> values;

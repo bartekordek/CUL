@@ -12,6 +12,8 @@
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -39,7 +41,6 @@ protected:
 private:
     void timerLoop();
     void threadWrap( size_t index );
-    void joinFinishedThreads( bool all = false );
 
     unsigned getUniqueNumber();
     void removeUniqueNumber( unsigned value );
@@ -54,11 +55,17 @@ private:
     unsigned m_sleepUs = 0u;
     std::function<void(void)> m_callback;
 
-    std::map<unsigned,std::thread*> m_threads;
-    std::vector<size_t> m_vectorsToRemove;
+    std::mutex m_threadsMtx;
+    std::map<size_t,std::thread*> m_threads;
     std::thread m_callbackThread;
 
     std::mutex m_threadsVectorLock;
+
+
+    std::mutex m_tasksLock;
+    std::vector<std::function<void( void )>> m_tasks;
+
+    std::unique_ptr<class Worker> m_worker;
 
 private: // Deleted
     TimerChrono( const TimerChrono& tc ) = delete;

@@ -9,7 +9,7 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
 
-constexpr size_t G_arraySize = 1024;
+constexpr size_t G_arraySize = 4096;
 
 class CULLib_API VariableWithAverageValue final
 {

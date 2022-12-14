@@ -8,16 +8,7 @@ using namespace Video;
 
 FPSCounter::FPSCounter( CUL::LOG::ILogger* logger )
 {
-    auto size = sizeof( TimerChrono );
-    m_timer.create(
-        [&logger](void* memory)
-        {
-            return new( memory ) TimerChrono( logger );
-        },
-        []( TimerChrono* ptr )
-        {
-            ptr->~TimerChrono();
-        } );
+    m_timer = std::make_unique< TimerChrono>( logger );
     m_samples.setCapacity( m_bufferSize );
 }
 

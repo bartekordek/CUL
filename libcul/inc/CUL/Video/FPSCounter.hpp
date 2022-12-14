@@ -3,7 +3,6 @@
 #include "CUL/ITimer.hpp"
 
 #include "CUL/Math/VariableWithAverageValue.hpp"
-#include "CUL/Memory/UniquePtrOnStack.hpp"
 
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_atomic.hpp"
@@ -44,7 +43,7 @@ private:
     size_t m_bufferSize = 16;
 
     std::thread m_mainThread;
-    Memory::UniquePtrOnStack<TimerChrono, 304> m_timer;
+    std::unique_ptr<class TimerChrono> m_timer;
     std::atomic<bool> m_isRunning = { false };//TODO: delegate thread
     //creation to separate class, to check if thread was created and is runing.
     std::atomic<float> m_lastFrameValue = { 0.f };

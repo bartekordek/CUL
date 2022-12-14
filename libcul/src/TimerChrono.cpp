@@ -1,5 +1,6 @@
 #include "TimerChrono.hpp"
 #include "CUL/TimeConcrete.hpp"
+#include "CUL/Threading/Worker.hpp"
 #include "CUL/Log/ILogger.hpp"
 
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
@@ -54,12 +55,15 @@ void TimerChrono::runEveryPeriod( std::function<void(void)> callback, unsigned u
     m_sleepUs = uSeconds;
     m_callback = callback;
 
+    m_worker.reset( new Worker( getLogger() ) );
+
     m_runLoop = true;
     m_timerThread = std::thread( &TimerChrono::timerLoop, this );
 }
 
 void TimerChrono::timerLoop()
 {
+    m_worker->run();
     while( m_runLoop )
     {
         ITimer::sleepMicroSeconds( m_sleepUs );
@@ -67,8 +71,6 @@ void TimerChrono::timerLoop()
         unsigned id = getUniqueNumber();
         std::thread* thread = new std::thread( &TimerChrono::threadWrap, this, id );
         m_threads[id] = thread;
-
-        joinFinishedThreads();
     }
 }
 
@@ -80,10 +82,20 @@ void TimerChrono::threadWrap( size_t index )
         m_callback();
     }
 
-    {
-        std::lock_guard<std::mutex> lock( m_threadsVectorLock );
-        m_vectorsToRemove.push_back( index );
-    }
+    m_worker->addTask( [index,this] (){
+        std::lock_guard lock( m_threadsMtx );
+        auto it = m_threads.find( index );
+        CUL::Assert::simple( it != m_threads.end() );
+
+        if( it->second->joinable() )
+        {
+            it->second->join();
+        }
+
+        delete it->second;
+        m_threads.erase( it );
+        getLogger()->log( "threadWrap[" + CUL::String( ( int ) index ) + "][DELETED]" );
+    } );
 
     getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][END]" );
 }
@@ -92,13 +104,24 @@ TimerChrono::~TimerChrono()
 {
     m_runLoop = false;
 
-    joinFinishedThreads( true );
-
     if( m_timerThread.joinable() )
     {
         m_timerThread.join();
     }
 
+    while( m_worker && m_worker->tasksLeft() )
+    {
+
+    }
+
+    while( true )
+    {
+        std::lock_guard lock( m_threadsMtx );
+        if( m_threads.size() == 0 )
+        {
+            break;
+        }
+    }
 
     void* add = this;
     std::stringstream stream;
@@ -106,56 +129,6 @@ TimerChrono::~TimerChrono()
     std::string result( stream.str() );
     LOG::ILogger* log = getLogger();
     log->log( "~TimerChrono()" + result );
-}
-
-void TimerChrono::joinFinishedThreads( bool all )
-{
-    while( true )
-    {
-        std::lock_guard<std::mutex> lock( m_threadsVectorLock );
-        if( all )
-        {
-            if( m_vectorsToRemove.size() == 0 && m_threads.size() == 0 )
-            {
-                break;
-            }
-        }
-        else
-        {
-            if( m_vectorsToRemove.size() == 0 )
-            {
-                break;
-            }
-        }
-
-        if( m_vectorsToRemove.size() > 0 )
-        {
-            size_t index = m_vectorsToRemove[0];
-            getLogger()->log( "Kill: " + CUL::String((int)index) );
-            m_vectorsToRemove.erase( m_vectorsToRemove.begin() );
-            if( m_threads[index]->joinable() )
-            {
-                m_threads[index]->join();
-                getLogger()->log( "Kill [join]: " + CUL::String( (int) index ) );
-            }
-            m_threads.erase( index );
-        }
-    }
-
-    const size_t size = m_threads.size();
-
-    if( size > 0 )
-    {
-        for( size_t i = size - 1; i > 0; --i )
-        {
-            std::thread& thread = *m_threads[i];
-            if( thread.joinable() )
-            {
-                thread.join();
-                m_threads.erase( i );
-            }
-        }
-    }
 }
 
 unsigned TimerChrono::getUniqueNumber()
