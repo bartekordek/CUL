@@ -30,6 +30,7 @@ public:
 
     QuadData data;
     void* dataAsVoid = nullptr;
+    std::vector<float> toVectorOfFloat() const;
 
     ~Quad();
 protected:
