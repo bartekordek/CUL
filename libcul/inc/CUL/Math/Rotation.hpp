@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/Math/Angle.hpp"
+#include "CUL/IMPORT_GLM.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( MATH )
@@ -8,27 +9,19 @@ NAMESPACE_BEGIN( MATH )
 class CULLib_API Rotation
 {
 public:
-    Angle yaw;
-    Angle pitch;
-    Angle roll;
+    Angle Pitch;
+    Angle Yaw;
+    Angle Roll;
 
-    inline Rotation& operator+=( const Rotation & rhv )
-    {
-        yaw += rhv.yaw;
-        pitch += rhv.pitch;
-        roll += rhv.roll;
+    Rotation() = default;
+    Rotation( const glm::quat& qyat );
 
-        return *this;
-    }
+    glm::quat toQuat() const;
 
-    inline Rotation& operator-=( const Rotation& rhv )
-    {
-        yaw -= rhv.yaw;
-        pitch -= rhv.pitch;
-        roll -= rhv.roll;
+    Rotation& operator+=( const Rotation& rhv );
+    Rotation& operator-=( const Rotation& rhv );
 
-        return *this;
-    }
+    ~Rotation() = default;
 
 protected:
 private:
