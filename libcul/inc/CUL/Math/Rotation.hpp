@@ -13,10 +13,18 @@ public:
     Angle Yaw;
     Angle Roll;
 
+    Rotation operator+( const Rotation& rhv ) const;
+    Rotation operator-( const Rotation& rhv ) const;
+
     Rotation() = default;
+    Rotation( const Rotation& arg ) = default;
     Rotation( const glm::quat& qyat );
 
+    void reset();
+
     glm::quat toQuat() const;
+
+    Rotation& operator=( const Rotation& rhv ) = default;
 
     Rotation& operator+=( const Rotation& rhv );
     Rotation& operator-=( const Rotation& rhv );

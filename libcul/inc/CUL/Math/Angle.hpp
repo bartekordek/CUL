@@ -31,6 +31,8 @@ public:
     Angle( double value, const Type type );
     Angle( int value, const Type type  );
 
+    void reset();
+
     double getValueD( const Type type ) const;
     float getValueF( const Type type  ) const;
     int getValueI( const Type type ) const;

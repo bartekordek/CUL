@@ -16,7 +16,7 @@ Rotation::Rotation( const glm::quat& q )
     // pitch (y-axis rotation)
     float sinp = 2.f * ( q.w * q.y - q.z * q.x );
     if( std::abs( sinp ) >= 1.f )
-        Pitch = std::copysign( CUL::MATH::UTIL::Constants::PI / 2.f, sinp ); // use 90 degrees if out of range
+        Pitch = std::copysign( (float)CUL::MATH::UTIL::Constants::PI / 2.f, sinp ); // use 90 degrees if out of range
     else
         Pitch = std::asin( sinp );
 
@@ -24,6 +24,35 @@ Rotation::Rotation( const glm::quat& q )
     float siny_cosp = 2 * ( q.w * q.z + q.x * q.y );
     float cosy_cosp = 1 - 2 * ( q.y * q.y + q.z * q.z );
     Yaw = std::atan2( siny_cosp, cosy_cosp );
+}
+
+Rotation Rotation::operator+( const Rotation& rhv ) const
+{
+    Rotation result( *this );
+
+    result.Pitch += rhv.Pitch;
+    result.Yaw += rhv.Yaw;
+    result.Roll += rhv.Roll;
+
+    return result;
+}
+
+Rotation Rotation::operator-( const Rotation& rhv ) const
+{
+    Rotation result( *this );
+
+    result.Pitch -= rhv.Pitch;
+    result.Yaw -= rhv.Yaw;
+    result.Roll -= rhv.Roll;
+
+    return result;
+}
+
+void Rotation::reset()
+{
+    Pitch.reset();
+    Yaw.reset();
+    Roll.reset();
 }
 
 glm::quat Rotation::toQuat() const

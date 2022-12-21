@@ -329,6 +329,12 @@ void Angle::setValue( double value, const Type type )
     m_type = type;
 }
 
+void Angle::reset()
+{
+    m_valueRad = 0.0;
+    m_valueDeg = 0.0;
+}
+
 double Angle::getValueD( const Type type ) const
 {
     if( Type::RADIAN == type )
