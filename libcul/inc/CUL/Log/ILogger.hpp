@@ -26,8 +26,12 @@ public:
         const Severity severity = Severity::INFO ) = 0;
 
     static ILogger* createSimpleStandardOutputLogger();
+    static ILogger* getInstance();
 
 protected:
+
+private:
+    static ILogger* s_instance;
 private:
     ILogger( const ILogger& arg ) = delete;
     ILogger& operator=( const ILogger& arg ) = delete;

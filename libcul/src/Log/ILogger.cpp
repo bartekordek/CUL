@@ -3,9 +3,17 @@
 
 using ILogger = CUL::LOG::ILogger;
 
+ILogger* ILogger::s_instance = nullptr;
+
 ILogger* ILogger::createSimpleStandardOutputLogger()
 {
-    return new LoggerSimpleStandardOutput();
+    s_instance = new LoggerSimpleStandardOutput();
+    return s_instance;
+}
+
+ILogger* ILogger::getInstance()
+{
+    return s_instance;
 }
 
 ILogger::~ILogger()
