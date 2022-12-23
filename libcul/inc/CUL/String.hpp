@@ -29,6 +29,7 @@ public:
     String( String&& arg ) noexcept;
     String( const bool arg ) noexcept;
     String( const char* arg ) noexcept;
+    String( const wchar_t* arg ) noexcept;
     String( unsigned char* arg ) noexcept;
     String( const std::string& arg ) noexcept;
     String( const std::wstring& arg ) noexcept;
@@ -41,6 +42,7 @@ public:
     String& operator=( String&& arg ) noexcept;
     String& operator=( const bool arg );
     String& operator=( const char* arg );
+    String& operator=( const wchar_t* arg );
     String& operator=( unsigned char* arg );
     String& operator=( const std::string& arg );
     String& operator=( const std::wstring& arg );

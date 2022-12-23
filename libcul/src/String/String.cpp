@@ -31,6 +31,11 @@ String::String( const char* arg ) noexcept
     *this = arg;
 }
 
+String::String( const wchar_t* arg ) noexcept
+{
+    *this = arg;
+}
+
 String::String( unsigned char* arg ) noexcept
 {
     *this = arg;
@@ -107,6 +112,16 @@ String& String::operator=( const char* arg )
     m_value = FS::s2ws( arg );
 #else
     m_value = arg;
+#endif
+    return *this;
+}
+
+String& String::operator=( const wchar_t* arg )
+{
+#ifdef _MSC_VER
+    m_value = arg;
+#else
+    m_value = FS::ws2s( arg );
 #endif
     return *this;
 }
@@ -397,11 +412,19 @@ bool String::contains( const char* inputString ) const
 
 void String::replace( const String& inWhat, const String& inFor )
 {
-    size_t inWhatPosition = find( inWhat );
-    while( UnderlyingType::npos != inWhatPosition )
+    if( m_value.empty() )
     {
-        m_value.replace( inWhatPosition, inWhat.length(), inFor.m_value );
-        inWhatPosition = m_value.find( inWhat.m_value );
+        return;
+    }
+
+    auto& str = m_value;
+    const UnderlyingType& from = inWhat.getString();
+    const UnderlyingType& to = inFor.getString();
+    size_t start_pos = 0;
+    while( ( start_pos = str.find( from, start_pos ) ) != std::string::npos )
+    {
+        str.replace( start_pos, from.length(), to );
+        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
     }
 }
 
