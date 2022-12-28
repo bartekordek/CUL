@@ -120,7 +120,8 @@ void FileRegularImpl::addLine( const String& line )
 
 void FileRegularImpl::saveFile()
 {
-    std::ofstream file( m_path.getPath().cStr());
+    auto pathString = m_path.getPath().getString();
+    std::ofstream file( pathString );
     const size_t rowsCount = rows.size();
     for( size_t i = 0; i < rowsCount; ++i )
     {
