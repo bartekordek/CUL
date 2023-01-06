@@ -74,7 +74,9 @@ std::vector<Path> FSApiFS::ListAllFiles( const Path& directory )
 {
     setlocale( 0, "Polish" );
     std::vector<Path> result;
-    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string() ) )
+
+
+    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
     {
         const std::filesystem::path entryPath = entry.path();
 
@@ -88,7 +90,31 @@ std::vector<Path> FSApiFS::ListAllFiles( const Path& directory )
 
         result.push_back( culPath );
     }
+
+
     return result;
+}
+
+void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback )
+{
+    setlocale( 0, "Polish" );
+    std::vector<Path> result;
+
+
+    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
+    {
+        const std::filesystem::path entryPath = entry.path();
+
+#ifdef _MSC_VER
+        Path culPath = entryPath.wstring();
+#else
+        Path culPath = entryPath.string();
+#endif
+        bool isDir = isDirectoryImpl( entryPath );
+        culPath.setIsDir( isDir );
+
+        callback( culPath );
+    }
 }
 
 TimeConcrete FSApiFS::getLastModificationTime( const Path& path )
@@ -111,11 +137,20 @@ TimeConcrete FSApiFS::getLastModificationTime( const Path& path )
 
 String FSApiFS::getFileSize( const Path& path )
 {
+    std::error_code ec;
+
 #ifdef _MSC_VER
-    uintmax_t size = std::filesystem::file_size(path.getPath().wstring());
+    uintmax_t size = std::filesystem::file_size( path.getPath().wstring(), ec );
 #else
-    uintmax_t size = std::filesystem::file_size( path.getPath().string() );
+    uintmax_t size = std::filesystem::file_size( path.getPath().string(), ec );
 #endif
+
+    std::error_condition ok;
+    if( ec != ok )
+    {
+        auto x = 0;
+    }
+
     String result = (unsigned)size;
     return result;
 }

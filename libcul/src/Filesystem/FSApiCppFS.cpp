@@ -17,7 +17,7 @@ FSApiCppFS::FSApiCppFS(FileFactory* ff, CULInterface* culInterface):
 
 }
 
-std::vector<Path> FSApiCppFS::ListAllFiles(const Path& directory)
+std::vector<Path> FSApiCppFS::ListAllFiles( const Path& directory )
 {
     std::vector<Path> result;
 
@@ -27,13 +27,13 @@ std::vector<Path> FSApiCppFS::ListAllFiles(const Path& directory)
     {
         for( cppfs::FileIterator it = dir.begin(); it != dir.end(); ++it )
         {
-            std::string path = directory.getPath().string() + "/" + * it;
+            std::string path = directory.getPath().string() + "/" + *it;
             cppfs::FileHandle file = cppfs::fs::open( path );
 
             if( file.isDirectory() )
             {
                 std::vector<Path> dirFiles = ListAllFiles( path );
-                for( const auto& fileFile: dirFiles )
+                for( const auto& fileFile : dirFiles )
                 {
                     result.push_back( fileFile );
                 }
@@ -47,6 +47,34 @@ std::vector<Path> FSApiCppFS::ListAllFiles(const Path& directory)
     }
 
     return result;
+}
+
+void FSApiCppFS::ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback )
+{
+    cppfs::FileHandle dir = cppfs::fs::open( directory.getPath().string() );
+
+    if( dir.isDirectory() )
+    {
+        for( cppfs::FileIterator it = dir.begin(); it != dir.end(); ++it )
+        {
+            std::string path = directory.getPath().string() + "/" + *it;
+            cppfs::FileHandle file = cppfs::fs::open( path );
+
+            if( file.isDirectory() )
+            {
+                std::vector<Path> dirFiles = ListAllFiles( path );
+                for( const auto& fileFile : dirFiles )
+                {
+                    callback( fileFile );
+                }
+            }
+            else
+            {
+                Path r_path = path;
+                callback( r_path );
+            }
+        }
+    }
 }
 
 bool FSApiCppFS::isDirectory(const Path& path)

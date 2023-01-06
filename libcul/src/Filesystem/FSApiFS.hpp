@@ -24,6 +24,7 @@ private:
     bool fileExist( const Path& path ) override;
     bool isDirectory( const Path& path ) override;
     std::vector<Path> ListAllFiles( const Path& directory ) override;
+    void ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback ) override;
 
     FileFactory* m_fileFactory = nullptr;
     CULInterface* m_culInterface = nullptr;
