@@ -4,6 +4,10 @@
 
 using namespace CUL;
 
+Worker::Worker()
+{
+}
+
 Worker::Worker( LOG::ILogger* logger ):m_logger( logger )
 {
 }
@@ -16,7 +20,7 @@ void Worker::run()
 void Worker::addTask( const std::function<void( void )>& task )
 {
 	std::lock_guard lock( m_tasksMtx );
-	m_tasks.push( task );
+	m_tasks.push_back( task );
 }
 
 size_t Worker::tasksLeft() const
@@ -29,24 +33,44 @@ size_t Worker::tasksLeft() const
 	return result;
 }
 
+void Worker::setRemoveTasksWhenConsumed( bool enable )
+{
+	m_removeTasksWhenConsumed = enable;
+}
+
 void Worker::consumeThreadFunction()
 {
 	while( m_run )
 	{
-		std::function<void( void )> task;
+		if( m_removeTasksWhenConsumed )
 		{
-			std::lock_guard lock( m_tasksMtx );
-			if( m_tasks.size() > 0 )
+			std::function<void( void )> task;
 			{
-				task = m_tasks.front();
-				m_tasks.pop();
+				std::lock_guard lock( m_tasksMtx );
+				if( m_tasks.size() > 0 )
+				{
+					task = m_tasks.front();
+					m_tasks.pop_front();
+				}
+				else
+				{
+					continue;
+				}
 			}
-			else
+			if( task )
 			{
-				continue;
+				task();
 			}
 		}
-		task();
+		else
+		{
+			std::lock_guard lock( m_tasksMtx );
+			for( auto task : m_tasks )
+			{
+				task();
+			}
+		}
+
 		ITimer::sleepMiliSeconds( (int)SleepMS );
 	}
 }
