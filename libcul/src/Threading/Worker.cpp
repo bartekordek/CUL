@@ -1,6 +1,7 @@
 #include "CUL/Threading/Worker.hpp"
 
 #include "CUL/ITimer.hpp"
+#include "CUL/Threading/ThreadUtils.hpp"
 
 using namespace CUL;
 
@@ -15,6 +16,12 @@ Worker::Worker( LOG::ILogger* logger ):m_logger( logger )
 void Worker::run()
 {
 	m_consumeThread = std::thread( &Worker::consumeThreadFunction, this );
+}
+
+void Worker::setThreadName( const String& name )
+{
+	m_threadName = name;
+	m_updateThreadName = true;
 }
 
 void Worker::addTask( const std::function<void( void )>& task )
@@ -42,6 +49,12 @@ void Worker::consumeThreadFunction()
 {
 	while( m_run )
 	{
+		if( m_updateThreadName )
+		{
+			CUL::ThreadUtils::setCurrentThreadNameStatic( m_threadName );
+			m_updateThreadName = false;
+		}
+
 		if( m_removeTasksWhenConsumed )
 		{
 			std::function<void( void )> task;

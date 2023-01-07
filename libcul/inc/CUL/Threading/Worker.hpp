@@ -1,6 +1,7 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/String.hpp"
+
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
@@ -26,6 +27,8 @@ public:
 
 	std::atomic<size_t> SleepMS = 1;
 
+	void setThreadName( const String& name );
+
 	~Worker();
 protected:
 private:
@@ -39,6 +42,9 @@ private:
 	std::thread m_consumeThread;
 
 	LOG::ILogger* m_logger = nullptr;
+
+	bool m_updateThreadName = false;
+	String m_threadName;
 
 private:
 	Worker( const Worker& arg ) = delete;
