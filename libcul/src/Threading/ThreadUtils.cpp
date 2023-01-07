@@ -23,6 +23,13 @@ void ThreadUtils::setCurrentThreadName( const String& name )
     m_threadMaps[name] = thread_id;
 }
 
+void ThreadUtils::setCurrentThreadNameStatic( const String& name )
+{
+#ifdef _MSC_VER
+    setCurrentThreadNameWin( name );
+#endif
+}
+
 bool ThreadUtils::getIsCurrentThreadNameEqualTo( const String& name )
 {
     const auto& currentThreadName = getCurrentThreadName();

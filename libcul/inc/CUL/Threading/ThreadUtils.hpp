@@ -14,6 +14,7 @@ public:
     ThreadUtils();
 
     CULLib_API void setCurrentThreadName( const String& name );
+    CULLib_API static void setCurrentThreadNameStatic( const String& name );
     CULLib_API const String& getCurrentThreadName();
     CULLib_API bool getIsCurrentThreadNameEqualTo( const String& name );
 
