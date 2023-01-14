@@ -20,6 +20,7 @@ include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tiny-image/src" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/rapidjson/include" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/hash-library" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/DevIL/DevIL/include" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000" )
 
 if( MSVC )
     # warning level 4 and all warnings as errors

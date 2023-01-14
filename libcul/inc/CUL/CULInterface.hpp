@@ -34,6 +34,7 @@ class CULLib_API CULInterface final
 {
 public:
     static CULInterface* createInstance( const FS::Path& configFile = "" );
+    static CULInterface* getInstance();
 
     OSUtils::ISystemFonts* getSystemFonts();
 
@@ -68,6 +69,8 @@ private:
     std::unique_ptr<Graphics::IImageLoader> m_imageLoader;
     std::unique_ptr<GUTILS::ConsoleUtilities> m_args;
     ThreadUtils* m_threadUtils = nullptr;
+
+    static CULInterface* s_instance;
 };
 
 NAMESPACE_END( CUL )

@@ -38,7 +38,8 @@ public:
     const String& getBaseName() const;
     const String& getDir() const;
 
-    uint64_t getFileSize() const;
+    uint64_t getFileSize();
+    const String& getMd5();
 
     void setIsDir(bool isDir);
     bool getIsDir() const;
@@ -63,11 +64,15 @@ private:
     void normalizePath( String& path );
 
     bool m_isDir = false;
+    bool m_sizeCalculated = false;
 
     String m_fullPath;
     String m_extension;
     String m_baseName;
     String m_dir;
+
+    uint64_t m_fileSize = 0u;
+    String m_md5;
 
     static String extensionSeparator;
 };
