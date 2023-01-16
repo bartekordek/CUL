@@ -178,10 +178,9 @@ const String& Path::getDir() const
     return m_dir;
 }
 
-uint64_t Path::getFileSize()
+uint64_t Path::getFileSize() const
 {
-    if( !m_sizeCalculated )
-    {
+    auto calculateSize = [this] (){
 #ifdef _MSC_VER
         FsPath file( m_fullPath.wstring() );
 #else
@@ -193,24 +192,77 @@ uint64_t Path::getFileSize()
         m_fileSize = std::filesystem::file_size( file );
 #endif
         m_sizeCalculated = true;
+    };
+
+    if( m_sizeCalculated )
+    {
+        auto lastModTime = getLastModificationTime().toString();
+        if( lastModTime != m_modTime )
+        {
+            calculateSize();
+        }
+    }
+    else
+    {
+        calculateSize();
+
     }
 
     return m_fileSize;
 }
 
-const String& Path::getMd5()
+void Path::setFileSize( uint64_t inFileSize )
 {
-    if( m_md5.empty() )
-    {
+    m_fileSize = inFileSize;
+}
+
+const String& Path::getMd5() const
+{
+    auto calculateMd5 = [this] (){
         std::unique_ptr<CUL::FS::IFile> file;
 
         auto m_culInterface = CUL::CULInterface::getInstance();
 
         file.reset( m_culInterface->getFF()->createRegularFileRawPtr( m_fullPath ) );
         m_md5 = file->getMD5();
+    };
+
+    if( m_md5.empty() )
+    {
+        calculateMd5();
+    }
+    else
+    {
+        auto lastModTime = getLastModificationTime().toString();
+        if( lastModTime != m_modTime )
+        {
+            calculateMd5();
+            m_modTime = lastModTime;
+        }
     }
 
     return m_md5;
+}
+
+void Path::setMd5( const String& inMD5 )
+{
+    m_md5 = inMD5;
+}
+
+TimeConcrete Path::getLastModificationTime() const
+{
+    std::unique_ptr<CUL::FS::IFile> file;
+
+    auto m_culInterface = CUL::CULInterface::getInstance();
+
+    file.reset( m_culInterface->getFF()->createRegularFileRawPtr( m_fullPath ) );
+    auto modTime = file->getLastModificationTime();
+    return modTime;
+}
+
+void Path::setModTime( const String& inModTime )
+{
+    m_modTime = inModTime;
 }
 
 void Path::setIsDir( bool isDir )

@@ -27,7 +27,13 @@ template <typename Type>
 class DelegateTemplateOneParam final: public DelegateTemplate
 {
 public:
-    using DelegateInput = std::function < void( Type );
+    using DelegateInput = std::function < void( Type ) >;
+
+    DelegateTemplateOneParam()
+    {
+
+    }
+
     void addDelegate( DelegateInput delegate )
     {
         m_delegates.push_back( delegate );
@@ -57,18 +63,23 @@ template <typename Type1, typename Type2>
 class DelegateTemplateTwoParam final: public DelegateTemplate
 {
 public:
-    using DelegateInput = std::function < void( Type1, Type2 );
+    using DelegateInput = std::function < void( Type1, Type2 ) >;
+    DelegateTemplateTwoParam()
+    {
+
+    }
+
     void addDelegate( DelegateInput delegate )
     {
         m_delegates.push_back( delegate );
     }
 
-    void execute( Type value )
+    void execute( Type1 value1, Type2 value2 )
     {
         const size_t size = m_delegates.size();
         for( size_t i = 0; i < size; ++i )
         {
-            m_delegates[i]( value );
+            m_delegates[i]( value1, value2 );
         }
     }
 

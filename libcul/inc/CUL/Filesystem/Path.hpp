@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/Filesystem/FS.hpp"
+#include "CUL/TimeConcrete.hpp"
 
 #if _MSC_VER
 #pragma warning( push )
@@ -38,8 +39,14 @@ public:
     const String& getBaseName() const;
     const String& getDir() const;
 
-    uint64_t getFileSize();
-    const String& getMd5();
+    uint64_t getFileSize() const;
+    void setFileSize( uint64_t inFileSize );
+
+    const String& getMd5() const;
+    void setMd5( const String& inMD5 );
+
+    TimeConcrete getLastModificationTime() const;
+    void setModTime( const String& inModTime );
 
     void setIsDir(bool isDir);
     bool getIsDir() const;
@@ -64,15 +71,17 @@ private:
     void normalizePath( String& path );
 
     bool m_isDir = false;
-    bool m_sizeCalculated = false;
+    mutable bool m_sizeCalculated = false;
 
     String m_fullPath;
     String m_extension;
     String m_baseName;
     String m_dir;
 
-    uint64_t m_fileSize = 0u;
-    String m_md5;
+    mutable String m_modTime;
+
+    mutable uint64_t m_fileSize = 0u;
+    mutable String m_md5;
 
     static String extensionSeparator;
 };
