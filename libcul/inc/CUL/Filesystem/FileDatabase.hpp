@@ -16,52 +16,54 @@ NAMESPACE_BEGIN( FS )
 class CULLib_API FileDatabase final
 {
 public:
-	using MD5Value = String;
+    using MD5Value = String;
 
-	FileDatabase();
-	void setTargetDatabasePath( const Path& inPath );
-	void addSearchPaths( const std::vector<Path>& searchPaths );
+    struct FileInfo
+    {
+        MD5Value MD5;
+        String Size;
+        Path Path;
 
-	void search( bool runConstantly );
+        bool operator==( const FileInfo& second ) const;
+    };
 
-	void addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime );
-	void fetchFile( const Path& path );
-	void addFileToDb( const Path& path );
-	void addFileToDbCache( const Path& path );
-	void addFileToDbCache( const String& path, const String& md5, const String& size, const String& modtime );
+    FileDatabase();
+    void loadFilesFromDatabase( const Path& dbPath );
+	void addFilesFloadFilesFromDatabaseromDB();
 
-	void removeFileFromDB( const CUL::String& path );
-	void removeFileFromDBCache( const CUL::String& path );
+    void addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime );
+    void addFileToDb( const Path& path );
+    void addFileToDbCache( const FileInfo& path );
 
-	std::list<Path>::iterator getNextFile();
+    void removeFileFromDB( const CUL::String& path );
+    void removeFileFromDBCache( const CUL::String& path );
 
-	~FileDatabase();
+    std::list<FileInfo>::iterator getNextFile();
 
-	CUL::GUTILS::DelegateTemplateOneParam<String> FoundFileDelegate;
+    ~FileDatabase();
+
+    CUL::GUTILS::DelegateTemplateOneParam<FileInfo> FoundFileDelegate;
+
 protected:
 private:
-	
-	void addFilesFromDB();
-	void initDb();
-	void removeFilesThatDoesNotExist();
-	
-	sqlite3* m_db = nullptr;
-	Path m_databasePath;
-	std::vector<Path> m_searchPaths;
+    void initDb();
+    void removeFilesThatDoesNotExist();
 
-	std::mutex m_filesMtx;
-	std::list<Path> m_files;
+    sqlite3* m_db = nullptr;
+    Path m_databasePath;
 
-	Worker m_worker;
-	String m_currentFile;
+    std::mutex m_filesMtx;
+    std::list<FileInfo> m_files;
 
-	std::list<Path>::iterator m_currentFilePath;
+    String m_currentFile;
+
+    std::list<FileInfo>::iterator m_currentFilePath;
 
 private:
-	FileDatabase( const FileDatabase& rhv ) = delete;
-	FileDatabase( const FileDatabase&& rhv ) = delete;
-	FileDatabase& operator=( const FileDatabase& rhv ) = delete;
-	FileDatabase& operator=( FileDatabase&& rhv ) = delete;
+    FileDatabase( const FileDatabase& rhv ) = delete;
+    FileDatabase( const FileDatabase&& rhv ) = delete;
+    FileDatabase& operator=( const FileDatabase& rhv ) = delete;
+    FileDatabase& operator=( FileDatabase&& rhv ) = delete;
 };
 
 NAMESPACE_END( FS )

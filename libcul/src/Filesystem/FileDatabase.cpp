@@ -10,56 +10,32 @@ using namespace FS;
 
 static FileDatabase* g_dbInstance = nullptr;
 
+bool FileDatabase::FileInfo::operator==( const FileInfo& second ) const
+{
+    return ( Size == second.Size ) && ( MD5 == second.MD5 );
+}
+
 FileDatabase::FileDatabase()
 {
     m_currentFilePath = m_files.begin();
 }
 
-void FileDatabase::setTargetDatabasePath( const Path& inPath )
+void FileDatabase::loadFilesFromDatabase( const Path& inPath )
 {
-	m_databasePath = inPath;
+    m_databasePath = inPath;
+    addFilesFromDB();
 }
 
 void FileDatabase::addSearchPaths( const std::vector<Path>& searchPaths )
 {
-	m_searchPaths = searchPaths;
+    m_searchPaths = searchPaths;
 }
 
-void FileDatabase::search( bool runConstantly )
-{
-    g_dbInstance = this;
-
-    int rc = sqlite3_open( m_databasePath.getPath().cStr(), &m_db );
-
-    m_worker.addTask( [this] (){
-        addFilesFromDB();
-        removeFilesThatDoesNotExist();
-    } );
-
-	m_worker.addTask( [this] (){
-        for( const auto& path : m_searchPaths )
-        {
-            auto culFF = CUL::CULInterface::getInstance()->getFS();
-
-            culFF->ListAllFiles( path, [this] ( const CUL::FS::Path& path ){
-                if( !path.getIsDir() )
-                {
-                    addFileToDb( path );
-                    addFileToDbCache( path );
-                }
-            } );
-        }
-	} );
-
-    m_worker.setRemoveTasksWhenConsumed( !runConstantly );
-    m_worker.setThreadName( "MainFileDBWorker" );
-    m_worker.run();
-}
-
-void FileDatabase::addFilesFromDB()
+void FileDatabase::loadFilesFromDatabase()
 {
     std::string sqlQuery = std::string( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES" );
-    auto callback = [] ( void* thisPtrValue, int, char** argv, char** ){
+    auto callback = []( void* thisPtrValue, int, char** argv, char** )
+    {
         auto thisPtr = reinterpret_cast<FileDatabase*>( thisPtrValue );
         const bool newWay = true;
         Path fileAsPath = argv[0];
@@ -69,7 +45,6 @@ void FileDatabase::addFilesFromDB()
             if( newWay )
             {
                 thisPtr->addFileToDbCache( fileAsPath );
-
             }
             else
             {
@@ -101,9 +76,11 @@ void FileDatabase::addFilesFromDB()
 void FileDatabase::fetchFile( const Path& path )
 {
     std::lock_guard<std::mutex> guard( m_filesMtx );
-    auto it = std::find_if( m_files.begin(), m_files.end(), [path] ( const Path& curr ){
-        return curr.getPath() == path;
-    } );
+    auto it = std::find_if( m_files.begin(), m_files.end(),
+                            [path]( const Path& curr )
+                            {
+                                return curr.getPath() == path;
+                            } );
 
     if( it != m_files.end() )
     {
@@ -112,27 +89,16 @@ void FileDatabase::fetchFile( const Path& path )
 
 void FileDatabase::addFileToDb( const Path& path )
 {
-    addFile( path.getMd5(), path.getPath(), CUL::String( (unsigned) path.getFileSize() ), path.getLastModificationTime().toString() );
+    addFile( path.getMd5(), path.getPath(), CUL::String( (unsigned)path.getFileSize() ), path.getLastModificationTime().toString() );
 }
 
-void FileDatabase::addFileToDbCache( const Path& path )
+void FileDatabase::addFileToDbCache( const FileInfo& path )
 {
     {
         std::lock_guard<std::mutex> guard( m_filesMtx );
         m_files.push_back( path );
     }
     FoundFileDelegate.execute( path );
-}
-
-void FileDatabase::addFileToDbCache( const String& path, const String& md5, const String& size, const String& modtime )
-{
-    Path pathValue;
-    pathValue = path;
-    pathValue.setFileSize( size.toUInt() );
-    pathValue.setMd5( md5 );
-    pathValue.setModTime( modtime );
-
-    addFileToDbCache( pathValue );
 }
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
@@ -148,10 +114,11 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     filePathNormalized.replace( "'", "''" );
     filePathNormalized.removeAll( '\0' );
     CUL::String sqlQuery = "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ('" + filePathNormalized + "', '" + fileSize +
-        "', '" + md5 + "', '" + modTime + "');";
+                           "', '" + md5 + "', '" + modTime + "');";
 
     char* zErrMsg = nullptr;
-    auto callback = [] ( void*, int, char**, char** )    {
+    auto callback = []( void*, int, char**, char** )
+    {
         // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
         return 0;
     };
@@ -175,7 +142,8 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
 
 void FileDatabase::initDb()
 {
-    auto callback = [] ( void*, int, char**, char** )    {
+    auto callback = []( void*, int, char**, char** )
+    {
         // DuplicateFinder::s_instance->callback(NotUsed, argc, argv, azColName);
         return 0;
     };
@@ -189,7 +157,7 @@ void FileDatabase::initDb()
     MD5 varchar(1024),\
     LAST_MODIFICATION varchar(1024)\
     );";
-    
+
     int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, 0, &zErrMsg );
     if( rc != SQLITE_OK )
     {
@@ -204,16 +172,16 @@ void FileDatabase::removeFilesThatDoesNotExist()
 
     {
         std::lock_guard<std::mutex> guard( m_filesMtx );
-        for( const auto& file: m_files )
+        for( const auto& file : m_files )
         {
-            if( !file.exists() )
+            if( !file.Path.exists() )
             {
-                filesToRemove.push_back( file );
+                filesToRemove.push_back( file.Path.getPath() );
             }
         }
     }
 
-    for( const auto& file: filesToRemove )
+    for( const auto& file : filesToRemove )
     {
         removeFileFromDBCache( file );
         removeFileFromDB( file );
@@ -225,7 +193,8 @@ void FileDatabase::removeFileFromDB( const CUL::String& path )
     std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + path.string() + "';";
 
     char* zErrMsg = nullptr;
-    auto callback = [] ( void* thisPtrValue, int, char**, char** ){
+    auto callback = []( void* thisPtrValue, int, char**, char** )
+    {
         auto thisPtr = reinterpret_cast<FileDatabase*>( thisPtrValue );
         // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
         return 0;
@@ -242,9 +211,11 @@ void FileDatabase::removeFileFromDB( const CUL::String& path )
 void FileDatabase::removeFileFromDBCache( const CUL::String& path )
 {
     std::lock_guard<std::mutex> guard( m_filesMtx );
-    auto it = std::find_if( m_files.begin(), m_files.end(), [path] ( const Path& curr ){
-        return curr.getPath() == path;
-    } );
+    auto it = std::find_if( m_files.begin(), m_files.end(),
+                            [path]( const Path& curr )
+                            {
+                                return curr.getPath() == path;
+                            } );
 
     if( it != m_files.end() )
     {
@@ -252,10 +223,10 @@ void FileDatabase::removeFileFromDBCache( const CUL::String& path )
     }
 }
 
-std::list<Path>::iterator FileDatabase::getNextFile()
+std::list<FileDatabase::FileInfo>::iterator FileDatabase::getNextFile()
 {
     std::lock_guard<std::mutex> guard( m_filesMtx );
-    std::list<Path>::iterator result;
+    std::list<FileDatabase::FileInfo>::iterator result;
     if( m_currentFilePath == m_files.end() )
     {
         m_currentFilePath = m_files.begin();
