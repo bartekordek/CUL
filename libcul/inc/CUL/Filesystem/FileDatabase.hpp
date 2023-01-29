@@ -23,36 +23,41 @@ public:
         MD5Value MD5;
         String Size;
         Path Path;
+        String ModTime;
 
         bool operator==( const FileInfo& second ) const;
     };
 
     FileDatabase();
     void loadFilesFromDatabase( const Path& dbPath );
-	void addFilesFloadFilesFromDatabaseromDB();
+	void loadFilesFromDatabase();
 
     void addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime );
-    void addFileToDb( const Path& path );
-    void addFileToDbCache( const FileInfo& path );
+
 
     void removeFileFromDB( const CUL::String& path );
-    void removeFileFromDBCache( const CUL::String& path );
+
+    void removeFilesThatDoNotExistFromBase();
+
+    const FileInfo* getFileInfo( const CUL::String& path ) const;
 
     std::list<FileInfo>::iterator getNextFile();
 
-    ~FileDatabase();
+    void addFileToCache( const Path& path );
+    void addFileToCache( const FileInfo& path );
 
-    CUL::GUTILS::DelegateTemplateOneParam<FileInfo> FoundFileDelegate;
+    ~FileDatabase();
 
 protected:
 private:
     void initDb();
     void removeFilesThatDoesNotExist();
 
-    sqlite3* m_db = nullptr;
-    Path m_databasePath;
 
-    std::mutex m_filesMtx;
+    sqlite3* m_db = nullptr;
+    Path m_databasePath = "FilesList.db";
+
+    mutable std::mutex m_filesMtx;
     std::list<FileInfo> m_files;
 
     String m_currentFile;

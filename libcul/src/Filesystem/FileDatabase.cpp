@@ -1,5 +1,6 @@
 #include "CUL/Filesystem/FileDatabase.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
+#include "CUL/Log/ILogger.hpp"
 
 #include "CUL/CULInterface.hpp"
 
@@ -15,6 +16,7 @@ bool FileDatabase::FileInfo::operator==( const FileInfo& second ) const
     return ( Size == second.Size ) && ( MD5 == second.MD5 );
 }
 
+
 FileDatabase::FileDatabase()
 {
     m_currentFilePath = m_files.begin();
@@ -23,16 +25,13 @@ FileDatabase::FileDatabase()
 void FileDatabase::loadFilesFromDatabase( const Path& inPath )
 {
     m_databasePath = inPath;
-    addFilesFromDB();
-}
-
-void FileDatabase::addSearchPaths( const std::vector<Path>& searchPaths )
-{
-    m_searchPaths = searchPaths;
+    loadFilesFromDatabase();
 }
 
 void FileDatabase::loadFilesFromDatabase()
 {
+    initDb();
+
     std::string sqlQuery = std::string( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES" );
     auto callback = []( void* thisPtrValue, int, char** argv, char** )
     {
@@ -40,17 +39,12 @@ void FileDatabase::loadFilesFromDatabase()
         const bool newWay = true;
         Path fileAsPath = argv[0];
 
-        if( fileAsPath.exists() )
-        {
-            if( newWay )
-            {
-                thisPtr->addFileToDbCache( fileAsPath );
-            }
-            else
-            {
-                thisPtr->addFile( argv[2], argv[0], argv[1], argv[3] );
-            }
-        }
+        FileInfo fi;
+        fi.MD5 = argv[2];
+        fi.Path = argv[0];
+        fi.Size = argv[1];
+        fi.ModTime = argv[3];
+        thisPtr->addFileToCache( fi );
 
         return 0;
     };
@@ -73,32 +67,47 @@ void FileDatabase::loadFilesFromDatabase()
     }
 }
 
-void FileDatabase::fetchFile( const Path& path )
+void FileDatabase::initDb()
 {
-    std::lock_guard<std::mutex> guard( m_filesMtx );
-    auto it = std::find_if( m_files.begin(), m_files.end(),
-                            [path]( const Path& curr )
-                            {
-                                return curr.getPath() == path;
-                            } );
+    int rc = sqlite3_open( m_databasePath.getPath().cStr(), &m_db );
 
-    if( it != m_files.end() )
+    std::string sqlQuery =
+        "SELECT * \
+    FROM FILES";
+
+    auto callback = [] ( void*, int, char**, char** )    {
+        // DuplicateFinder::s_instance->callback(NotUsed, argc, argv, azColName);
+        return 0;
+    };
+
+    char* zErrMsg = nullptr;
+    rc = sqlite3_exec( m_db, sqlQuery.c_str(), nullptr, 0, &zErrMsg );
+
+    if( rc != SQLITE_OK )
     {
+        sqlQuery =
+            "CREATE TABLE FILES (\
+        PATH varchar(1024),\
+        SIZE varchar(512),\
+        MD5 varchar(1024),\
+        LAST_MODIFICATION varchar(1024)\
+        );";
+        std::string errorResult( zErrMsg );
+        rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, 0, &zErrMsg );
     }
 }
 
-void FileDatabase::addFileToDb( const Path& path )
+void FileDatabase::addFileToCache( const Path& path )
 {
     addFile( path.getMd5(), path.getPath(), CUL::String( (unsigned)path.getFileSize() ), path.getLastModificationTime().toString() );
 }
 
-void FileDatabase::addFileToDbCache( const FileInfo& path )
+void FileDatabase::addFileToCache( const FileInfo& path )
 {
     {
         std::lock_guard<std::mutex> guard( m_filesMtx );
         m_files.push_back( path );
     }
-    FoundFileDelegate.execute( path );
 }
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
@@ -138,32 +147,14 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
             CUL::Assert::simple( false, "DB ERROR!" );
         }
     }
-}
 
-void FileDatabase::initDb()
-{
-    auto callback = []( void*, int, char**, char** )
-    {
-        // DuplicateFinder::s_instance->callback(NotUsed, argc, argv, azColName);
-        return 0;
-    };
+    FileInfo fi;
+    fi.MD5 = md5;
+    fi.ModTime = modTime;
+    fi.Path = filePath;
+    fi.Size = fileSize;
 
-    char* zErrMsg = nullptr;
-
-    std::string sqlQuery =
-        "CREATE TABLE FILES (\
-    PATH varchar(1024),\
-    SIZE varchar(512),\
-    MD5 varchar(1024),\
-    LAST_MODIFICATION varchar(1024)\
-    );";
-
-    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, 0, &zErrMsg );
-    if( rc != SQLITE_OK )
-    {
-        std::string errorResult( zErrMsg );
-        CUL::Assert::simple( false, "DB ERROR!" );
-    }
+    addFileToCache( fi );
 }
 
 void FileDatabase::removeFilesThatDoesNotExist()
@@ -183,7 +174,6 @@ void FileDatabase::removeFilesThatDoesNotExist()
 
     for( const auto& file : filesToRemove )
     {
-        removeFileFromDBCache( file );
         removeFileFromDB( file );
     }
 }
@@ -206,20 +196,70 @@ void FileDatabase::removeFileFromDB( const CUL::String& path )
     {
         CUL::Assert::simple( false, "DB ERROR!" );
     }
+
+    {
+        std::lock_guard<std::mutex> guard( m_filesMtx );
+        auto it = std::find_if( m_files.begin(), m_files.end(),
+                                [path] ( const FileInfo& curr )                            {
+            return curr.Path == path;
+        } );
+
+        if( it != m_files.end() )
+        {
+            m_files.erase( it );
+        }
+    }
 }
 
-void FileDatabase::removeFileFromDBCache( const CUL::String& path )
+const FileDatabase::FileInfo* FileDatabase::getFileInfo( const CUL::String& path ) const
 {
-    std::lock_guard<std::mutex> guard( m_filesMtx );
-    auto it = std::find_if( m_files.begin(), m_files.end(),
-                            [path]( const Path& curr )
-                            {
-                                return curr.getPath() == path;
-                            } );
-
-    if( it != m_files.end() )
+    const FileDatabase::FileInfo* result = nullptr;
     {
-        m_files.erase( it );
+        std::lock_guard<std::mutex> guard( m_filesMtx );
+        auto it = std::find_if( m_files.begin(), m_files.end(),
+                                [path] ( const FileInfo& curr ){
+            return curr.Path == path;
+        } );
+        if( it != m_files.end() )
+        {
+            result = &*it;
+        }
+    }
+
+    return result;
+}
+
+void FileDatabase::removeFilesThatDoNotExistFromBase()
+{
+    std::list<FileInfo>::iterator it;
+
+    {
+        std::lock_guard<std::mutex> guard( m_filesMtx );
+        it = m_files.begin();
+    }
+
+    while( true )
+    {
+        FileInfo fileInfo = *it;
+        {
+            std::lock_guard<std::mutex> guard( m_filesMtx );
+            ++it;
+        }
+        
+
+        if( !fileInfo.Path.exists() )
+        {
+            LOG::ILogger::getInstance()->log( String( "File [" ) + fileInfo.Path.getPath().getString() + String( "] has not been found on disk. Deleting from base." ) );
+            removeFileFromDB( fileInfo.Path );
+        }
+
+        {
+            std::lock_guard<std::mutex> guard( m_filesMtx );
+            if( it == m_files.end() )
+            {
+                break;
+            }
+        }
     }
 }
 

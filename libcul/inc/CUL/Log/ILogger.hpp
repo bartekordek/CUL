@@ -18,7 +18,7 @@ enum class Severity: short
 class CULLib_API ILogger
 {
 public:
-    ILogger() = default;
+    ILogger();
     virtual ~ILogger();
 
     virtual void log(

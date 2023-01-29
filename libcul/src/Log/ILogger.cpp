@@ -11,6 +11,11 @@ ILogger* ILogger::createSimpleStandardOutputLogger()
     return s_instance;
 }
 
+ILogger::ILogger()
+{
+    s_instance = this;
+}
+
 ILogger* ILogger::getInstance()
 {
     return s_instance;
