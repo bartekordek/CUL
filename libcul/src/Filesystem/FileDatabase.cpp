@@ -6,6 +6,13 @@
 
 #include "CUL/IMPORT_sqlite3.hpp"
 
+//5039
+
+#ifdef _MSC_VER
+#pragma warning( push, 0 )
+#pragma warning( disable: 1404 )
+#endif
+
 using namespace CUL;
 using namespace FS;
 
@@ -282,3 +289,7 @@ FileDatabase::~FileDatabase()
 {
     sqlite3_close( m_db );
 }
+
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
