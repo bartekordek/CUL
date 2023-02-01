@@ -100,10 +100,20 @@ void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Pat
     setlocale( 0, "Polish" );
     std::vector<Path> result;
 
-
     for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
     {
         const std::filesystem::path entryPath = entry.path();
+        String::UnderlyingType tempString = entryPath;
+        if( tempString.find( L"w klimacie post apokaliptycznym Science Fictio" ) != String::UnderlyingType::npos )
+        {
+            auto x = 0;
+        }
+
+        if( tempString.find( L"mietnik" ) != String::UnderlyingType::npos )
+        {
+            auto x = 0;
+        }
+
 
 #ifdef _MSC_VER
         Path culPath = entryPath.wstring();

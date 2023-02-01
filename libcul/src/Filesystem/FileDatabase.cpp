@@ -1,7 +1,7 @@
 #include "CUL/Filesystem/FileDatabase.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Log/ILogger.hpp"
-
+#include "Filesystem/FSUtils.hpp"
 #include "CUL/CULInterface.hpp"
 
 #include "CUL/IMPORT_sqlite3.hpp"
@@ -22,7 +22,6 @@ bool FileDatabase::FileInfo::operator==( const FileInfo& second ) const
 {
     return ( Size == second.Size ) && ( MD5 == second.MD5 );
 }
-
 
 FileDatabase::FileDatabase()
 {
@@ -48,7 +47,7 @@ void FileDatabase::loadFilesFromDatabase()
 
         FileInfo fi;
         fi.MD5 = argv[2];
-        fi.Path = argv[0];
+        fi.FilePath = argv[0];
         fi.Size = argv[1];
         fi.ModTime = argv[3];
         thisPtr->addFileToCache( fi );
@@ -119,7 +118,7 @@ void FileDatabase::addFileToCache( const FileInfo& path )
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
 {
-    if( filePath.contains( "science_in_this_shit" ) )
+    if( filePath.contains( "w klimacie post apokaliptycznym Science Fictio" ) || filePath.contains( "mietnik" ) )
     {
         auto x = 0;
     }
@@ -130,15 +129,15 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     filePathNormalized.replace( "'", "''" );
     filePathNormalized.removeAll( '\0' );
     CUL::String sqlQuery = "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ('" + filePathNormalized + "', '" + fileSize +
-                           "', '" + md5 + "', '" + modTime + "');";
+        "', '" + md5 + "', '" + modTime + "');";
 
     char* zErrMsg = nullptr;
-    auto callback = []( void*, int, char**, char** )
-    {
+    auto callback = [] ( void*, int, char**, char** )    {
         // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
         return 0;
     };
 
+    const char* queryAsCharPtr = sqlQuery.cStr();
     int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, 0, &zErrMsg );
 
     if( rc != SQLITE_OK )
@@ -155,13 +154,55 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
         }
     }
 
+    if( false )
+    {
+        auto fileInfo = getFileFromDB( filePath );
+        LOG::ILogger::getInstance()->log( fileInfo.FilePath.getPath() );
+    }
+
     FileInfo fi;
     fi.MD5 = md5;
     fi.ModTime = modTime;
-    fi.Path = filePath;
+    fi.FilePath = filePath;
     fi.Size = fileSize;
 
     addFileToCache( fi );
+}
+
+FileDatabase::FileInfo FileDatabase::getFileFromDB( const String& path ) const
+{
+    FileDatabase::FileInfo result;
+
+    String sqlQuery =
+        "SELECT * \
+FROM FILES \
+WHERE PATH='" + path + "';";
+
+    const char* queryAsCharPtr = sqlQuery.cStr();
+    auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
+        const char* path = argv[0];
+        std::wstring asWstring = FS::s2ws( path, CP_ACP );
+
+
+        FileDatabase::FileInfo* fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
+        fileInfoFromPtr->MD5 = argv[2];
+        fileInfoFromPtr->Size = argv[1];
+        fileInfoFromPtr->ModTime = argv[3];
+        fileInfoFromPtr->FilePath = asWstring;
+
+        return 0;
+    };
+    char* zErrMsg = nullptr;
+
+    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        std::string errMessage = zErrMsg;
+        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+    }
+
+    return result;
 }
 
 void FileDatabase::removeFilesThatDoesNotExist()
@@ -172,9 +213,9 @@ void FileDatabase::removeFilesThatDoesNotExist()
         std::lock_guard<std::mutex> guard( m_filesMtx );
         for( const auto& file : m_files )
         {
-            if( !file.Path.exists() )
+            if( !file.FilePath.exists() )
             {
-                filesToRemove.push_back( file.Path.getPath() );
+                filesToRemove.push_back( file.FilePath.getPath() );
             }
         }
     }
@@ -190,9 +231,8 @@ void FileDatabase::removeFileFromDB( const CUL::String& path )
     std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + path.string() + "';";
 
     char* zErrMsg = nullptr;
-    auto callback = []( void* thisPtrValue, int, char**, char** )
+    auto callback = []( void* thisPtrValue, int argc, char** argv, char** info )
     {
-        auto thisPtr = reinterpret_cast<FileDatabase*>( thisPtrValue );
         // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
         return 0;
     };
@@ -208,7 +248,7 @@ void FileDatabase::removeFileFromDB( const CUL::String& path )
         std::lock_guard<std::mutex> guard( m_filesMtx );
         auto it = std::find_if( m_files.begin(), m_files.end(),
                                 [path] ( const FileInfo& curr )                            {
-            return curr.Path == path;
+            return curr.FilePath == path;
         } );
 
         if( it != m_files.end() )
@@ -225,7 +265,7 @@ const FileDatabase::FileInfo* FileDatabase::getFileInfo( const CUL::String& path
         std::lock_guard<std::mutex> guard( m_filesMtx );
         auto it = std::find_if( m_files.begin(), m_files.end(),
                                 [path] ( const FileInfo& curr ){
-            return curr.Path == path;
+            return curr.FilePath == path;
         } );
         if( it != m_files.end() )
         {
@@ -245,6 +285,11 @@ void FileDatabase::removeFilesThatDoNotExistFromBase()
         it = m_files.begin();
     }
 
+    if( it == m_files.end() )
+    {
+        return;
+    }
+
     while( true )
     {
         FileInfo fileInfo = *it;
@@ -254,10 +299,10 @@ void FileDatabase::removeFilesThatDoNotExistFromBase()
         }
         
 
-        if( !fileInfo.Path.exists() )
+        if( !fileInfo.FilePath.exists() )
         {
-            LOG::ILogger::getInstance()->log( String( "File [" ) + fileInfo.Path.getPath().getString() + String( "] has not been found on disk. Deleting from base." ) );
-            removeFileFromDB( fileInfo.Path );
+            LOG::ILogger::getInstance()->log( String( "File [" ) + fileInfo.FilePath.getPath().getString() + String( "] has not been found on disk. Deleting from base." ) );
+            removeFileFromDB( fileInfo.FilePath );
         }
 
         {

@@ -1,7 +1,8 @@
 #include "Filesystem/FSUtils.hpp"
-
-#include "CUL/STL_IMPORTS/STD_cstdlib.hpp"
 #include "CUL/STL_IMPORTS/STD_clocale.hpp"
+#include "CUL/STL_IMPORTS/STD_codecvt.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdlib.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdlib.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_codecvt.hpp"
 
@@ -21,9 +22,7 @@ using namespace CUL::FS;
 #pragma warning( disable : 5045 )
 #endif
 
-#ifdef CUL_WINDOWS
-#include "CUL/IMPORT_stringapiset.hpp"
-#endif
+
 
 std::string CUL::FS::ws2s( const std::wstring& wstr )
 {
@@ -33,7 +32,7 @@ std::string CUL::FS::ws2s( const std::wstring& wstr )
     }
 
 #ifdef _MSC_VER
-    UINT codePage = CP_UTF8;
+    UINT codePage = CP_ACP;
     DWORD dwFlags = WC_COMPOSITECHECK;
     int size_needed = WideCharToMultiByte( codePage, dwFlags, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL );
     std::string strTo( (size_t)size_needed, 0 );
@@ -46,7 +45,7 @@ std::string CUL::FS::ws2s( const std::wstring& wstr )
 #endif
 }
 
-std::wstring CUL::FS::s2ws( const std::string& str )
+std::wstring CUL::FS::s2ws( const std::string& str, unsigned int codePageIn )
 {
     if( str.empty() )
     {
@@ -55,7 +54,7 @@ std::wstring CUL::FS::s2ws( const std::string& str )
 
 #ifdef _MSC_VER
     std::wstring result;
-    UINT codePage = CP_UTF8;
+    UINT codePage = codePageIn;
     DWORD dwFlags = 0;
     int cbMultiByte = -1;
     int wchars_num = MultiByteToWideChar( codePage, dwFlags, str.c_str(), cbMultiByte, NULL, 0 );

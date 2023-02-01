@@ -22,7 +22,7 @@ public:
     {
         MD5Value MD5;
         String Size;
-        Path Path;
+        Path FilePath;
         String ModTime;
 
         bool operator==( const FileInfo& second ) const;
@@ -52,7 +52,7 @@ protected:
 private:
     void initDb();
     void removeFilesThatDoesNotExist();
-
+    FileInfo getFileFromDB( const String& path ) const;
 
     sqlite3* m_db = nullptr;
     Path m_databasePath = "FilesList.db";
