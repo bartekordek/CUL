@@ -194,7 +194,14 @@ bool isRegularFileImpl( const wchar_t* path )
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_regular_file( path );
 #else
-    return std::filesystem::is_regular_file( path );
+    std::error_code ec;
+    bool result = std::filesystem::is_regular_file( path, ec );
+    std::error_condition ok;
+    if( ec != ok )
+    {
+        auto x = 0;
+    }
+    return result;
 #endif
 }
 
