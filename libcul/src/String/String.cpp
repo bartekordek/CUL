@@ -4,6 +4,7 @@
 
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
+#include "CUL/STL_IMPORTS/STD_sstream.hpp"
 
 using namespace CUL;
 
