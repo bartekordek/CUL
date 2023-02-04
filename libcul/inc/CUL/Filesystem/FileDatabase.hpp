@@ -29,40 +29,32 @@ public:
     };
 
     FileDatabase();
-    void loadFilesFromDatabase( const Path& dbPath );
-	void loadFilesFromDatabase();
+    std::vector<String> loadFilesFromDatabase( const Path& dbPath );
+    std::vector<String> loadFilesFromDatabase();
 
     void addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime );
 
-
     void removeFileFromDB( const CUL::String& path );
 
-    void removeFilesThatDoNotExistFromBase();
-
-    const FileInfo* getFileInfo( const CUL::String& path ) const;
-
-    std::list<FileInfo>::iterator getNextFile();
-
-    void addFileToCache( const Path& path );
-    void addFileToCache( const FileInfo& path );
+    FileInfo getFileInfo( const CUL::String& path ) const;
+    float getPercentage() const;
 
     ~FileDatabase();
 
 protected:
 private:
     void initDb();
-    void removeFilesThatDoesNotExist();
-    FileInfo getFileFromDB( const String& path ) const;
+    int64_t getFileCount() const;
+    static String sanitize( const String& inString );
+    static String deSanitize( const String& inString );
 
     sqlite3* m_db = nullptr;
     Path m_databasePath = "FilesList.db";
 
-    mutable std::mutex m_filesMtx;
-    std::list<FileInfo> m_files;
-
     String m_currentFile;
+    std::atomic<int64_t> m_current = 0;
+    std::atomic<int64_t> m_rowCount = 0;
 
-    std::list<FileInfo>::iterator m_currentFilePath;
 
 private:
     FileDatabase( const FileDatabase& rhv ) = delete;
