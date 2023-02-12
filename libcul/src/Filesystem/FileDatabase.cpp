@@ -35,6 +35,7 @@ std::vector<String> FileDatabase::loadFilesFromDatabase( const Path& inPath )
 
 struct ListAndApi
 {
+    FileDatabase* thisPtr = nullptr;
     std::vector<String> FilesList;
     std::vector<String> RemoveList;
     CUL::FS::FSApi* FS_API = nullptr;
@@ -46,6 +47,17 @@ float FileDatabase::getPercentage() const
     return 100.f * m_current / ( 1.f * m_rowCount );
 }
 
+CUL::String FileDatabase::getDbState() const
+{
+    CUL::String result;
+    {
+        std::lock_guard<std::mutex> lock( m_dbStateMtx );
+        result = m_dbState;
+    }
+
+    return result;
+}
+
 std::vector<String> FileDatabase::loadFilesFromDatabase()
 {
     std::vector<String> result;
@@ -53,6 +65,7 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
     initDb();
 
     ListAndApi removeData;
+    removeData.thisPtr = this;
     removeData.FS_API = CUL::CULInterface::getInstance()->getFS();
     removeData.m_currentFileIndex = &m_current;
 
@@ -63,24 +76,23 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
     {
         auto rd = reinterpret_cast<ListAndApi*>( thisPtrValue );
         String file = argv[0];
-
-        if( rd->FS_API->fileExist( file ) )
-        {
-            rd->FilesList.push_back( file );
-        }
-        else
-        {
-            rd->RemoveList.push_back( file );
-        }
+        rd->FilesList.push_back( file );
         ++*rd->m_currentFileIndex;
+
+        float per = rd->thisPtr->getPercentage();
+        const CUL::String stat = "loadFilesFromDatabase -> load files list... " + CUL::String( per );
 
         return 0;
     };
 
+    setDBstate( "loadFilesFromDatabase -> get file count..." );
     m_rowCount = getFileCount();
+    setDBstate( "loadFilesFromDatabase -> get file count... done." );
 
     char* zErrMsg = nullptr;
+    setDBstate( "loadFilesFromDatabase -> load files list..." );
     int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, &removeData, &zErrMsg );
+    setDBstate( "loadFilesFromDatabase -> load files list... done." );
 
     if( rc != SQLITE_OK )
     {
@@ -97,11 +109,23 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
     }
     else
     {
-        for( const auto& fileToRemove: removeData.RemoveList )
+        setDBstate( "loadFilesFromDatabase -> deleting remnants..." );
+        const auto filesCount = removeData.FilesList.size();
+        for( size_t i = 0; i < filesCount; ++i )
         {
-            removeFileFromDB( fileToRemove );
+            const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
+
+            if( !fsApi->fileExist( removeData.FilesList[i] ) )
+            {
+                removeFileFromDB( removeData.FilesList[i] );
+            }
+
+            setDBstate( "loadFilesFromDatabase -> deleting remnants... " + CUL::String( perc ) );
         }
+        setDBstate( "loadFilesFromDatabase -> deleting remnants... done." );
     }
+
+    setDBstate( "loadFilesFromDatabase -> finished." );
 
     return result;
 }
@@ -137,6 +161,7 @@ int64_t FileDatabase::getFileCount() const
 
 void FileDatabase::initDb()
 {
+    setDBstate( "Initi db..." );
     int rc = sqlite3_open( m_databasePath.getPath().cStr(), &m_db );
 
     std::string sqlQuery =
@@ -166,6 +191,7 @@ void FileDatabase::initDb()
     {
 
     }
+    setDBstate( "Initi db... done." );
 }
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
@@ -255,7 +281,6 @@ WHERE PATH='" + filePathNormalized + "';";
     return result;
 }
 
-
 void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
 {
     auto path = sanitize( pathRaw );
@@ -275,6 +300,12 @@ void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
     {
         CUL::Assert::simple( false, "DB ERROR!" );
     }
+}
+
+void FileDatabase::setDBstate( const CUL::String& state )
+{
+    std::lock_guard<std::mutex> lock( m_dbStateMtx );
+    m_dbState = state;
 }
 
 FileDatabase::~FileDatabase()

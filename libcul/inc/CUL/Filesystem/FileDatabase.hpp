@@ -39,6 +39,8 @@ public:
     FileInfo getFileInfo( const CUL::String& path ) const;
     float getPercentage() const;
 
+    CUL::String getDbState() const;
+
     ~FileDatabase();
 
 protected:
@@ -47,6 +49,7 @@ private:
     int64_t getFileCount() const;
     static String sanitize( const String& inString );
     static String deSanitize( const String& inString );
+    void setDBstate( const CUL::String& state );
 
     sqlite3* m_db = nullptr;
     Path m_databasePath = "FilesList.db";
@@ -55,6 +58,8 @@ private:
     std::atomic<int64_t> m_current = 0;
     std::atomic<int64_t> m_rowCount = 0;
 
+    mutable std::mutex m_dbStateMtx;
+    CUL::String m_dbState = "Uninitialized";
 
 private:
     FileDatabase( const FileDatabase& rhv ) = delete;
