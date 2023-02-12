@@ -257,8 +257,11 @@ WHERE PATH='" + filePathNormalized + "';";
     const char* queryAsCharPtr = sqlQuery.cStr();
     auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
         const char* path = argv[0];
+#if defined(CUL_WINDOWS)
         std::wstring asWstring = FS::s2ws( path, CP_ACP );
-
+#else
+        std::string asWstring = path;
+#endif
 
         FileDatabase::FileInfo* fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
         fileInfoFromPtr->MD5 = argv[2];
