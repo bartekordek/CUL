@@ -110,18 +110,51 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
     else
     {
         setDBstate( "loadFilesFromDatabase -> deleting remnants..." );
-        const auto filesCount = removeData.FilesList.size();
+        size_t filesCount = removeData.FilesList.size();
+
+        setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." );
         for( size_t i = 0; i < filesCount; ++i )
         {
             const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
 
             if( !fsApi->fileExist( removeData.FilesList[i] ) )
             {
-                removeFileFromDB( removeData.FilesList[i] );
+                removeData.RemoveList.push_back( removeData.FilesList[i] );
             }
 
-            setDBstate( "loadFilesFromDatabase -> deleting remnants... " + CUL::String( perc ) );
+            setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc ) );
         }
+        setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
+
+        filesCount = removeData.RemoveList.size();
+        size_t groups = ( filesCount < 32)? 1: filesCount / 2;
+
+        const size_t filesPerGroup = filesCount / groups;
+
+        std::vector<CUL::String> filesToDelete;
+        size_t groupCounter = 0;
+        setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." );
+        for( size_t i = 0; i < filesCount; ++i )
+        {
+            const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
+
+            filesToDelete.push_back( removeData.RemoveList[i] );
+
+            ++groupCounter;
+
+            if( groupCounter >= filesPerGroup )
+            {
+                groupCounter = 0;
+                removeFilesFromDb( filesToDelete );
+                filesToDelete.clear();
+            }
+
+            setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." + CUL::String( perc ) );
+        }
+        setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db... done." );
+
+        //setDBstate( "loadFilesFromDatabase -> deleting remnants... " + CUL::String( perc ) );
+
         setDBstate( "loadFilesFromDatabase -> deleting remnants... done." );
     }
 
@@ -298,6 +331,35 @@ void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
     };
 
     int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, this, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        CUL::Assert::simple( false, "DB ERROR!" );
+    }
+}
+
+void FileDatabase::removeFilesFromDb( const std::vector<CUL::String>& paths )
+{
+    const size_t pathsSize = paths.size();
+
+    CUL::String pathsListed = "( '";
+    for( size_t i = 0; i < pathsSize - 1; ++i )
+    {
+        auto pathSanitized = sanitize( paths[i] );
+        pathsListed += pathSanitized + "', '";
+    }
+    pathsListed += sanitize( paths[pathsSize-1] ) + "')";
+
+    CUL::String sqlQuery = CUL::String( "DELETE FROM FILES WHERE PATH IN " ) + pathsListed + ";";
+
+    char* zErrMsg = nullptr;
+    auto callback = [] ( void* thisPtrValue, int argc, char** argv, char** info )    {
+        // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
+        return 0;
+    };
+
+    std::string sqlQuerySTR = sqlQuery.string();
+    int rc = sqlite3_exec( m_db, sqlQuerySTR.c_str(), callback, this, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {

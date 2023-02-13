@@ -35,6 +35,7 @@ public:
     void addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime );
 
     void removeFileFromDB( const CUL::String& path );
+    void removeFilesFromDb( const std::vector<CUL::String>& paths );
 
     FileInfo getFileInfo( const CUL::String& path ) const;
     float getPercentage() const;
