@@ -104,16 +104,6 @@ void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Pat
     {
         const std::filesystem::path entryPath = entry.path();
         String::UnderlyingType tempString = entryPath;
-        if( tempString.find( L"w klimacie post apokaliptycznym Science Fictio" ) != String::UnderlyingType::npos )
-        {
-            auto x = 0;
-        }
-
-        if( tempString.find( L"mietnik" ) != String::UnderlyingType::npos )
-        {
-            auto x = 0;
-        }
-
 
 #ifdef _MSC_VER
         Path culPath = entryPath.wstring();
