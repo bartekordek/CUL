@@ -163,6 +163,29 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
     return result;
 }
 
+std::list<CUL::String> FileDatabase::getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const
+{
+    std::list<CUL::String> result;
+    CUL::String sqlQuery = CUL::String( "SELECT PATH FROM FILES WHERE ( SIZE='" ) + fileSize + "' AND MD5='" + md5 + "');";
+
+    char* zErrMsg = nullptr;
+    auto callback = [] ( void* voidValue, int argc, char** argv, char** info ){
+        std::list<CUL::String>* resultPtr = reinterpret_cast<std::list<CUL::String>*>( voidValue );
+        resultPtr->push_back( CUL::String( argv[0] ) );
+        return 0;
+    };
+
+    std::string sqlQuerySTR = sqlQuery.string();
+    int rc = sqlite3_exec( m_db, sqlQuerySTR.c_str(), callback, &result, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        CUL::Assert::simple( false, "DB ERROR!" );
+    }
+
+    return result;
+}
+
 int64_t FileDatabase::getFileCount() const
 {
     int64_t result = 0;
@@ -215,10 +238,15 @@ void FileDatabase::initDb()
         PATH varchar(1024),\
         SIZE varchar(512),\
         MD5 varchar(1024),\
-        LAST_MODIFICATION varchar(1024)\
+        LAST_MODIFICATION varchar(1024),\
+        CONSTRAINT PATH PRIMARY KEY (PATH) \
         );";
         std::string errorResult( zErrMsg );
         rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, 0, &zErrMsg );
+        if( rc != SQLITE_OK )
+        {
+            CUL::Assert::simple( false, "DB ERROR!" );
+        }
     }
     else
     {
@@ -229,25 +257,27 @@ void FileDatabase::initDb()
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
 {
-    if( filePath.contains( "w klimacie post apokaliptycznym Science Fictio" ) || filePath.contains( "mietnik" ) )
-    {
-        auto x = 0;
-    }
-
-    CUL::String result;
-    CUL::String filePathNormalized = sanitize( filePath );
-    CUL::String sqlQuery = "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ('" + filePathNormalized + "', '" + fileSize +
-        "', '" + md5 + "', '" + modTime + "');";
-
+    const CUL::String filePathNormalized = sanitize( filePath );
+    auto foundFile = getFileInfo( filePath );
     char* zErrMsg = nullptr;
-    auto callback = [] ( void*, int, char**, char** )    {
+    auto callback = [] ( void*, int, char**, char** ){
         // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
         return 0;
     };
 
+    CUL::String sqlQuery = "";
+    if( foundFile.Found )
+    {
+        sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" + filePath + "'";
+    }
+    else
+    {
+        sqlQuery = "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ('" + filePathNormalized + "', '" + fileSize +
+            "', '" + md5 + "', '" + modTime + "');";
+    }
+
     const char* queryAsCharPtr = sqlQuery.cStr();
     int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, 0, &zErrMsg );
-
     if( rc != SQLITE_OK )
     {
         std::string errMessage = zErrMsg;
@@ -261,26 +291,12 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
             CUL::Assert::simple( false, "DB ERROR!" );
         }
     }
-
-    if( false )
-    {
-        auto fileInfo = getFileInfo( filePath );
-        LOG::ILogger::getInstance()->log( fileInfo.FilePath.getPath() );
-    }
 }
 
 FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
 {
-    if( path.contains( "shit" ) )
-    {
-        auto x = 0;
-    }
-
     FileDatabase::FileInfo result;
-    auto filePathNormalized = path;
-    filePathNormalized.replace( "./", "" );
-    filePathNormalized.replace( "'", "''" );
-    filePathNormalized.removeAll( '\0' );
+    auto filePathNormalized = sanitize( path );
 
     String sqlQuery =
         "SELECT * \
@@ -297,6 +313,7 @@ WHERE PATH='" + filePathNormalized + "';";
 #endif
 
         FileDatabase::FileInfo* fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
+        fileInfoFromPtr->Found = true;
         fileInfoFromPtr->MD5 = argv[2];
         fileInfoFromPtr->Size = argv[1];
         fileInfoFromPtr->ModTime = argv[3];

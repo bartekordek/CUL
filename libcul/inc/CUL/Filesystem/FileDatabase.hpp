@@ -20,6 +20,7 @@ public:
 
     struct FileInfo
     {
+        bool Found = false;
         MD5Value MD5;
         String Size;
         Path FilePath;
@@ -41,6 +42,8 @@ public:
     float getPercentage() const;
 
     CUL::String getDbState() const;
+
+    std::list<CUL::String> getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const;
 
     ~FileDatabase();
 
