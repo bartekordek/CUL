@@ -268,7 +268,19 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     CUL::String sqlQuery = "";
     if( foundFile.Found )
     {
-        sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" + filePath + "'";
+        sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', MD5='" + md5 + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" + filePath + "'";
+
+        CUL::LOG::ILogger::getInstance()->log( "Found updated file: " + filePath );
+        CUL::LOG::ILogger::getInstance()->log( "New/Old diff: ");
+
+        CUL::LOG::ILogger::getInstance()->log( "[OLD] MD5: " + foundFile.MD5 );
+        CUL::LOG::ILogger::getInstance()->log( "[NEW] MD5: " + md5 );
+
+        CUL::LOG::ILogger::getInstance()->log( "[OLD] SIZE: " + foundFile.Size );
+        CUL::LOG::ILogger::getInstance()->log( "[NEW] SIZE: " + fileSize );
+
+        CUL::LOG::ILogger::getInstance()->log( "[OLD] modTime: " + foundFile.ModTime );
+        CUL::LOG::ILogger::getInstance()->log( "[NEW] modTime: " + modTime );
     }
     else
     {
@@ -324,6 +336,12 @@ WHERE PATH='" + filePathNormalized + "';";
     char* zErrMsg = nullptr;
 
     int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+
+    if( !result.Found )
+    {
+        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Could not find: " + path );
+        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Used SQL command: " + sqlQuery );
+    }
 
     if( rc != SQLITE_OK )
     {
