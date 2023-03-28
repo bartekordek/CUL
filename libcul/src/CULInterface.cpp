@@ -26,15 +26,26 @@ using namespace CUL;
     
 #endif // #if CUL_GLOBAL_MEMORY_POOL
 
-CULInterface* CULInterface::createInstance( const FS::Path& configFile )
+
+CULInterface* CULInterface::s_instance = nullptr;
+
+CULInterface* CULInterface::getInstance( const FS::Path& configFile )
 {
-    auto instance = new CULInterface( configFile );
-    instance->initialize();
-    return instance;
+    if( s_instance == nullptr )
+    {
+        auto instance = new CULInterface( configFile );
+        instance->initialize();
+    }
+
+    return s_instance;
 }
 
-CULInterface::CULInterface( const FS::Path& configFilePath ) : m_configFilePath( configFilePath )
+CULInterface::CULInterface( const FS::Path& configFilePath ):
+    m_configFilePath( configFilePath )
 {
+    CUL::Assert::simple( s_instance == nullptr );
+
+    s_instance = this;
 }
 
 void CULInterface::initialize()
