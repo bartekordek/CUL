@@ -13,13 +13,12 @@ CSVFileTests::CSVFileTests()
 
 void CSVFileTests::SetUpTestCase()
 {
-    m_culInterface = CUL::CULInterface::createInstance();
+    m_culInterface = CUL::CULInterface::getInstance();
 }
 
 void CSVFileTests::SetUp()
 {
 }
-
 
 TEST_F( CSVFileTests, Load )
 {

@@ -12,7 +12,7 @@ OSUtilsTests::OSUtilsTests()
 
 void OSUtilsTests::SetUpTestCase()
 {
-    m_culInterface = CUL::CULInterface::createInstance();
+    m_culInterface = CUL::CULInterface::getInstance();
 }
 
 void OSUtilsTests::SetUp()

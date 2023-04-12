@@ -139,6 +139,7 @@ CULInterface::~CULInterface()
 #endif  // #if CUL_GLOBAL_MEMORY_POOL
     g_logger = nullptr;
     m_logger = nullptr;
+    s_instance = nullptr;
 }
 
 #if CUL_GLOBAL_MEMORY_POOL
