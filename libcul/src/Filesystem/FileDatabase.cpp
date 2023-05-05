@@ -58,16 +58,137 @@ CUL::String FileDatabase::getDbState() const
     return result;
 }
 
+std::vector<uint64_t> FileDatabase::getListOfSizes() const
+{
+    std::vector<uint64_t> result;
+
+    const std::string sqlQuery = std::string( "SELECT DISTINCT SIZE FROM FILES ORDER BY SIZE;" );
+    auto callback = []( void* voidPtr, int, char** argv, char** ) {
+        CUL::String valueAsString = argv[0];
+        std::vector<uint64_t>* resulPtr = reinterpret_cast<std::vector<uint64_t>*>( voidPtr );
+        resulPtr->push_back( valueAsString.toUint64() );
+
+        return 0;
+    };
+
+    char* zErrMsg = nullptr;
+    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, &result, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        std::string errMessage = zErrMsg;
+        if( errMessage.find( "no such table" ) == std::string::npos ) // new database.
+        {
+            CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        }
+    }
+
+    return result;
+}
+
+std::vector<CUL::String> FileDatabase::getListOfMd5() const
+{
+    std::vector<CUL::String> result;
+
+    const std::string sqlQuery = std::string( "SELECT DISTINCT MD5 FROM FILES ORDER BY SIZE;" );
+    auto callback = []( void* voidPtr, int, char** argv, char** ) {
+        CUL::String valueAsString = argv[0];
+        std::vector<CUL::String>* resulPtr = reinterpret_cast<std::vector<CUL::String>*>( voidPtr );
+        resulPtr->push_back( valueAsString );
+
+        return 0;
+    };
+
+    char* zErrMsg = nullptr;
+    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, &result, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        std::string errMessage = zErrMsg;
+        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+    }
+
+    return result;
+}
+
+std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size, const CUL::String& md5 ) const
+{
+    std::vector<FileDatabase::FileInfo> result;
+
+    const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\" AND MD5=\"" + md5 + "\";";
+    auto callback = []( void* voidPtr, int, char** argv, char** ) {
+        const CUL::String filePath = argv[0];
+        const CUL::String size = argv[1];
+        const CUL::String md5 = argv[2];
+        const CUL::String lastMod = argv[3];
+        auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
+        FileInfo fi;
+        fi.FilePath = filePath;
+        fi.MD5 = md5;
+        fi.ModTime = lastMod;
+        fi.Size = size;
+        resulPtr->push_back( fi );
+
+        return 0;
+    };
+
+    char* zErrMsg = nullptr;
+    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        std::string errMessage = zErrMsg;
+        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+    }
+
+
+    return result;
+}
+
+std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
+{
+    std::vector<FileDatabase::FileInfo> result;
+
+    const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\";";
+    auto callback = []( void* voidPtr, int, char** argv, char** ) {
+        const CUL::String filePath = argv[0];
+        const CUL::String size = argv[1];
+        const CUL::String md5 = argv[2];
+        const CUL::String lastMod = argv[3];
+        auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
+        FileInfo fi;
+        fi.FilePath = filePath;
+        fi.MD5 = md5;
+        fi.ModTime = lastMod;
+        fi.Size = size;
+        resulPtr->push_back( fi );
+
+        return 0;
+    };
+
+    char* zErrMsg = nullptr;
+    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        std::string errMessage = zErrMsg;
+        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+    }
+
+    return result;
+}
+
 std::vector<String> FileDatabase::loadFilesFromDatabase()
 {
     std::vector<String> result;
 
     initDb();
 
-    ListAndApi removeData;
-    removeData.thisPtr = this;
-    removeData.FS_API = CUL::CULInterface::getInstance()->getFS();
-    removeData.m_currentFileIndex = &m_current;
+    m_fetchList = new ListAndApi();
+
+    m_fetchList->thisPtr = this;
+    m_fetchList->FS_API = CUL::CULInterface::getInstance()->getFS();
+    m_fetchList->m_currentFileIndex = &m_current;
 
     CUL::FS::FSApi* fsApi = CUL::CULInterface::getInstance()->getFS();
 
@@ -91,7 +212,7 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
 
     char* zErrMsg = nullptr;
     setDBstate( "loadFilesFromDatabase -> load files list..." );
-    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, &removeData, &zErrMsg );
+    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, m_fetchList, &zErrMsg );
     setDBstate( "loadFilesFromDatabase -> load files list... done." );
 
     if( rc != SQLITE_OK )
@@ -109,58 +230,64 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
     }
     else
     {
-        setDBstate( "loadFilesFromDatabase -> deleting remnants..." );
-        size_t filesCount = removeData.FilesList.size();
-
-        setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." );
-        for( size_t i = 0; i < filesCount; ++i )
-        {
-            const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
-
-            if( !fsApi->fileExist( removeData.FilesList[i] ) )
-            {
-                removeData.RemoveList.push_back( removeData.FilesList[i] );
-            }
-
-            setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc ) );
-        }
-        setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
-
-        filesCount = removeData.RemoveList.size();
-        size_t groups = ( filesCount < 32)? 1: filesCount / 2;
-
-        const size_t filesPerGroup = filesCount / groups;
-
-        std::vector<CUL::String> filesToDelete;
-        size_t groupCounter = 0;
-        setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." );
-        for( size_t i = 0; i < filesCount; ++i )
-        {
-            const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
-
-            filesToDelete.push_back( removeData.RemoveList[i] );
-
-            ++groupCounter;
-
-            if( groupCounter >= filesPerGroup )
-            {
-                groupCounter = 0;
-                removeFilesFromDb( filesToDelete );
-                filesToDelete.clear();
-            }
-
-            setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." + CUL::String( perc ) );
-        }
-        setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db... done." );
-
-        //setDBstate( "loadFilesFromDatabase -> deleting remnants... " + CUL::String( perc ) );
-
-        setDBstate( "loadFilesFromDatabase -> deleting remnants... done." );
+        m_deleteRemnantsDone = std::async( std::launch::async, [this] (){
+            return deleteRemnants();
+        } );
     }
 
+    return result;
+}
+
+bool FileDatabase::deleteRemnants()
+{
+    setDBstate( "loadFilesFromDatabase -> deleting remnants..." );
+    size_t filesCount = m_fetchList->FilesList.size();
+
+    setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." );
+    for( size_t i = 0; i < filesCount; ++i )
+    {
+        const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
+
+        if( !m_fetchList->FS_API->fileExist( m_fetchList->FilesList[i] ) )
+        {
+            m_fetchList->RemoveList.push_back( m_fetchList->FilesList[i] );
+        }
+
+        setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc ) );
+    }
+    setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
+
+    filesCount = m_fetchList->RemoveList.size();
+    size_t groups = ( filesCount < 32 ) ? 1 : filesCount / 2;
+
+    const size_t filesPerGroup = filesCount / groups;
+
+    std::vector<CUL::String> filesToDelete;
+    size_t groupCounter = 0;
+    setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." );
+    for( size_t i = 0; i < filesCount; ++i )
+    {
+        const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
+
+        filesToDelete.push_back( m_fetchList->RemoveList[i] );
+
+        ++groupCounter;
+
+        if( groupCounter >= filesPerGroup )
+        {
+            groupCounter = 0;
+            removeFilesFromDb( filesToDelete );
+            filesToDelete.clear();
+        }
+
+        setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." + CUL::String( perc ) );
+    }
+    setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db... done." );
+
+    setDBstate( "loadFilesFromDatabase -> deleting remnants... done." );
     setDBstate( "loadFilesFromDatabase -> finished." );
 
-    return result;
+    return true;
 }
 
 std::list<CUL::String> FileDatabase::getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const
@@ -236,7 +363,7 @@ void FileDatabase::initDb()
         sqlQuery =
             "CREATE TABLE FILES (\
         PATH varchar(1024),\
-        SIZE varchar(512),\
+        SIZE BIGINT(255),\
         MD5 varchar(1024),\
         LAST_MODIFICATION varchar(1024),\
         CONSTRAINT PATH PRIMARY KEY (PATH) \
@@ -410,6 +537,7 @@ void FileDatabase::setDBstate( const CUL::String& state )
 
 FileDatabase::~FileDatabase()
 {
+    m_deleteRemnantsDone.get();
     sqlite3_close( m_db );
 }
 

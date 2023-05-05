@@ -7,11 +7,16 @@
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_list.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_future.hpp"
 
 struct sqlite3;
 
+struct ListAndApi;
+
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
+
+
 
 class CULLib_API FileDatabase final
 {
@@ -42,6 +47,10 @@ public:
     float getPercentage() const;
 
     CUL::String getDbState() const;
+    std::vector<uint64_t> getListOfSizes() const;
+    std::vector<CUL::String> getListOfMd5() const;
+    std::vector<FileInfo> getFiles( uint64_t size, const CUL::String& md5 ) const;
+    std::vector<FileInfo> getFiles( uint64_t size ) const;
 
     std::list<CUL::String> getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const;
 
@@ -54,6 +63,7 @@ private:
     static String sanitize( const String& inString );
     static String deSanitize( const String& inString );
     void setDBstate( const CUL::String& state );
+    bool deleteRemnants();
 
     sqlite3* m_db = nullptr;
     Path m_databasePath = "FilesList.db";
@@ -64,6 +74,9 @@ private:
 
     mutable std::mutex m_dbStateMtx;
     CUL::String m_dbState = "Uninitialized";
+
+    std::future<bool> m_deleteRemnantsDone;
+    ListAndApi* m_fetchList = nullptr;
 
 private:
     FileDatabase( const FileDatabase& rhv ) = delete;

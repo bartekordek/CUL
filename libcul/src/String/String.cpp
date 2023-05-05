@@ -81,6 +81,12 @@ String::String( int64_t arg ) noexcept
     *this = arg;
 }
 
+String::String( uint64_t arg ) noexcept
+{
+    *this = arg;
+}
+
+
 String& String::operator=( const String& arg )
 {
     if( this != &arg )
@@ -227,6 +233,16 @@ String& String::operator=( unsigned arg )
 }
 
 String& String::operator=( int64_t arg )
+{
+#ifdef _MSC_VER
+    m_value = std::to_wstring( arg );
+#else
+    m_value = std::to_string( arg );
+#endif
+    return *this;
+}
+
+String& String::operator=( uint64_t arg )
 {
 #ifdef _MSC_VER
     m_value = std::to_wstring( arg );
@@ -637,6 +653,31 @@ int64_t String::toInt64() const
         std::istringstream iss( copy );
 #endif
         int64_t value;
+        iss >> value;
+        return value;
+    }
+}
+
+uint64_t String::toUint64() const
+{
+    if( m_value.empty() )
+    {
+        return 0u;
+    }
+    else
+    {
+        auto copy = m_value;
+        if( m_value[0] == 'u' )
+        {
+            copy = m_value.substr( 1, m_value.size() );
+        }
+#if defined( _MSC_VER )
+        std::string resultString = FS::ws2s( copy );
+        std::istringstream iss( resultString );
+#else
+        std::istringstream iss( copy );
+#endif
+        uint64_t value;
         iss >> value;
         return value;
     }

@@ -39,6 +39,7 @@ public:
     String( int arg ) noexcept;
     String( unsigned int arg ) noexcept;
     String( int64_t arg ) noexcept;
+    String( uint64_t arg ) noexcept;
 
     String& operator=( const String& arg );
     String& operator=( String&& arg ) noexcept;
@@ -53,6 +54,7 @@ public:
     String& operator=( int arg );
     String& operator=( unsigned arg );
     String& operator=( int64_t arg );
+    String& operator=( uint64_t arg );
 
     String operator+( const String& arg ) const;
 
@@ -117,6 +119,7 @@ public:
     double toDouble() const;
     int toInt();
     int64_t toInt64() const;
+    uint64_t toUint64() const;
     unsigned int toUInt() const;
     bool toBool() const;
 
