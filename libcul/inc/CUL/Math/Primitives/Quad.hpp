@@ -32,6 +32,8 @@ public:
     void* dataAsVoid = nullptr;
     std::vector<float> toVectorOfFloat() const;
 
+    static size_t getStride();
+
     ~Quad();
 protected:
 private:

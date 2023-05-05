@@ -99,14 +99,21 @@ std::vector<float> Quad::toVectorOfFloat() const
 {
     std::vector<float> result;
 
-    for( size_t i = 0; i < 4; ++i )
+
+    for (const auto& row: data)
     {
-        result.push_back( data[i][0] );
-        result.push_back( data[i][1] );
-        result.push_back( data[i][2] );
+        for( const auto& cell : row )
+        {
+            result.push_back( cell );
+        }
     }
 
     return result;
+}
+
+size_t Quad::getStride()
+{
+    return sizeof( PointType );
 }
 
 Quad::~Quad()
