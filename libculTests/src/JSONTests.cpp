@@ -15,7 +15,7 @@ JSONTests::JSONTests()
 
 void JSONTests::SetUpTestCase()
 {
-    m_culInterface = CUL::CULInterface::getInstance();
+    m_culInterface = CUL::CULInterface::createInstance();
 }
 
 void JSONTests::SetUp()
