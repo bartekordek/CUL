@@ -100,10 +100,10 @@ void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Pat
     setlocale( 0, "Polish" );
     std::vector<Path> result;
 
-
     for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
     {
         const std::filesystem::path entryPath = entry.path();
+        String::UnderlyingType tempString = entryPath;
 
 #ifdef _MSC_VER
         Path culPath = entryPath.wstring();
@@ -184,7 +184,14 @@ bool isRegularFileImpl( const wchar_t* path )
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_regular_file( path );
 #else
-    return std::filesystem::is_regular_file( path );
+    std::error_code ec;
+    bool result = std::filesystem::is_regular_file( path, ec );
+    std::error_condition ok;
+    if( ec != ok )
+    {
+        auto x = 0;
+    }
+    return result;
 #endif
 }
 

@@ -103,7 +103,7 @@ void IFile::calculateMD5()
 
     SHA256 sha256;
     m_md5 = sha256( vec.data(), fileSizeAsNumber );
-
+    file.close();
     return;
 }
 

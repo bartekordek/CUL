@@ -26,10 +26,9 @@ using namespace CUL;
     
 #endif // #if CUL_GLOBAL_MEMORY_POOL
 
-
 CULInterface* CULInterface::s_instance = nullptr;
 
-CULInterface* CULInterface::getInstance( const FS::Path& configFile )
+CULInterface* CULInterface::createInstance( const FS::Path& configFile )
 {
     if( s_instance == nullptr )
     {
@@ -37,6 +36,11 @@ CULInterface* CULInterface::getInstance( const FS::Path& configFile )
         instance->initialize();
     }
 
+    return s_instance;
+}
+
+CULInterface* CULInterface::getInstance()
+{
     return s_instance;
 }
 

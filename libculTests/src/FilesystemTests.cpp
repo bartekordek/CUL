@@ -21,7 +21,7 @@ FilesystemTests::FilesystemTests()
 
 void FilesystemTests::SetUpTestCase()
 {
-    m_culInterface = CUL::CULInterface::getInstance();
+    m_culInterface = CUL::CULInterface::createInstance();
 }
 
 void FilesystemTests::SetUp()

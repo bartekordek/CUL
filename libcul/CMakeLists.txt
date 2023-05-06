@@ -20,6 +20,7 @@ include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tiny-image/src" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/rapidjson/include" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/hash-library" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/DevIL/DevIL/include" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000" )
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -28,6 +29,7 @@ if( MSVC )
     add_compile_options( /MP )
     add_compile_options( "/wd4266" )
     add_compile_options( "/wd4820" )
+    add_compile_options( "/wd4710" )
     add_compile_options( "/wd5045" )
 
     find_package( RapidJSON REQUIRED )

@@ -1,4 +1,10 @@
 #include "CUL/Filesystem/Path.hpp"
+
+#include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/Filesystem/FSApi.hpp"
+
+#include "CUL/CULInterface.hpp"
+
 #include "Filesystem/FSUtils.hpp"
 
 using namespace CUL;
@@ -174,16 +180,89 @@ const String& Path::getDir() const
 
 uint64_t Path::getFileSize() const
 {
+    auto calculateSize = [this] (){
 #ifdef _MSC_VER
-    FsPath file( m_fullPath.wstring() );
+        FsPath file( m_fullPath.wstring() );
 #else
-    FsPath file( m_fullPath.cStr() );
+        FsPath file( m_fullPath.cStr() );
 #endif
 #if defined( _MSC_VER ) && _MSC_VER < 1920
-    return std::experimental::filesystem::file_size( file );
+        m_fileSize = std::experimental::filesystem::file_size( file );
 #else
-    return std::filesystem::file_size( file );
+        m_fileSize = std::filesystem::file_size( file );
 #endif
+        m_sizeCalculated = true;
+    };
+
+    if( m_sizeCalculated )
+    {
+        auto lastModTime = getLastModificationTime().toString();
+        if( lastModTime != m_modTime )
+        {
+            calculateSize();
+        }
+    }
+    else
+    {
+        calculateSize();
+
+    }
+
+    return m_fileSize;
+}
+
+void Path::setFileSize( uint64_t inFileSize )
+{
+    m_fileSize = inFileSize;
+}
+
+const String& Path::getMd5() const
+{
+    auto calculateMd5 = [this] (){
+        std::unique_ptr<CUL::FS::IFile> file;
+
+        auto m_culInterface = CUL::CULInterface::getInstance();
+
+        file.reset( m_culInterface->getFF()->createRegularFileRawPtr( m_fullPath ) );
+        m_md5 = file->getMD5();
+    };
+
+    if( m_md5.empty() )
+    {
+        calculateMd5();
+    }
+    else
+    {
+        auto lastModTime = getLastModificationTime().toString();
+        if( lastModTime != m_modTime )
+        {
+            calculateMd5();
+            m_modTime = lastModTime;
+        }
+    }
+
+    return m_md5;
+}
+
+void Path::setMd5( const String& inMD5 )
+{
+    m_md5 = inMD5;
+}
+
+TimeConcrete Path::getLastModificationTime() const
+{
+    std::unique_ptr<CUL::FS::IFile> file;
+
+    auto m_culInterface = CUL::CULInterface::getInstance();
+
+    file.reset( m_culInterface->getFF()->createRegularFileRawPtr( m_fullPath ) );
+    auto modTime = file->getLastModificationTime();
+    return modTime;
+}
+
+void Path::setModTime( const String& inModTime )
+{
+    m_modTime = inModTime;
 }
 
 void Path::setIsDir( bool isDir )

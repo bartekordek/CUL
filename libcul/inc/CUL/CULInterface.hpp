@@ -33,9 +33,8 @@ class ThreadUtils;
 class CULLib_API CULInterface final
 {
 public:
-    static CULInterface* getInstance( const FS::Path& configFile = "" );
-
-
+    static CULInterface* createInstance( const FS::Path& configFile = "" );
+    static CULInterface* getInstance();
 
     OSUtils::ISystemFonts* getSystemFonts();
 

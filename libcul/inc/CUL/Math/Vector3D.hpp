@@ -21,6 +21,7 @@ using ST = TriangleRectangularSimple2D;
 #pragma warning( push )
 #pragma warning( disable: 4514 )
 #pragma warning( disable: 4625 )
+#pragma warning( disable: 4710 )
 #pragma warning( disable: 4820 )
 #endif
 template <typename Type>
@@ -141,17 +142,17 @@ public:
         return operator[]( AxisCarthesian::Z );
     }
 
-    void setX( const Type val )
+    inline void setX( const Type val )
     {
         setAxisValue( AxisCarthesian::X, val );
     }
 
-    void setY( const Type val )
+    inline void setY( const Type val )
     {
         setAxisValue( AxisCarthesian::Y, val );
     }
 
-    void setZ( const Type val )
+    inline void setZ( const Type val )
     {
         setAxisValue( AxisCarthesian::Z, val );
     }
@@ -380,12 +381,12 @@ public:
         return Vector3D<Type>( cx, cy, cz );
     }
 
-    void setAxisValue( const Axis axis, const Type value )
+    inline void setAxisValue( const Axis axis, const Type value )
     {
         setAxisValue( UTIL::normal2Carthesian( axis ), value );
     }
 
-    void setAxisValue( const AxisCarthesian axis, const Type value )
+    inline void setAxisValue( const AxisCarthesian axis, const Type value )
     {
         m_values[(size_t)axis] = value;
         if( AxisCarthesian::X == axis )

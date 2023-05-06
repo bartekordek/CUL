@@ -4,6 +4,7 @@
 
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
+#include "CUL/STL_IMPORTS/STD_sstream.hpp"
 
 using namespace CUL;
 
@@ -74,6 +75,17 @@ String::String( unsigned int arg ) noexcept
 {
     *this = arg;
 }
+
+String::String( int64_t arg ) noexcept
+{
+    *this = arg;
+}
+
+String::String( uint64_t arg ) noexcept
+{
+    *this = arg;
+}
+
 
 String& String::operator=( const String& arg )
 {
@@ -211,6 +223,26 @@ String& String::operator=( int arg )
 }
 
 String& String::operator=( unsigned arg )
+{
+#ifdef _MSC_VER
+    m_value = std::to_wstring( arg );
+#else
+    m_value = std::to_string( arg );
+#endif
+    return *this;
+}
+
+String& String::operator=( int64_t arg )
+{
+#ifdef _MSC_VER
+    m_value = std::to_wstring( arg );
+#else
+    m_value = std::to_string( arg );
+#endif
+    return *this;
+}
+
+String& String::operator=( uint64_t arg )
 {
 #ifdef _MSC_VER
     m_value = std::to_wstring( arg );
@@ -590,7 +622,65 @@ double String::toDouble() const
 int String::toInt()
 {
     removeAll('u');
-    return m_value.empty() ? 0 : std::stoi( m_value, nullptr, 0 );
+    if( m_value.empty() )
+    {
+        return 0;
+    }
+    else
+    {
+        int result = std::stoi( m_value );
+        return result;
+    }
+}
+
+int64_t String::toInt64() const
+{
+    if( m_value.empty() )
+    {
+        return 0;
+    }
+    else
+    {
+        auto copy = m_value;
+        if( m_value[0] == 'u' )
+        {
+            copy = m_value.substr( 1, m_value.size() );
+        }
+#if defined(_MSC_VER)
+        std::string resultString = FS::ws2s( copy );
+        std::istringstream iss( resultString );
+#else
+        std::istringstream iss( copy );
+#endif
+        int64_t value;
+        iss >> value;
+        return value;
+    }
+}
+
+uint64_t String::toUint64() const
+{
+    if( m_value.empty() )
+    {
+        return 0u;
+    }
+    else
+    {
+        auto copy = m_value;
+        if( m_value[0] == 'u' )
+        {
+            copy = m_value.substr( 1, m_value.size() );
+        }
+#if defined( _MSC_VER )
+        std::string resultString = FS::ws2s( copy );
+        std::istringstream iss( resultString );
+#else
+        std::istringstream iss( copy );
+#endif
+        uint64_t value;
+        iss >> value;
+        return value;
+    }
 }
 
 unsigned int String::toUInt() const

@@ -7,6 +7,11 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
 
+#if _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4710 )
+#endif
+
 template <class Type>
 class DumbPtr
 {
@@ -164,6 +169,10 @@ private:
     std::function<void(void*)> m_customDestuction;
 
 };
+
+#ifdef _MSC_VER
+#pragma warning( pop )
+#endif
 
 NAMESPACE_END( GUTILS )
 NAMESPACE_END( CUL )

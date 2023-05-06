@@ -2,6 +2,7 @@
 
 #include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/UselessMacros.hpp"
 
 #if _MSC_VER
@@ -37,6 +38,8 @@ public:
     String( double arg ) noexcept;
     String( int arg ) noexcept;
     String( unsigned int arg ) noexcept;
+    String( int64_t arg ) noexcept;
+    String( uint64_t arg ) noexcept;
 
     String& operator=( const String& arg );
     String& operator=( String&& arg ) noexcept;
@@ -50,6 +53,8 @@ public:
     String& operator=( double arg );
     String& operator=( int arg );
     String& operator=( unsigned arg );
+    String& operator=( int64_t arg );
+    String& operator=( uint64_t arg );
 
     String operator+( const String& arg ) const;
 
@@ -113,6 +118,8 @@ public:
     float toFloat() const;
     double toDouble() const;
     int toInt();
+    int64_t toInt64() const;
+    uint64_t toUint64() const;
     unsigned int toUInt() const;
     bool toBool() const;
 

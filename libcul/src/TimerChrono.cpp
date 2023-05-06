@@ -12,11 +12,16 @@ using namespace CUL;
 TimerChrono::TimerChrono( LOG::ILogger* logger ):
     ITimer( logger ), time( new TimeConcrete() )
 {
-    void* add = this;
-    std::stringstream stream;
-    stream << std::hex << add;
-    std::string result( stream.str() );
-    logger->log( "TimerChrono()" + result );
+    const bool logMe = false;
+
+    if( logMe )
+    {
+        void* add = this;
+        std::stringstream stream;
+        stream << std::hex << add;
+        std::string result( stream.str() );
+        logger->log( "TimerChrono()" + result );
+    }
 }
 
 void TimerChrono::start()
@@ -76,13 +81,19 @@ void TimerChrono::timerLoop()
 
 void TimerChrono::threadWrap( size_t index )
 {
-    getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][BEGIN]" );
+    const bool logMe = false;
+
+    if( logMe )
+    {
+        getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][BEGIN]" );
+    }
+
     if( m_callback )
     {
         m_callback();
     }
 
-    m_worker->addTask( [index,this] (){
+    m_worker->addTask( [index,this, logMe] (){
         std::lock_guard lock( m_threadsMtx );
         auto it = m_threads.find( index );
         CUL::Assert::simple( it != m_threads.end() );
@@ -96,10 +107,17 @@ void TimerChrono::threadWrap( size_t index )
 
         m_threads.erase( it );
         delete threadPtr;
-        getLogger()->log( "threadWrap[" + CUL::String( ( int ) index ) + "][DELETED]" );
+
+        if( logMe )
+        {
+            getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][DELETED]" );
+        }
     } );
 
-    getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][END]" );
+    if( logMe )
+    {
+        getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][END]" );
+    }
 }
 
 TimerChrono::~TimerChrono()
@@ -125,12 +143,17 @@ TimerChrono::~TimerChrono()
         }
     }
 
-    void* add = this;
-    std::stringstream stream;
-    stream << std::hex << add;
-    std::string result( stream.str() );
-    LOG::ILogger* log = getLogger();
-    log->log( "~TimerChrono()" + result );
+    const bool logMe = false;
+
+    if( logMe )
+    {
+        void* add = this;
+        std::stringstream stream;
+        stream << std::hex << add;
+        std::string result( stream.str() );
+        LOG::ILogger* log = getLogger();
+        log->log( "~TimerChrono()" + result );
+    }
 }
 
 unsigned TimerChrono::getUniqueNumber()
