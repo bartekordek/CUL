@@ -11,7 +11,7 @@ class CULLib_API Quad final:
     public ISerializable
 {
 public:
-    using PointType = std::array<float, 3>;
+    using PointType = std::array<float, 6>;
     using QuadData = std::array<PointType, 4>;
 
     Quad();
@@ -31,6 +31,8 @@ public:
     QuadData data;
     void* dataAsVoid = nullptr;
     std::vector<float> toVectorOfFloat() const;
+
+    static size_t getStride();
 
     ~Quad();
 protected:

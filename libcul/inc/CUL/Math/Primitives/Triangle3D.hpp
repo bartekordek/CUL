@@ -18,6 +18,9 @@ NAMESPACE_BEGIN( Primitives )
 using PointType = CUL::MATH::Point;
 using TriangleData = std::array<PointType,3>;
 
+#undef min
+#undef max
+
 class Triangle3D final
 {
 public:

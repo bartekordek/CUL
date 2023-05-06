@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/Filesystem/IFile.hpp"
+#include "CUL/CUL.hpp"
 
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
@@ -10,7 +11,7 @@ class CULLib_API Directory final:
     public IFile
 {
 public:
-    Directory( const String& path, CULInterface* interface );
+    Directory( const String& path, CULInterface* interfaceIn );
 
     const Path& getPath() const override;
     void changePath( const Path& newPath ) override;

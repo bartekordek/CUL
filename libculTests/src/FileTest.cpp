@@ -21,7 +21,7 @@ FileTest::FileTest()
 
 void FileTest::SetUpTestCase()
 {
-    m_culInterface = CUL::CULInterface::createInstance();
+    m_culInterface = CUL::CULInterface::getInstance();
     m_culInterface->getLogger()->log( "FileTest::SetUpTestCase()" );
     m_fsApi = m_culInterface->getFS();
 }

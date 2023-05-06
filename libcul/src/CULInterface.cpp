@@ -30,10 +30,13 @@ CULInterface* CULInterface::s_instance = nullptr;
 
 CULInterface* CULInterface::createInstance( const FS::Path& configFile )
 {
-    auto instance = new CULInterface( configFile );
-    instance->initialize();
-    s_instance = instance;
-    return instance;
+    if( s_instance == nullptr )
+    {
+        auto instance = new CULInterface( configFile );
+        instance->initialize();
+    }
+
+    return s_instance;
 }
 
 CULInterface* CULInterface::getInstance()
@@ -41,8 +44,11 @@ CULInterface* CULInterface::getInstance()
     return s_instance;
 }
 
-CULInterface::CULInterface( const FS::Path& configFilePath ) : m_configFilePath( configFilePath )
+CULInterface::CULInterface( const FS::Path& configFilePath ):
+    m_configFilePath( configFilePath )
 {
+    CUL::Assert::simple( s_instance == nullptr );
+
     s_instance = this;
 }
 
@@ -137,6 +143,7 @@ CULInterface::~CULInterface()
 #endif  // #if CUL_GLOBAL_MEMORY_POOL
     g_logger = nullptr;
     m_logger = nullptr;
+    s_instance = nullptr;
 }
 
 #if CUL_GLOBAL_MEMORY_POOL

@@ -103,8 +103,10 @@ void TimerChrono::threadWrap( size_t index )
             it->second->join();
         }
 
-        delete it->second;
+        std::thread* threadPtr = it->second;
+
         m_threads.erase( it );
+        delete threadPtr;
 
         if( logMe )
         {
