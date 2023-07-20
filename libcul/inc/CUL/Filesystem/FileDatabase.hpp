@@ -35,8 +35,8 @@ public:
     };
 
     FileDatabase();
-    std::vector<String> loadFilesFromDatabase( const Path& dbPath );
-    std::vector<String> loadFilesFromDatabase();
+    void loadFilesFromDatabase( const Path& dbPath );
+    void loadFilesFromDatabase();
 
     void addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime );
 

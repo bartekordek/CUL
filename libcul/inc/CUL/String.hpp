@@ -109,7 +109,7 @@ public:
 
     std::wstring wstring() const;
 
-    UnderlyingType getString() const;
+    const UnderlyingType& getString() const;
 
     const char* cStr() const;
     const wchar_t* wCstr() const;
@@ -135,6 +135,7 @@ public:
 protected:
 private:
     UnderlyingType m_value;
+    mutable char* m_temp = nullptr;
 };
 
 

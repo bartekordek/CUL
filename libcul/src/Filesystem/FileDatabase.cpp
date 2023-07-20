@@ -27,10 +27,10 @@ FileDatabase::FileDatabase()
 {
 }
 
-std::vector<String> FileDatabase::loadFilesFromDatabase( const Path& inPath )
+void FileDatabase::loadFilesFromDatabase( const Path& inPath )
 {
     m_databasePath = inPath;
-    return loadFilesFromDatabase();
+    loadFilesFromDatabase();
 }
 
 struct ListAndApi
@@ -74,10 +74,10 @@ std::vector<uint64_t> FileDatabase::getListOfSizes() const
     char* zErrMsg = nullptr;
     int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, &result, &zErrMsg );
 
-    if( rc != SQLITE_OK )
+    if( ( rc != SQLITE_OK ) && ( rc != SQLITE_MISUSE ) )
     {
         std::string errMessage = zErrMsg;
-        if( errMessage.find( "no such table" ) == std::string::npos ) // new database.
+        if( errMessage.find( "no such table" ) == std::string::npos )  // new database.
         {
             CUL::Assert::simple( false, "DB ERROR: " + errMessage );
         }
@@ -178,10 +178,8 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
     return result;
 }
 
-std::vector<String> FileDatabase::loadFilesFromDatabase()
+void FileDatabase::loadFilesFromDatabase()
 {
-    std::vector<String> result;
-
     initDb();
 
     m_fetchList = new ListAndApi();
@@ -199,9 +197,6 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
         String file = argv[0];
         rd->FilesList.push_back( file );
         ++*rd->m_currentFileIndex;
-
-        float per = rd->thisPtr->getPercentage();
-        const CUL::String stat = "loadFilesFromDatabase -> load files list... " + CUL::String( per );
 
         return 0;
     };
@@ -235,7 +230,6 @@ std::vector<String> FileDatabase::loadFilesFromDatabase()
         } );
     }
 
-    return result;
 }
 
 bool FileDatabase::deleteRemnants()
@@ -287,6 +281,8 @@ bool FileDatabase::deleteRemnants()
     setDBstate( "loadFilesFromDatabase -> deleting remnants... done." );
     setDBstate( "loadFilesFromDatabase -> finished." );
 
+    m_fetchList->RemoveList.clear();
+
     return true;
 }
 
@@ -323,7 +319,7 @@ int64_t FileDatabase::getFileCount() const
     auto callback = [] ( void* voidPtr, int, char** argv, char** ){
 
         CUL::String valueAsString = argv[0];
-        int64_t* resulPtr = reinterpret_cast<int64_t*>( voidPtr );
+        auto resulPtr = reinterpret_cast<int64_t*>( voidPtr );
         *resulPtr = valueAsString.toInt64();
 
         return 0;
@@ -451,7 +447,7 @@ WHERE PATH='" + filePathNormalized + "';";
         std::string asWstring = path;
 #endif
 
-        FileDatabase::FileInfo* fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
+        auto fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
         fileInfoFromPtr->Found = true;
         fileInfoFromPtr->MD5 = argv[2];
         fileInfoFromPtr->Size = argv[1];
