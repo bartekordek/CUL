@@ -167,8 +167,8 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
     }
 
     const auto imageDataSize = infoHeader.size_image;
-    char* data = new char[imageDataSize];
-    DataType* imageData = new DataType[ imageDataSize ];
+    auto* data = new char[imageDataSize];
+    auto* imageData = new DataType[ imageDataSize ];
 
     // Here we check if we need to take into account row padding
     if( infoHeader.width % 4 == 0 )
@@ -288,13 +288,13 @@ IImage* loadImage2( const FS::Path& path, bool )
         }
 
         const auto dataSize = bmp_info_header.width * bmp_info_header.height * bmp_info_header.bit_count / 8u;
-        DataType* data = new DataType[dataSize];
+        auto* data = new DataType[dataSize];
         std::memset( data, '0', dataSize );
 
         // Here we check if we need to take into account row padding
         if( bmp_info_header.width % 4 == 0 )
         {
-            char* dataAsChar = new char[dataSize];
+            auto* dataAsChar = new char[dataSize];
             inp.read(
                 dataAsChar,
                 ( std::streamsize ) dataSize );

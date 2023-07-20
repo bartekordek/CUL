@@ -6,8 +6,6 @@ using namespace MATH;
 
 Rotation::Rotation( const glm::quat& q )
 {
-    EulerAngles angles;
-
     // roll (x-axis rotation)
     float sinr_cosp = 2.f * ( q.w * q.x + q.y * q.z );
     float cosr_cosp = 1.f - 2.f * ( q.x * q.x + q.y * q.y );
