@@ -36,8 +36,8 @@ void FileDatabase::loadFilesFromDatabase( const Path& inPath )
 struct ListAndApi
 {
     FileDatabase* thisPtr = nullptr;
-    std::vector<String> FilesList;
-    std::vector<String> RemoveList;
+    std::vector<String> FilesList{};
+    std::vector<String> RemoveList{};
     CUL::FS::FSApi* FS_API = nullptr;
     std::atomic<int64_t>* m_currentFileIndex = nullptr;
 };
