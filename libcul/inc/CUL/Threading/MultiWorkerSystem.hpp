@@ -12,7 +12,7 @@ NAMESPACE_BEGIN( CUL )
 
 class ITask;
 
-class CULLib_API MultiWorkerSystem final: Singleton<MultiWorkerSystem>
+class CULLib_API MultiWorkerSystem final: public Singleton<MultiWorkerSystem>
 {
 public:
     MultiWorkerSystem();
