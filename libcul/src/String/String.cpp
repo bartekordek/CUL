@@ -581,13 +581,9 @@ const String::UnderlyingType& String::getString() const
 const char* String::cStr() const
 {
 #ifdef _MSC_VER
-    std::string resultString = FS::ws2s(m_value);
-    const size_t size = resultString.size();
-    delete m_temp;
-    m_temp = new char[size + 1];
-    std::strcpy( m_temp, resultString.c_str() );
+    m_temp = FS::ws2s( m_value );
 
-    return m_temp;
+    return m_temp.c_str();
 #else
     return m_value.c_str();
 #endif
@@ -731,8 +727,7 @@ bool String::empty() const
 
 String::~String()
 {
-    delete m_temp;
-    m_temp = nullptr;
+
 }
 
 String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )

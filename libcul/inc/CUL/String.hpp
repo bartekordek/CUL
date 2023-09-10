@@ -135,7 +135,7 @@ public:
 protected:
 private:
     UnderlyingType m_value;
-    mutable char* m_temp = nullptr;
+    mutable std::string m_temp;
 };
 
 
