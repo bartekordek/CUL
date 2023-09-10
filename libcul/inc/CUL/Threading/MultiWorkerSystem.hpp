@@ -21,8 +21,10 @@ public:
 
     void stopWorkers();
     int8_t getCurrentWorkersCount() const;
+    uint8_t getTasksLeft() const;
 
     uint8_t WorkerSleepBetweenTasksTime = 2u;
+    void setWorkerThreadName( int8_t id, const String& name );
 
     MultiWorkerSystem( const MultiWorkerSystem& ) = delete;
     MultiWorkerSystem( MultiWorkerSystem&& ) = delete;
@@ -35,7 +37,7 @@ protected:
 private:
     void addWorker();
     void removeWorker();
-    void workerMethod();
+    void workerMethod( int8_t threadId );
 
     std::vector<std::thread> m_threads;
     mutable std::mutex m_threadsMtx;
@@ -43,7 +45,7 @@ private:
     bool m_runWorkers = true;
 
     std::deque<ITask*> m_tasks;
-    std::mutex m_tasksMtx;
+    mutable std::mutex m_tasksMtx;
 };
 
 NAMESPACE_END(CUL)

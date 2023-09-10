@@ -9,10 +9,11 @@ class CULLib_API ITask
 {
 public:
     bool DeleteAfterCompletion = false;
+    int8_t OnlyForWorkerOfId = -1; // if set to -1, then any worker can execute task.
 
-    virtual void isDone() const = 0;
-    virtual void execute() = 0;
-    std::function<void(void)> AfterExecutionCallback;
+    virtual bool isDone() const = 0;
+    virtual void execute( int8_t workerId ) = 0;
+    std::function<void(int8_t)> AfterExecutionCallback;
 
     ITask() = default;
     virtual ~ITask() = default;
