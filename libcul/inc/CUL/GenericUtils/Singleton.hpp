@@ -13,14 +13,16 @@ public:
         static Type instance;
         return instance;
     }
+
+    Singleton() = default;
+    virtual ~Singleton() = default;
+    Singleton( const Singleton& ) = delete;
+    Singleton( Singleton&& ) = delete;
+    Singleton& operator=( const Singleton& ) = delete;
+    Singleton& operator=( Singleton&& ) = delete;
+
 protected:
 private:
-    Singleton() = delete;
-    ~Singleton() = delete;
-    Singleton(const Singleton& arg) = delete;
-    Singleton(Singleton&& arg) = delete;
-    Singleton& operator=(const Singleton& rhv) = delete;
-    Singleton& operator=(Singleton&& rhv) = delete;
 };
 
 NAMESPACE_END( CUL )
