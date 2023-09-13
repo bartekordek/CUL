@@ -53,6 +53,7 @@ public:
     std::vector<FileInfo> getFiles( uint64_t size ) const;
 
     std::list<CUL::String> getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const;
+    bool deleteRemnants();
 
     ~FileDatabase();
 
@@ -63,7 +64,7 @@ private:
     static String sanitize( const String& inString );
     static String deSanitize( const String& inString );
     void setDBstate( const CUL::String& state );
-    bool deleteRemnants();
+    
 
     sqlite3* m_db = nullptr;
     Path m_databasePath = "FilesList.db";
