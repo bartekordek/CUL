@@ -5,7 +5,8 @@
 #include "CUL/CULInterface.hpp"
 #include "Filesystem/FSUtils.hpp"
 #include "CUL/TimeConcrete.hpp"
-
+#include "CUL/Log/ILogger.hpp"
+#include "CUL/STL_IMPORTS/STD_fstream.hpp"
 
 using namespace CUL;
 using namespace FS;
@@ -100,8 +101,17 @@ void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Pat
     setlocale( 0, "Polish" );
     std::vector<Path> result;
 
-    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
+    const auto dir = directory.getPath().string();
+    std::error_code errorCode;
+    for( const auto& entry :
+         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, errorCode ) )
     {
+
+        if( errorCode.value() != 0 )
+        {
+            auto dupa = 0;
+        }
+
         const std::filesystem::path entryPath = entry.path();
         String::UnderlyingType tempString = entryPath;
 
@@ -140,16 +150,35 @@ String FSApiFS::getFileSize( const Path& path )
     std::error_code ec;
 
 #ifdef _MSC_VER
-    uintmax_t size = std::filesystem::file_size( path.getPath().wstring(), ec );
+    const std::filesystem::path filePath = path.getPath().wstring();
+    uintmax_t size = std::filesystem::file_size( filePath, ec );
+
+    if( ec.value() != 0 )
+    {
+        const auto message = ec.message();
+        LOG::ILogger::getInstance()->log( message );
+
+        std::error_code symlinkCheckError;
+        if( std::filesystem::is_symlink( filePath, symlinkCheckError ) )
+        {
+            size = 0u;
+        }
+        else
+        {
+            std::error_code isRegularFileCheck;
+            if( std::filesystem::is_regular_file( filePath, isRegularFileCheck ) == false )
+            {
+                size = 0u;
+            }
+            else
+            {
+                auto x = 0;
+            }
+        }
+    }
 #else
     uintmax_t size = std::filesystem::file_size( path.getPath().string(), ec );
 #endif
-
-    std::error_condition ok;
-    if( ec != ok )
-    {
-        auto x = 0;
-    }
 
     String result = (unsigned)size;
     return result;

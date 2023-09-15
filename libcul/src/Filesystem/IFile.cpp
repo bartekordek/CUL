@@ -3,6 +3,7 @@
 
 #include "CUL/CULInterface.hpp"
 #include "CUL/TimeConcrete.hpp"
+#include "CUL/Log/ILogger.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_iterator.hpp"
 #include "IMPORT_hash_library.hpp"
@@ -93,17 +94,43 @@ const String& IFile::getMD5()
 
 void IFile::calculateMD5()
 {
-    std::ifstream file( m_path.getString(), std::ios::binary );
-    file.unsetf( std::ios::skipws );
+    constexpr unsigned OneMBinBytes = 1024 * 1024;
+    constexpr unsigned bigFileMinimumBytes = 128 * OneMBinBytes;  // 128 MB.
+    const unsigned currentFileSizeBytes = getSizeBytes().toUInt();
+    const bool isBigFile = currentFileSizeBytes > bigFileMinimumBytes;
 
-    unsigned fileSizeAsNumber = getSizeBytes().toUInt();
-    std::vector<unsigned char> vec;
-    vec.reserve( fileSizeAsNumber );
-    vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );
+    if( isBigFile )
+    {
+        LOG::ILogger::getInstance()->log( "[IFile::calculateMD5] Big file: " + getPath().getPath() );
+        std::ifstream file( m_path.getString(), std::ios::binary );
+        file.unsetf( std::ios::skipws );
 
-    SHA256 sha256;
-    m_md5 = sha256( vec.data(), fileSizeAsNumber );
-    file.close();
+        uint8_t buffor = 0u;
+        const auto size = file.tellg();
+        SHA256 sha256;
+        while( file.read( (char*)&buffor, 1 ) )
+        {
+            const void* ptr = (const void*)&buffor;
+            sha256.add( ptr, 1);
+        }
+        m_md5 = sha256.getHash();
+        file.close();
+    }
+    else
+    {
+        std::ifstream file( m_path.getString(), std::ios::binary );
+        file.unsetf( std::ios::skipws );
+
+        unsigned fileSizeAsNumber = getSizeBytes().toUInt();
+        std::vector<unsigned char> vec;
+        vec.reserve( fileSizeAsNumber );
+        vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );
+
+        SHA256 sha256;
+        m_md5 = sha256( vec.data(), fileSizeAsNumber );
+        file.close();
+    }
+
     return;
 }
 

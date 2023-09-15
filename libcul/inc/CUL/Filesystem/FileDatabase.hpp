@@ -46,7 +46,6 @@ public:
     FileInfo getFileInfo( const CUL::String& path ) const;
     float getPercentage() const;
 
-    CUL::String getDbState() const;
     std::vector<uint64_t> getListOfSizes() const;
     std::vector<CUL::String> getListOfMd5() const;
     std::vector<FileInfo> getFiles( uint64_t size, const CUL::String& md5 ) const;
@@ -63,7 +62,6 @@ private:
     int64_t getFileCount() const;
     static String sanitize( const String& inString );
     static String deSanitize( const String& inString );
-    void setDBstate( const CUL::String& state );
     
 
     sqlite3* m_db = nullptr;
@@ -72,9 +70,6 @@ private:
     String m_currentFile;
     std::atomic<int64_t> m_current = 0;
     std::atomic<int64_t> m_rowCount = 0;
-
-    mutable std::mutex m_dbStateMtx;
-    CUL::String m_dbState = "Uninitialized";
 
     std::future<bool> m_deleteRemnantsDone;
     ListAndApi* m_fetchList = nullptr;

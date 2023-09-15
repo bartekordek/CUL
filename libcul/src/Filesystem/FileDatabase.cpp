@@ -1,12 +1,12 @@
 #include "CUL/Filesystem/FileDatabase.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
-#include "CUL/Log/ILogger.hpp"
 #include "Filesystem/FSUtils.hpp"
 #include "CUL/CULInterface.hpp"
+#include "CUL/Threading/MultiWorkerSystem.hpp"
+#include "CUL/Threading/TaskCallback.hpp"
+#include "CUL/Threading/ThreadUtil.hpp"
 
 #include "CUL/IMPORT_sqlite3.hpp"
-
-//5039
 
 #ifdef _MSC_VER
 #pragma warning( push, 0 )
@@ -15,6 +15,15 @@
 
 using namespace CUL;
 using namespace FS;
+
+#if 0 // DEBUG_THIS_FILE
+    #define DEBUG_THIS_FILE 1
+    #ifdef _MSC_VER
+        #pragma optimize( "", off )
+    #else
+        #pragma clang optimize off
+    #endif
+#endif
 
 static FileDatabase* g_dbInstance = nullptr;
 
@@ -37,7 +46,8 @@ struct ListAndApi
 {
     FileDatabase* thisPtr = nullptr;
     std::vector<String> FilesList{};
-    std::vector<String> RemoveList{};
+    std::deque<String> RemoveList{};
+    std::mutex RemoveListMtx;
     CUL::FS::FSApi* FS_API = nullptr;
     std::atomic<int64_t>* m_currentFileIndex = nullptr;
 };
@@ -45,17 +55,6 @@ struct ListAndApi
 float FileDatabase::getPercentage() const
 {
     return 100.f * m_current / ( 1.f * m_rowCount );
-}
-
-CUL::String FileDatabase::getDbState() const
-{
-    CUL::String result;
-    {
-        std::lock_guard<std::mutex> lock( m_dbStateMtx );
-        result = m_dbState;
-    }
-
-    return result;
 }
 
 std::vector<uint64_t> FileDatabase::getListOfSizes() const
@@ -180,6 +179,7 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
 
 void FileDatabase::loadFilesFromDatabase()
 {
+    CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::initDb();" );
     initDb();
 
     m_fetchList = new ListAndApi();
@@ -201,14 +201,12 @@ void FileDatabase::loadFilesFromDatabase()
         return 0;
     };
 
-    setDBstate( "loadFilesFromDatabase -> get file count..." );
+    CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::getFileCount();" );
     m_rowCount = getFileCount();
-    setDBstate( "loadFilesFromDatabase -> get file count... done." );
 
     char* zErrMsg = nullptr;
-    setDBstate( "loadFilesFromDatabase -> load files list..." );
+    CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::fetch();" );
     int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, m_fetchList, &zErrMsg );
-    setDBstate( "loadFilesFromDatabase -> load files list... done." );
 
     if( rc != SQLITE_OK )
     {
@@ -225,61 +223,103 @@ void FileDatabase::loadFilesFromDatabase()
     }
     else
     {
-        m_deleteRemnantsDone = std::async( std::launch::async, [this] (){
-            return deleteRemnants();
-        } );
-    }
+        constexpr bool mt = false;
+        if( mt )
+        {
+            CUL::TaskCallback* taskCbck = new CUL::TaskCallback();
+            taskCbck->Type = ITask::EType::DeleteAfterExecute;
+            taskCbck->Callback = [this]( int8_t /*workerId*/ ) {
+                CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::deleteRemnants();" );
+                deleteRemnants();
+            };
 
+            CUL::MultiWorkerSystem::getInstance().startTask( taskCbck );
+        }
+        else
+        {
+            deleteRemnants();
+        }
+    }
 }
 
 bool FileDatabase::deleteRemnants()
 {
-    setDBstate( "loadFilesFromDatabase -> deleting remnants..." );
+    String status = "loadFilesFromDatabase -> deleting remnants...";
+    ThreadUtil::getInstance().setThreadStatus( status );
     size_t filesCount = m_fetchList->FilesList.size();
 
-    setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." );
+    status = "loadFilesFromDatabase -> deleting remnants... collecting not existing files...";
+    CUL::ThreadUtil::getInstance().setThreadStatus( status );
+
+    bool runRemnants = true;
+    CUL::TaskCallback* taskCbck = new CUL::TaskCallback();
+    taskCbck->Type = ITask::EType::Default;
+    taskCbck->Callback = [this, &runRemnants]( int8_t ) {
+        bool listNotEmpty = true;
+        CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::deleteRemnants::removing files from list" );
+        while( runRemnants || listNotEmpty )
+        {
+            CUL::String fileName;
+            {
+                std::lock_guard<std::mutex> locker( m_fetchList->RemoveListMtx );
+                listNotEmpty = !m_fetchList->RemoveList.empty();
+                if( listNotEmpty )
+                {
+                    fileName = m_fetchList->RemoveList.front();
+                    m_fetchList->RemoveList.pop_front();
+                }
+            }
+            listNotEmpty = !m_fetchList->RemoveList.empty();
+
+            if( fileName.empty() == false )
+            {
+                removeFileFromDB( fileName );
+            }
+        }
+    };
+
+    CUL::MultiWorkerSystem::getInstance().startTask( taskCbck );
+
     for( size_t i = 0; i < filesCount; ++i )
     {
         const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
 
         if( !m_fetchList->FS_API->fileExist( m_fetchList->FilesList[i] ) )
         {
+            std::lock_guard<std::mutex> locker( m_fetchList->RemoveListMtx );
             m_fetchList->RemoveList.push_back( m_fetchList->FilesList[i] );
         }
 
-        setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc ) );
+        const String status = "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc );
+        CUL::ThreadUtil::getInstance().setThreadStatus( status );
     }
-    setDBstate( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
+    runRemnants = false;
+    while( taskCbck->isDone() == false )
+    {
+        CUL::ThreadUtil::getInstance().sleepFor( 1 );
+    }
+    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
 
     filesCount = m_fetchList->RemoveList.size();
     size_t groups = ( filesCount < 32 ) ? 1 : filesCount / 2;
 
-    const size_t filesPerGroup = filesCount / groups;
 
-    std::vector<CUL::String> filesToDelete;
     size_t groupCounter = 0;
-    setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." );
+    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... removing from db..." );
     for( size_t i = 0; i < filesCount; ++i )
     {
+        CUL::ThreadUtil::getInstance().sleepFor( 2 );
         const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
 
-        filesToDelete.push_back( m_fetchList->RemoveList[i] );
-
-        ++groupCounter;
-
-        if( groupCounter >= filesPerGroup )
-        {
-            groupCounter = 0;
-            removeFilesFromDb( filesToDelete );
-            filesToDelete.clear();
-        }
-
-        setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db..." + CUL::String( perc ) );
+        removeFileFromDB( m_fetchList->RemoveList[i] );
+        CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... removing from db..." +
+                                                        CUL::String( perc ) );
     }
-    setDBstate( "loadFilesFromDatabase -> deleting remnants... removing from db... done." );
 
-    setDBstate( "loadFilesFromDatabase -> deleting remnants... done." );
-    setDBstate( "loadFilesFromDatabase -> finished." );
+    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... removing from db... done." );
+
+    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... done." );
+    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> finished." );
 
     m_fetchList->RemoveList.clear();
 
@@ -340,7 +380,7 @@ int64_t FileDatabase::getFileCount() const
 
 void FileDatabase::initDb()
 {
-    setDBstate( "Initi db..." );
+    CUL::ThreadUtil::getInstance().setThreadStatus( "Initi db..." );
     int rc = sqlite3_open( m_databasePath.getPath().cStr(), &m_db );
 
     std::string sqlQuery =
@@ -375,7 +415,7 @@ void FileDatabase::initDb()
     {
 
     }
-    setDBstate( "Initi db... done." );
+    CUL::ThreadUtil::getInstance().setThreadStatus( "Initi db... done." );
 }
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
@@ -452,7 +492,11 @@ WHERE PATH='" + filePathNormalized + "';";
         fileInfoFromPtr->MD5 = argv[2];
         fileInfoFromPtr->Size = argv[1];
         fileInfoFromPtr->ModTime = argv[3];
-        fileInfoFromPtr->FilePath = asWstring;
+#if defined( CUL_WINDOWS )
+        fileInfoFromPtr->FilePath = FS::s2ws( path, CP_ACP );
+#else // #if defined( CUL_WINDOWS )
+        fileInfoFromPtr->FilePath = path;
+#endif // #if defined( CUL_WINDOWS )
 
         return 0;
     };
@@ -460,7 +504,8 @@ WHERE PATH='" + filePathNormalized + "';";
 
     int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
 
-    if( !result.Found )
+    constexpr bool PrintInfo = false;
+    if( PrintInfo  && !result.Found )
     {
         LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Could not find: " + path );
         LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Used SQL command: " + sqlQuery );
@@ -477,6 +522,7 @@ WHERE PATH='" + filePathNormalized + "';";
 
 void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
 {
+    CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::removeFileFromDB pathRaw = " + pathRaw );
     auto path = sanitize( pathRaw );
 
     std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + path.string() + "';";
@@ -525,12 +571,6 @@ void FileDatabase::removeFilesFromDb( const std::vector<CUL::String>& paths )
     }
 }
 
-void FileDatabase::setDBstate( const CUL::String& state )
-{
-    std::lock_guard<std::mutex> lock( m_dbStateMtx );
-    m_dbState = state;
-}
-
 FileDatabase::~FileDatabase()
 {
     m_deleteRemnantsDone.get();
@@ -552,6 +592,14 @@ String FileDatabase::deSanitize( const String& inString )
     normalized.replace( "''", "'" );
     return normalized;
 }
+
+#if defined( DEBUG_THIS_FILE )
+    #ifdef _MSC_VER
+        #pragma optimize( "", on )
+    #else
+        #pragma clang optimize on
+    #endif
+#endif  // #if defined(DEBUG_THIS_FILE)
 
 #ifdef _MSC_VER
 #pragma warning( pop )

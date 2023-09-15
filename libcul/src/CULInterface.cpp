@@ -1,14 +1,13 @@
 #include "CUL/CULInterface.hpp"
 
 #include "CUL/Memory/MemoryPool.hpp"
-#include "CUL/Threading/ThreadUtils.hpp"
+#include "CUL/Threading/ThreadUtil.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "CUL/Log/ILogContainer.hpp"
 #include "GenericUtils/IConfigFileConcrete.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
-#include "Threading/IThreadUtilConcrete.hpp"
 #include "CUL/GenericUtils/Singleton.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
@@ -81,7 +80,7 @@ void CULInterface::initialize()
 
     m_args.reset( new GUTILS::ConsoleUtilities() );
 
-    m_threadUtils = new ThreadUtils();
+    m_threadUtils = &ThreadUtil::getInstance();
 }
 
 GUTILS::IConfigFile* CULInterface::getConfig() const
@@ -119,7 +118,7 @@ GUTILS::ConsoleUtilities* CULInterface::getConsoleUtils()
     return m_args.get();
 }
 
-ThreadUtils& CULInterface::getThreadUtils()
+ThreadUtil& CULInterface::getThreadUtils()
 {
     return *m_threadUtils;
 }
@@ -134,8 +133,6 @@ CULInterface::~CULInterface()
     delete m_sysFonts;
     m_sysFonts = nullptr;
 
-    delete m_threadUtils;
-    m_threadUtils = nullptr;
     LOG::LOG_CONTAINER::destroyLogger();
 
 #if CUL_GLOBAL_MEMORY_POOL

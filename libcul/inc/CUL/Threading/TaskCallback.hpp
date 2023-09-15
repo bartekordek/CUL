@@ -17,14 +17,12 @@ public:
     TaskCallback& operator=( const TaskCallback& ) = delete;
     TaskCallback& operator=( TaskCallback&& ) = delete;
 
-private:
-
-    bool isDone() const override
+    inline bool isDone() const override
     {
         return m_isDone;
     }
 
-    void execute( int8_t workerId ) override
+    inline void execute( int8_t workerId ) override
     {
         if( Callback )
         {
@@ -33,7 +31,12 @@ private:
         m_isDone = true;
     }
 
+    inline void resetStatus() override
+    {
+        m_isDone = false;
+    }
 
+private:
     bool m_isDone = false;
 };
 

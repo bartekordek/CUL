@@ -1,5 +1,5 @@
 #include "CUL/Threading/MultiWorkerSystem.hpp"
-#include "CUL/Threading/ThreadUtils.hpp"
+#include "CUL/Threading/ThreadUtil.hpp"
 #include "CUL/Threading/ITask.hpp"
 #include "CUL/ITimer.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
@@ -41,11 +41,28 @@ void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
 {
     TaskCallback* taskPtr = new TaskCallback();
     taskPtr->Callback = [this, name]( int8_t ) {
-        CUL::ThreadUtils::setCurrentThreadNameStatic( name );
+        CUL::ThreadUtil::getInstance().setThreadName( name );
     };
     taskPtr->OnlyForWorkerOfId = id;
-    taskPtr->DeleteAfterCompletion = true;
+    taskPtr->Type = ITask::EType::DeleteAfterExecute;
     startTask( taskPtr );
+}
+
+std::vector<String> MultiWorkerSystem::getWorkersStatuses()
+{
+    std::vector<String> result;
+
+    {
+        std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
+        for( const auto& thread : m_threads )
+        {
+            const auto id = thread.get_id();
+            const auto status = CUL::ThreadUtil::getInstance().getThreadStatus( &id );
+            result.push_back( status );
+        }
+    }
+
+    return result;
 }
 
 MultiWorkerSystem::~MultiWorkerSystem()
@@ -77,6 +94,12 @@ void MultiWorkerSystem::removeWorker()
     std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
     if( m_threads.empty() == false )
     {
+        {
+            std::lock_guard<std::mutex> locker( m_workersRunMtx );
+            const auto lastWorkerId = static_cast<int8_t>(m_threads.size() - 1);
+            m_workersRun[lastWorkerId] = false;
+        }
+
         if( m_threads.back().joinable())
         {
             m_threads.back().join();
@@ -89,7 +112,17 @@ void MultiWorkerSystem::workerMethod( int8_t threadId )
 {
     const String currentThreadName = "Worker " + std::to_string( threadId );
 
-    CUL::ThreadUtils::setCurrentThreadNameStatic( currentThreadName );
+    CUL::ThreadUtil::getInstance().setThreadName( currentThreadName );
+
+    {
+        std::lock_guard<std::mutex> locker( m_workersRunMtx );
+        m_workersRun[threadId] = true;
+    }
+
+    {
+        std::lock_guard<std::mutex> m_threadToWorkerIdMappingMtxLocker( m_threadToWorkerIdMappingMtx );
+        m_threadToWorkerIdMapping[CUL::ThreadUtil::getInstance().getCurrentThreadId()] = threadId;
+    }
 
     while( m_runWorkers )
     {
@@ -112,18 +145,33 @@ void MultiWorkerSystem::workerMethod( int8_t threadId )
         if( task )
         {
             task->execute( threadId );
+
             if( task->AfterExecutionCallback )
             {
                 task->AfterExecutionCallback( threadId );
             }
-            if( task->DeleteAfterCompletion )
+
+            if( task->Type == ITask::EType::DeleteAfterExecute )
             {
                 delete task;
             }
+            else if( task->Type == ITask::EType::Loop )
+            {
+                task->resetStatus();
+                startTask( task );
+            }
+            ITimer::sleepMiliSeconds( WorkerSleepBetweenTasksTimeMs );
         }
         else
         {
-            ITimer::sleepMiliSeconds( WorkerSleepBetweenTasksTime );
+            ITimer::sleepMiliSeconds( WorkerSleepWhenNoTaskTimeMs );
+        }
+
+
+        std::lock_guard<std::mutex> locker( m_workersRunMtx );
+        if( m_workersRun[threadId] == false )
+        {
+            break;
         }
     }
 }
@@ -147,4 +195,15 @@ uint8_t MultiWorkerSystem::getTasksLeft() const
     }
 
     return result;
+}
+
+int8_t MultiWorkerSystem::getCurrentThreadWorkerId() const
+{
+    std::lock_guard<std::mutex> m_threadToWorkerIdMappingMtxLocker( m_threadToWorkerIdMappingMtx );
+    const auto it = m_threadToWorkerIdMapping.find( CUL::ThreadUtil::getInstance().getCurrentThreadId() );
+    if( it != m_threadToWorkerIdMapping.end() )
+    {
+        return it->second;
+    }
+    return -1;
 }
