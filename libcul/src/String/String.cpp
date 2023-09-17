@@ -5,6 +5,7 @@
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
+#include "CUL/STL_IMPORTS/STD_cmath.hpp"
 
 using namespace CUL;
 
@@ -723,6 +724,101 @@ void String::clear()
 bool String::empty() const
 {
     return m_value.empty();
+}
+
+constexpr char hexmap[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+
+std::string data2StringHex( unsigned char* data, size_t len )
+{
+    std::string s( len * 2u, ' ' );
+    for( size_t i = 0; i < len; ++i )
+    {
+        s[2u * i] = hexmap[( data[i] & 0xF0 ) >> 4];
+        s[2u * i + 1] = hexmap[data[i] & 0x0F];
+    }
+    return s;
+}
+
+uint16_t hexCharToInt(char valu)
+{
+    uint16_t result = valu - 48u;
+    if( result >= 10u )
+    {
+        result = result - 39u;
+    }
+    return result;
+}
+
+uint16_t stringHex2Data( char val[4] )
+{
+    uint16_t result = 0u;
+
+    for(int i = 0; i < 4; ++i)
+    {
+        const auto currentValue = val[3 - i];
+        const auto intVal = hexCharToInt( currentValue );
+        const auto powValue = std::pow( 16, i );
+        result += powValue * intVal;
+    }
+
+    return result;
+}
+
+void String::convertToHexData()
+{
+#if defined( CUL_WINDOWS )
+    const size_t dataSize = m_value.size();
+    if( dataSize > 0 )
+    {
+        const size_t sizeOfWchar = sizeof(wchar_t);
+        const size_t wholeDataSize = dataSize * sizeOfWchar;
+
+        const auto hexValue = data2StringHex( (unsigned char*)m_value.data(), wholeDataSize );
+
+        m_binaryValue = hexValue;
+        m_isBinary = true;
+    }
+#else // #if defined(CUL_WINDOWS)
+#endif // #if defined(CUL_WINDOWS)
+}
+
+void String::setBinary( const char* value )
+{
+    m_binaryValue = value;
+    m_isBinary = true;
+}
+
+const std::string String::getBinary() const
+{
+    return m_binaryValue;
+}
+
+void String::convertFromHexToString()
+{
+#if defined( CUL_WINDOWS )
+    const size_t dataSize = m_binaryValue.size();
+    if( dataSize > 0 )
+    {
+        constexpr size_t dataWidth = 4;
+
+        std::wstring result;
+        for( size_t i = 0; i < dataSize; i += dataWidth )
+        {
+            std::string currentHex( m_binaryValue, i, dataWidth );
+            char charStr[4];
+            charStr[2] = currentHex[0];
+            charStr[3] = currentHex[1];
+            charStr[0] = currentHex[2];
+            charStr[1] = currentHex[3];
+            wchar_t val = stringHex2Data( charStr );
+            result.push_back( val );
+        }
+        m_value = result;
+        m_isBinary = false;
+    }
+#else  // #if defined(CUL_WINDOWS)
+#endif  // #if defined(CUL_WINDOWS)
 }
 
 String::~String()

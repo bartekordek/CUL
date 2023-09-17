@@ -9,6 +9,19 @@ void StringTests::TearDownTestCase()
 {
 }
 
+TEST_F( StringTests, ConversionTest )
+{
+#if defined( CUL_WINDOWS )
+    CUL::String test1;
+    const std::wstring someString = L"D:/Books/Adam Boduch - Wstêp do programowania w jêzyku C#.pdf";
+    test1 = someString;
+    test1.convertToHexData();
+    test1.convertFromHexToString();
+
+    ASSERT_EQ( someString, test1.getString() );
+#endif // #if defined( CUL_WINDOWS )
+}
+
 TEST_F( StringTests, lower )
 {
     CUL::String string( "someString" );

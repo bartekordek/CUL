@@ -33,6 +33,17 @@
 #define CULLib_API_POST
 #define CULLib_API_TEMPLATE
 #endif
+
+#if defined( _MSC_VER)
+#define CUL_COMPILER_MSVC
+#elif defined( __GNUC__ ) || defined( __GNUG__ )
+#define CUL_COMPILER_GCC
+#elif defined( __clang__ )
+#define CUL_COMPILER_CLANG
+#else
+#define CUL_COMPILER_UNKOWN
+#endif
+
 /*TODO: Find a way to tell library name.
 #if defined _MSC_VER && defined CUL_DYNAMIC
 #pragma comment(lib, "CULdynamic.lib")

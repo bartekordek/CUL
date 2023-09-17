@@ -130,11 +130,19 @@ public:
     void clear();
     bool empty() const;
 
+    void convertToHexData();
+    void convertFromHexToString();
+    void setBinary( const char* value );
+    const std::string getBinary() const;
+
     ~String();
 
 protected:
 private:
     UnderlyingType m_value;
+    std::string m_binaryValue;
+    std::string m_fallback;
+    bool m_isBinary = false;
     mutable std::string m_temp;
 };
 
