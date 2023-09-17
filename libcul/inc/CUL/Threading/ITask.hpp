@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/String.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -8,7 +8,6 @@ NAMESPACE_BEGIN( CUL )
 class CULLib_API ITask
 {
 public:
-
     enum class EType: uint8_t
     {
         Default = 0u,
@@ -19,6 +18,7 @@ public:
     EType Type = EType::Default;
     int8_t OnlyForWorkerOfId = -1; // if set to -1, then any worker can execute task.
     bool KillWorker = false;
+    String Name;
 
     virtual bool isDone() const = 0;
     virtual void execute( int8_t workerId ) = 0;
