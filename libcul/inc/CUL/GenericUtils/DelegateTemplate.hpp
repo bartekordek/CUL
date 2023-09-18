@@ -17,26 +17,16 @@ protected:
 private:
 };
 
-class DelegateTemplateZeroParam final: public DelegateTemplate
+class CULLib_API DelegateTemplateZeroParam final: public DelegateTemplate
 {
 public:
 
     DelegateTemplateZeroParam() = default;
 
     using DelegateInput = std::function < void() >;
-    void addDelegate( DelegateInput delegate )
-    {
-        m_delegates.push_back( delegate );
-    }
+    void addDelegate( DelegateInput delegate );
 
-    void execute()
-    {
-        const size_t size = m_delegates.size();
-        for( size_t i = 0; i < size; ++i )
-        {
-            m_delegates[i]();
-        }
-    }
+    void execute();
 
 protected:
 private:

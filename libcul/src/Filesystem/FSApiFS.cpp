@@ -109,7 +109,9 @@ void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Pat
 
         if( errorCode.value() != 0 )
         {
-            auto dupa = 0;
+#if defined(CUL_COMPILER_MSVC)
+            DebugBreak();
+#endif
         }
 
         const std::filesystem::path entryPath = entry.path();
@@ -172,7 +174,9 @@ String FSApiFS::getFileSize( const Path& path )
             }
             else
             {
-                auto x = 0;
+#if defined( CUL_COMPILER_MSVC )
+                DebugBreak();
+#endif
             }
         }
     }
@@ -210,15 +214,33 @@ bool isRegularFileImpl( const char* path )
 
 bool isRegularFileImpl( const wchar_t* path )
 {
+    std::error_code existsErrorCode;
+    if( std::filesystem::exists( path, existsErrorCode ) == false )
+    {
+        if( existsErrorCode.value() != 0 )
+        {
+            LOG::ILogger::getInstance()->log( existsErrorCode.message() );
+        }
+        return false;
+    }
+
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_regular_file( path );
 #else
     std::error_code ec;
-    bool result = std::filesystem::is_regular_file( path, ec );
-    std::error_condition ok;
-    if( ec != ok )
+    const bool result = std::filesystem::is_regular_file( path, ec );
+    const int value = ec.value();
+    if( value != 0 )
     {
-        auto x = 0;
+        if( value == 2 )
+        {
+            return false;
+        }
+#if defined( CUL_COMPILER_MSVC )
+        const auto message = ec.message();
+        LOG::ILogger::getInstance()->log( message );
+        DebugBreak();
+#endif
     }
     return result;
 #endif
