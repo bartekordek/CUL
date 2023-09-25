@@ -204,10 +204,6 @@ void FileDatabase::loadFilesFromDatabase()
         String file;
         file.setBinary( argv[0] );
         file.convertFromHexToString();
-        //if( rd->FS_API->fileExist( file ) == false )
-        //{
-
-        //}
         rd->FilesList.push_back( file );
         ++*rd->m_currentFileIndex;
 
@@ -269,7 +265,7 @@ bool FileDatabase::deleteRemnants()
     taskCbck->Type = ITask::EType::Default;
     taskCbck->Callback = [this, &runRemnants]( int8_t ) {
         bool listNotEmpty = true;
-        CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::deleteRemnants::removing files from list" );
+        size_t filesLeft = 0u;
         while( runRemnants || listNotEmpty )
         {
             CUL::String fileName;
@@ -278,17 +274,12 @@ bool FileDatabase::deleteRemnants()
                 listNotEmpty = !m_fetchList->RemoveList.empty();
                 if( listNotEmpty )
                 {
+                    filesLeft = m_fetchList->RemoveList.size();
                     fileName = m_fetchList->RemoveList.front();
-                    if( fileName.contains("do programowania w") )
-                    {
-                        auto x = 0;
-                    }
-                    if( fileName.contains("1274213837709") )
-                    {
-                        auto x = 0;
-                    }
                     m_fetchList->RemoveList.pop_front();
                 }
+                CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::deleteRemnants::removing, " + String( filesLeft ) +
+                                                                " left." );
             }
             listNotEmpty = !m_fetchList->RemoveList.empty();
 
@@ -319,11 +310,10 @@ bool FileDatabase::deleteRemnants()
     {
         CUL::ThreadUtil::getInstance().sleepFor( 1 );
     }
+
     CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
 
     filesCount = m_fetchList->RemoveList.size();
-    size_t groups = ( filesCount < 32 ) ? 1 : filesCount / 2;
-
 
     size_t groupCounter = 0;
     CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... removing from db..." );
@@ -397,7 +387,6 @@ int64_t FileDatabase::getFileCount() const
         CUL::Assert::simple( false, "DB ERROR: " + errMessage );
     }
 
-
     return result;
 }
 
@@ -433,10 +422,6 @@ void FileDatabase::initDb()
         {
             CUL::Assert::simple( false, "DB ERROR!" );
         }
-    }
-    else
-    {
-
     }
     CUL::ThreadUtil::getInstance().setThreadStatus( "Initi db... done." );
 }
@@ -621,8 +606,6 @@ String FileDatabase::deSanitize( const String& inString )
     normalized.replace( "''", "'" );
     return normalized;
 }
-
-
 
 
 #if defined( DEBUG_THIS_FILE )
