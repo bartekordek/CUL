@@ -1,5 +1,6 @@
 #include "CUL/Filesystem/FileDatabase.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
+#include "CUL/ITimer.hpp"
 #include "Filesystem/FSUtils.hpp"
 #include "CUL/CULInterface.hpp"
 #include "CUL/Threading/MultiWorkerSystem.hpp"
@@ -424,6 +425,7 @@ void FileDatabase::initDb()
         }
     }
     CUL::ThreadUtil::getInstance().setThreadStatus( "Initi db... done." );
+    m_initialized = true;
 }
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
@@ -485,6 +487,7 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
 
 FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
 {
+    waitForInit();
     FileDatabase::FileInfo result;
     String pathInBinary = path;
     pathInBinary.convertToHexData();
@@ -527,6 +530,19 @@ WHERE PATH='" +
     }
 
     return result;
+}
+
+void FileDatabase::waitForInit() const
+{
+    if( m_initialized == true )
+    {
+        return;
+    }
+
+    while( m_initialized == false )
+    {
+        ITimer::sleepMicroSeconds( 1 );
+    }
 }
 
 void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )

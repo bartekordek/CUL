@@ -59,10 +59,11 @@ public:
 protected:
 private:
     void initDb();
+    void waitForInit()const;
+    bool m_initialized = false;
     int64_t getFileCount() const;
     static String sanitize( const String& inString );
     static String deSanitize( const String& inString );
-    
 
     sqlite3* m_db = nullptr;
     Path m_databasePath = "FilesList.db";
