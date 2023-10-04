@@ -184,7 +184,8 @@ String FSApiFS::getFileSize( const Path& path )
     uintmax_t size = std::filesystem::file_size( path.getPath().string(), ec );
 #endif
 
-    String result = (unsigned)size;
+    const auto string = std::to_string( size );
+    String result = string;
     return result;
 }
 
@@ -219,7 +220,7 @@ bool isRegularFileImpl( const wchar_t* path )
     {
         if( existsErrorCode.value() != 0 )
         {
-            LOG::ILogger::getInstance()->log( existsErrorCode.message() );
+            LOG::ILogger::getInstance()->log( "[" + String( path ) + "] " + existsErrorCode.message() );
         }
         return false;
     }

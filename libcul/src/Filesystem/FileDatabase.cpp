@@ -445,7 +445,8 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     CUL::String sqlQuery = "";
     if( foundFile.Found )
     {
-        sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', MD5='" + md5 + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" + filePath + "'";
+        sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', MD5='" + md5 + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" +
+                   filePathNormalized.getBinary() + "'";
 
         CUL::LOG::ILogger::getInstance()->log( "Found updated file: " + filePath );
         CUL::LOG::ILogger::getInstance()->log( "New/Old diff: ");

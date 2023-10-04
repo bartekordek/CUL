@@ -1,4 +1,7 @@
 #include "CUL/Threading/ThreadUtil.hpp"
+#include "CUL/ITimer.hpp"
+#include "CUL/Threading/MultiWorkerSystem.hpp"
+#include "CUL/Threading/TaskCallback.hpp"
 
 #ifdef _MSC_VER
 #include "ThreadUtilityWindows.hpp"
@@ -15,6 +18,7 @@ ThreadUtil& ThreadUtil::getInstance()
 
 ThreadUtil::ThreadUtil()
 {
+    m_updateThreadInfoThread = std::thread( &ThreadUtil::threadInfoWorker, this );
 }
 
 std::vector<String> ThreadUtil::getThreadNames() const
@@ -99,8 +103,17 @@ void ThreadUtil::setThreadName( const String& name, const std::thread::id* threa
 void ThreadUtil::setThreadStatus( const String& status, const std::thread::id* threadId )
 {
     const std::thread::id currentThreadId = threadId ? *threadId : std::this_thread::get_id();
+
+    std::lock_guard<std::mutex> locker( m_tasksMtx );
+    m_tasks.push_front( [this, status, currentThreadId]() {
+        setThreadStatusImpl( status, currentThreadId );
+    } );
+}
+
+void ThreadUtil::setThreadStatusImpl( const String& status, const std::thread::id& threadId )
+{
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
-    const auto it = m_threadInfo.find( currentThreadId );
+    const auto it = m_threadInfo.find( threadId );
     if( it != m_threadInfo.end() )
     {
         it->second.Status = status;
@@ -109,11 +122,32 @@ void ThreadUtil::setThreadStatus( const String& status, const std::thread::id* t
     {
         ThreadInfo ti;
         ti.Status = status;
-        m_threadInfo[currentThreadId] = ti;
+        m_threadInfo[threadId] = ti;
     }
 }
 
+void ThreadUtil::threadInfoWorker()
+{
+    setThreadName("ThreadUtil::threadInfoWorker");
+    while( m_runThreadWorker )
+    {
+        std::this_thread::sleep_for( std::chrono::microseconds( 2 ) );
+
+        std::lock_guard<std::mutex> locker( m_tasksMtx );
+        while( m_tasks.empty() == false )
+        {
+            std::function<void( void )> task = m_tasks.back();
+            task();
+            m_tasks.pop_back();
+        }
+    }
+}
 
 ThreadUtil::~ThreadUtil()
 {
+    m_runThreadWorker = false;
+    if( m_updateThreadInfoThread.joinable() )
+    {
+        m_updateThreadInfoThread.join();
+    }
 }

@@ -92,6 +92,11 @@ const String& FileRegularImpl::getAsOneString() const
 
 void FileRegularImpl::cacheFile()
 {
+    if( getIsCacheEnabled() == false )
+    {
+        return;
+    }
+
     m_cached = "";
     for( const auto& line : rows )
     {

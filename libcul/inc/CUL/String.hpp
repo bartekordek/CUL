@@ -120,7 +120,7 @@ public:
     int toInt();
     int64_t toInt64() const;
     uint64_t toUint64() const;
-    unsigned int toUInt() const;
+    std::uint64_t toUInt() const;
     bool toBool() const;
 
 

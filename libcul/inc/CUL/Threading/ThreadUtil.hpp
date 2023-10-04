@@ -7,6 +7,9 @@
 #include "CUL/STL_IMPORTS/STD_map.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
+#include "CUL/STL_IMPORTS/STD_deque.hpp"
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
+#include "CUL/STL_IMPORTS/STD_atomic.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -32,6 +35,9 @@ public:
 
 protected:
 private:
+    void setThreadStatusImpl( const String& status, const std::thread::id& threadId );
+    void threadInfoWorker();
+    std::atomic_bool m_runThreadWorker{ true };
     struct ThreadInfo
     {
         String Name;
@@ -40,6 +46,10 @@ private:
 
     std::map<std::thread::id, ThreadInfo> m_threadInfo;
     mutable std::mutex m_threadInfoMtx;
+    std::thread m_updateThreadInfoThread;
+
+    std::deque<std::function<void(void)>> m_tasks;
+    std::mutex m_tasksMtx;
 
     ThreadUtil& operator=( const ThreadUtil& rhv ) = delete;
     ThreadUtil& operator=( ThreadUtil&& rhv ) = delete;

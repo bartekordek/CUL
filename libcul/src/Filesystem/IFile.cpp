@@ -1,15 +1,31 @@
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
+#include "CUL/Threading/ThreadUtil.hpp"
 
 #include "CUL/CULInterface.hpp"
 #include "CUL/TimeConcrete.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_iterator.hpp"
+#include "CUL/STL_IMPORTS/STD_array.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "IMPORT_hash_library.hpp"
 
 using namespace CUL;
 using namespace FS;
+
+#if 0 // DEBUG_THIS_FILE, set 0->1 to debug
+    #define DEBUG_THIS_FILE 1
+
+    #if defined(CUL_COMPILER_MSVC)
+        #pragma optimize( "", off )
+    #elif defined(CUL_COMPILER_CLANG)
+        #pragma clang optimize off
+    #elif defined(CUL_COMPILER_GCC)
+        #pragma GCC push_options
+        #pragma GCC optimize( "O0" )
+    #endif
+#endif
 
 IFile::IFile( const String& fPath, CUL::CULInterface* interface ) : p_cullInterface( interface ), m_path( fPath )
 {
@@ -83,6 +99,16 @@ TimeConcrete IFile::getLastModificationTime()
     return m_lastModificationTime;
 }
 
+void IFile::toggleCache( bool enabled )
+{
+    m_cacheEnabled = enabled;
+}
+
+bool IFile::getIsCacheEnabled() const
+{
+    return m_cacheEnabled;
+}
+
 const String& IFile::getMD5()
 {
     if( m_md5.empty() )
@@ -94,9 +120,9 @@ const String& IFile::getMD5()
 
 void IFile::calculateMD5()
 {
-    constexpr unsigned OneMBinBytes = 1024 * 1024;
-    constexpr unsigned bigFileMinimumBytes = 128 * OneMBinBytes;  // 128 MB.
-    const unsigned currentFileSizeBytes = getSizeBytes().toUInt();
+    constexpr std::uint64_t OneMBinBytes = 1024 * 1024;
+    constexpr std::uint64_t bigFileMinimumBytes = 1024 * OneMBinBytes;
+    const std::uint64_t currentFileSizeBytes = getSizeBytes().toUInt();
     const bool isBigFile = currentFileSizeBytes > bigFileMinimumBytes;
 
     if( isBigFile )
@@ -105,13 +131,34 @@ void IFile::calculateMD5()
         std::ifstream file( m_path.getString(), std::ios::binary );
         file.unsetf( std::ios::skipws );
 
-        uint8_t buffor = 0u;
+        constexpr size_t bytesPerRead = 131072;
+
+        char buffor[bytesPerRead];
+        std::array<uint8_t, 4> value;
+        value[0] = 0u;
+        value[1] = 0u;
+        value[2] = 0u;
+        value[3] = 0u;
+        void* ptr = &buffor;
+        constexpr std::size_t sizeofChar = sizeof( char );
+        constexpr std::size_t sizeofBuffor = sizeofChar * bytesPerRead;
+        constexpr std::size_t howManyCharacters = sizeofBuffor / sizeofChar;
+
+        std::memset( &buffor, 0, sizeofBuffor );
         const auto size = file.tellg();
         SHA256 sha256;
-        while( file.read( (char*)&buffor, 1 ) )
+        uint64_t it = 0u;
+        float coef = 0.f;
+        const auto threadId = CUL::ThreadUtil::getInstance().getCurrentThreadId();
+        unsigned percentage = 0u;
+        while( file.read( buffor, howManyCharacters ) )
         {
-            const void* ptr = (const void*)&buffor;
-            sha256.add( ptr, 1);
+            sha256.add( ptr, bytesPerRead );
+            ++it;
+            coef = static_cast<float>( bytesPerRead * it ) / static_cast<float>( currentFileSizeBytes );
+            percentage = static_cast<unsigned>( 100.f * coef );
+            CUL::ThreadUtil::getInstance().setThreadStatus(
+                "[IFile::calculateMD5] Big file: " + getPath().getPath() + ", " + percentage + "%", &threadId );
         }
         m_md5 = sha256.getHash();
         file.close();
@@ -136,6 +183,12 @@ void IFile::calculateMD5()
 
 const String& IFile::getSizeBytes()
 {
+    if( m_path == "F:/Video/Movies/2003 Old School/Old.School.2003.UNRATED.720p.HDDVD.x264-SiNNERS.mkv" )
+    {
+        auto x = 0;
+        auto y = 0;
+    }
+
     if( m_sizeBytes.empty() )
     {
         calculateSizeBytes();
@@ -153,3 +206,13 @@ void IFile::calculateSizeBytes()
 IFile::~IFile()
 {
 }
+
+#if defined( DEBUG_THIS_FILE )
+    #if defined(CUL_COMPILER_MSVC)
+        #pragma optimize( "", on )
+    #elif defined( CUL_COMPILER_CLANG)
+        #pragma clang optimize on
+    #elif defined( CUL_COMPILER_GCC)
+        #pragma GCC pop_options
+    #endif
+#endif  // #if defined(DEBUG_THIS_FILE)

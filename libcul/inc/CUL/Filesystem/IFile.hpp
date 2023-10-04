@@ -43,6 +43,9 @@ public:
     TimeConcrete getCreationTime();
     TimeConcrete getLastModificationTime();
 
+    void toggleCache( bool enabled );
+    bool getIsCacheEnabled() const;
+
     const String& getMD5();
     const String& getSizeBytes();
 
@@ -80,6 +83,7 @@ private:
     TimeConcrete m_lastModificationTime;
 
     String m_sizeBytes;
+    bool m_cacheEnabled = true;
 
 private:  // Deleted:
     IFile() = delete;

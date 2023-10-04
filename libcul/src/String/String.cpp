@@ -681,9 +681,9 @@ uint64_t String::toUint64() const
     }
 }
 
-unsigned int String::toUInt() const
+std::uint64_t String::toUInt() const
 {
-    return m_value.empty() ? 0u : std::stoul( m_value, nullptr, 0 );
+    return m_value.empty() ? 0u : std::stoull( m_value, nullptr, 0 );
 }
 
 bool String::toBool() const
