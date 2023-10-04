@@ -20,7 +20,7 @@ public:
     using Type = float;
     using PointData = std::array<Type, 3>;
 
-    PointData values = { static_cast<Type>( 0 ), static_cast<Type>( 0 ), static_cast<Type>( 0 ) };
+    PointData values = { { static_cast<Type>( 0 ), static_cast<Type>( 0 ), static_cast<Type>( 0 ) } };
 
     Type diagonal = 0.f;
 

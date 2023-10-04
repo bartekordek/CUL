@@ -183,12 +183,6 @@ void IFile::calculateMD5()
 
 const String& IFile::getSizeBytes()
 {
-    if( m_path == "F:/Video/Movies/2003 Old School/Old.School.2003.UNRATED.720p.HDDVD.x264-SiNNERS.mkv" )
-    {
-        auto x = 0;
-        auto y = 0;
-    }
-
     if( m_sizeBytes.empty() )
     {
         calculateSizeBytes();
@@ -198,8 +192,6 @@ const String& IFile::getSizeBytes()
 
 void IFile::calculateSizeBytes()
 {
-    /*std::ifstream in( m_path.cStr(), std::ifstream::ate | std::ifstream::binary );
-    m_sizeBytes = static_cast<unsigned>(in.tellg());*/
     m_sizeBytes = p_cullInterface->getFS()->getFileSize( m_path );
 }
 

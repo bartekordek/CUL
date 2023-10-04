@@ -6,8 +6,8 @@ using namespace Primitives;
 
 Line::Line()
 {
-    data[0] = { 0.f, 0.f, 0.f };
-    data[1] = { 0.f, 0.f, 0.f };
+    data[0] = {{ 0.f, 0.f, 0.f }};
+    data[1] = {{ 0.f, 0.f, 0.f }};
     updateData();
 }
 

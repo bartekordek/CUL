@@ -13,7 +13,7 @@ Point::Point() noexcept
 
 }
 
-Point::Point( const glm::vec3& vec ) noexcept : values( { vec.x, vec.y, vec.z } )
+Point::Point( const glm::vec3& vec ) noexcept : values( { { vec.x, vec.y, vec.z } } )
 {
     calculateDiagonal();
 }
@@ -21,7 +21,7 @@ Point::Point( const glm::vec3& vec ) noexcept : values( { vec.x, vec.y, vec.z } 
 Point::Point(
     Point::Type inx,
     Point::Type iny, Point::Type inz ) noexcept :
-    values( { inx, iny, inz } )
+    values( { { inx, iny, inz } } )
 {
     calculateDiagonal();
 }
