@@ -44,12 +44,7 @@
 #define CUL_COMPILER_UNKOWN
 #endif
 
-/*TODO: Find a way to tell library name.
-#if defined _MSC_VER && defined CUL_DYNAMIC
-#pragma comment(lib, "CULdynamic.lib")
-#elif _MSC_VER
-#pragma comment(lib, "CULstatic.lib")
-#else
-#pragma comment(lib, "libcul.a")
+// Silly warnings removal.
+#ifdef _MSC_VER
+#pragma warning( disable : 4514 ) // unreferenced inline function has been removed
 #endif
-*/
