@@ -121,7 +121,7 @@ const String& IFile::getMD5()
 void IFile::calculateMD5()
 {
     constexpr std::uint64_t OneMBinBytes = 1024 * 1024;
-    constexpr std::uint64_t bigFileMinimumBytes = 1024 * OneMBinBytes;
+    constexpr std::uint64_t bigFileMinimumBytes = 64 * OneMBinBytes;
     const std::uint64_t currentFileSizeBytes = getSizeBytes().toUInt();
     const bool isBigFile = currentFileSizeBytes > bigFileMinimumBytes;
 
