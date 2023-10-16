@@ -11,8 +11,11 @@ CUL::IName::IName( const String& name ):
 {
 }
 
-CUL::IName::IName( const IName & val ) :
-    m_name( val.m_name )
+CUL::IName::IName( const IName& val ) : m_name( val.m_name )
+{
+}
+
+CUL::IName::IName( IName&& val ) : m_name( val.m_name )
 {
 }
 
@@ -20,7 +23,16 @@ CUL::IName::~IName()
 {
 }
 
-IName & CUL::IName::operator=( const IName& rhv )
+IName& CUL::IName::operator=( const IName& rhv )
+{
+    if( &rhv != this )
+    {
+        m_name = rhv.m_name;
+    }
+    return *this;
+}
+
+IName& CUL::IName::operator=( IName&& rhv )
 {
     if( &rhv != this )
     {
