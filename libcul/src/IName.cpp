@@ -15,7 +15,7 @@ CUL::IName::IName( const IName& val ) : m_name( val.m_name )
 {
 }
 
-CUL::IName::IName( IName&& val ) : m_name( val.m_name )
+CUL::IName::IName( IName&& val ) noexcept : m_name( val.m_name )
 {
 }
 
@@ -32,7 +32,7 @@ IName& CUL::IName::operator=( const IName& rhv )
     return *this;
 }
 
-IName& CUL::IName::operator=( IName&& rhv )
+IName& CUL::IName::operator=( IName&& rhv ) noexcept
 {
     if( &rhv != this )
     {
@@ -49,4 +49,8 @@ const String& CUL::IName::getName() const
 void CUL::IName::setName( const String& name )
 {
     m_name = name;
+    if( AfterNameChangeCallback )
+    {
+        AfterNameChangeCallback( name );
+    }
 }
