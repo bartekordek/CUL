@@ -7,22 +7,22 @@
 
 NAMESPACE_BEGIN( CUL )
 
-class IName
+class CULLib_API IName
 {
 public:
-    CULLib_API IName();
-    CULLib_API IName( const String& name );
-    CULLib_API IName( const IName& val );
-    CULLib_API IName( IName&& val ) noexcept;
-    CULLib_API virtual ~IName();
-
-    CULLib_API IName& operator=( const IName& rhv );
-    CULLib_API IName& operator=( IName&& rhv ) noexcept ;
-
-    CULLib_API const String& getName() const;
-    CULLib_API void setName( const String& name );
+    IName();
+    IName( const String& name );
+    IName( const IName& val );
+    IName( IName&& val ) noexcept;
+    
+    IName& operator=( const IName& rhv );
+    IName& operator=( IName&& rhv ) noexcept;
+    const String& getName() const;
+    void setName( const String& name );
 
     std::function<void( const String& newName )> AfterNameChangeCallback;
+
+    virtual ~IName();
 
 protected:
 private:

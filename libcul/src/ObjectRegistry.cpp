@@ -1,18 +1,19 @@
 #include "CUL/ObjectRegistry.hpp"
 
-CUL::ObjectRegistry::ObjectRegistry()
+using namespace CUL;
+
+ObjectRegistry::ObjectRegistry()
 {
 }
 
-
-std::uint64_t CUL::ObjectRegistry::getFirstFreeIndex()
+std::uint64_t ObjectRegistry::getFirstFreeIndex()
 {
     std::uint64_t result = 0u;
     std::lock_guard<std::mutex> locker( m_listMtx );
 
     for( std::uint64_t i = 0; i < std::numeric_limits<std::uint64_t>::max(); ++i )
     {
-        const auto it = m_list.find(i);
+        const auto it = m_list.find( i );
         if( it == m_list.end() )
         {
             result = i;
@@ -24,7 +25,7 @@ std::uint64_t CUL::ObjectRegistry::getFirstFreeIndex()
     return result;
 }
 
-void CUL::ObjectRegistry::removeIndex( std::uint64_t index )
+void ObjectRegistry::removeIndex( std::uint64_t index )
 {
     std::lock_guard<std::mutex> locker( m_listMtx );
     const auto it = m_list.find( index );
@@ -34,6 +35,6 @@ void CUL::ObjectRegistry::removeIndex( std::uint64_t index )
     }
 }
 
-CUL::ObjectRegistry::~ObjectRegistry()
+ObjectRegistry::~ObjectRegistry()
 {
 }

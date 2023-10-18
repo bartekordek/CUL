@@ -19,11 +19,13 @@ public:
     ObjectRegistry& operator=( ObjectRegistry&& ) = delete;
 
     std::uint64_t getFirstFreeIndex();
+
     void removeIndex( std::uint64_t index );
 
 protected:
 private:
     ObjectRegistry();
+
     ~ObjectRegistry();
 
     std::mutex m_listMtx;
