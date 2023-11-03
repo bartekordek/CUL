@@ -36,6 +36,10 @@ class ColorS final
 {
 public:
     CULLib_API ColorS();
+    CULLib_API ColorS( const ColorS& arg );
+    CULLib_API ColorS( ColorS&& arg );
+    CULLib_API ColorS& operator=(const ColorS& arg);
+    CULLib_API ColorS& operator=(ColorS&& arg);
 
     CULLib_API ColorS( const ColorE colorE );
 

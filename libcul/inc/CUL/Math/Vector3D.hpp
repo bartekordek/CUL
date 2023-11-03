@@ -122,22 +122,22 @@ public:
         return m_values[ac2Size( axis )];
     }
 
-    const Type operator[]( size_t index ) const
+    Type operator[]( size_t index ) const
     {
         return m_values[index];
     }
 
-    const Type getX() const
+    Type getX() const
     {
         return operator[]( AxisCarthesian::X );
     }
 
-    const Type getY() const
+    Type getY() const
     {
         return operator[]( AxisCarthesian::Y );
     }
 
-    const Type getZ() const
+    Type getZ() const
     {
         return operator[]( AxisCarthesian::Z );
     }
@@ -362,7 +362,7 @@ public:
         return *this;
     }
 
-    const Type dotProdcut( const Vector3D<Type>& right ) const
+    Type dotProdcut( const Vector3D<Type>& right ) const
     {
         const Type xx = getX() * right.getX();
         const Type yy = getY() * right.getY();
@@ -406,12 +406,12 @@ public:
         }
     }
 
-    const Type getAxis( const AxisCarthesian axis ) const
+    Type getAxis( const AxisCarthesian axis ) const
     {
         return m_values.at( axis );
     }
 
-    const Type getAxis( const Axis axis ) const
+    Type getAxis( const Axis axis ) const
     {
         return m_values.at( (size_t)UTIL::normal2Carthesian( axis ) );
     }
@@ -428,12 +428,12 @@ public:
         return *this;
     }
 
-    const Type min( const Vector3D<Type>& p2, const Axis axis ) const
+    Type min( const Vector3D<Type>& p2, const Axis axis ) const
     {
         return UTIL::min( getAxis( axis ), p2.getAxis( axis ) );
     }
 
-    const Type max( const Vector3D<Type>& p2, const Axis axis ) const
+    Type max( const Vector3D<Type>& p2, const Axis axis ) const
     {
         return UTIL::max( getAxis( axis ), p2.getAxis( axis ) );
     }

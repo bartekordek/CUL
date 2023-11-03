@@ -41,7 +41,7 @@ public:
         return value;
     }
 
-    const Type getValCopy() const
+    Type getValCopy() const
     {
         return value;
     }

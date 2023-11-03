@@ -8,6 +8,49 @@ Angle::Angle()
 {
 }
 
+Angle::Angle( const Angle& rhv )
+    : m_valueRad( rhv.m_valueRad ), m_valueDeg( rhv.m_valueDeg ), m_incrementValue( rhv.m_incrementValue ), m_type( rhv.m_type )
+{
+}
+
+Angle::Angle( Angle&& rhv )
+    : m_valueRad( rhv.m_valueRad ), m_valueDeg( rhv.m_valueDeg ), m_incrementValue( rhv.m_incrementValue ), m_type( rhv.m_type )
+{
+    rhv.m_valueRad = 0.f;
+    rhv.m_valueDeg = 0.f;
+    rhv.m_incrementValue = 0.f;
+    rhv.m_type = Type::None;
+}
+
+Angle& Angle::operator=( const Angle& rhv )
+{
+    if (this != &rhv)
+    {
+        m_valueRad = rhv.m_valueRad;
+        m_valueDeg = rhv.m_valueDeg;
+        m_incrementValue = rhv.m_incrementValue;
+        m_type = rhv.m_type;
+    }
+    return *this;
+}
+
+Angle& Angle::operator=( Angle&& rhv )
+{
+    if( this != &rhv )
+    {
+        m_valueRad = rhv.m_valueRad;
+        m_valueDeg = rhv.m_valueDeg;
+        m_incrementValue = rhv.m_incrementValue;
+        m_type = rhv.m_type;
+
+        rhv.m_valueRad = 0.0;
+        rhv.m_valueDeg = 0.0;
+        rhv.m_incrementValue = 0.0;
+        rhv.m_type = Type::None;
+    }
+    return *this;
+}
+
 Angle::Angle( double value, const Type type )
 {
     setValue( value, type );

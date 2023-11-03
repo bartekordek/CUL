@@ -243,7 +243,7 @@ void FileDatabase::loadFilesFromDatabase()
                 deleteRemnants();
             };
 
-            CUL::MultiWorkerSystem::getInstance().startTask( taskCbck );
+            CUL::MultiWorkerSystem::getInstance().registerTask( taskCbck );
         }
         else
         {
@@ -291,7 +291,7 @@ bool FileDatabase::deleteRemnants()
         }
     };
 
-    CUL::MultiWorkerSystem::getInstance().startTask( taskCbck );
+    CUL::MultiWorkerSystem::getInstance().registerTask( taskCbck );
 
     for( size_t i = 0; i < filesCount; ++i )
     {

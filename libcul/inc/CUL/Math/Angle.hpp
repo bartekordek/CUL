@@ -21,13 +21,16 @@ enum class EulerAngles: uint8_t
 class CULLib_API Angle
 {
 public:
-    enum class Type: short
+    enum class Type: uint8_t
     {
+        None = 0u,
         DEGREE,
         RADIAN
     };
 
     Angle();
+    Angle( const Angle& rhv );
+    Angle( Angle&& rhv );
     Angle( double value, const Type type );
     Angle( int value, const Type type  );
 
@@ -50,6 +53,9 @@ public:
 
     Type getCurrentType() const;
     void setCurrentType( const Type type );
+
+    Angle& operator=( const Angle& rhv);
+    Angle& operator=( Angle&& rhv );
 
     Angle& operator=( float value );
 

@@ -32,7 +32,7 @@ public:
         epsilon = epislon;
     }
 
-    const Type getEpsilon() const
+    Type getEpsilon() const
     {
         return epsilon;
     }

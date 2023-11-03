@@ -15,6 +15,13 @@ class CULLib_API IObject:
     public CUL::MATH::IPivot
 {
 public:
+    IObject() = default;
+    IObject( const IObject& ) = delete;
+    IObject( IObject&& ) = delete;
+    IObject& operator=( const IObject& ) = delete;
+    IObject& operator=( IObject&& ) = delete;
+    virtual ~IObject() = default;
+    
     enum class Type
     {
         SPRITE = 0,

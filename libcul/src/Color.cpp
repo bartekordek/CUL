@@ -4,7 +4,39 @@ using namespace CUL::Graphics;
 
 ColorS::ColorS()
 {
-    //m_colorValues = { 0.f, 0.f, 0.f, 0.f };
+}
+
+ColorS::ColorS( const ColorS& arg ) : m_colorValues(arg.m_colorValues)
+{
+
+}
+
+ColorS::ColorS( ColorS&& arg ) : m_colorValues( arg.m_colorValues )
+{
+    arg.m_colorValues.r = 0.f;
+    arg.m_colorValues.g = 0.f;
+    arg.m_colorValues.b = 0.f;
+}
+
+ColorS& ColorS::operator=( const ColorS& arg )
+{
+    if( this != &arg )
+    {
+        this->m_colorValues = arg.m_colorValues;
+    }
+    return *this;
+}
+
+ColorS& ColorS::operator=( ColorS&& arg )
+{
+    if( this != &arg )
+    {
+        this->m_colorValues = arg.m_colorValues;
+        arg.m_colorValues.r = 0.f;
+        arg.m_colorValues.g = 0.f;
+        arg.m_colorValues.b = 0.f;
+    }
+    return *this;
 }
 
 ColorS::ColorS( const ColorE colorE )
