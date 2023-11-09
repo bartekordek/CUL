@@ -109,6 +109,9 @@ else()
     endif()
 endif()
 
+target_include_directories(${PROJECT_NAME_DYNAMIC} SYSTEM PUBLIC zlibstatic)
+target_include_directories(${PROJECT_NAME_STATIC} SYSTEM PUBLIC zlibstatic)
+
 target_include_directories(${PROJECT_NAME_DYNAMIC} PUBLIC inc)
 target_include_directories(${PROJECT_NAME_DYNAMIC} PRIVATE src)
 
