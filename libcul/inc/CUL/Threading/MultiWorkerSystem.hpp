@@ -38,6 +38,7 @@ public:
     void registerTask( ITask* task );
 
     void addWorker( EPriority priority );
+    void removeWorker( EPriority priority );
     void stopWorkers();
     int8_t getCurrentWorkersCount() const;
     uint8_t getTasksLeft( EPriority priority ) const;
@@ -59,8 +60,6 @@ public:
 
 protected:
 private:
-    
-    void removeWorker( EPriority priority );
     void workerMethod( int8_t threadId, EPriority priority );
 
     std::vector<ThreadInfo> m_threads;

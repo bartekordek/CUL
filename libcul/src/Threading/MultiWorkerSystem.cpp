@@ -102,7 +102,19 @@ void MultiWorkerSystem::removeWorker( EPriority priority )
 
 void MultiWorkerSystem::workerMethod( int8_t threadId, EPriority priority )
 {
-    const String currentThreadName = "Worker " + std::to_string( threadId );
+    String currentThreadName = "Worker " + std::to_string( threadId );
+    if( priority == EPriority::High )
+    {
+        currentThreadName += " [High]";
+    }
+    else if( priority == EPriority::Medium )
+    {
+        currentThreadName += " [Medium]";
+    }
+    else if( priority == EPriority::Low )
+    {
+        currentThreadName += " [Low]";
+    }
 
     CUL::ThreadUtil::getInstance().setThreadName( currentThreadName );
 
