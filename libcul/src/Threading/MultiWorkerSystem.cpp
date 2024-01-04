@@ -19,6 +19,8 @@ MultiWorkerSystem::MultiWorkerSystem()
     m_sleepMapping[EPriority::High] = 0;
     m_sleepMapping[EPriority::Medium] = 1;
     m_sleepMapping[EPriority::Low] = 2;
+
+    addWorker(EPriority::High);
 }
 
 void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
