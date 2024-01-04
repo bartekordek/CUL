@@ -7,34 +7,18 @@
 
 using namespace CUL;
 
-void MultiWorkerSystem::setWorkersCount( size_t count )
+void MultiWorkerSystem::registerTask( ITask* task )
 {
-    const int8_t diff = static_cast<int8_t>( count ) - getCurrentWorkersCount();
-    if( diff > 0 )
-    {
-        for( int8_t i = 0; i < diff; ++i )
-        {
-            addWorker();
-        }
-    }
-    else if( diff < 0 )
-    {
-        for( int8_t i = 0; i < -diff; ++i )
-        {
-            removeWorker();
-        }
-    }
-}
-
-void MultiWorkerSystem::startTask( ITask* task )
-{
-    std::lock_guard<std::mutex> locker( m_tasksMtx );
-    m_tasks.push_front( task );
+    const auto prioType = task->Priority;
+    std::lock_guard<std::mutex> locker( m_tasksMtxs[(size_t)prioType] );
+    m_tasksArray[(size_t)prioType].push_back( task );
 }
 
 MultiWorkerSystem::MultiWorkerSystem()
 {
-
+    m_sleepMapping[EPriority::High] = 0;
+    m_sleepMapping[EPriority::Medium] = 1;
+    m_sleepMapping[EPriority::Low] = 2;
 }
 
 void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
@@ -45,7 +29,7 @@ void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
     };
     taskPtr->OnlyForWorkerOfId = id;
     taskPtr->Type = ITask::EType::DeleteAfterExecute;
-    startTask( taskPtr );
+    registerTask( taskPtr );
 }
 
 std::vector<String> MultiWorkerSystem::getWorkersStatuses()
@@ -56,7 +40,7 @@ std::vector<String> MultiWorkerSystem::getWorkersStatuses()
         std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
         for( const auto& thread : m_threads )
         {
-            const auto id = thread.get_id();
+            const auto id = thread.Thread.get_id();
             const auto status = CUL::ThreadUtil::getInstance().getThreadStatus( &id );
             result.push_back( status );
         }
@@ -76,39 +60,45 @@ void MultiWorkerSystem::stopWorkers()
     m_runWorkers = false;
     for( auto& currThread : m_threads )
     {
-        if( currThread.joinable() )
+        if( currThread.Thread.joinable() )
         {
-            currThread.join();
+            currThread.Thread.join();
         }
     }
 }
 
-void MultiWorkerSystem::addWorker()
+void MultiWorkerSystem::addWorker( EPriority priority )
 {
     std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
-    m_threads.push_back( std::move( std::thread( &MultiWorkerSystem::workerMethod, this, m_threads.size() ) ) );
+    const size_t workerId = m_threads.size();
+    ThreadInfo threadInfo;
+    threadInfo.Thread = std::thread( &MultiWorkerSystem::workerMethod, this, workerId, priority );
+    threadInfo.Priority = priority;
+    threadInfo.WorkerId = (int8_t)workerId;
+    m_threads.push_back( std::move( threadInfo ) );
 }
 
-void MultiWorkerSystem::removeWorker()
+void MultiWorkerSystem::removeWorker( EPriority priority )
 {
     std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
-    if( m_threads.empty() == false )
+
+    const auto it = std::find_if( m_threads.begin(), m_threads.end(),
+                                  [priority]( const ThreadInfo& arg )
+                                  {
+                                      return arg.Priority == priority;
+                                  } );
+
+    if( it != m_threads.end() )
     {
+        if(it->Thread.joinable())
         {
-            std::lock_guard<std::mutex> locker( m_workersRunMtx );
-            const auto lastWorkerId = static_cast<int8_t>(m_threads.size() - 1);
-            m_workersRun[lastWorkerId] = false;
+            it->Thread.join();
         }
-
-        if( m_threads.back().joinable())
-        {
-            m_threads.back().join();
-            m_threads.pop_back();
-        }
+        m_threads.erase( it );
     }
 }
 
-void MultiWorkerSystem::workerMethod( int8_t threadId )
+void MultiWorkerSystem::workerMethod( int8_t threadId, EPriority priority )
 {
     const String currentThreadName = "Worker " + std::to_string( threadId );
 
@@ -119,26 +109,30 @@ void MultiWorkerSystem::workerMethod( int8_t threadId )
         m_workersRun[threadId] = true;
     }
 
-    {
-        std::lock_guard<std::mutex> m_threadToWorkerIdMappingMtxLocker( m_threadToWorkerIdMappingMtx );
-        m_threadToWorkerIdMapping[CUL::ThreadUtil::getInstance().getCurrentThreadId()] = threadId;
-    }
-
     while( m_runWorkers )
     {
         ITask* task = nullptr;
         {
-            std::lock_guard<std::mutex> locker( m_tasksMtx );
-            if( m_tasks.empty() == false )
+            std::lock_guard<std::mutex> locker( m_tasksMtxs[( size_t )priority] );
+            auto& tasks = m_tasksArray[(size_t)priority];
+            const auto taskIt = std::find_if( tasks.begin(), tasks.end(),
+                                           [priority]( const ITask* task )
+                                           {
+
+
+                                               return task->Priority == priority;
+                                           } );
+
+            if( taskIt != tasks.end() )
             {
-                task = m_tasks.back();
+                task = *taskIt;
                 if( task->OnlyForWorkerOfId != -1 && task->OnlyForWorkerOfId != threadId )
                 {
-                    task = nullptr;
                 }
                 else
                 {
-                    m_tasks.pop_back();
+                    task = *taskIt;
+                    tasks.erase( taskIt );
                 }
             }
         }
@@ -158,15 +152,9 @@ void MultiWorkerSystem::workerMethod( int8_t threadId )
             else if( task->Type == ITask::EType::Loop )
             {
                 task->resetStatus();
-                startTask( task );
+                registerTask( task );
             }
-            ITimer::sleepMiliSeconds( WorkerSleepBetweenTasksTimeMs );
         }
-        else
-        {
-            ITimer::sleepMiliSeconds( WorkerSleepWhenNoTaskTimeMs );
-        }
-
 
         std::lock_guard<std::mutex> locker( m_workersRunMtx );
         if( m_workersRun[threadId] == false )
@@ -186,12 +174,13 @@ int8_t MultiWorkerSystem::getCurrentWorkersCount() const
     return currentCount;
 }
 
-uint8_t MultiWorkerSystem::getTasksLeft() const
+uint8_t MultiWorkerSystem::getTasksLeft( EPriority priority ) const
 {
     uint8_t result = 0u;
     {
-        std::lock_guard<std::mutex> locker( m_tasksMtx );
-        result = static_cast<uint8_t>( m_tasks.size() );
+        std::lock_guard<std::mutex> locker( m_tasksMtxs[(size_t)priority] );
+        auto& tasks = m_tasksArray[(size_t)priority];
+        result = static_cast<uint8_t>( tasks.size() );
     }
 
     return result;
@@ -199,11 +188,41 @@ uint8_t MultiWorkerSystem::getTasksLeft() const
 
 int8_t MultiWorkerSystem::getCurrentThreadWorkerId() const
 {
-    std::lock_guard<std::mutex> m_threadToWorkerIdMappingMtxLocker( m_threadToWorkerIdMappingMtx );
-    const auto it = m_threadToWorkerIdMapping.find( CUL::ThreadUtil::getInstance().getCurrentThreadId() );
-    if( it != m_threadToWorkerIdMapping.end() )
+    const auto currentThreadId =  CUL::ThreadUtil::getInstance().getCurrentThreadId();
+    std::lock_guard<std::mutex> m_threadsMtxLocker( m_threadsMtx );
+    const auto it = std::find_if( m_threads.begin(), m_threads.end(),
+                                  [currentThreadId]( const ThreadInfo& ti )
+                                  {
+                                      return ti.Thread.get_id() == currentThreadId;
+                                  } );
+
+    if( it != m_threads.end() )
     {
-        return it->second;
+        return it->WorkerId;
     }
     return -1;
+}
+
+ThreadInfo::ThreadInfo( ThreadInfo&& arg ) noexcept
+{
+    Thread = std::move( arg.Thread );
+    WorkerId = arg.WorkerId;
+    Priority = arg.Priority;
+
+    arg.WorkerId = -1;
+    arg.Priority = EPriority::None;
+}
+
+ThreadInfo& ThreadInfo::operator=( ThreadInfo&& arg ) noexcept
+{
+    if( this != &arg )
+    {
+        Thread = std::move( arg.Thread );
+        WorkerId = arg.WorkerId;
+        Priority = arg.Priority;
+
+        arg.WorkerId = -1;
+        arg.Priority = EPriority::None;
+    }
+    return *this;
 }

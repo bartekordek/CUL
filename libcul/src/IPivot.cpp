@@ -2,11 +2,3 @@
 
 using namespace CUL;
 using namespace MATH;
-
-IPivot::IPivot()
-{
-}
-
-IPivot::~IPivot()
-{
-}

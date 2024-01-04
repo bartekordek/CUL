@@ -243,7 +243,7 @@ void FileDatabase::loadFilesFromDatabase()
                 deleteRemnants();
             };
 
-            CUL::MultiWorkerSystem::getInstance().startTask( taskCbck );
+            CUL::MultiWorkerSystem::getInstance().registerTask( taskCbck );
         }
         else
         {
@@ -273,7 +273,7 @@ bool FileDatabase::deleteRemnants()
             removetask->Callback = [this, filePath]( int8_t ) {
                 removeFileFromDB( filePath );
             };
-            CUL::MultiWorkerSystem::getInstance().startTask( removetask );
+            CUL::MultiWorkerSystem::getInstance().registerTask( removetask );
         }
 
         const String status = "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc );

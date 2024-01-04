@@ -3,24 +3,31 @@
 #include "CUL.hpp"
 #include "CUL/String.hpp"
 
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
+
 NAMESPACE_BEGIN( CUL )
 
-class IName
+class CULLib_API IName
 {
 public:
-    CULLib_API IName();
-    CULLib_API IName( const String& name );
-    CULLib_API IName( const IName& val );
-    CULLib_API virtual ~IName();
+    IName();
+    IName( const String& name );
+    IName( const IName& val );
+    IName( IName&& val ) noexcept;
+    
+    IName& operator=( const IName& rhv );
+    IName& operator=( IName&& rhv ) noexcept;
+    const String& getName() const;
+    void setName( const String& name );
 
-    CULLib_API IName& operator=( const IName& rhv );
+    std::function<void( const String& newName )> AfterNameChangeCallback;
 
-    CULLib_API const String& getName() const;
-    CULLib_API void setName( const String& name );
+    virtual ~IName();
 
 protected:
 private:
     String m_name;
+    
 };
 
 NAMESPACE_END( CUL )

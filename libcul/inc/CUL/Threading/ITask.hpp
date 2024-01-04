@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/String.hpp"
+#include "CUL/Threading/Priority.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -16,6 +17,7 @@ public:
     };
 
     EType Type = EType::Default;
+    EPriority Priority = EPriority::Medium;
     int8_t OnlyForWorkerOfId = -1; // if set to -1, then any worker can execute task.
     bool KillWorker = false;
     String Name;

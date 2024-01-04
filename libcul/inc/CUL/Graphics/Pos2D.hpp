@@ -48,12 +48,12 @@ public:
         return m_x == arg.m_x && m_y == arg.m_y;
     }
 
-    const Type getX() const
+    Type getX() const
     {
         return m_x;
     }
 
-    const Type getY() const
+    Type getY() const
     {
         return m_y;
     }

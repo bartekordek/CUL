@@ -2,27 +2,45 @@
 
 #include "CUL/GenericUtils/Singleton.hpp"
 #include "CUL/String.hpp"
+#include "CUL/Threading/Priority.hpp"
 
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_deque.hpp"
-#include "CUL/STL_IMPORTS/STD_map.hpp"
+#include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
+#include "CUL/STL_IMPORTS/STD_array.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
 class ITask;
 
+struct ThreadInfo final
+{
+    ThreadInfo() = default;
+    ThreadInfo( const ThreadInfo& ) = delete;
+    ThreadInfo( ThreadInfo&& ) noexcept ;
+
+    ThreadInfo& operator=( const ThreadInfo& ti ) = delete;
+    ThreadInfo& operator=( ThreadInfo&& ti ) noexcept;
+
+    ~ThreadInfo() = default;
+
+    std::thread Thread;
+    int8_t WorkerId = -1;
+    EPriority Priority = EPriority::None;
+};
+
 class CULLib_API MultiWorkerSystem final: public Singleton<MultiWorkerSystem>
 {
 public:
     MultiWorkerSystem();
-    void setWorkersCount( size_t count );
-    void startTask( ITask* task );
+    void registerTask( ITask* task );
 
+    void addWorker( EPriority priority );
     void stopWorkers();
     int8_t getCurrentWorkersCount() const;
-    uint8_t getTasksLeft() const;
+    uint8_t getTasksLeft( EPriority priority ) const;
 
     uint8_t WorkerSleepBetweenTasksTimeMs = 0u;
     uint8_t WorkerSleepWhenNoTaskTimeMs = 0u;
@@ -41,22 +59,21 @@ public:
 
 protected:
 private:
-    void addWorker();
-    void removeWorker();
-    void workerMethod( int8_t threadId );
+    
+    void removeWorker( EPriority priority );
+    void workerMethod( int8_t threadId, EPriority priority );
 
-    std::vector<std::thread> m_threads;
+    std::vector<ThreadInfo> m_threads;
     mutable std::mutex m_threadsMtx;
 
     bool m_runWorkers = true;
-    std::map<int8_t, bool> m_workersRun;
+    std::unordered_map<int8_t, bool> m_workersRun;
     std::mutex m_workersRunMtx;
 
-    std::deque<ITask*> m_tasks;
-    mutable std::mutex m_tasksMtx;
+    mutable std::array<std::deque<ITask*>, (size_t)EPriority::COUNT> m_tasksArray;
+    mutable std::array<std::mutex, (size_t)EPriority::COUNT> m_tasksMtxs;
 
-    std::map<std::thread::id, int8_t> m_threadToWorkerIdMapping;
-    mutable std::mutex m_threadToWorkerIdMappingMtx;
+    std::unordered_map<EPriority, int> m_sleepMapping;
 };
 
 NAMESPACE_END(CUL)

@@ -33,8 +33,12 @@ public:
         NORMALIZED
     };
 
-    IPivot();
-    virtual ~IPivot();
+    IPivot() = default;
+    IPivot( const IPivot& ) = delete;
+    IPivot( IPivot&& ) = delete;
+    IPivot& operator=( const IPivot& ) = delete;
+    IPivot& operator=( IPivot&& ) = delete;
+    virtual ~IPivot() = default;
 
     virtual void setPivot(
         double px,
