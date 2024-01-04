@@ -261,77 +261,28 @@ bool FileDatabase::deleteRemnants()
     status = "loadFilesFromDatabase -> deleting remnants... collecting not existing files...";
     CUL::ThreadUtil::getInstance().setThreadStatus( status );
 
-    bool runRemnants = true;
-    CUL::TaskCallback* taskCbck = new CUL::TaskCallback();
-    taskCbck->Type = ITask::EType::Default;
-    taskCbck->Callback = [this, &runRemnants]( int8_t ) {
-        bool listNotEmpty = true;
-        size_t filesLeft = 0u;
-        while( runRemnants || listNotEmpty )
-        {
-            CUL::String fileName;
-            {
-                std::lock_guard<std::mutex> locker( m_fetchList->RemoveListMtx );
-                listNotEmpty = !m_fetchList->RemoveList.empty();
-                if( listNotEmpty )
-                {
-                    filesLeft = m_fetchList->RemoveList.size();
-                    fileName = m_fetchList->RemoveList.front();
-                    m_fetchList->RemoveList.pop_front();
-                }
-                CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::deleteRemnants::removing, " + String( filesLeft ) +
-                                                                " left." );
-            }
-            listNotEmpty = !m_fetchList->RemoveList.empty();
-
-            if( fileName.empty() == false )
-            {
-                removeFileFromDB( fileName );
-            }
-        }
-    };
-
-    CUL::MultiWorkerSystem::getInstance().startTask( taskCbck );
-
     for( size_t i = 0; i < filesCount; ++i )
     {
         const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
 
         if( !m_fetchList->FS_API->fileExist( m_fetchList->FilesList[i] ) )
         {
-            std::lock_guard<std::mutex> locker( m_fetchList->RemoveListMtx );
-            m_fetchList->RemoveList.push_back( m_fetchList->FilesList[i] );
+            CUL::TaskCallback* removetask = new CUL::TaskCallback();
+            removetask->Type = ITask::EType::DeleteAfterExecute;
+            const String filePath = m_fetchList->FilesList[i];
+            removetask->Callback = [this, filePath]( int8_t ) {
+                removeFileFromDB( filePath );
+            };
+            CUL::MultiWorkerSystem::getInstance().startTask( removetask );
         }
 
         const String status = "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc );
         CUL::ThreadUtil::getInstance().setThreadStatus( status );
     }
-    runRemnants = false;
-    while( taskCbck->isDone() == false )
-    {
-        CUL::ThreadUtil::getInstance().sleepFor( 1 );
-    }
 
     CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
 
     filesCount = m_fetchList->RemoveList.size();
-
-    size_t groupCounter = 0;
-    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... removing from db..." );
-    for( size_t i = 0; i < filesCount; ++i )
-    {
-        CUL::ThreadUtil::getInstance().sleepFor( 2 );
-        const float perc = 100.f * ( i + 1 ) / ( 1.f * filesCount );
-
-        removeFileFromDB( m_fetchList->RemoveList[i] );
-        CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... removing from db..." +
-                                                        CUL::String( perc ) );
-    }
-
-    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... removing from db... done." );
-
-    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... done." );
-    CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> finished." );
 
     m_fetchList->RemoveList.clear();
 
