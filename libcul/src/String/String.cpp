@@ -7,6 +7,7 @@
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 #include "CUL/STL_IMPORTS/STD_cmath.hpp"
 
+
 using namespace CUL;
 
 String::String() noexcept
@@ -374,6 +375,11 @@ bool String::operator<( const String& arg ) const
 bool String::operator>( const String& arg ) const
 {
     return m_value > arg.m_value;
+}
+
+bool String::operator()( const String& v1, const String& v2 ) const
+{
+    return v1 == v2;
 }
 
 size_t String::find( const String& arg ) const
@@ -821,10 +827,29 @@ void String::convertFromHexToString()
 #endif  // #if defined(CUL_WINDOWS)
 }
 
+
+const std::vector<String> String::split( const String& delimiter ) const
+{
+    std::vector<String> result;
+
+    size_t pos = 0u;
+    UnderlyingType token;
+    UnderlyingType vcopy = m_value; 
+    while( ( pos = vcopy.find( delimiter.m_value ) ) != UnderlyingType::npos )
+    {
+        token = vcopy.substr( 0, pos );
+        result.push_back( token );
+        vcopy.erase( 0, pos + delimiter.length() );
+    }
+
+    return result;
+}
+
 String::~String()
 {
 
 }
+
 
 String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )
 {

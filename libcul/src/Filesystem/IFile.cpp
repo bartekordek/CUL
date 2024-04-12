@@ -39,15 +39,17 @@ void IFile::setPath( const String& fPath )
 
 void IFile::addLine( const String& )
 {
+    throw std::logic_error( "Method not implemented" );
 }
 
 void IFile::saveFile()
 {
+    throw std::logic_error( "Method not implemented" );
 }
 
-void IFile::loadFromString( const String& )
+void IFile::loadFromString( const String& /*contents*/, bool /*keepLineEndingCharacter = false */ )
 {
-
+    throw std::logic_error( "Method not implemented" );
 }
 
 bool IFile::exists() const

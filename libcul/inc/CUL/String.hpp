@@ -3,7 +3,7 @@
 #include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
-#include "CUL/UselessMacros.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 #if _MSC_VER
 #pragma warning( disable: 4244 )
@@ -84,6 +84,8 @@ public:
     bool operator<( const String& arg ) const;
     bool operator>( const String& arg ) const;
 
+    bool operator()( const String& v1, const String& v2 ) const;
+
     size_t find( const String& arg ) const;
     String substr( size_t pos = 0, size_t len = UnderlyingType::npos ) const;
 
@@ -135,6 +137,8 @@ public:
     void setBinary( const char* value );
     const std::string getBinary() const;
 
+    const std::vector<String> split( const String& delimiter ) const;
+
     ~String();
 
 protected:
@@ -144,6 +148,14 @@ private:
     std::string m_fallback;
     bool m_isBinary = false;
     mutable std::string m_temp;
+};
+
+struct CULLib_API StringHash
+{
+    std::size_t operator()( const String& s ) const noexcept
+    {
+        return std::hash<std::string>{}( s.string() );
+    }
 };
 
 

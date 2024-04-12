@@ -38,6 +38,7 @@ public:
     virtual void reload( bool keepLineEndingCharacter ) = 0;
     virtual void reload() = 0;
     virtual void load( bool keepLineEndingCharacter = false ) = 0;
+    virtual void loadFromString( const String& contents, bool keepLineEndingCharacter = false );
     virtual void unload() = 0;
 
     TimeConcrete getCreationTime();
@@ -60,8 +61,6 @@ public:
     virtual FileType getType() const = 0;
     const FileList& getChildList() const;
     void addChild( IFile* file );
-
-    virtual void loadFromString( const String& contents );
 
     bool operator==( const IFile& arg ) const;
     bool operator<( const IFile& arg ) const;

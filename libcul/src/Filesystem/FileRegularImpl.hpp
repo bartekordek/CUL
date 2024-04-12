@@ -24,6 +24,7 @@ public:
 
 protected:
 private:
+    void loadFromString( const String& contents, bool keepLineEndingCharacter = false ) override;
     void changePath( const Path& newPath ) override;
     const Path& getPath() const override;
 
@@ -38,13 +39,12 @@ private:
     unsigned getLinesCount() const override;
     void cacheFile();
     FileType getType() const override;
-    void loadFromString( const String& stringContent ) override;
     void addLine( const String& line ) override;
     void saveFile() override;
 
     Path m_path;
-    std::vector<String> rows;
-    std::vector<char*> m_rowsAsChars;
+    std::vector<String> m_rows;
+    std::vector<const char*> m_rowsAsChars;
     String m_cached;
     bool m_keepLineEndingCharacter = false;
 

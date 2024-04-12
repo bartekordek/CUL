@@ -40,7 +40,7 @@ void FileRegularImpl::load( bool keepLineEndingCharacter )
 {
     CUL::Assert::simple( exists(), "Cannot open the file: " + m_path.getPath() );
 
-    rows.clear();
+    m_rows.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
     infile.open(
@@ -62,7 +62,7 @@ void FileRegularImpl::load( bool keepLineEndingCharacter )
             line += '\n';
         }
 
-        rows.push_back( line );
+        m_rows.push_back( line );
     }
     infile.close();
 
@@ -71,18 +71,18 @@ void FileRegularImpl::load( bool keepLineEndingCharacter )
 
 void FileRegularImpl::unload()
 {
-    rows.clear();
+    m_rows.clear();
     m_cached = "";
 }
 
 const String& FileRegularImpl::firstLine() const
 {
-    return rows.front();
+    return m_rows.front();
 }
 
 const String& FileRegularImpl::lastLine() const
 {
-    return rows.back();
+    return m_rows.back();
 }
 
 const String& FileRegularImpl::getAsOneString() const
@@ -98,7 +98,7 @@ void FileRegularImpl::cacheFile()
     }
 
     m_cached = "";
-    for( const auto& line : rows )
+    for( const auto& line : m_rows )
     {
         m_cached += line;
         m_cached += "\n";
@@ -111,15 +111,21 @@ FileType FileRegularImpl::getType() const
     return FileType::TXT;
 }
 
-void FileRegularImpl::loadFromString( const String& stringContent )
+void FileRegularImpl::loadFromString( const String& contents, bool keepLineEndingCharacter /*= false */ )
 {
-    rows.push_back(stringContent);
-    cacheFile();
+    m_cached = contents;
+    m_keepLineEndingCharacter = keepLineEndingCharacter;
+    const std::vector<String> lines = m_cached.split( "\n" );
+    for( const auto& line : lines )
+    {
+        m_rows.emplace_back( line );
+        m_rowsAsChars.push_back(m_rows.back().cStr());
+    }
 }
 
 void FileRegularImpl::addLine( const String& line )
 {
-    rows.push_back( line );
+    m_rows.push_back( line );
     cacheFile();
 }
 
@@ -127,10 +133,10 @@ void FileRegularImpl::saveFile()
 {
     auto pathString = m_path.getPath().getString();
     std::ofstream file( pathString );
-    const size_t rowsCount = rows.size();
+    const size_t rowsCount = m_rows.size();
     for( size_t i = 0; i < rowsCount; ++i )
     {
-        const String& line = rows[i];
+        const String& line = m_rows[i];
         file << line.cStr() << "\n";
     }
     file.close();
@@ -138,7 +144,7 @@ void FileRegularImpl::saveFile()
 
 unsigned FileRegularImpl::getLinesCount() const
 {
-    return static_cast<unsigned>( rows.size() );
+    return static_cast<unsigned>( m_rows.size() );
 }
 
 const char** FileRegularImpl::getContent() const
