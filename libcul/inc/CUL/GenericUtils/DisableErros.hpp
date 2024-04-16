@@ -1,4 +1,4 @@
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
 #pragma warning( push, 0 )
 #pragma warning( disable: 1404 )
 #pragma warning( disable: 3909 )

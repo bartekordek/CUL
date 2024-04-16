@@ -123,6 +123,33 @@ void FileRegularImpl::loadFromString( const String& contents, bool keepLineEndin
     }
 }
 
+void FileRegularImpl::loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter /*= false */ )
+{
+    m_cached.clear();
+    m_keepLineEndingCharacter = keepLineEndingCharacter;
+    std::vector<String> lines = contents.split( "\n" );
+    for( String& line : lines )
+    {
+        if( line.empty() )
+        {
+            continue;
+        }
+
+        if( keepLineEndingCharacter )
+        {
+            line += String( "\n" );
+        }
+
+        m_rows.emplace_back( line );
+        m_cached += line;
+    }
+
+    for( const auto& line : m_rows )
+    {
+        m_rowsAsChars.push_back( line.cStr() );
+    }
+}
+
 void FileRegularImpl::addLine( const String& line )
 {
     m_rows.push_back( line );

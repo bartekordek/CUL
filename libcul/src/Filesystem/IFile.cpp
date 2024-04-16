@@ -52,6 +52,11 @@ void IFile::loadFromString( const String& /*contents*/, bool /*keepLineEndingCha
     throw std::logic_error( "Method not implemented" );
 }
 
+void IFile::loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter )
+{
+    throw std::logic_error( "Method not implemented" );
+}
+
 bool IFile::exists() const
 {
     return getPath().exists();

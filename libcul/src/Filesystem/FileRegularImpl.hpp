@@ -25,6 +25,7 @@ public:
 protected:
 private:
     void loadFromString( const String& contents, bool keepLineEndingCharacter = false ) override;
+    void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false ) override;
     void changePath( const Path& newPath ) override;
     const Path& getPath() const override;
 

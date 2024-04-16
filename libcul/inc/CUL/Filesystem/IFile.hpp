@@ -39,6 +39,7 @@ public:
     virtual void reload() = 0;
     virtual void load( bool keepLineEndingCharacter = false ) = 0;
     virtual void loadFromString( const String& contents, bool keepLineEndingCharacter = false );
+    virtual void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false );
     virtual void unload() = 0;
 
     TimeConcrete getCreationTime();
