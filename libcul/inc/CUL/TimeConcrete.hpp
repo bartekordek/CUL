@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/ITime.hpp"
-#include "CUL/String.hpp"
+#include "CUL/StrintUTF.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -30,13 +30,13 @@ public:
     ITime* copy() const override;
     ITime& operator=( const ITime& arg ) override;
 
-    const CUL::String& toString();
+    const CUL::StringUTF& toString();
 
     ~TimeConcrete();
 protected:
 private:
     float m_us = 0;
-    CUL::String m_asString;
+    CUL::StringUTF m_asString;
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

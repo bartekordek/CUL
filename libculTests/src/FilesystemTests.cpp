@@ -16,7 +16,7 @@ FilesystemTests::FilesystemTests()
 {
     CUL::LOG::LOG_CONTAINER::getLogger()->log( "FilesystemTests::FilesystemTests()" );
     auto cwd = m_culInterface->getFS()->getCurrentDir();
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "Current dir: " + cwd.string() );
+    CUL::LOG::LOG_CONTAINER::getLogger()->log( "Current dir: " + cwd.getString() );
 }
 
 void FilesystemTests::SetUpTestCase()

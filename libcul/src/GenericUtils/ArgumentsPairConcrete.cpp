@@ -1,6 +1,7 @@
 #include "ArgumentsPairConcrete.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
+#include "CUL/STL_IMPORTS/STD_exception.hpp"
 
 using namespace CUL;
 using namespace GUTILS;
@@ -35,12 +36,12 @@ void ArgumentsPairConcrete::setArgs( const int argc, char** argv )
         {
             NameValue nameValue;
             nameValue.name = argument;
-            if( argument.string()[0] == '-' )
+            if( argument[0] == '-' )
             {
                 skip = true;
-                if( ( i + 1  ) < argc )
+                if( ( i + 1 ) < argc )
                 {
-                    const String value = argv[i+1];
+                    const String value = argv[i + 1];
                     nameValue.value = value;
                 }
             }
@@ -64,13 +65,15 @@ int* ArgumentsPairConcrete::getArgCount()
 
 char** CUL::GUTILS::ArgumentsPairConcrete::getArgsVal()
 {
-    if( 0 == m_argumentsPtrs.size() )
-    {
-        return nullptr;
-    }
-    m_valBegining = const_cast<char*>( m_argumentsPtrs.begin()->cStr() );
-    m_valBeginingTable = &m_valBegining;
-    return m_valBeginingTable;
+    throw std::logic_error( "Not implemented yet." );
+    return nullptr;
+    //if( 0 == m_argumentsPtrs.size() )
+    //{
+    //    return nullptr;
+    //}
+    //m_valBegining = const_cast<char*>( m_argumentsPtrs.begin()->cStr() );
+    //m_valBeginingTable = &m_valBegining;
+    //return m_valBeginingTable;
 }
 
 const IArgumentsList::ArgumentsVec& ArgumentsPairConcrete::getArgsValVec() const

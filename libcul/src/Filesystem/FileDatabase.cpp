@@ -121,19 +121,20 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size, const
 
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\" AND MD5=\"" + md5 + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
-        CUL::String filePath;
-        filePath.setBinary( argv[0] );
-        filePath.convertFromHexToString();
-        const CUL::String size = argv[1];
-        const CUL::String md5 = argv[2];
-        const CUL::String lastMod = argv[3];
-        auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
-        FileInfo fi;
-        fi.FilePath = filePath;
-        fi.MD5 = md5;
-        fi.ModTime = lastMod;
-        fi.Size = size;
-        resulPtr->push_back( fi );
+        throw std::logic_error( "Method not yet implemented" );
+        //CUL::String filePath;
+        //filePath.setBinary( argv[0] );
+        //filePath.convertFromHexToString();
+        //const CUL::String size = argv[1];
+        //const CUL::String md5 = argv[2];
+        //const CUL::String lastMod = argv[3];
+        //auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
+        //FileInfo fi;
+        //fi.FilePath = filePath;
+        //fi.MD5 = md5;
+        //fi.ModTime = lastMod;
+        //fi.Size = size;
+        //resulPtr->push_back( fi );
 
         return 0;
     };
@@ -156,19 +157,20 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
 
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
-        CUL::String filePath;
-        filePath.setBinary( argv[0] );
-        filePath.convertFromHexToString();
-        const CUL::String size = argv[1];
-        const CUL::String md5 = argv[2];
-        const CUL::String lastMod = argv[3];
-        auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
-        FileInfo fi;
-        fi.FilePath = filePath;
-        fi.MD5 = md5;
-        fi.ModTime = lastMod;
-        fi.Size = size;
-        resulPtr->push_back( fi );
+        throw std::logic_error( "Method not yet implemented" );
+        //CUL::String filePath;
+        //filePath.setBinary( argv[0] );
+        //filePath.convertFromHexToString();
+        //const CUL::String size = argv[1];
+        //const CUL::String md5 = argv[2];
+        //const CUL::String lastMod = argv[3];
+        //auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
+        //FileInfo fi;
+        //fi.FilePath = filePath;
+        //fi.MD5 = md5;
+        //fi.ModTime = lastMod;
+        //fi.Size = size;
+        //resulPtr->push_back( fi );
 
         return 0;
     };
@@ -201,12 +203,14 @@ void FileDatabase::loadFilesFromDatabase()
     std::string sqlQuery = std::string( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES" );
     auto callback = []( void* thisPtrValue, int, char** argv, char** )
     {
-        ListAndApi* rd = reinterpret_cast<ListAndApi*>( thisPtrValue );
-        String file;
-        file.setBinary( argv[0] );
-        file.convertFromHexToString();
-        rd->FilesList.push_back( file );
-        ++*rd->m_currentFileIndex;
+
+        //ListAndApi* rd = reinterpret_cast<ListAndApi*>( thisPtrValue );
+        //String file;
+        //file.setBinary( argv[0] );
+        //file.convertFromHexToString();
+        //rd->FilesList.push_back( file );
+        //++*rd->m_currentFileIndex;
+        throw std::logic_error( "Method not yet implemented" );
 
         return 0;
     };
@@ -296,14 +300,15 @@ std::list<CUL::String> FileDatabase::getFilesMatching( const CUL::String& fileSi
 
     char* zErrMsg = nullptr;
     auto callback = [] ( void* voidValue, int argc, char** argv, char** info ){
-        std::list<CUL::String>* resultPtr = reinterpret_cast<std::list<CUL::String>*>( voidValue );
-        CUL::String foundPath( argv[0] );
-        foundPath.convertFromHexToString();
-        resultPtr->push_back( foundPath );
+        //std::list<CUL::String>* resultPtr = reinterpret_cast<std::list<CUL::String>*>( voidValue );
+        //CUL::String foundPath( argv[0] );
+        //foundPath.convertFromHexToString();
+        //resultPtr->push_back( foundPath );
+        throw std::logic_error( "Method not yet implemented" );
         return 0;
     };
 
-    std::string sqlQuerySTR = sqlQuery.string();
+    std::string sqlQuerySTR = sqlQuery.getString();
     int rc = sqlite3_exec( m_db, sqlQuerySTR.c_str(), callback, &result, &zErrMsg );
 
     if( rc != SQLITE_OK )
@@ -387,7 +392,8 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     }
 
     CUL::String filePathNormalized = filePath;
-    filePathNormalized.convertToHexData();
+    throw std::logic_error( "Method not yet implemented" );
+    //filePathNormalized.convertToHexData();
     auto foundFile = getFileInfo( filePath );
     char* zErrMsg = nullptr;
     auto callback = [] ( void*, int, char**, char** ){
@@ -440,46 +446,46 @@ FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
 {
     waitForInit();
     FileDatabase::FileInfo result;
-    String pathInBinary = path;
-    pathInBinary.convertToHexData();
-
-    String sqlQuery =
-        "SELECT * \
-FROM FILES \
-WHERE PATH='" +
-        pathInBinary.getBinary() + "';";
-
-    const char* queryAsCharPtr = sqlQuery.cStr();
-    auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
-        CUL::String path;
-        path.setBinary( argv[0] );
-        auto fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
-        fileInfoFromPtr->Found = true;
-        fileInfoFromPtr->MD5 = argv[2];
-        fileInfoFromPtr->Size = argv[1];
-        fileInfoFromPtr->ModTime = argv[3];
-        path.convertFromHexToString();
-        fileInfoFromPtr->FilePath = path;
-
-        return 0;
-    };
-    char* zErrMsg = nullptr;
-
-    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
-
-    constexpr bool PrintInfo = false;
-    if( PrintInfo  && !result.Found )
-    {
-        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Could not find: " + path );
-        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Used SQL command: " + sqlQuery );
-    }
-
-    if( rc != SQLITE_OK )
-    {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
-    }
-
+//    String pathInBinary = path;
+//    pathInBinary.convertToHexData();
+//
+//    String sqlQuery =
+//        "SELECT * \
+//FROM FILES \
+//WHERE PATH='" +
+//        pathInBinary.getBinary() + "';";
+//
+//    const char* queryAsCharPtr = sqlQuery.cStr();
+//    auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
+//        CUL::String path;
+//        path.setBinary( argv[0] );
+//        auto fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
+//        fileInfoFromPtr->Found = true;
+//        fileInfoFromPtr->MD5 = argv[2];
+//        fileInfoFromPtr->Size = argv[1];
+//        fileInfoFromPtr->ModTime = argv[3];
+//        path.convertFromHexToString();
+//        fileInfoFromPtr->FilePath = path;
+//
+//        return 0;
+//    };
+//    char* zErrMsg = nullptr;
+//
+//    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+//
+//    constexpr bool PrintInfo = false;
+//    if( PrintInfo  && !result.Found )
+//    {
+//        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Could not find: " + path );
+//        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Used SQL command: " + sqlQuery );
+//    }
+//
+//    if( rc != SQLITE_OK )
+//    {
+//        std::string errMessage = zErrMsg;
+//        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+//    }
+    throw std::logic_error( "Method not yet implemented" );
     return result;
 }
 
@@ -498,59 +504,61 @@ void FileDatabase::waitForInit() const
 
 void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
 {
-    CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::removeFileFromDB pathRaw = " + pathRaw );
-    CUL::String path = pathRaw;
-    path.convertToHexData();
+    //CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::removeFileFromDB pathRaw = " + pathRaw );
+    //CUL::String path = pathRaw;
+    //path.convertToHexData();
 
-    std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + path.getBinary() + "';";
+    //std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + path.getBinary() + "';";
 
-    char* zErrMsg = nullptr;
-    auto callback = []( void* thisPtrValue, int argc, char** argv, char** info )
-    {
-        // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
-        return 0;
-    };
+    //char* zErrMsg = nullptr;
+    //auto callback = []( void* thisPtrValue, int argc, char** argv, char** info )
+    //{
+    //    // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
+    //    return 0;
+    //};
 
-    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, this, &zErrMsg );
+    //int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, this, &zErrMsg );
 
-    if( rc != SQLITE_OK )
-    {
-        CUL::Assert::simple( false, "DB ERROR!" );
-    }
+    //if( rc != SQLITE_OK )
+    //{
+    //    CUL::Assert::simple( false, "DB ERROR!" );
+    //}
+    throw std::logic_error( "Method not yet implemented" );
 }
 
 void FileDatabase::removeFilesFromDb( const std::vector<CUL::String>& paths )
 {
-    const size_t pathsSize = paths.size();
+    //const size_t pathsSize = paths.size();
 
-    CUL::String pathsListed = "( '";
-    for( size_t i = 0; i < pathsSize - 1; ++i )
-    {
-        CUL::String pathNormal = paths[i];
+    //CUL::String pathsListed = "( '";
+    //for( size_t i = 0; i < pathsSize - 1; ++i )
+    //{
+    //    CUL::String pathNormal = paths[i];
 
-        auto pathSanitized = pathNormal;
-        pathSanitized.convertToHexData();
-        pathsListed += pathSanitized + "', '";
-    }
-    CUL::String lastPath = paths[pathsSize - 1];
-    lastPath.convertToHexData();
-    pathsListed += lastPath + "')";
+    //    auto pathSanitized = pathNormal;
+    //    pathSanitized.convertToHexData();
+    //    pathsListed += pathSanitized + "', '";
+    //}
+    //CUL::String lastPath = paths[pathsSize - 1];
+    //lastPath.convertToHexData();
+    //pathsListed += lastPath + "')";
 
-    CUL::String sqlQuery = CUL::String( "DELETE FROM FILES WHERE PATH IN " ) + pathsListed + ";";
+    //CUL::String sqlQuery = CUL::String( "DELETE FROM FILES WHERE PATH IN " ) + pathsListed + ";";
 
-    char* zErrMsg = nullptr;
-    auto callback = [] ( void* thisPtrValue, int argc, char** argv, char** info )    {
-        // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
-        return 0;
-    };
+    //char* zErrMsg = nullptr;
+    //auto callback = [] ( void* thisPtrValue, int argc, char** argv, char** info )    {
+    //    // DuplicateFinder::s_instance->callback( NotUsed, argc, argv, azColName );
+    //    return 0;
+    //};
 
-    std::string sqlQuerySTR = sqlQuery.string();
-    int rc = sqlite3_exec( m_db, sqlQuerySTR.c_str(), callback, this, &zErrMsg );
+    //std::string sqlQuerySTR = sqlQuery.getString();
+    //int rc = sqlite3_exec( m_db, sqlQuerySTR.c_str(), callback, this, &zErrMsg );
 
-    if( rc != SQLITE_OK )
-    {
-        CUL::Assert::simple( false, "DB ERROR!" );
-    }
+    //if( rc != SQLITE_OK )
+    //{
+    //    CUL::Assert::simple( false, "DB ERROR!" );
+    //}
+    throw std::logic_error( "Method not yet implemented" );
 }
 
 FileDatabase::~FileDatabase()

@@ -21,13 +21,13 @@ std::vector<Path> FSApiCppFS::ListAllFiles( const Path& directory )
 {
     std::vector<Path> result;
 
-    cppfs::FileHandle dir = cppfs::fs::open( directory.getPath().string() );
+    cppfs::FileHandle dir = cppfs::fs::open( directory.getPath().getString() );
 
     if( dir.isDirectory() )
     {
         for( cppfs::FileIterator it = dir.begin(); it != dir.end(); ++it )
         {
-            std::string path = directory.getPath().string() + "/" + *it;
+            std::string path = directory.getPath().getString() + "/" + *it;
             cppfs::FileHandle file = cppfs::fs::open( path );
 
             if( file.isDirectory() )
@@ -51,13 +51,13 @@ std::vector<Path> FSApiCppFS::ListAllFiles( const Path& directory )
 
 void FSApiCppFS::ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback )
 {
-    cppfs::FileHandle dir = cppfs::fs::open( directory.getPath().string() );
+    cppfs::FileHandle dir = cppfs::fs::open( directory.getPath().getString() );
 
     if( dir.isDirectory() )
     {
         for( cppfs::FileIterator it = dir.begin(); it != dir.end(); ++it )
         {
-            std::string path = directory.getPath().string() + "/" + *it;
+            std::string path = directory.getPath().getString() + "/" + *it;
             cppfs::FileHandle file = cppfs::fs::open( path );
 
             if( file.isDirectory() )
@@ -79,7 +79,7 @@ void FSApiCppFS::ListAllFiles( const Path& directory, std::function<void( const 
 
 bool FSApiCppFS::isDirectory(const Path& path)
 {
-    cppfs::FileHandle file = cppfs::fs::open( path.getPath().string() );
+    cppfs::FileHandle file = cppfs::fs::open( path.getPath().getString() );
 
     bool result = file.isDirectory();
     return result;
@@ -87,14 +87,14 @@ bool FSApiCppFS::isDirectory(const Path& path)
 
 bool FSApiCppFS::fileExist(const Path& path)
 {
-    cppfs::FileHandle file = cppfs::fs::open( path.getPath().string() );
+    cppfs::FileHandle file = cppfs::fs::open( path.getPath().getString() );
     bool result = file.exists();
     return result;
 }
 
 TimeConcrete FSApiCppFS::getLastModificationTime(const Path& path)
 {
-    cppfs::FileHandle file = cppfs::fs::open( path.getPath().string() );
+    cppfs::FileHandle file = cppfs::fs::open( path.getPath().getString() );
     TimeConcrete tc;
     tc.setTimeUs( file.modificationTime() );
     return tc;

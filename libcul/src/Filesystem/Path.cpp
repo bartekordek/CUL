@@ -10,9 +10,9 @@
 using namespace CUL;
 using namespace FS;
 
-String Path::extensionSeparator = String( "." );
+StringUTF Path::extensionSeparator = StringUTF( "." );
 
-const String& Path::getDirSeparator()
+const StringUTF& Path::getDirSeparator()
 {
     return extensionSeparator;
 }
@@ -84,7 +84,7 @@ Path& Path::operator=( Path&& path ) noexcept
     return *this;
 }
 
-Path& Path::operator=( const String& path )
+Path& Path::operator=( const StringUTF& path )
 {
     if( m_fullPath != path )
     {
@@ -96,23 +96,17 @@ Path& Path::operator=( const String& path )
 
 Path& Path::operator=( const char* r )
 {
-    String right = r;
-    if( m_fullPath != right )
-    {
-        m_fullPath = right;
-        preparePaths();
-    }
+    m_fullPath = r;
+    preparePaths();
+
     return *this;
 }
 
 Path& Path::operator=( const std::string& rhv )
 {
-    String right = rhv;
-    if( m_fullPath != right )
-    {
-        m_fullPath = right;
-        preparePaths();
-    }
+    m_fullPath = rhv;
+    preparePaths();
+
     return *this;
 }
 
@@ -123,7 +117,7 @@ Path& Path::operator+=( const Path& rhv )
     return *this;
 }
 
-Path& Path::operator+=( const String& rhv )
+Path& Path::operator+=( const StringUTF& rhv )
 {
     m_fullPath = m_fullPath + rhv;
     preparePaths();
@@ -132,7 +126,7 @@ Path& Path::operator+=( const String& rhv )
 
 Path& Path::operator+=( const std::string& rhv )
 {
-    m_fullPath = m_fullPath + rhv;
+    m_fullPath = m_fullPath + StringUTF(rhv);
     preparePaths();
     return *this;
 }
@@ -144,7 +138,7 @@ Path Path::operator+( const Path & rhv )
     return result;
 }
 
-Path Path::operator+( const String& rhv )
+Path Path::operator+( const StringUTF& rhv )
 {
     Path result = *this;
     result += rhv;
@@ -158,22 +152,22 @@ Path Path::operator+( const char* rhv )
     return result;
 }
 
-const String& Path::getPath() const
+const StringUTF& Path::getPath() const
 {
     return m_fullPath;
 }
 
-const String& Path::getExtension() const
+const StringUTF& Path::getExtension() const
 {
     return m_extension;
 }
 
-const String& Path::getBaseName() const
+const StringUTF& Path::getBaseName() const
 {
     return m_baseName;
 }
 
-const String& Path::getDir() const
+const StringUTF& Path::getDir() const
 {
     return m_dir;
 }
@@ -182,7 +176,7 @@ uint64_t Path::getFileSize() const
 {
     auto calculateSize = [this] (){
 #ifdef _MSC_VER
-        FsPath file( m_fullPath.wstring() );
+        FsPath file( m_fullPath );
 #else
         FsPath file( m_fullPath.cStr() );
 #endif
@@ -347,11 +341,7 @@ void Path::normalizePaths()
 
 void Path::normalizePath( String& path )
 {
-#ifdef _MSC_VER
-    path.replace( std::wstring( L"\\" ), std::wstring( L"/" ) );
-#else
-    path.replace( "\\", "/" );
-#endif
+    path.replaceAll( "\\", "/" );
 }
 
 bool Path::exists() const

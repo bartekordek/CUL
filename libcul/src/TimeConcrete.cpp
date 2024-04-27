@@ -87,7 +87,7 @@ ITime& TimeConcrete::operator=( const ITime& arg )
     return *this;
 }
 
-const CUL::String& TimeConcrete::toString()
+const CUL::StringUTF& TimeConcrete::toString()
 {
     m_asString = m_us;
     return m_asString;

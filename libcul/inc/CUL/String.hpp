@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/StringBuffers.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
@@ -17,14 +17,6 @@ class StringImpl;
 class CULLib_API String final
 {
 public:
-#ifdef _MSC_VER
-    using UnderlyingType = std::wstring;
-    using UnderlyingChar = wchar_t;
-#else
-    using UnderlyingType = std::string;
-    using UnderlyingChar = char;
-#endif
-
     explicit String() noexcept;
     String( const String& arg ) noexcept;
     String( String&& arg ) noexcept;
@@ -86,36 +78,34 @@ public:
 
     bool operator()( const String& v1, const String& v2 ) const;
 
-    size_t find( const String& arg ) const;
-    String substr( size_t pos = 0, size_t len = UnderlyingType::npos ) const;
+    std::int32_t find( const String& arg ) const;
+    String substr( std::int32_t pos = 0, std::int32_t len = -1 ) const;
 
     void toLower();
     String toLowerR()const;
     void toUpper();
 
+    void resize( std::int32_t newSize );
+
     bool contains( const String& inputString ) const;
     bool contains( const char* inputString ) const;
 
-    void replace( const String& inWhat, const String& inFor );
+    bool replaceAll( const String& inWhat, const String& inFor );
+    bool replace( const String& inWhat, const String& inFor );
     void replace( const char inWhat, const char inFor );
     void replace( const wchar_t inWhat, const wchar_t inFor );
     void removeAll( const char inWhat );
 
-    bool equals( const char* arg ) const;
-    bool equals( const std::string& arg ) const;
-    bool equals( const String& arg ) const;
-
-    bool doesEndWith( const UnderlyingType& end ) const;
-
-    std::string string() const;
+    bool doesEndWith( const char* end ) const;
 
     std::wstring wstring() const;
 
-    const UnderlyingType& getString() const;
+    std::string getString() const;
 
+    const char* getChar() const;
+    char* getChar();
     const char* cStr() const;
-    const wchar_t* wCstr() const;
-    const UnderlyingChar* getChar() const;
+    char operator[]( std::size_t index ) const;
 
     float toFloat() const;
     double toDouble() const;
@@ -125,36 +115,34 @@ public:
     std::uint64_t toUInt() const;
     bool toBool() const;
 
-
-    Length length() const;
-    size_t size() const;
-    Length capacity() const;
+    std::int32_t size() const;
     void clear();
     bool empty() const;
 
-    void convertToHexData();
-    void convertFromHexToString();
     void setBinary( const char* value );
     const std::string getBinary() const;
 
     const std::vector<String> split( const String& delimiter ) const;
+    constexpr static std::int32_t npos = -1;
 
     ~String();
 
 protected:
 private:
-    UnderlyingType m_value;
-    std::string m_binaryValue;
-    std::string m_fallback;
-    bool m_isBinary = false;
-    mutable std::string m_temp;
+    void setupValue();
+    IStringBuffer& getCurrentBuffer();
+    const IStringBuffer& getCurrentBuffer() const;
+    bool m_usingSSO = true;
+    StringBufforStatic m_sso;
+    StringBufforDynamic m_dyn;
+    const char* m_value = nullptr;
 };
 
 struct CULLib_API StringHash
 {
     std::size_t operator()( const String& s ) const noexcept
     {
-        return std::hash<std::string>{}( s.string() );
+        return std::hash<std::string>{}( s.getString() );
     }
 };
 

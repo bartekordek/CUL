@@ -99,18 +99,13 @@ void CSVFile::parseLine( const String& line )
 {
     Row inRow;//TODO: there is a problem with parsing.
     auto lineCp = line;//huj
-    size_t delimeterPos = line.find( m_delimeter );
+    std::int32_t delimeterPos = line.find( m_delimeter );
     String cell;
-    while( delimeterPos != std::string::npos )
+    while( delimeterPos != -1 )
     {
-        size_t cellEnd = m_cellsContainQuotationMarks ?
-            delimeterPos - 2 : delimeterPos;
-
-        size_t cellStart = m_cellsContainQuotationMarks ?
-            static_cast<size_t>( 1 ) : static_cast<size_t>( 0 );
-
-        size_t newCellOffset = m_cellsContainQuotationMarks ?
-            static_cast<size_t>( 3 ) : static_cast<size_t>( 1 );
+        std::int32_t cellEnd = m_cellsContainQuotationMarks ? delimeterPos - 2 : delimeterPos;
+        std::int32_t cellStart = m_cellsContainQuotationMarks ? 1 : 0;
+        std::int32_t newCellOffset = m_cellsContainQuotationMarks ? 3 : 1;
 
         cell = lineCp.substr( cellStart, cellEnd );
         inRow.push_back( cell );

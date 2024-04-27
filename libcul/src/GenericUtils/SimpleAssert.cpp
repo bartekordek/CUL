@@ -38,6 +38,6 @@ void Assert::simple( bool val, const String& msg, LOG::ILogger* loggerIn, bool g
         std::cerr << stackTrace;
     }
 
-    std::cerr << msg.string() << "\n";
+    std::cerr << msg.getString() << "\n";
     BOOST_ASSERT_MSG( val, msg.cStr() );
 }

@@ -77,7 +77,8 @@ std::vector<Path> FSApiFS::ListAllFiles( const Path& directory )
     std::vector<Path> result;
 
 
-    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
+    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().getString(),
+                                                                            std::filesystem::directory_options::skip_permission_denied ) )
     {
         const std::filesystem::path entryPath = entry.path();
 
@@ -98,35 +99,37 @@ std::vector<Path> FSApiFS::ListAllFiles( const Path& directory )
 
 void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback )
 {
-    setlocale( 0, "Polish" );
-    std::vector<Path> result;
+    throw std::logic_error( "Not implemented yet." );
 
-    const auto dir = directory.getPath().string();
-    std::error_code errorCode;
-    for( const auto& entry :
-         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, errorCode ) )
-    {
-
-        if( errorCode.value() != 0 )
-        {
-#if defined(CUL_COMPILER_MSVC)
-            DebugBreak();
-#endif
-        }
-
-        const std::filesystem::path entryPath = entry.path();
-        String::UnderlyingType tempString = entryPath;
-
-#ifdef _MSC_VER
-        Path culPath = entryPath.wstring();
-#else
-        Path culPath = entryPath.string();
-#endif
-        bool isDir = isDirectoryImpl( entryPath );
-        culPath.setIsDir( isDir );
-
-        callback( culPath );
-    }
+//    setlocale( 0, "Polish" );
+//    std::vector<Path> result;
+//
+//    const auto dir = directory.getPath().getString();
+//    std::error_code errorCode;
+//    for( const auto& entry :
+//         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, errorCode ) )
+//    {
+//
+//        if( errorCode.value() != 0 )
+//        {
+//#if defined(CUL_COMPILER_MSVC)
+//            DebugBreak();
+//#endif
+//        }
+//
+//        const std::filesystem::path entryPath = entry.path();
+//        String::UnderlyingType tempString = entryPath;
+//
+//#ifdef _MSC_VER
+//        Path culPath = entryPath.wstring();
+//#else
+//        Path culPath = entryPath.string();
+//#endif
+//        bool isDir = isDirectoryImpl( entryPath );
+//        culPath.setIsDir( isDir );
+//
+//        callback( culPath );
+//    }
 }
 
 TimeConcrete FSApiFS::getLastModificationTime( const Path& path )

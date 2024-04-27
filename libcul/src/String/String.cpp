@@ -1,27 +1,36 @@
 #include "CUL/String.hpp"
 
 #include "Filesystem/FSUtils.hpp"
+#include "CUL/StringUtil.hpp"
 
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 #include "CUL/STL_IMPORTS/STD_cmath.hpp"
-
+#include "CUL/STL_IMPORTS/STD_exception.hpp"
 
 using namespace CUL;
 
 String::String() noexcept
 {
+    setupValue();
 }
 
 String::String( const String& arg ) noexcept :
-    m_value( arg.m_value )
+    m_sso( arg.m_sso ),
+    m_dyn( arg.m_dyn )
 {
+    setupValue();
 }
 
 String::String( String&& arg ) noexcept :
-    m_value( std::move( arg.m_value ) )
+    m_sso( std::move( arg.m_sso ) ),
+    m_dyn( std::move( arg.m_dyn ) )
 {
+    arg.m_sso.clear();
+    arg.m_dyn.clear();
+
+    setupValue();
 }
 
 String::String( const bool arg ) noexcept
@@ -51,11 +60,17 @@ String::String( const std::string& arg ) noexcept
 
 String::String( const std::wstring& arg ) noexcept
 {
-#ifdef _MSC_VER
-    m_value = arg;
-#else
-    m_value = FS::ws2s(arg);
-#endif
+    const std::string result = StringUtil::wcharToChar(arg, 0);
+    m_usingSSO = result.size() <= SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = result.c_str();
+    }
+    else
+    {
+        m_dyn = result.c_str();
+    }
+    setupValue();
 }
 
 String::String( float arg ) noexcept
@@ -88,12 +103,14 @@ String::String( uint64_t arg ) noexcept
     *this = arg;
 }
 
-
 String& String::operator=( const String& arg )
 {
     if( this != &arg )
     {
-        m_value = arg.m_value;
+        m_sso = arg.m_sso;
+        m_dyn = arg.m_dyn;
+        m_usingSSO = arg.m_usingSSO;
+        setupValue();
     }
     return *this;
 }
@@ -102,41 +119,53 @@ String& String::operator=( String&& arg ) noexcept
 {
     if( this != &arg )
     {
-        m_value = std::move( arg.m_value );
+        m_sso = std::move( arg.m_sso );
+        arg.m_sso.clear();
+
+        m_dyn = std::move( arg.m_dyn );
+        arg.m_dyn.clear();
+
+        m_usingSSO = arg.m_usingSSO;
+        setupValue();
     }
     return *this;
 }
 
 String& String::operator=( const bool arg )
 {
-    if( true == arg )
-    {
-        *this = "true";
-    }
-    else
-    {
-        *this = "false";
-    }
+    *this = arg ? "true" : "false";
     return *this;
 }
 
 String& String::operator=( const char* arg )
 {
-#ifdef _MSC_VER
-    m_value = FS::s2ws( arg );
-#else
-    m_value = arg;
-#endif
+    const std::int32_t stringLength = StringUtil::getLength( arg );
+    m_usingSSO = stringLength < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = arg;
+    }
+    else
+    {
+        m_dyn = arg;
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( const wchar_t* arg )
 {
-#ifdef _MSC_VER
-    m_value = arg;
-#else
-    m_value = FS::ws2s( arg );
-#endif
+    const std::string stringLength = StringUtil::wcharToChar( std::wstring( arg ), 0u );
+    m_usingSSO = stringLength.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = stringLength.c_str();
+    }
+    else
+    {
+        m_dyn = stringLength.c_str();
+    }
+    setupValue();
     return *this;
 }
 
@@ -159,12 +188,7 @@ String& String::operator=( unsigned char* arg )
         tmp[i] = static_cast<char>( arg[i] );
     }
 
-#ifdef _MSC_VER
-    m_value = FS::s2ws(tmp);
-#else
-    m_value = tmp;
-#endif
-
+    setupValue();
     return *this;
 }
 #ifdef _MSC_VER
@@ -173,105 +197,180 @@ String& String::operator=( unsigned char* arg )
 
 String& String::operator=( const std::string& arg )
 {
-#ifdef _MSC_VER
-    m_value = FS::s2ws( arg );
-#else
-    m_value = arg;
-#endif
-    removeAll('\0');
+    m_usingSSO = arg.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = arg.c_str();
+    }
+    else
+    {
+        m_dyn = arg.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( const std::wstring& arg )
 {
-#ifdef _MSC_VER
-    m_value = arg;
-#else
-    m_value = FS::ws2s( arg );
-#endif
-    removeAll( '\0' );
+    const std::string result = StringUtil::wcharToChar( arg, 0u );
+    m_usingSSO = result.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = result.c_str();
+    }
+    else
+    {
+        m_dyn = result.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( float arg )
 {
-#ifdef _MSC_VER
-    m_value = std::to_wstring( arg );
-#else
-    m_value = std::to_string( arg );
-#endif
-
+    const std::string converted = StringUtil::toChar<float>(arg);
+    m_usingSSO = converted.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = converted.c_str();
+    }
+    else
+    {
+        m_dyn = converted.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( double arg )
 {
-#ifdef _MSC_VER
-    m_value = std::to_wstring( arg );
-#else
-    m_value = std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<double>( arg );
+    m_usingSSO = converted.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = converted.c_str();
+    }
+    else
+    {
+        m_dyn = converted.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( int arg )
 {
-#ifdef _MSC_VER
-    m_value = std::to_wstring( arg );
-#else
-    m_value = std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<int>( arg );
+    m_usingSSO = converted.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = converted.c_str();
+    }
+    else
+    {
+        m_dyn = converted.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( unsigned arg )
 {
-#ifdef _MSC_VER
-    m_value = std::to_wstring( arg );
-#else
-    m_value = std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<unsigned>( arg );
+    m_usingSSO = converted.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = converted.c_str();
+    }
+    else
+    {
+        m_dyn = converted.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( int64_t arg )
 {
-#ifdef _MSC_VER
-    m_value = std::to_wstring( arg );
-#else
-    m_value = std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<int64_t>( arg );
+    m_usingSSO = converted.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = converted.c_str();
+    }
+    else
+    {
+        m_dyn = converted.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String& String::operator=( uint64_t arg )
 {
-#ifdef _MSC_VER
-    m_value = std::to_wstring( arg );
-#else
-    m_value = std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<uint64_t>( arg );
+    m_usingSSO = converted.size() < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso = converted.c_str();
+    }
+    else
+    {
+        m_dyn = converted.c_str();
+    }
+    setupValue();
     return *this;
 }
 
 String String::operator+( const String& arg ) const
 {
     String result( *this );
-    result.removeAll( '\0' );
-    result.m_value = result.m_value + arg.m_value;
-    result.removeAll( '\0' );
+    result += arg;
+
     return result;
 }
 
 String& String::operator+=( const String& arg )
 {
-    m_value += arg.m_value;
+    const std::int32_t resultSize = size() + arg.size();
+    const bool wasUsingSSO = m_usingSSO;
+
+    m_usingSSO = resultSize < SSO_MaxSize;
+    if( m_usingSSO )
+    {
+        m_sso.Add( arg.getChar() );
+    }
+    else
+    {
+        if( wasUsingSSO )
+        {
+            m_dyn = m_sso.getChar();
+            m_sso.clear();
+        }
+
+        m_dyn.Add( arg.getChar() );
+    }
+    setupValue();
     return *this;
 }
 
 bool String::operator==( const String& arg ) const
 {
-    return m_value == arg.m_value;
+    if( this == &arg )
+    {
+        return true;
+    }
+
+    if( arg.m_dyn.empty() == false && m_dyn.empty() == false )
+    {
+        return arg.m_dyn == m_dyn;
+    }
+    else if( arg.m_dyn.empty() == true && m_dyn.empty() == true )
+    {
+        return arg.m_sso == m_sso;
+    }
+
+    return false;
 }
 
 bool String::operator!=( const String& arg ) const
@@ -281,11 +380,7 @@ bool String::operator!=( const String& arg ) const
 
 bool String::operator==( const std::string& arg ) const
 {
-#ifdef _MSC_VER
-    return m_value == FS::s2ws( arg );
-#else
-    return m_value == arg;
-#endif
+    return this->operator==(arg.c_str());
 }
 
 bool String::operator!=( const std::string& arg ) const
@@ -295,20 +390,17 @@ bool String::operator!=( const std::string& arg ) const
 
 bool String::operator==( const char* arg ) const
 {
-#ifdef _MSC_VER
-    return m_value == FS::s2ws( arg );
-#else
-    return m_value == arg;
-#endif
+    if( m_usingSSO )
+    {
+        return m_sso == arg;
+    }
+
+    return m_dyn == arg;
 }
 
 bool String::operator!=( const char* arg ) const
 {
-#ifdef _MSC_VER
-    return m_value != FS::s2ws( arg );
-#else
-    return m_value != arg;
-#endif
+    return !this->operator==( arg );
 }
 
 bool String::operator!=( int arg ) const
@@ -318,11 +410,8 @@ bool String::operator!=( int arg ) const
 
 bool String::operator==( int arg ) const
 {
-#ifdef _MSC_VER
-    return m_value == std::to_wstring( arg );
-#else
-    return m_value == std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<int>(arg);
+    return this->operator==( converted );
 }
 
 bool String::operator!=( unsigned int arg ) const
@@ -332,11 +421,8 @@ bool String::operator!=( unsigned int arg ) const
 
 bool String::operator==( unsigned int arg ) const
 {
-#ifdef _MSC_VER
-    return m_value == std::to_wstring( arg );
-#else
-    return m_value == std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<unsigned int>( arg );
+    return this->operator==( converted );
 }
 
 bool String::operator!=( float arg ) const
@@ -346,11 +432,8 @@ bool String::operator!=( float arg ) const
 
 bool String::operator==( float arg ) const
 {
-#ifdef _MSC_VER
-    return m_value == std::to_wstring( arg );
-#else
-    return m_value == std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<float>( arg );
+    return this->operator==( converted );
 }
 
 bool String::operator!=( double arg ) const
@@ -360,21 +443,33 @@ bool String::operator!=( double arg ) const
 
 bool String::operator==( double arg ) const
 {
-#ifdef _MSC_VER
-    return m_value == std::to_wstring( arg );
-#else
-    return m_value == std::to_string( arg );
-#endif
+    const std::string converted = StringUtil::toChar<double>( arg );
+    return this->operator==( converted );
 }
 
 bool String::operator<( const String& arg ) const
 {
-    return m_value < arg.m_value;
+    const char* left = getChar();
+    const char* right = arg.getChar();
+    const int result = std::strcmp( left, right );
+    const std::string leftStr = left;
+    const std::string rightStr = right;
+    const bool r1 = leftStr < rightStr;
+    const bool resultBool = result < 0;
+    return resultBool;
 }
 
 bool String::operator>( const String& arg ) const
 {
-    return m_value > arg.m_value;
+    const char* left = getChar();
+    const char* right = arg.getChar();
+    const int result = std::strcmp( left, right );
+
+    const std::string leftStr = left;
+    const std::string rightStr = right;
+    const bool r1 = leftStr > rightStr;
+    const bool resultBool = result > 0;
+    return resultBool;
 }
 
 bool String::operator()( const String& v1, const String& v2 ) const
@@ -382,32 +477,101 @@ bool String::operator()( const String& v1, const String& v2 ) const
     return v1 == v2;
 }
 
-size_t String::find( const String& arg ) const
+std::int32_t strFind( const char* source, std::int32_t sourceLen, const char* phrase, std::int32_t phraseLen )
 {
-    return m_value.find(arg.m_value);
+    if( sourceLen < phraseLen )
+    {
+        return -1;
+    }
+
+    if( sourceLen == 0 || phraseLen == 0 )
+    {
+        return -1;
+    }
+
+    for( std::int32_t i = 0; i < sourceLen; ++i )
+    {
+        if( source[i] == phrase[0] )
+        {
+            if( phraseLen == 1 )
+            {
+                return i;
+            }
+
+            if( phraseLen > 1 )
+            {
+                if( i + phraseLen > sourceLen )
+                {
+                    return -1;
+                }
+
+                for( std::int32_t j = 0; j < phraseLen; ++j )
+                {
+                    const std::int32_t sourceIdx = i + j;
+                    if( source[sourceIdx] != phrase[j] )
+                    {
+                        break;
+                    }
+                }
+                return i;
+            }
+            return -1;
+        }
+    }
+
+    return -1;
 }
 
-String String::substr( size_t pos, size_t len ) const
+std::int32_t String::find( const String& arg ) const
 {
-    auto result = m_value.substr( pos, len );
-    String strResult = result;
-    return strResult;
+    const std::int32_t currentSize = size();
+    const std::int32_t argSize = arg.size();
+
+    if( argSize > currentSize )
+    {
+        return -1;
+    }
+
+    const char* argChar = arg.getChar();
+    return strFind( getChar(), currentSize, argChar, argSize );
+}
+
+String String::substr( std::int32_t pos, std::int32_t len ) const
+{
+    String result;
+    const std::int32_t currentLength = size();
+    if( pos + len > currentLength )
+    {
+        return result;
+    }
+
+    const std::int32_t newLen = len == -1 ? currentLength - pos : len;
+    const std::int32_t max = len == -1 ? currentLength : pos + len;
+    result.resize( newLen );
+
+    const IStringBuffer& buff = getCurrentBuffer();
+    std::int32_t resultIdx = 0;
+    for( std::int32_t i = pos; i < max; ++i )
+    {
+        result.getCurrentBuffer()[resultIdx] = buff[i];
+        ++resultIdx;
+    }
+    return result;
 }
 
 void String::toLower()
 {
-#if _MSC_VER
-#pragma warning( push )
-#pragma warning( disable:4244 )
-#endif
-    std::transform(
-        m_value.begin(),
-        m_value.end(),
-        m_value.begin(),
-        ::tolower );
-#if _MSC_VER
-#pragma warning( pop )
-#endif
+    if( empty() )
+    {
+        return;
+    }
+
+    const std::int32_t currSize = size();
+    char* data = getChar();
+    for( std::int32_t i = 0; i < currSize; ++i )
+    {
+        data[i] = (char)tolower(data[i]);
+    }
 }
 
 String String::toLowerR() const
@@ -421,315 +585,305 @@ String String::toLowerR() const
 
 void String::toUpper()
 {
-#if _MSC_VER
-#pragma warning( push )
-#pragma warning( disable:4244 )
-#endif
-    std::transform(
-        m_value.begin(),
-        m_value.end(),
-        m_value.begin(),
-        ::toupper );
-#if _MSC_VER
-#pragma warning( pop )
-#endif
-}
-
-bool String::contains( const String& inputString ) const
-{
-    return m_value.find( inputString.m_value ) != UnderlyingType::npos;
-}
-
-bool String::contains( const char* inputString ) const
-{
-#ifdef _MSC_VER
-    return m_value.find( FS::s2ws( inputString ) ) != UnderlyingType::npos;
-#else
-    return m_value.find( inputString ) != UnderlyingType::npos;
-#endif
-}
-
-void String::replace( const String& inWhat, const String& inFor )
-{
-    if( m_value.empty() )
+    if( empty() )
     {
         return;
     }
 
-    auto& str = m_value;
-    const UnderlyingType& from = inWhat.getString();
-    const UnderlyingType& to = inFor.getString();
-    size_t start_pos = 0;
-    while( ( start_pos = str.find( from, start_pos ) ) != std::string::npos )
+    const std::int32_t currSize = size();
+    char* data = getChar();
+    for( std::int32_t i = 0; i < currSize; ++i )
     {
-        str.replace( start_pos, from.length(), to );
-        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+        data[i] = (char)toupper( data[i] );
     }
 }
 
-void String::replace( const char inWhat, const char inFor )
+void String::resize( std::int32_t newSize )
 {
-    if( m_value.empty() )
+    if( m_usingSSO )
     {
-        return;
+        if( newSize > SSO_MaxSize )
+        {
+            m_dyn = m_sso.getChar();
+            m_dyn.resize(newSize);
+        }
+        else
+        {
+            m_sso.resize( newSize );
+        }
+    }
+    else
+    {
+        m_dyn.resize( newSize );
+    }
+    setupValue();
+}
+
+bool String::contains( const String& /*inputString*/ ) const
+{
+    throw std::logic_error( "Not implemented yet." );
+    //return m_value.find( inputString.m_value ) != UnderlyingType::npos;
+    return false;
+}
+
+bool String::contains( const char* /*inputString*/ ) const
+{
+    throw std::logic_error( "Not implemented yet." );
+    //#ifdef _MSC_VER
+//    return m_value.find( FS::s2ws( inputString ) ) != UnderlyingType::npos;
+//#else
+//    return m_value.find( inputString ) != UnderlyingType::npos;
+//#endif
+    return false;
+}
+
+bool String::replaceAll( const String& inWhat, const String& inFor )
+{
+    while( replace( inWhat, inFor ) )
+    {
+    }
+    return true;
+}
+
+bool String::replace( const String& inWhat, const String& inFor )
+{
+    std::int32_t idx = find( inWhat );
+
+    if( idx == -1 )
+    {
+        return false;
     }
 
-    auto cInWhat = static_cast<UnderlyingChar>( inWhat );
-    auto cInFor = static_cast<UnderlyingChar>( inFor );
+    const char* inForCstr = inFor.getChar();
+    const std::int32_t whatCstrSize = inWhat.size();
+    const std::int32_t currSize = size();
+    const std::int32_t inForSize = inFor.size();
 
-    size_t inWhatPosition = m_value.find( cInWhat );
-    while( UnderlyingType::npos != inWhatPosition )
+    const std::int32_t sizeDiff = inForSize - whatCstrSize;
+    const std::int32_t newSize = currSize + sizeDiff;
+
+    if( sizeDiff > 0 )
     {
-        m_value.replace( inWhatPosition, 1, &cInFor );
-        inWhatPosition = m_value.find( cInWhat );
+        if( m_usingSSO )
+        {
+            if( currSize + sizeDiff > SSO_MaxSize )
+            {
+                m_dyn = m_sso.getChar();
+                m_sso.clear();
+            }
+        }
     }
+
+    char* charValue = getChar();
+    if( sizeDiff > 0 )
+    {
+        std::int32_t replaceStart = idx + 1;
+        for( std::int32_t i = newSize - 1; i >= replaceStart; --i )
+        {
+            charValue[i] = charValue[i-1];
+        }
+
+        const std::int32_t lastOne = idx + inForSize;
+        std::int32_t j = 0;
+        for( std::int32_t i = idx; i < lastOne; ++i, ++j )
+        {
+            charValue[i] = inForCstr[j];
+        }
+    }
+    else if( sizeDiff == 0 )
+    {
+        std::int32_t replaceStart = idx;
+        std::int32_t forIdx = 0;
+        for( std::int32_t i = replaceStart; (i < newSize) && (forIdx < inForSize); ++i )
+        {
+            charValue[i] = inForCstr[forIdx];
+            ++forIdx;
+        }
+    }
+    else if( sizeDiff < 0 )
+    {
+        throw std::logic_error( "Not implemented yet." );
+    }
+
+    setupValue();
+    return true;
+}
+
+void String::replace( const char /*inWhat*/, const char /*inFor*/ )
+{
+    throw std::logic_error( "Not implemented yet." );
+    //if( m_value.empty() )
+    //{
+    //    return;
+    //}
+
+    //auto cInWhat = static_cast<UnderlyingChar>( inWhat );
+    //auto cInFor = static_cast<UnderlyingChar>( inFor );
+
+    //size_t inWhatPosition = m_value.find( cInWhat );
+    //while( UnderlyingType::npos != inWhatPosition )
+    //{
+    //    m_value.replace( inWhatPosition, 1, &cInFor );
+    //    inWhatPosition = m_value.find( cInWhat );
+    //}
 }
 
 void String::replace( const wchar_t inWhat, const wchar_t inFor )
 {
-    if( m_value.empty() )
-    {
-        return;
-    }
-
-#ifdef _MSC_VER
-    wchar_t cInWhat = inWhat;
-    wchar_t cInFor = inFor;
-#else
-    char cInWhat = inWhat;
-    char cInFor = inFor;
-#endif
-    size_t inWhatPosition = m_value.find( cInWhat );
-    while( UnderlyingType::npos != inWhatPosition )
-    {
-        m_value.replace( inWhatPosition, 1, &cInFor );
-        inWhatPosition = m_value.find( inWhat );
-    }
+    throw std::logic_error( "Not implemented yet." );
+    //    if( m_value.empty() )
+//    {
+//        return;
+//    }
+//
+//#ifdef _MSC_VER
+//    wchar_t cInWhat = inWhat;
+//    wchar_t cInFor = inFor;
+//#else
+//    char cInWhat = inWhat;
+//    char cInFor = inFor;
+//#endif
+//    size_t inWhatPosition = m_value.find( cInWhat );
+//    while( UnderlyingType::npos != inWhatPosition )
+//    {
+//        m_value.replace( inWhatPosition, 1, &cInFor );
+//        inWhatPosition = m_value.find( inWhat );
+//    }
 }
 
 void String::removeAll( const char inWhat )
 {
-    UnderlyingChar inWhatChar = ( UnderlyingChar ) inWhat;
-    auto inWhatPosition = m_value.find( inWhatChar );
-    while( std::string::npos != inWhatPosition )
-    {
-        m_value.erase(inWhatPosition);
-        inWhatPosition = m_value.find( inWhatChar );
-    }
+    throw std::logic_error( "Not implemented yet." );
+    //UnderlyingChar inWhatChar = ( UnderlyingChar ) inWhat;
+    //auto inWhatPosition = m_value.find( inWhatChar );
+    //while( std::string::npos != inWhatPosition )
+    //{
+    //    m_value.erase(inWhatPosition);
+    //    inWhatPosition = m_value.find( inWhatChar );
+    //}
 }
 
-bool String::equals( const char* arg ) const
+
+bool String::doesEndWith( const char* end ) const
 {
-    return *this == arg;
-}
-
-bool String::equals( const std::string& arg ) const
-{
-    return *this == arg;
-}
-
-bool String::equals( const String& arg ) const
-{
-    return m_value == arg.m_value;
-}
-
-bool String::doesEndWith( const UnderlyingType& end ) const
-{
-    size_t it = m_value.find(end);
-
-    if( it == UnderlyingType::npos )
-    {
-        return false;
-    }
-
-    int valueSize = (int)m_value.size();
-    int endSize = (int)end.size();
-    int diff = valueSize - endSize;
-
-    if( valueSize < endSize )
-    {
-        return false;
-    }
-
-    for( int i = valueSize; i >= 0; --i )
-    {
-        if( m_value[(size_t)i] != end[(size_t)( i - diff )] )
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-std::string String::string() const
-{
-#ifdef _MSC_VER
-    return FS::ws2s(m_value);
-#else
-    return m_value;
-#endif
+    throw std::logic_error( "Not implemented yet." );
+    const std::size_t endingLength = StringUtil::getLength( end );
+    return false;
 }
 
 std::wstring String::wstring() const
 {
-#ifdef _MSC_VER
-    return m_value;
-#else
-    return FS::s2ws( m_value );
-#endif
+    const char* value = getChar();
+    return StringUtil::charToWchar(std::string(value), 0);
 }
 
-const String::UnderlyingType& String::getString() const
+std::string String::getString() const
 {
-    return m_value;
+    const std::string result = getChar();
+    return result;
 }
 
 const char* String::cStr() const
 {
-#ifdef _MSC_VER
-    m_temp = FS::ws2s( m_value );
-
-    return m_temp.c_str();
-#else
-    return m_value.c_str();
-#endif
+    return getChar();
 }
 
-const wchar_t* String::wCstr() const
+char String::operator[]( std::size_t index ) const
 {
-#ifdef _MSC_VER
-    return m_value.c_str();
-#else
-    std::wstring resultString = FS::s2ws(m_value);
-    wchar_t* result = new wchar_t[resultString.size()];
-    mbstowcs(result, m_value.c_str(), resultString.size());
-    return result;
-#endif
+    if( index >= size() )
+    {
+        throw std::logic_error( "Out of bounds." );
+        return ' ';
+    }
+
+    return getChar()[index];
 }
 
-const String::UnderlyingChar* String::getChar() const
+char* String::getChar()
 {
-    return m_value.c_str();
+    if( m_usingSSO )
+    {
+        return m_sso.getChar();
+    }
+
+    return m_dyn.getChar();
+}
+
+const char* String::getChar() const
+{
+    if( m_usingSSO )
+    {
+        return m_sso.getChar();
+    }
+
+    return m_dyn.getChar();
 }
 
 float String::toFloat() const
 {
-    return m_value.empty() ? 0.0f: std::stof( m_value, nullptr );
+    return StringUtil::toFloat( getChar() );
 }
 
 double String::toDouble() const
 {
-    return m_value.empty() ? 0.0 : std::stod( m_value, nullptr );
+    return StringUtil::toDouble( getChar() );
 }
 
 int String::toInt()
 {
-    removeAll('u');
-    if( m_value.empty() )
-    {
-        return 0;
-    }
-    else
-    {
-        int result = std::stoi( m_value );
-        return result;
-    }
+    return StringUtil::toInt32( getChar() );
 }
 
 int64_t String::toInt64() const
 {
-    if( m_value.empty() )
-    {
-        return 0;
-    }
-    else
-    {
-        auto copy = m_value;
-        if( m_value[0] == 'u' )
-        {
-            copy = m_value.substr( 1, m_value.size() );
-        }
-#if defined(_MSC_VER)
-        std::string resultString = FS::ws2s( copy );
-        std::istringstream iss( resultString );
-#else
-        std::istringstream iss( copy );
-#endif
-        int64_t value;
-        iss >> value;
-        return value;
-    }
+    return StringUtil::toInt64( getChar() );
 }
 
 uint64_t String::toUint64() const
 {
-    if( m_value.empty() )
-    {
-        return 0u;
-    }
-    else
-    {
-        auto copy = m_value;
-        if( m_value[0] == 'u' )
-        {
-            copy = m_value.substr( 1, m_value.size() );
-        }
-#if defined( _MSC_VER )
-        std::string resultString = FS::ws2s( copy );
-        std::istringstream iss( resultString );
-#else
-        std::istringstream iss( copy );
-#endif
-        uint64_t value;
-        iss >> value;
-        return value;
-    }
+    return StringUtil::toUint64( getChar() );
 }
 
 std::uint64_t String::toUInt() const
 {
-    return m_value.empty() ? 0u : std::stoull( m_value, nullptr, 0 );
+    return StringUtil::toUint32( getChar() );
 }
 
 bool String::toBool() const
 {
-    if( m_value.empty() )
+    const char* value = getChar();
+    return std::strcmp( value, "true" );
+}
+
+std::int32_t String::size() const
+{
+    if( m_usingSSO )
     {
-        return false;
+        return m_sso.size();
     }
 
-    if( toLowerR() == "true" )
-    {
-        return true;
-    }
-
-    return false;
-}
-
-Length String::length() const
-{
-    return (Length)m_value.size();
-}
-
-size_t String::size() const
-{
-    return m_value.size();
-}
-
-Length String::capacity() const
-{
-    return (Length)m_value.capacity();
+    return m_dyn.size();
 }
 
 void String::clear()
 {
-    m_value.clear();
+    if( m_usingSSO )
+    {
+        m_sso.clear();
+    }
+    else
+    {
+        m_dyn.clear();
+    }
 }
 
 bool String::empty() const
 {
-    return m_value.empty();
+    if( m_usingSSO )
+    {
+        return m_sso.empty();
+    }
+    return m_dyn.empty();
 }
 
 constexpr char hexmap[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
@@ -771,85 +925,61 @@ uint16_t stringHex2Data( char val[4] )
     return result;
 }
 
-void String::convertToHexData()
-{
-#if defined( CUL_WINDOWS )
-    const size_t dataSize = m_value.size();
-    if( dataSize > 0 )
-    {
-        const size_t sizeOfWchar = sizeof(wchar_t);
-        const size_t wholeDataSize = dataSize * sizeOfWchar;
-
-        const auto hexValue = data2StringHex( (unsigned char*)m_value.data(), wholeDataSize );
-
-        m_binaryValue = hexValue;
-        m_isBinary = true;
-    }
-#else // #if defined(CUL_WINDOWS)
-#endif // #if defined(CUL_WINDOWS)
-}
-
 void String::setBinary( const char* value )
 {
-    m_binaryValue = value;
-    m_isBinary = true;
+    throw std::logic_error( "Not implemented yet." );
 }
 
 const std::string String::getBinary() const
 {
-    return m_binaryValue;
+    throw std::logic_error( "Not implemented yet." );
+    return false;
 }
-
-void String::convertFromHexToString()
-{
-#if defined( CUL_WINDOWS )
-    const size_t dataSize = m_binaryValue.size();
-    if( dataSize > 0 )
-    {
-        constexpr size_t dataWidth = 4;
-
-        std::wstring result;
-        for( size_t i = 0; i < dataSize; i += dataWidth )
-        {
-            std::string currentHex( m_binaryValue, i, dataWidth );
-            char charStr[4];
-            charStr[2] = currentHex[0];
-            charStr[3] = currentHex[1];
-            charStr[0] = currentHex[2];
-            charStr[1] = currentHex[3];
-            wchar_t val = stringHex2Data( charStr );
-            result.push_back( val );
-        }
-        m_value = result;
-        m_isBinary = false;
-    }
-#else  // #if defined(CUL_WINDOWS)
-#endif  // #if defined(CUL_WINDOWS)
-}
-
 
 const std::vector<String> String::split( const String& delimiter ) const
 {
     std::vector<String> result;
 
-    size_t pos = 0u;
-    UnderlyingType token;
-    UnderlyingType vcopy = m_value; 
-    while( ( pos = vcopy.find( delimiter.m_value ) ) != UnderlyingType::npos )
-    {
-        token = vcopy.substr( 0, pos );
-        result.push_back( token );
-        vcopy.erase( 0, pos + delimiter.length() );
-    }
+    throw std::logic_error( "Not implemented yet." );
+
+    //size_t pos = 0u;
+    //UnderlyingType token;
+    //UnderlyingType vcopy = m_value; 
+    //while( ( pos = vcopy.find( delimiter.m_value ) ) != UnderlyingType::npos )
+    //{
+    //    token = vcopy.substr( 0, pos );
+    //    result.push_back( token );
+    //    vcopy.erase( 0, pos + delimiter.length() );
+    //}
 
     return result;
 }
 
-String::~String()
-{
 
+void String::setupValue()
+{
+    m_value = getCurrentBuffer().getChar();
 }
 
+IStringBuffer& String::getCurrentBuffer()
+{
+    if( m_usingSSO )
+    {
+        return m_sso;
+    }
+
+    return m_dyn;
+}
+
+const IStringBuffer& String::getCurrentBuffer() const
+{
+    if( m_usingSSO )
+    {
+        return m_sso;
+    }
+
+    return m_dyn;
+}
 
 String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )
 {
@@ -882,4 +1012,9 @@ bool CULLib_API CUL::operator==( float arg1, const String& arg2 )
 bool CULLib_API CUL::operator==( double arg1, const String& arg2 )
 {
     return arg2 == arg1;
+}
+
+
+String::~String()
+{
 }

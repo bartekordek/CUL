@@ -2,6 +2,7 @@
 
 #include "CUL/Filesystem/FS.hpp"
 #include "CUL/TimeConcrete.hpp"
+#include "CUL/StrintUTF.hpp"
 
 #if _MSC_VER
 #pragma warning( push )
@@ -23,30 +24,30 @@ public:
     Path& operator=( const Path& path );
     Path& operator=( Path&& path ) noexcept;
 
-    Path& operator=( const String& r );
+    Path& operator=( const StringUTF& r );
     Path& operator=( const char* r );
     Path& operator=( const std::string& rhv );
     Path& operator+=( const Path& rhv );
-    Path& operator+=( const String& rhv );
+    Path& operator+=( const StringUTF& rhv );
     Path& operator+=( const std::string& rhv );
 
     Path operator+( const Path& rhv );
-    Path operator+( const String& rhv );
+    Path operator+( const StringUTF& rhv );
     Path operator+( const char* rhv );
 
-    const String& getPath() const;
-    const String& getExtension() const;
-    const String& getBaseName() const;
-    const String& getDir() const;
+    const StringUTF& getPath() const;
+    const StringUTF& getExtension() const;
+    const StringUTF& getBaseName() const;
+    const StringUTF& getDir() const;
 
-    uint64_t getFileSize() const;
-    void setFileSize( uint64_t inFileSize );
+    std::uint64_t getFileSize() const;
+    void setFileSize( std::uint64_t inFileSize );
 
     const String& getMd5() const;
     void setMd5( const String& inMD5 );
 
     TimeConcrete getLastModificationTime() const;
-    void setModTime( const String& inModTime );
+    void setModTime( const StringUTF& inModTime );
 
     void setIsDir(bool isDir);
     bool getIsDir() const;
@@ -56,11 +57,9 @@ public:
     bool operator<( const Path& rhv ) const;
     bool operator>( const Path& rhv ) const;
 
-    operator const String() const;
-
     bool exists() const;
 
-    static const String& getDirSeparator();
+    static const StringUTF& getDirSeparator();
 
     virtual ~Path();
 
@@ -68,22 +67,22 @@ protected:
 private:
     void preparePaths();
     void normalizePaths();
-    void normalizePath( String& path );
+    void normalizePath( StringUTF& path );
 
     bool m_isDir = false;
     mutable bool m_sizeCalculated = false;
 
-    String m_fullPath;
-    String m_extension;
-    String m_baseName;
-    String m_dir;
+    StringUTF m_fullPath;
+    StringUTF m_extension;
+    StringUTF m_baseName;
+    StringUTF m_dir;
 
-    mutable String m_modTime;
+    StringUTF m_modTime;
 
-    mutable uint64_t m_fileSize = 0u;
-    mutable String m_md5;
+    mutable std::uint64_t m_fileSize = 0u;
+    mutable StringUTF m_md5;
 
-    static String extensionSeparator;
+    static StringUTF extensionSeparator;
 };
 
 const Path CULLib_API operator+( const Path& lval, const Path& rval );

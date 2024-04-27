@@ -1,7 +1,7 @@
 #cmake -DCMAKE_BUILD_TYPE=Debug
 cmake_minimum_required(VERSION 3.0.0)
 
-set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_STANDARD 20 )
 
 set( PROJECT_NAME_DYNAMIC cul_dynamic )
 set( PROJECT_NAME_STATIC_IMPL cul-static-impl )
@@ -31,6 +31,7 @@ if( MSVC )
     add_compile_options( "/wd4820" )
     add_compile_options( "/wd4710" )
     add_compile_options( "/wd5045" )
+    add_definitions(-DUNICODE -D_UNICODE)
 
     find_package( RapidJSON REQUIRED )
     if( RapidJSON_FOUND )

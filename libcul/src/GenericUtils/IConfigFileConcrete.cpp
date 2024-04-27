@@ -19,7 +19,7 @@ IConfigFileConcrete::IConfigFileConcrete( const FS::Path& path, CULInterface* cu
     auto currentDir = culInterface->getFS()->getCurrentDir();
     culInterface->getLogger()->log( "Current dir: " + currentDir );
     Assert::simple( nullptr != culInterface, "CUL Is not initialized!" );
-    Assert::simple( path.exists(), path.getPath().string() + " does not exist!" );
+    Assert::simple( path.exists(), path.getPath().getString() + " does not exist!" );
     loadPath();
     m_file = culInterface->getFF()->createFileFromPath( path );
 }
