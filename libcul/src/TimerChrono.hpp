@@ -27,11 +27,16 @@ class TimerChrono final:
 {
 public:
     TimerChrono( LOG::ILogger* logger );
-
+    TimerChrono( const TimerChrono& tc ) = delete;
+    TimerChrono( TimerChrono&& tc ) = delete;
+    TimerChrono& operator=( const TimerChrono& rhv ) = delete;
+    TimerChrono& operator=( TimerChrono&& rhv ) = delete;
     void start() override;
+    bool getIsStarted() const override;
     void stop() override;
     void reset() override;
     const ITime& getElapsed() const override;
+    std::int64_t getElapsedNs() const override;
 
     void runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds ) override;
 
@@ -66,10 +71,8 @@ private:
     std::vector<std::function<void( void )>> m_tasks;
 
     std::unique_ptr<class Worker> m_worker;
+    bool m_started = false;
 
-private: // Deleted
-    TimerChrono( const TimerChrono& tc ) = delete;
-    TimerChrono& operator=( const TimerChrono& rhv ) = delete;
 };
 
 #ifdef _MSC_VER

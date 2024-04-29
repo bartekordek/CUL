@@ -29,8 +29,8 @@ void FPSCounter::counterLoop()
 void FPSCounter::increase()
 {
     m_timer->stop();
-    m_lastFrameDuration = m_timer->getElapsed().getMs();
-    m_lastFrameValue = 1000.f / m_lastFrameDuration;
+    m_lastFrameDuration = m_timer->getElapsedNs();
+    m_lastFrameValue = 1000000000 / m_lastFrameDuration; // fps = 1e6 / duration.
     m_samples.add( m_lastFrameValue );
     m_timer->start();
 }
@@ -51,14 +51,14 @@ void FPSCounter::setSampleSize( size_t sampleSize )
     m_bufferSize = sampleSize;
 }
 
-void FPSCounter::setMeasurePeriod( const unsigned periodMs )
+void FPSCounter::setMeasurePeriod( const unsigned periodNs )
 {
-    m_sleepTimeMs = periodMs;
+    m_sleepTimeNs = periodNs;
 }
 
 double FPSCounter::normalizeToSleepTime( const double fpsCount ) const
 {
-    return fpsCount * 1000.0 / m_sleepTimeMs;
+    return fpsCount * 1000000 / m_sleepTimeNs;
 }
 
 FPSCounter::~FPSCounter()

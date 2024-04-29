@@ -71,3 +71,8 @@ void ITimer::sleepMicroSeconds( float uSeconds )
 {
     std::this_thread::sleep_for( std::chrono::microseconds( (int)uSeconds ) );
 }
+
+void ITimer::sleepNanoSeconds( std::int64_t ns )
+{
+    std::this_thread::sleep_for( std::chrono::nanoseconds( ns ) );
+}

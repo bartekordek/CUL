@@ -31,24 +31,34 @@ void TimerChrono::start()
 
 void TimerChrono::stop()
 {
-    //TODO
+    m_started = false;
 }
 
 void TimerChrono::reset()
 {
     startPoint = clock.now();
+    m_started = true;
 }
 
 const ITime& TimerChrono::getElapsed() const
 {
     const auto difference = clock.now() - startPoint;
-    auto us =
-        std::chrono::duration_cast<std::chrono::microseconds>(
+    const std::uint64_t ns =
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
         difference ).count();
-    const auto d_us = static_cast<double>( us );
-    time->setTimeUs( d_us );
+    const auto d_ns = static_cast<double>( ns );
+    time->setTimeNs( d_ns );
     return *time;
 }
+
+
+std::int64_t TimerChrono::getElapsedNs() const
+{
+    const auto difference = clock.now() - startPoint;
+    const std::int64_t ns =  std::chrono::duration_cast<std::chrono::nanoseconds>( difference ).count();
+    return ns;
+}
+
 
 void TimerChrono::runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds )
 {
@@ -106,13 +116,17 @@ void TimerChrono::threadWrap( size_t index )
         std::thread* threadPtr = it->second;
 
         m_threads.erase( it );
+
         delete threadPtr;
+        removeUniqueNumber( index );
 
         if( logMe )
         {
             getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][DELETED]" );
         }
     } );
+
+    
 
     if( logMe )
     {
@@ -123,6 +137,7 @@ void TimerChrono::threadWrap( size_t index )
 TimerChrono::~TimerChrono()
 {
     m_runLoop = false;
+    m_started = false;
 
     if( m_timerThread.joinable() )
     {
@@ -188,4 +203,9 @@ void TimerChrono::removeUniqueNumber( unsigned value )
     {
         m_existingNumbers.erase( it );
     }
+}
+
+bool TimerChrono::getIsStarted() const
+{
+    return m_started;
 }

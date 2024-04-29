@@ -18,6 +18,7 @@ public:
     TimeConcrete& operator=( const TimeConcrete& rhv );
     void setTimeMs( const unsigned int ms ) override;
     void setTimeUs( const unsigned int us ) override;
+    void setTimeNs( const unsigned int ns ) override;
     float getMs() const override;
     float getS() const override;
     float getM() const override;
@@ -35,7 +36,7 @@ public:
     ~TimeConcrete();
 protected:
 private:
-    float m_us = 0;
+    float m_ns = 0;
     CUL::String m_asString;
 };
 #ifdef _MSC_VER

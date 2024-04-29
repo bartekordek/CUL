@@ -12,6 +12,7 @@ public:
 
     virtual void setTimeMs( const unsigned int time ) = 0;
     virtual void setTimeUs( const unsigned int us ) = 0;
+    virtual void setTimeNs( const unsigned int us ) = 0;
     virtual float getMs() const = 0;
     virtual float getS() const = 0;
     virtual float getM() const = 0;

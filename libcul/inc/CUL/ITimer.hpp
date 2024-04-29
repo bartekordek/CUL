@@ -17,9 +17,11 @@ public:
     virtual ~ITimer();
 
     virtual void start() = 0;
+    virtual bool getIsStarted() const = 0;
     virtual void stop() = 0;
     virtual void reset() = 0;
     virtual const ITime& getElapsed() const = 0;
+    virtual std::int64_t getElapsedNs() const = 0;
 
     virtual void runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds ) = 0;
 
@@ -30,6 +32,7 @@ public:
     static void sleepSeconds( int seconds );
     static void sleepMiliSeconds( int mSeconds );
     static void sleepMicroSeconds( int uSeconds );
+    static void sleepNanoSeconds(std::int64_t ns);
 
     static void sleepSeconds( float seconds );
     static void sleepMiliSeconds( float mSeconds );

@@ -129,7 +129,7 @@ void IFile::calculateMD5()
 {
     constexpr std::uint64_t OneMBinBytes = 1024 * 1024;
     constexpr std::uint64_t bigFileMinimumBytes = 64 * OneMBinBytes;
-    const std::uint64_t currentFileSizeBytes = getSizeBytes().toUInt();
+    const std::uint64_t currentFileSizeBytes = getSizeBytes().toUint64();
     const bool isBigFile = currentFileSizeBytes > bigFileMinimumBytes;
 
     if( isBigFile )
@@ -175,7 +175,7 @@ void IFile::calculateMD5()
         std::ifstream file( m_path.getString(), std::ios::binary );
         file.unsetf( std::ios::skipws );
 
-        unsigned fileSizeAsNumber = getSizeBytes().toUInt();
+        unsigned fileSizeAsNumber = getSizeBytes().toUint64();
         std::vector<unsigned char> vec;
         vec.reserve( fileSizeAsNumber );
         vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );

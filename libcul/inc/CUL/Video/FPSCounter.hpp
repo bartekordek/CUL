@@ -27,7 +27,7 @@ public:
     virtual double getCurrentFps() const;
     virtual double getAverageFps() const;
     virtual void setSampleSize( size_t sampleSize );
-    virtual void setMeasurePeriod( const unsigned periodMs );
+    virtual void setMeasurePeriod( const unsigned periodNs );
 
     virtual void increase();
 
@@ -46,10 +46,10 @@ private:
     std::unique_ptr<class TimerChrono> m_timer;
     std::atomic<bool> m_isRunning = { false };//TODO: delegate thread
     //creation to separate class, to check if thread was created and is runing.
-    std::atomic<float> m_lastFrameValue = { 0.f };
-    std::atomic<float> m_lastFrameDuration = { 0.f };
+    std::int64_t m_lastFrameValue = 0;
+    std::int64_t m_lastFrameDuration = 0;
     MATH::VariableWithAverageValue m_samples;
-    std::atomic<unsigned> m_sleepTimeMs = { 1000 };
+    std::int64_t m_sleepTimeNs = { 1000000 };
 
 
     FPSCounter( const FPSCounter& arg ) = delete;
