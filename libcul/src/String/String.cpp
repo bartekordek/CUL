@@ -7,20 +7,17 @@
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 #include "CUL/STL_IMPORTS/STD_cmath.hpp"
 
-
 using namespace CUL;
 
 String::String() noexcept
 {
 }
 
-String::String( const String& arg ) noexcept :
-    m_value( arg.m_value )
+String::String( const String& arg ) noexcept : m_value( arg.m_value )
 {
 }
 
-String::String( String&& arg ) noexcept :
-    m_value( std::move( arg.m_value ) )
+String::String( String&& arg ) noexcept : m_value( std::move( arg.m_value ) )
 {
 }
 
@@ -54,7 +51,7 @@ String::String( const std::wstring& arg ) noexcept
 #ifdef _MSC_VER
     m_value = arg;
 #else
-    m_value = FS::ws2s(arg);
+    m_value = FS::ws2s( arg );
 #endif
 }
 
@@ -87,7 +84,6 @@ String::String( uint64_t arg ) noexcept
 {
     *this = arg;
 }
-
 
 String& String::operator=( const String& arg )
 {
@@ -146,7 +142,7 @@ String& String::operator=( const wchar_t* arg )
 // How to fix this.
 // TODO
 #pragma warning( push )
-#pragma warning( disable: 5045 )
+#pragma warning( disable : 5045 )
 #endif
 String& String::operator=( unsigned char* arg )
 {
@@ -160,7 +156,7 @@ String& String::operator=( unsigned char* arg )
     }
 
 #ifdef _MSC_VER
-    m_value = FS::s2ws(tmp);
+    m_value = FS::s2ws( tmp );
 #else
     m_value = tmp;
 #endif
@@ -178,7 +174,7 @@ String& String::operator=( const std::string& arg )
 #else
     m_value = arg;
 #endif
-    removeAll('\0');
+    removeAll( '\0' );
     return *this;
 }
 
@@ -384,7 +380,7 @@ bool String::operator()( const String& v1, const String& v2 ) const
 
 size_t String::find( const String& arg ) const
 {
-    return m_value.find(arg.m_value);
+    return m_value.find( arg.m_value );
 }
 
 String String::substr( size_t pos, size_t len ) const
@@ -398,13 +394,9 @@ void String::toLower()
 {
 #if _MSC_VER
 #pragma warning( push )
-#pragma warning( disable:4244 )
+#pragma warning( disable : 4244 )
 #endif
-    std::transform(
-        m_value.begin(),
-        m_value.end(),
-        m_value.begin(),
-        ::tolower );
+    std::transform( m_value.begin(), m_value.end(), m_value.begin(), ::tolower );
 #if _MSC_VER
 #pragma warning( pop )
 #endif
@@ -423,13 +415,9 @@ void String::toUpper()
 {
 #if _MSC_VER
 #pragma warning( push )
-#pragma warning( disable:4244 )
+#pragma warning( disable : 4244 )
 #endif
-    std::transform(
-        m_value.begin(),
-        m_value.end(),
-        m_value.begin(),
-        ::toupper );
+    std::transform( m_value.begin(), m_value.end(), m_value.begin(), ::toupper );
 #if _MSC_VER
 #pragma warning( pop )
 #endif
@@ -463,7 +451,7 @@ void String::replace( const String& inWhat, const String& inFor )
     while( ( start_pos = str.find( from, start_pos ) ) != std::string::npos )
     {
         str.replace( start_pos, from.length(), to );
-        start_pos += to.length(); // In case 'to' contains 'from', like replacing 'x' with 'yx'
+        start_pos += to.length();  // In case 'to' contains 'from', like replacing 'x' with 'yx'
     }
 }
 
@@ -509,11 +497,11 @@ void String::replace( const wchar_t inWhat, const wchar_t inFor )
 
 void String::removeAll( const char inWhat )
 {
-    UnderlyingChar inWhatChar = ( UnderlyingChar ) inWhat;
+    UnderlyingChar inWhatChar = (UnderlyingChar)inWhat;
     auto inWhatPosition = m_value.find( inWhatChar );
     while( std::string::npos != inWhatPosition )
     {
-        m_value.erase(inWhatPosition);
+        m_value.erase( inWhatPosition );
         inWhatPosition = m_value.find( inWhatChar );
     }
 }
@@ -535,7 +523,7 @@ bool String::equals( const String& arg ) const
 
 bool String::doesEndWith( const UnderlyingType& end ) const
 {
-    size_t it = m_value.find(end);
+    size_t it = m_value.find( end );
 
     if( it == UnderlyingType::npos )
     {
@@ -565,7 +553,7 @@ bool String::doesEndWith( const UnderlyingType& end ) const
 std::string String::string() const
 {
 #ifdef _MSC_VER
-    return FS::ws2s(m_value);
+    return FS::ws2s( m_value );
 #else
     return m_value;
 #endif
@@ -601,9 +589,9 @@ const wchar_t* String::wCstr() const
 #ifdef _MSC_VER
     return m_value.c_str();
 #else
-    std::wstring resultString = FS::s2ws(m_value);
+    std::wstring resultString = FS::s2ws( m_value );
     wchar_t* result = new wchar_t[resultString.size()];
-    mbstowcs(result, m_value.c_str(), resultString.size());
+    mbstowcs( result, m_value.c_str(), resultString.size() );
     return result;
 #endif
 }
@@ -615,7 +603,7 @@ const String::UnderlyingChar* String::getChar() const
 
 float String::toFloat() const
 {
-    return m_value.empty() ? 0.0f: std::stof( m_value, nullptr );
+    return m_value.empty() ? 0.0f : std::stof( m_value, nullptr );
 }
 
 double String::toDouble() const
@@ -625,16 +613,13 @@ double String::toDouble() const
 
 int String::toInt()
 {
-    removeAll('u');
+    removeAll( 'u' );
     if( m_value.empty() )
     {
         return 0;
     }
-    else
-    {
-        int result = std::stoi( m_value );
-        return result;
-    }
+
+    return std::stoi( m_value );
 }
 
 int64_t String::toInt64() const
@@ -643,23 +628,21 @@ int64_t String::toInt64() const
     {
         return 0;
     }
-    else
+
+    auto copy = m_value;
+    if( m_value[0] == 'u' )
     {
-        auto copy = m_value;
-        if( m_value[0] == 'u' )
-        {
-            copy = m_value.substr( 1, m_value.size() );
-        }
-#if defined(_MSC_VER)
-        std::string resultString = FS::ws2s( copy );
-        std::istringstream iss( resultString );
-#else
-        std::istringstream iss( copy );
-#endif
-        int64_t value;
-        iss >> value;
-        return value;
+        copy = m_value.substr( 1, m_value.size() );
     }
+#if defined( _MSC_VER )
+    std::string resultString = FS::ws2s( copy );
+    std::istringstream iss( resultString );
+#else
+    std::istringstream iss( copy );
+#endif
+    int64_t value;
+    iss >> value;
+    return value;
 }
 
 uint64_t String::toUint64() const
@@ -668,23 +651,20 @@ uint64_t String::toUint64() const
     {
         return 0u;
     }
-    else
+    auto copy = m_value;
+    if( m_value[0] == 'u' )
     {
-        auto copy = m_value;
-        if( m_value[0] == 'u' )
-        {
-            copy = m_value.substr( 1, m_value.size() );
-        }
-#if defined( _MSC_VER )
-        std::string resultString = FS::ws2s( copy );
-        std::istringstream iss( resultString );
-#else
-        std::istringstream iss( copy );
-#endif
-        uint64_t value;
-        iss >> value;
-        return value;
+        copy = m_value.substr( 1, m_value.size() );
     }
+#if defined( _MSC_VER )
+    std::string resultString = FS::ws2s( copy );
+    std::istringstream iss( resultString );
+#else
+    std::istringstream iss( copy );
+#endif
+    uint64_t value;
+    iss >> value;
+    return value;
 }
 
 std::uint64_t String::toUInt() const
@@ -734,7 +714,6 @@ bool String::empty() const
 
 constexpr char hexmap[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-
 std::string data2StringHex( unsigned char* data, size_t len )
 {
     std::string s( len * 2u, ' ' );
@@ -746,7 +725,7 @@ std::string data2StringHex( unsigned char* data, size_t len )
     return s;
 }
 
-uint16_t hexCharToInt(char valu)
+uint16_t hexCharToInt( char valu )
 {
     uint16_t result = valu - 48u;
     if( result >= 10u )
@@ -760,7 +739,7 @@ uint16_t stringHex2Data( char val[4] )
 {
     uint16_t result = 0u;
 
-    for(int i = 0; i < 4; ++i)
+    for( int i = 0; i < 4; ++i )
     {
         const auto currentValue = val[3 - i];
         const auto intVal = hexCharToInt( currentValue );
@@ -777,7 +756,7 @@ void String::convertToHexData()
     const size_t dataSize = m_value.size();
     if( dataSize > 0 )
     {
-        const size_t sizeOfWchar = sizeof(wchar_t);
+        const size_t sizeOfWchar = sizeof( wchar_t );
         const size_t wholeDataSize = dataSize * sizeOfWchar;
 
         const auto hexValue = data2StringHex( (unsigned char*)m_value.data(), wholeDataSize );
@@ -785,8 +764,8 @@ void String::convertToHexData()
         m_binaryValue = hexValue;
         m_isBinary = true;
     }
-#else // #if defined(CUL_WINDOWS)
-#endif // #if defined(CUL_WINDOWS)
+#else   // #if defined(CUL_WINDOWS)
+#endif  // #if defined(CUL_WINDOWS)
 }
 
 void String::setBinary( const char* value )
@@ -823,10 +802,9 @@ void String::convertFromHexToString()
         m_value = result;
         m_isBinary = false;
     }
-#else  // #if defined(CUL_WINDOWS)
+#else   // #if defined(CUL_WINDOWS)
 #endif  // #if defined(CUL_WINDOWS)
 }
-
 
 const std::vector<String> String::split( const String& delimiter ) const
 {
@@ -834,11 +812,11 @@ const std::vector<String> String::split( const String& delimiter ) const
 
     size_t pos = 0u;
     UnderlyingType token;
-    UnderlyingType vcopy = m_value; 
+    UnderlyingType vcopy = m_value;
     while( ( pos = vcopy.find( delimiter.m_value ) ) != UnderlyingType::npos )
     {
         token = vcopy.substr( 0, pos );
-        result.push_back( token );
+        result.emplace_back( token );
         vcopy.erase( 0, pos + delimiter.length() );
     }
 
@@ -847,9 +825,7 @@ const std::vector<String> String::split( const String& delimiter ) const
 
 String::~String()
 {
-
 }
-
 
 String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )
 {
