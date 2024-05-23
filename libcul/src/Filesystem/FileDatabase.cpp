@@ -401,17 +401,17 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
         sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', MD5='" + md5 + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" +
                    filePathNormalized.getBinary() + "'";
 
-        CUL::LOG::ILogger::getInstance()->log( "Found updated file: " + filePath );
-        CUL::LOG::ILogger::getInstance()->log( "New/Old diff: ");
+        //CUL::LOG::ILogger::getInstance()->log( "Found updated file: " + filePath );
+        //CUL::LOG::ILogger::getInstance()->log( "New/Old diff: ");
 
-        CUL::LOG::ILogger::getInstance()->log( "[OLD] MD5: " + foundFile.MD5 );
-        CUL::LOG::ILogger::getInstance()->log( "[NEW] MD5: " + md5 );
+        //CUL::LOG::ILogger::getInstance()->log( "[OLD] MD5: " + foundFile.MD5 );
+        //CUL::LOG::ILogger::getInstance()->log( "[NEW] MD5: " + md5 );
 
-        CUL::LOG::ILogger::getInstance()->log( "[OLD] SIZE: " + foundFile.Size );
-        CUL::LOG::ILogger::getInstance()->log( "[NEW] SIZE: " + fileSize );
+        //CUL::LOG::ILogger::getInstance()->log( "[OLD] SIZE: " + foundFile.Size );
+        //CUL::LOG::ILogger::getInstance()->log( "[NEW] SIZE: " + fileSize );
 
-        CUL::LOG::ILogger::getInstance()->log( "[OLD] modTime: " + foundFile.ModTime );
-        CUL::LOG::ILogger::getInstance()->log( "[NEW] modTime: " + modTime );
+        //CUL::LOG::ILogger::getInstance()->log( "[OLD] modTime: " + foundFile.ModTime );
+        //CUL::LOG::ILogger::getInstance()->log( "[NEW] modTime: " + modTime );
     }
     else
     {
