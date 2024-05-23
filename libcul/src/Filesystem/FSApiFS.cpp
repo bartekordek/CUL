@@ -7,6 +7,9 @@
 #include "CUL/TimeConcrete.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
+#include "CUL/STL_IMPORTS/STD_chrono.hpp"
+#include "CUL/STL_IMPORTS/STD_format.hpp"
+#include "CUL/STL_IMPORTS/STD_chrono.hpp"
 
 using namespace CUL;
 using namespace FS;
@@ -82,7 +85,8 @@ std::vector<Path> FSApiFS::ListAllFiles( const Path& directory )
         const std::filesystem::path entryPath = entry.path();
 
 #ifdef _MSC_VER
-        Path culPath = entryPath.wstring();
+        String temp = entryPath.wstring();
+        Path culPath = temp;
 #else
         Path culPath = entryPath.string();
 #endif
@@ -117,8 +121,10 @@ void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Pat
         const std::filesystem::path entryPath = entry.path();
         String::UnderlyingType tempString = entryPath;
 
+        const std::u32string someString = entryPath.u32string();
 #ifdef _MSC_VER
-        Path culPath = entryPath.wstring();
+        const String tempPath = entryPath.wstring();
+        Path culPath = tempPath;
 #else
         Path culPath = entryPath.string();
 #endif
@@ -129,6 +135,14 @@ void FSApiFS::ListAllFiles( const Path& directory, std::function<void( const Pat
     }
 }
 
+template <typename TP>
+std::time_t to_time_t( TP tp )
+{
+    using namespace std::chrono;
+    auto sctp = time_point_cast<system_clock::duration>( tp - TP::clock::now() + system_clock::now() );
+    return system_clock::to_time_t( sctp );
+}
+
 TimeConcrete FSApiFS::getLastModificationTime( const Path& path )
 {
     if( false == m_culInterface->getFS()->fileExist( path ) )
@@ -137,13 +151,48 @@ TimeConcrete FSApiFS::getLastModificationTime( const Path& path )
     }
 
     TimeConcrete timeConcrete;
-    std::filesystem::path asPath = path.getPath().getString();
-    const auto ftime = FSCpp::last_write_time( asPath );
-    const auto timeSinceEpoch = ftime.time_since_epoch();
-    const auto count = timeSinceEpoch.count();
-    const auto seconds = count * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den;
-    const auto microSeconds = seconds * 100000;
-    timeConcrete.setTimeUs( (unsigned int) microSeconds );
+
+    constexpr std::int32_t SECS_DAY = 60 * 60 * 24;
+
+#if defined( CUL_WINDOWS )
+    std::filesystem::path p = path.getPath().wCstr();
+#else
+    std::filesystem::path p = path.getPath().cStr();
+#endif
+    std::filesystem::file_time_type ftime = std::filesystem::last_write_time( p );
+    const std::time_t timeConverted = to_time_t( ftime );
+    timeConcrete.m_ns = timeConverted * 1000000000;
+
+    const std::int32_t dayclock = (std::int32_t)timeConverted % SECS_DAY;
+    const std::int32_t dayno = (std::int32_t)timeConverted / SECS_DAY;
+
+    const auto value = dayclock % 60;
+    timeConcrete.m_seconds = static_cast<std::uint16_t>( dayclock % 60 );
+    timeConcrete.m_minutes = static_cast<std::uint16_t>( ( dayclock % 3600 ) / 60 );
+    timeConcrete.m_hours = static_cast<std::uint16_t>( dayclock / 3600 );
+    timeConcrete.m_wday = static_cast<std::uint16_t>( ( dayno + 4 ) % 7 ); /* day 0 was a thursday */
+
+    const auto seconds = timeConverted / 1000;
+    const auto minutes = seconds / 60;
+    const auto hours = minutes / 60;
+    const auto days = hours / 24;
+
+    const std::time_t timeT = timeConverted;
+    const auto tm = std::localtime( &timeT );
+
+    //const auto dupa = std::asctime( std::localtime( &timeT ) );
+
+    timeConcrete.m_years = static_cast<std::uint16_t>( 1900 + tm->tm_year );
+    timeConcrete.m_months = static_cast<std::uint16_t>( ( tm->tm_mon + 1 ) );
+    timeConcrete.m_days = static_cast<std::uint16_t>( tm->tm_mday );
+    timeConcrete.m_hours = static_cast<std::uint16_t>( tm->tm_hour );
+    timeConcrete.m_minutes = static_cast<std::uint16_t>( tm->tm_min );
+    timeConcrete.m_seconds = static_cast<std::uint16_t>( tm->tm_sec );
+
+    std::tm ts = *std::localtime( &timeT );
+    char buf[80];
+    strftime( buf, sizeof( buf ), "%Y-%m-%d %H:%M:%S", &ts );
+    timeConcrete.m_asString = buf;
     return timeConcrete;
 }
 

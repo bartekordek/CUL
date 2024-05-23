@@ -180,7 +180,7 @@ const String& Path::getDir() const
 
 uint64_t Path::getFileSize() const
 {
-    auto calculateSize = [this] (){
+    auto calculateSize = [this]() {
 #ifdef _MSC_VER
         FsPath file( m_fullPath.wstring() );
 #else
@@ -205,7 +205,6 @@ uint64_t Path::getFileSize() const
     else
     {
         calculateSize();
-
     }
 
     return m_fileSize;
