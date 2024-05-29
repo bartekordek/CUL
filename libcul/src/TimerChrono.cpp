@@ -1,5 +1,4 @@
 #include "TimerChrono.hpp"
-#include "CUL/TimeConcrete.hpp"
 #include "CUL/Threading/Worker.hpp"
 #include "CUL/Log/ILogger.hpp"
 
@@ -10,7 +9,7 @@
 using namespace CUL;
 
 TimerChrono::TimerChrono( LOG::ILogger* logger ):
-    ITimer( logger ), time( new TimeConcrete() )
+    ITimer( logger ), time( new Time() )
 {
     const bool logMe = false;
 
@@ -40,12 +39,12 @@ void TimerChrono::reset()
     m_started = true;
 }
 
-const ITime& TimerChrono::getElapsed() const
+const Time& TimerChrono::getElapsed() const
 {
     const auto difference = clock.now() - startPoint;
-    const std::uint64_t ns =
-        std::chrono::duration_cast<std::chrono::nanoseconds>(
-        difference ).count();
+    const auto currentCount = std::chrono::duration_cast<std::chrono::nanoseconds>( difference ).count();
+    const std::int64_t ns = static_cast<std::int64_t>( currentCount );
+
     const auto d_ns = static_cast<double>( ns );
     time->setTimeNs( d_ns );
     return *time;
@@ -126,7 +125,7 @@ void TimerChrono::threadWrap( size_t index )
         }
     } );
 
-    
+
 
     if( logMe )
     {

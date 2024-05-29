@@ -1,5 +1,5 @@
 #include "CUL/Filesystem/Path.hpp"
-
+#include "CUL/Time.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 
@@ -196,8 +196,10 @@ uint64_t Path::getFileSize() const
 
     if( m_sizeCalculated )
     {
-        auto lastModTime = getLastModificationTime().toString();
-        if( lastModTime != m_modTime )
+        Time lastModTime;
+        getLastModificationTime(lastModTime);
+        auto lastModTimeString = lastModTime.toString();
+        if( lastModTimeString != m_modTime )
         {
             calculateSize();
         }
@@ -232,11 +234,13 @@ const String& Path::getMd5() const
     }
     else
     {
-        auto lastModTime = getLastModificationTime().toString();
-        if( lastModTime != m_modTime )
+        Time lastModTime;
+        getLastModificationTime( lastModTime );
+        const String lastModTimeString = lastModTime.toString();
+        if( lastModTimeString != m_modTime )
         {
             calculateMd5();
-            m_modTime = lastModTime;
+            m_modTime = lastModTimeString;
         }
     }
 
@@ -248,15 +252,14 @@ void Path::setMd5( const String& inMD5 )
     m_md5 = inMD5;
 }
 
-TimeConcrete Path::getLastModificationTime() const
+void Path::getLastModificationTime( Time& timeOut ) const
 {
     std::unique_ptr<CUL::FS::IFile> file;
 
     auto m_culInterface = CUL::CULInterface::getInstance();
 
     file.reset( m_culInterface->getFF()->createRegularFileRawPtr( m_fullPath ) );
-    auto modTime = file->getLastModificationTime();
-    return modTime;
+    file->getLastModificationTime( timeOut );
 }
 
 void Path::setModTime( const String& inModTime )

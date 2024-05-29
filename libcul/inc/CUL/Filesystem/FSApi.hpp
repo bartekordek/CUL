@@ -2,45 +2,51 @@
 
 #include "CUL/Filesystem/FS.hpp"
 #include "CUL/Filesystem/Path.hpp"
-#include "CUL/TimeConcrete.hpp"
 
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
+class Time;
 NAMESPACE_BEGIN( FS )
 class FileFactory;
 class IFile;
 
 
-class CULLib_API FSApi
+class CULLib_API FSApi final
 {
 public:
     // FSApiFS
     // FSApiCppFS
     // ?
-    static FSApi* crateInstance(const CUL::String& type, FileFactory* ff, CULInterface* culInterface);
 
-    FSApi();
+    FSApi( CULInterface* cul, FS::FileFactory* ff );
+    FSApi( const FSApi& ) = delete;
+    FSApi( FSApi&& ) = delete;
+    FSApi& operator=( const FSApi& ) = delete;
+    FSApi& operator=( FSApi&& ) = delete;
 
-    virtual String getCurrentDir() = 0;
-    virtual IFile* getDirectory( const Path& directory ) = 0;
+    String getCurrentDir();
+    IFile* getDirectory( const Path& directory );
 
-    virtual TimeConcrete getCreationTime( const Path& path ) = 0;
-    virtual TimeConcrete getLastModificationTime( const Path& path ) = 0;
-    virtual String getFileSize( const Path& path ) = 0;
+    void getCreationTime( const Path& path, Time& outValue );
+    void getLastModificationTime( const Path& path, Time& outValue );
+    String getFileSize( const Path& path );
 
-    virtual bool fileExist( const Path& path ) = 0;
-    virtual bool isDirectory( const Path& path ) = 0;
+    bool fileExist( const Path& path );
+    bool isDirectory( const Path& path );
+    bool isRegularFile( const String& path );
 
-    virtual std::vector<Path> ListAllFiles( const Path& directory ) = 0;
-    virtual void ListAllFiles( const Path& directory, std::function<void(const Path& path)> callback ) = 0;
+    std::vector<Path> ListAllFiles( const Path& directory );
+    void ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback );
 
-    virtual ~FSApi();
+    ~FSApi();
+
 protected:
 private:
-
+    CULInterface* m_culInterface = nullptr;
+    FS::FileFactory* m_fileFactory = nullptr;
 };
 
 NAMESPACE_END( FS )

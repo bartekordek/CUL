@@ -1,14 +1,15 @@
 #pragma once
 
-#include "CUL/ITime.hpp"
-
+#include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
 NAMESPACE_BEGIN( LOG )
 class ILogger;
-NAMESPACE_END(LOG)
+NAMESPACE_END( LOG )
+
+class Time;
 
 class CULLib_API ITimer
 {
@@ -20,7 +21,7 @@ public:
     virtual bool getIsStarted() const = 0;
     virtual void stop() = 0;
     virtual void reset() = 0;
-    virtual const ITime& getElapsed() const = 0;
+    virtual const Time& getElapsed() const = 0;
     virtual std::int64_t getElapsedNs() const = 0;
 
     virtual void runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds ) = 0;

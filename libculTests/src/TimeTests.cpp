@@ -1,5 +1,6 @@
 #include "TimeTests.hpp"
 #include "CUL/ITimer.hpp"
+#include "CUL/Time.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"

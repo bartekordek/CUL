@@ -63,7 +63,8 @@ TEST_F( FilesystemTests, FileExistence )
 TEST_F( FilesystemTests, TimeModified )
 {
     std::string filePath = "../media/Dummy.txt";
-    auto modificationTime = m_culInterface->getFS()->getLastModificationTime( filePath );
+    CUL::Time modificationTime;
+    m_culInterface->getFS()->getLastModificationTime( filePath, modificationTime );
     auto us = modificationTime.getUs();
     ASSERT_GT( us, 0 );
 }

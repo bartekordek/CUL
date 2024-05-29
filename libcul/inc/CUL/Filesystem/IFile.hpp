@@ -2,9 +2,9 @@
 
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
+#include "CUL/Time.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
-#include "CUL/TimeConcrete.hpp"
 
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
@@ -42,8 +42,8 @@ public:
     virtual void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false );
     virtual void unload() = 0;
 
-    TimeConcrete getCreationTime();
-    TimeConcrete getLastModificationTime();
+    void getCreationTime(Time& outTime);
+    void getLastModificationTime( Time& outTime );
 
     void toggleCache( bool enabled );
     bool getIsCacheEnabled() const;
@@ -79,8 +79,8 @@ private:
     String m_path;
     String m_md5;
 
-    TimeConcrete m_creationTime;
-    TimeConcrete m_lastModificationTime;
+    Time m_creationTime;
+    Time m_lastModificationTime;
 
     String m_sizeBytes;
     bool m_cacheEnabled = true;

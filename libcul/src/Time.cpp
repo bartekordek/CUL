@@ -1,13 +1,14 @@
-#include "CUL/TimeConcrete.hpp"
+#include "CUL/Time.hpp"
+#include "CUL/STL_IMPORTS/STD_sstream.hpp"
 
 using namespace CUL;
 
-TimeConcrete::TimeConcrete()
+
+Time::Time()
 {
 }
 
-TimeConcrete::TimeConcrete( const TimeConcrete& rhv )
-    : ITime(),
+Time::Time( const Time& rhv ):
       m_ns( rhv.m_ns ),
       m_years( rhv.m_years ),
       m_months( rhv.m_months ),
@@ -21,8 +22,7 @@ TimeConcrete::TimeConcrete( const TimeConcrete& rhv )
 {
 }
 
-TimeConcrete::TimeConcrete( TimeConcrete&& rhv )
-    : ITime(),
+Time::Time( Time&& rhv ):
       m_ns( rhv.m_ns ),
       m_years( rhv.m_years ),
       m_months( rhv.m_months ),
@@ -36,7 +36,7 @@ TimeConcrete::TimeConcrete( TimeConcrete&& rhv )
 {
 }
 
-TimeConcrete& TimeConcrete::operator=( const TimeConcrete& rhv )
+Time& Time::operator=( const Time& rhv )
 {
     if( &rhv != this )
     {
@@ -54,7 +54,7 @@ TimeConcrete& TimeConcrete::operator=( const TimeConcrete& rhv )
     return *this;
 }
 
-TimeConcrete& TimeConcrete::operator=( TimeConcrete&& rhv )
+Time& Time::operator=( Time&& rhv )
 {
     if( &rhv != this )
     {
@@ -72,88 +72,112 @@ TimeConcrete& TimeConcrete::operator=( TimeConcrete&& rhv )
     return *this;
 }
 
-void TimeConcrete::setTimeMs( const unsigned int time )
+void Time::setTimeMs( std::uint64_t time )
 {
     m_ns = static_cast<float>( time ) / 1000000.f;
     updateString();
 }
 
-void TimeConcrete::setTimeUs( const unsigned int us )
+void Time::setTimeUs( std::uint64_t us )
 {
     m_ns = static_cast<float>( us ) * 1000.f;
     updateString();
 }
 
-float TimeConcrete::getMs() const
+float Time::getMs() const
 {
     return m_ns / 1000000.f;
 }
 
-float TimeConcrete::getS() const
+float Time::getS() const
 {
     return m_ns / ( 1000.f * 1000.f * 1000.f );
 }
 
-float TimeConcrete::getM() const
+float Time::getM() const
 {
-    return m_ns / ( 60000.f * 1000.f * 1000.f);
+    return m_ns / ( 60000.f * 1000.f * 1000.f );
 }
 
-float TimeConcrete::getH() const
+float Time::getH() const
 {
-    return m_ns / ( 3600000.f * 1000.f  * 1000.f);
+    return m_ns / ( 3600000.f * 1000.f * 1000.f );
 }
 
-float TimeConcrete::getUs() const
+float Time::getUs() const
 {
     return m_ns / 1000.f;
 }
 
-bool TimeConcrete::operator==( const ITime& arg ) const
+bool Time::operator==( const Time& arg ) const
 {
     return m_ns == arg.getUs();
 }
 
-bool TimeConcrete::operator<( const ITime& arg ) const
+bool Time::operator<( const Time& arg ) const
 {
     return m_ns < arg.getUs();
 }
 
-bool TimeConcrete::operator>( const ITime& arg ) const
+bool Time::operator>( const Time& arg ) const
 {
     return m_ns > arg.getUs();
 }
 
-ITime* TimeConcrete::copy() const
+Time* Time::copy() const
 {
-    auto result = new TimeConcrete();
+    auto result = new Time();
     result->setTimeUs( m_ns );
     result->updateString();
     return result;
 }
 
-ITime& TimeConcrete::operator=( const ITime& arg )
-{
-    if( this != &arg )
-    {
-        m_ns = arg.getUs();
-        updateString();
-    }
-    return *this;
-}
-
-const CUL::String& TimeConcrete::toString()
+const CUL::String& Time::toString()
 {
     return m_asString;
 }
 
-void TimeConcrete::setTimeNs( const unsigned int ns )
+void Time::setTimeNs( std::uint64_t ns )
 {
     m_ns = ns;
     updateString();
 }
 
-void TimeConcrete::updateString()
+void Time::setTimeSec( std::uint64_t timeConverted )
+{
+    constexpr std::int32_t SECS_DAY = 60 * 60 * 24;
+    const std::int32_t dayclock = (std::int32_t)timeConverted % SECS_DAY;
+    const std::int32_t dayno = (std::int32_t)timeConverted / SECS_DAY;
+
+    const auto value = dayclock % 60;
+    m_seconds = static_cast<std::uint16_t>( dayclock % 60 );
+    m_minutes = static_cast<std::uint16_t>( ( dayclock % 3600 ) / 60 );
+    m_hours = static_cast<std::uint16_t>( dayclock / 3600 );
+    m_wday = static_cast<std::uint16_t>( ( dayno + 4 ) % 7 ); /* day 0 was a thursday */
+
+    const auto seconds = timeConverted / 1000;
+    const auto minutes = seconds / 60;
+    const auto hours = minutes / 60;
+    const auto days = hours / 24;
+
+    const std::time_t timeT = static_cast<std::time_t>( timeConverted );
+    const auto tm = std::localtime( &timeT );
+
+    m_years = static_cast<std::uint16_t>( 1900 + tm->tm_year );
+    m_months = static_cast<std::uint16_t>( ( tm->tm_mon + 1 ) );
+    m_days = static_cast<std::uint16_t>( tm->tm_mday );
+    m_hours = static_cast<std::uint16_t>( tm->tm_hour );
+    m_minutes = static_cast<std::uint16_t>( tm->tm_min );
+    m_seconds = static_cast<std::uint16_t>( tm->tm_sec );
+
+    std::tm ts = *std::localtime( &timeT );
+    char buf[80];
+    strftime( buf, sizeof( buf ), "%Y-%m-%d %H:%M:%S", &ts );
+    m_asString = buf;
+    m_ns = timeConverted * 1000000000;
+}
+
+void Time::updateString()
 {
     m_asString = std::to_string( m_years );
     m_asString += "/";
@@ -186,6 +210,6 @@ void TimeConcrete::updateString()
     m_asString += std::to_string( m_seconds );
 }
 
-TimeConcrete::~TimeConcrete()
+Time::~Time()
 {
 }

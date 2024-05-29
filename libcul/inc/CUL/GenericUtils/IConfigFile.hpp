@@ -3,10 +3,10 @@
 #include "CUL/CULInterface.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/Filesystem/Path.hpp"
-#include "CUL/TimeConcrete.hpp"
 
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
+class Time;
 NAMESPACE_BEGIN( GUTILS )
 
 class CULLib_API IConfigFile
@@ -16,7 +16,7 @@ public:
 
     virtual const String& getValue( const String& valueFieldName ) const = 0;
     virtual void reload() = 0;
-    virtual TimeConcrete getModificationTime() = 0;
+    virtual void getModificationTime(Time& outTime) = 0;
     virtual ~IConfigFile() = default;
 
 protected:

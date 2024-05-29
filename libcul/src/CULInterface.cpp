@@ -54,7 +54,7 @@ CULInterface::CULInterface( const FS::Path& configFilePath ):
 void CULInterface::initialize()
 {
     m_fileFactory = new FS::FileFactory( this );
-    m_fsApi.reset( FS::FSApi::crateInstance( "FSApiFS", m_fileFactory, this ) );
+    m_fsApi = std::make_unique<FS::FSApi>( this, m_fileFactory );
 
     m_logger = LOG::LOG_CONTAINER::getLogger();
 

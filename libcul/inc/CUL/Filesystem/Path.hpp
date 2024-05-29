@@ -1,13 +1,15 @@
 #pragma once
 
 #include "CUL/Filesystem/FS.hpp"
-#include "CUL/TimeConcrete.hpp"
 
 #if _MSC_VER
 #pragma warning( push )
 #pragma warning( disable : 4251)
 #endif
 NAMESPACE_BEGIN( CUL )
+
+class Time;
+
 NAMESPACE_BEGIN( FS )
 
 class CULLib_API Path
@@ -45,7 +47,7 @@ public:
     const String& getMd5() const;
     void setMd5( const String& inMD5 );
 
-    TimeConcrete getLastModificationTime() const;
+    void getLastModificationTime(Time& timeOut) const;
     void setModTime( const String& inModTime );
 
     void setIsDir(bool isDir);

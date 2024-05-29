@@ -3,7 +3,6 @@
 #include "CUL/Threading/ThreadUtil.hpp"
 
 #include "CUL/CULInterface.hpp"
-#include "CUL/TimeConcrete.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_iterator.hpp"
@@ -29,7 +28,7 @@ using namespace FS;
 
 IFile::IFile( const String& fPath, CUL::CULInterface* interface ) : p_cullInterface( interface ), m_path( fPath )
 {
-    m_lastModificationTime = p_cullInterface->getFS()->getLastModificationTime( fPath );
+    p_cullInterface->getFS()->getLastModificationTime( fPath, m_lastModificationTime );
 }
 
 void IFile::setPath( const String& fPath )
@@ -87,23 +86,24 @@ bool IFile::operator>( const IFile& arg ) const
     return getPath() > arg.getPath();
 }
 
-TimeConcrete IFile::getCreationTime()
+void IFile::getCreationTime( Time& outTime )
 {
-    return m_creationTime;
+    outTime = m_creationTime;
 }
 
-TimeConcrete IFile::getLastModificationTime()
+void IFile::getLastModificationTime( Time& outTime )
 {
     if( m_lastModificationTime.getUs() > 0u )
     {
-        return m_lastModificationTime;
+        outTime = m_lastModificationTime;
+        return;
     }
 
     if( p_cullInterface->getFS()->fileExist( m_path ) )
     {
-        m_lastModificationTime = p_cullInterface->getFS()->getLastModificationTime( m_path );
+        p_cullInterface->getFS()->getLastModificationTime( m_path, m_lastModificationTime );
     }
-    return m_lastModificationTime;
+    outTime = m_lastModificationTime;
 }
 
 void IFile::toggleCache( bool enabled )

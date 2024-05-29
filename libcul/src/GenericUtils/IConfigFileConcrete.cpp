@@ -40,9 +40,9 @@ const String& IConfigFileConcrete::getValue( const String& valueFieldName ) cons
     return m_empty;
 }
 
-TimeConcrete IConfigFileConcrete::getModificationTime()
+void IConfigFileConcrete::getModificationTime( Time& outTime )
 {
-    return m_file->getLastModificationTime();
+    m_file->getLastModificationTime( outTime );
 }
 
 void IConfigFileConcrete::reload()

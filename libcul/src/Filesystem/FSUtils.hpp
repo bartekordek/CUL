@@ -11,16 +11,9 @@
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
 
-#ifdef FILESYSTEM_IS_EXPERIMENTAL
-namespace FSCpp = std::experimental::filesystem;
-using FSCpp = std::experimental::filesystem;
-using FsPath = std::experimental::filesystem::path;
-using DirectoryIterator = std::experimental::filesystem::directory_iterator;
-#else
 namespace FSCpp = std::filesystem;
 using FsPath = std::filesystem::path;
 using DirectoryIterator = std::filesystem::directory_iterator;
-#endif
 
 std::string ws2s( const std::wstring& wstr );
 #ifdef CUL_WINDOWS

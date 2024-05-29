@@ -25,7 +25,7 @@ public:
 protected:
 private:
     const String& getValue( const String& valueFieldName ) const override;
-    TimeConcrete getModificationTime() override;
+    void getModificationTime(Time& out) override;
     void loadPath();
     void clear();
 

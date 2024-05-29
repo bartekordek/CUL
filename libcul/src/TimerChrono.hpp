@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/ITimer.hpp"
-#include "CUL/ITime.hpp"
+#include "CUL/Time.hpp"
 
 #include "STD_chrono.hpp"
 #include "CUL/GenericUtils/DumbPtr.hpp"
@@ -35,7 +35,7 @@ public:
     bool getIsStarted() const override;
     void stop() override;
     void reset() override;
-    const ITime& getElapsed() const override;
+    const Time& getElapsed() const override;
     std::int64_t getElapsedNs() const override;
 
     void runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds ) override;
@@ -52,7 +52,7 @@ private:
     std::set<unsigned> m_existingNumbers;
 
     std::chrono::high_resolution_clock clock;
-    std::unique_ptr<ITime> time;
+    std::unique_ptr<Time> time;
     std::chrono::high_resolution_clock::time_point startPoint;
 
     std::thread m_timerThread;
