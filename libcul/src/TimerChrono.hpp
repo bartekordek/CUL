@@ -48,7 +48,7 @@ private:
     void threadWrap( size_t index );
 
     unsigned getUniqueNumber();
-    void removeUniqueNumber( unsigned value );
+    void removeUniqueNumber( std::size_t value );
     std::set<unsigned> m_existingNumbers;
 
     std::chrono::high_resolution_clock clock;

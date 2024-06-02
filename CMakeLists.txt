@@ -112,5 +112,8 @@ set( BUILD_SHARED_LIBS ON )
 add_subdirectory( ${CUL_DEPS_PATH}/DevIL/DevIL )
 find_package( DevIL REQUIRED )
 
+
+add_subdirectory( ${CUL_DEPS_PATH}/tracy )
+
 add_subdirectory( libcul )
 add_subdirectory( libculTests )

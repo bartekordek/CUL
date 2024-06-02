@@ -21,6 +21,7 @@ include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/rapidjson/include" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/hash-library" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/DevIL/DevIL/include" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tracy/public" )
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -70,6 +71,7 @@ PRIVATE IL
 PRIVATE ILU
 PRIVATE udp-discovery
 PUBLIC zlibstatic
+PUBLIC TracyClient
 )
 
 set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )

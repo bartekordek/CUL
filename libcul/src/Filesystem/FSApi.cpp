@@ -5,6 +5,8 @@
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/CULInterface.hpp"
 
+#include "CUL/IMPORT_tracy.hpp"
+
 #include "CUL/STL_IMPORTS/STD_exception.hpp"
 #include "CUL/STL_IMPORTS/STD_filesystem.hpp"
 
@@ -109,6 +111,7 @@ FSApi::~FSApi()
 
 std::vector<Path> FSApi::ListAllFiles( const Path& directory )
 {
+    ZoneScoped;
     std::vector<Path> result;
 
     for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
@@ -130,9 +133,9 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory )
     return result;
 }
 
-
 void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback )
 {
+    ZoneScoped;
     std::vector<Path> result;
 
     const auto dir = directory.getPath().string();
@@ -140,6 +143,7 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
     for( const auto& entry :
          std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, errorCode ) )
     {
+        ZoneScoped;
         if( errorCode.value() != 0 )
         {
             CUL::Assert::simple( false, errorCode.message() );
@@ -188,6 +192,7 @@ std::time_t to_time_t( TP tp )
 
 void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 {
+    ZoneScoped;
     if( false == m_culInterface->getFS()->fileExist( inPath ) )
     {
         return;
@@ -217,12 +222,14 @@ String FSApi::getCurrentDir()
 
 IFile* FSApi::getDirectory( const Path& directory )
 {
+    ZoneScoped;
     Directory* result = new Directory( directory, m_culInterface );
     std::filesystem::path directoryBf( directory.getPath().cStr() );
     using DI = std::filesystem::directory_iterator;
     DI end;
     for( DI it( directoryBf ); it != end; ++it )
     {
+        ZoneScoped;
         const auto& pathIt = it->path();
         const auto filePath = pathIt.string();
         if( isRegularFile( filePath ) )

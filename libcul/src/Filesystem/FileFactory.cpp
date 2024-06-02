@@ -6,6 +6,8 @@
 #include "Graphics/ImageConcrete.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
+#include "CUL/IMPORT_tracy.hpp"
+
 using namespace CUL;
 
 using IFile = FS::IFile;
@@ -48,6 +50,7 @@ IFile* FileFactory::createFileFromPath( const Path& path )
 
 IFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
+    ZoneScoped;
     auto file = new FileRegularImpl( path.getPath(), m_culInterface );
     return file;
 }

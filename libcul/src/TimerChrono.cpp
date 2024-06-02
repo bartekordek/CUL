@@ -194,7 +194,7 @@ unsigned TimerChrono::getUniqueNumber()
     while( true );
 }
 
-void TimerChrono::removeUniqueNumber( unsigned value )
+void TimerChrono::removeUniqueNumber( std::size_t value )
 {
     std::lock_guard<std::mutex> lock( m_threadsVectorLock );
     auto it = m_existingNumbers.find( value );

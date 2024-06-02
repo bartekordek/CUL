@@ -8,6 +8,7 @@
 #include "CUL/Threading/ThreadUtil.hpp"
 
 #include "CUL/IMPORT_sqlite3.hpp"
+#include "CUL/IMPORT_tracy.hpp"
 
 #ifdef _MSC_VER
 #pragma warning( push, 0 )
@@ -64,6 +65,7 @@ float FileDatabase::getPercentage() const
 
 std::vector<uint64_t> FileDatabase::getListOfSizes() const
 {
+    ZoneScoped;
     std::vector<uint64_t> result;
 
     const std::string sqlQuery = std::string( "SELECT DISTINCT SIZE FROM FILES ORDER BY SIZE;" );
@@ -92,6 +94,7 @@ std::vector<uint64_t> FileDatabase::getListOfSizes() const
 
 std::vector<CUL::String> FileDatabase::getListOfMd5() const
 {
+    ZoneScoped;
     std::vector<CUL::String> result;
 
     const std::string sqlQuery = std::string( "SELECT DISTINCT MD5 FROM FILES ORDER BY SIZE;" );
@@ -117,6 +120,7 @@ std::vector<CUL::String> FileDatabase::getListOfMd5() const
 
 std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size, const CUL::String& md5 ) const
 {
+    ZoneScoped;
     std::vector<FileDatabase::FileInfo> result;
 
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\" AND MD5=\"" + md5 + "\";";
@@ -152,6 +156,7 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size, const
 
 std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
 {
+    ZoneScoped;
     std::vector<FileDatabase::FileInfo> result;
 
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\";";
@@ -187,6 +192,7 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
 
 void FileDatabase::loadFilesFromDatabase()
 {
+    ZoneScoped;
     CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::initDb();" );
     initDb();
 
@@ -201,6 +207,7 @@ void FileDatabase::loadFilesFromDatabase()
     std::string sqlQuery = std::string( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES" );
     auto callback = []( void* thisPtrValue, int, char** argv, char** )
     {
+        ZoneScoped;
         ListAndApi* rd = reinterpret_cast<ListAndApi*>( thisPtrValue );
         String file;
         file.setBinary( argv[0] );
@@ -254,6 +261,7 @@ void FileDatabase::loadFilesFromDatabase()
 
 bool FileDatabase::deleteRemnants()
 {
+    ZoneScoped;
     String status = "loadFilesFromDatabase -> deleting remnants...";
     ThreadUtil::getInstance().setThreadStatus( status );
     size_t filesCount = m_fetchList->FilesList.size();
@@ -291,6 +299,7 @@ bool FileDatabase::deleteRemnants()
 
 std::list<CUL::String> FileDatabase::getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const
 {
+    ZoneScoped;
     std::list<CUL::String> result;
     CUL::String sqlQuery = CUL::String( "SELECT PATH FROM FILES WHERE ( SIZE='" ) + fileSize + "' AND MD5='" + md5 + "');";
 
@@ -316,6 +325,7 @@ std::list<CUL::String> FileDatabase::getFilesMatching( const CUL::String& fileSi
 
 int64_t FileDatabase::getFileCount() const
 {
+    ZoneScoped;
     int64_t result = 0;
 
     char* zErrMsg = nullptr;
@@ -344,6 +354,7 @@ int64_t FileDatabase::getFileCount() const
 
 void FileDatabase::initDb()
 {
+    ZoneScoped;
     CUL::ThreadUtil::getInstance().setThreadStatus( "Initi db..." );
     int rc = sqlite3_open( m_databasePath.getPath().cStr(), &m_db );
 
@@ -381,6 +392,7 @@ void FileDatabase::initDb()
 
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
 {
+    ZoneScoped;
     if( filePath.contains("Adam Boduch") )
     {
         const auto x = 0;
@@ -438,6 +450,7 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
 
 FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
 {
+    ZoneScoped;
     waitForInit();
     FileDatabase::FileInfo result;
     String pathInBinary = path;
@@ -498,6 +511,7 @@ void FileDatabase::waitForInit() const
 
 void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
 {
+    ZoneScoped;
     CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::removeFileFromDB pathRaw = " + pathRaw );
     CUL::String path = pathRaw;
     path.convertToHexData();
@@ -521,6 +535,7 @@ void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
 
 void FileDatabase::removeFilesFromDb( const std::vector<CUL::String>& paths )
 {
+    ZoneScoped;
     const size_t pathsSize = paths.size();
 
     CUL::String pathsListed = "( '";

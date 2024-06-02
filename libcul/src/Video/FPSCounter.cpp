@@ -58,7 +58,7 @@ void FPSCounter::setMeasurePeriod( const unsigned periodNs )
 
 double FPSCounter::normalizeToSleepTime( const double fpsCount ) const
 {
-    return fpsCount * 1000000 / m_sleepTimeNs;
+    return fpsCount * 1000000.0 / (double)m_sleepTimeNs;
 }
 
 FPSCounter::~FPSCounter()
