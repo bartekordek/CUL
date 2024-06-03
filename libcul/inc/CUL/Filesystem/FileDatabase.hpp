@@ -46,12 +46,12 @@ public:
     FileInfo getFileInfo( const CUL::String& path ) const;
     float getPercentage() const;
 
-    std::vector<uint64_t> getListOfSizes() const;
+    void getListOfSizes( std::vector<uint64_t>& out ) const;
     std::vector<CUL::String> getListOfMd5() const;
-    std::vector<FileInfo> getFiles( uint64_t size, const CUL::String& md5 ) const;
-    std::vector<FileInfo> getFiles( uint64_t size ) const;
+    void getFiles( uint64_t size, const CUL::String& md5, std::vector<FileInfo>& out ) const;
+    void getFiles( uint64_t size, std::vector<FileInfo>& out ) const;
 
-    std::list<CUL::String> getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const;
+    void getFilesMatching( const CUL::String& fileSize, const CUL::String& md5, std::list<CUL::String>& out ) const;
     bool deleteRemnants();
 
     ~FileDatabase();

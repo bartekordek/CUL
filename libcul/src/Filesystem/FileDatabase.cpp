@@ -63,11 +63,9 @@ float FileDatabase::getPercentage() const
     return 100.f * m_current / ( 1.f * m_rowCount );
 }
 
-std::vector<uint64_t> FileDatabase::getListOfSizes() const
+void FileDatabase::getListOfSizes( std::vector<uint64_t>& out ) const
 {
     ZoneScoped;
-    std::vector<uint64_t> result;
-
     const std::string sqlQuery = std::string( "SELECT DISTINCT SIZE FROM FILES ORDER BY SIZE;" );
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
         CUL::String valueAsString = argv[0];
@@ -78,7 +76,7 @@ std::vector<uint64_t> FileDatabase::getListOfSizes() const
     };
 
     char* zErrMsg = nullptr;
-    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, &result, &zErrMsg );
+    int rc = sqlite3_exec( m_db, sqlQuery.c_str(), callback, &out, &zErrMsg );
 
     if( ( rc != SQLITE_OK ) && ( rc != SQLITE_MISUSE ) )
     {
@@ -88,8 +86,6 @@ std::vector<uint64_t> FileDatabase::getListOfSizes() const
             CUL::Assert::simple( false, "DB ERROR: " + errMessage );
         }
     }
-
-    return result;
 }
 
 std::vector<CUL::String> FileDatabase::getListOfMd5() const
@@ -118,11 +114,9 @@ std::vector<CUL::String> FileDatabase::getListOfMd5() const
     return result;
 }
 
-std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size, const CUL::String& md5 ) const
+void FileDatabase::getFiles( uint64_t size, const CUL::String& md5, std::vector<FileInfo>& out ) const
 {
     ZoneScoped;
-    std::vector<FileDatabase::FileInfo> result;
-
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\" AND MD5=\"" + md5 + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
         CUL::String filePath;
@@ -143,22 +137,18 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size, const
     };
 
     char* zErrMsg = nullptr;
-    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
         std::string errMessage = zErrMsg;
         CUL::Assert::simple( false, "DB ERROR: " + errMessage );
     }
-
-    return result;
 }
 
-std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
+void FileDatabase::getFiles( uint64_t size, std::vector<FileInfo>& out ) const
 {
     ZoneScoped;
-    std::vector<FileDatabase::FileInfo> result;
-
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
         CUL::String filePath;
@@ -179,15 +169,13 @@ std::vector<FileDatabase::FileInfo> FileDatabase::getFiles( uint64_t size) const
     };
 
     char* zErrMsg = nullptr;
-    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+    int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
         std::string errMessage = zErrMsg;
         CUL::Assert::simple( false, "DB ERROR: " + errMessage );
     }
-
-    return result;
 }
 
 void FileDatabase::loadFilesFromDatabase()
@@ -297,10 +285,9 @@ bool FileDatabase::deleteRemnants()
     return true;
 }
 
-std::list<CUL::String> FileDatabase::getFilesMatching( const CUL::String& fileSize, const CUL::String& md5 ) const
+void FileDatabase::getFilesMatching( const CUL::String& fileSize, const CUL::String& md5, std::list<CUL::String>& out ) const
 {
     ZoneScoped;
-    std::list<CUL::String> result;
     CUL::String sqlQuery = CUL::String( "SELECT PATH FROM FILES WHERE ( SIZE='" ) + fileSize + "' AND MD5='" + md5 + "');";
 
     char* zErrMsg = nullptr;
@@ -313,14 +300,12 @@ std::list<CUL::String> FileDatabase::getFilesMatching( const CUL::String& fileSi
     };
 
     std::string sqlQuerySTR = sqlQuery.string();
-    int rc = sqlite3_exec( m_db, sqlQuerySTR.c_str(), callback, &result, &zErrMsg );
+    int rc = sqlite3_exec( m_db, sqlQuerySTR.c_str(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
         CUL::Assert::simple( false, "DB ERROR!" );
     }
-
-    return result;
 }
 
 int64_t FileDatabase::getFileCount() const
