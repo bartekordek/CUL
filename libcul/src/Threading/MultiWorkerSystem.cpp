@@ -26,7 +26,7 @@ MultiWorkerSystem::MultiWorkerSystem()
 void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
 {
     TaskCallback* taskPtr = new TaskCallback();
-    taskPtr->Callback = [this, name]( int8_t ) {
+    taskPtr->Callback = [name]( int8_t ) {
         CUL::ThreadUtil::getInstance().setThreadName( name );
     };
     taskPtr->OnlyForWorkerOfId = id;

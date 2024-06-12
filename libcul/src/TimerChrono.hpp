@@ -49,7 +49,7 @@ private:
 
     unsigned getUniqueNumber();
     void removeUniqueNumber( std::size_t value );
-    std::set<unsigned> m_existingNumbers;
+    std::set<std::size_t> m_existingNumbers;
 
     std::chrono::high_resolution_clock clock;
     std::unique_ptr<Time> time;
