@@ -362,7 +362,12 @@ bool Path::exists() const
     const bool result = std::experimental::filesystem::is_regular_file( m_fullPath.cStr() );
 #else
     const std::filesystem::path pathAsStdPath = m_fullPath.getString();
-    const bool result = std::filesystem::is_regular_file( pathAsStdPath );
+    std::error_code outErrorCode;
+    const bool result = std::filesystem::is_regular_file( pathAsStdPath, outErrorCode );
+    if( outErrorCode.value() != 0 && outErrorCode.value() != 2 )
+    {
+        CUL::Assert::simple( false, CUL::String( outErrorCode.message() ) );
+    }
 #endif
     return result;
 }
