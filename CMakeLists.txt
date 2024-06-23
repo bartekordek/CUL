@@ -112,7 +112,8 @@ set( BUILD_SHARED_LIBS ON )
 add_subdirectory( ${CUL_DEPS_PATH}/DevIL/DevIL )
 find_package( DevIL REQUIRED )
 
-set(TRACY_CALLSTACK ON CACHE BOOL "Enable callstack." FORCE)
+set(TRACY_CALLSTACK ON CACHE BOOL "[tracy ]Enable callstack." FORCE)
+set(TRACY_ON_DEMAND ON CACHE BOOL "[tracy ]Enable on demand." FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/tracy )
 
 add_subdirectory( libcul )

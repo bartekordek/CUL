@@ -23,7 +23,7 @@ static CUL::LOG::ILogger* g_logger = nullptr;
 
 using namespace CUL;
 #if CUL_GLOBAL_MEMORY_POOL
-    
+
 #endif // #if CUL_GLOBAL_MEMORY_POOL
 
 CULInterface* CULInterface::s_instance = nullptr;
@@ -66,7 +66,7 @@ void CULInterface::initialize()
 
     m_imageLoader.reset( Graphics::IImageLoader::createConcrete( m_configFile, this ) );
 
-    
+
     m_logger->log( "Initialized logger." );
     if( !g_logger )
     {
@@ -261,6 +261,13 @@ void* operator new( std::size_t count )
     TracyAllocS( ptr, count, g_callstackDepth );
     return ptr;
 }
+
+void operator delete( void* ptr, std::size_t )
+{
+    TracyFreeS( ptr, g_callstackDepth );
+    free( ptr );
+}
+
 void operator delete( void* ptr ) noexcept
 {
     TracyFreeS( ptr, g_callstackDepth );
