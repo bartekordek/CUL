@@ -9,6 +9,7 @@
 #include "GenericUtils/IConfigFileConcrete.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/GenericUtils/Singleton.hpp"
+#include "CUL/IMPORT_tracy.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_new.hpp"
@@ -252,5 +253,17 @@ void operator delete[]( void* p, std::size_t /* targetSize */ ) throw()
         std::free( p );
     }
 }
-
+#elif TRACY_ENABLE
+constexpr std::size_t g_callstackDepth = 8u;
+void* operator new( std::size_t count )
+{
+    auto ptr = malloc( count );
+    TracyAllocS( ptr, count, g_callstackDepth );
+    return ptr;
+}
+void operator delete( void* ptr ) noexcept
+{
+    TracyFreeS( ptr, g_callstackDepth );
+    free( ptr );
+}
 #endif  // #ifdef CUL_GLOBAL_MEMORY_POOL
