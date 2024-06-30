@@ -253,7 +253,7 @@ bool FSApi::isRegularFile( const String& path )
     bool result = std::filesystem::is_regular_file( path.getString(), existsErrorCode );
     if( existsErrorCode.value() != 0 )
     {
-        LOG::ILogger::getInstance()->log( "[" + String( path ) + "] " + existsErrorCode.message() );
+        LOG::ILogger::getInstance().log( "[" + String( path ) + "] " + existsErrorCode.message() );
     }
     return result;
 }
@@ -269,7 +269,7 @@ String FSApi::getFileSize( const Path& path )
     if( ec.value() != 0 )
     {
         const auto message = ec.message();
-        LOG::ILogger::getInstance()->log( message );
+        LOG::ILogger::getInstance().log( message );
 
         std::error_code symlinkCheckError;
         if( std::filesystem::is_symlink( filePath, symlinkCheckError ) )

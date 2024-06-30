@@ -139,8 +139,8 @@ TEST_F( UtilsTest, triangleWidth )
 
 TEST_F( UtilsTest, timerTest )
 {
-    auto logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
-    auto chronoTimer = CUL::TimerFactory::getChronoTimer(logger );
+    CUL::LOG::ILogger& logger = CUL::LOG::ILogger::getInstance();
+    auto chronoTimer = CUL::TimerFactory::getChronoTimer( &logger );
     chronoTimer->runEveryPeriod( [] (){
         std::cout << "Time!\n";
     }, 1000 * 1000 );
@@ -149,7 +149,6 @@ TEST_F( UtilsTest, timerTest )
     CUL::ITimer::sleepSeconds( 3 );
 
     delete chronoTimer;
-    delete logger;
 }
 
 #ifdef _MSC_VER

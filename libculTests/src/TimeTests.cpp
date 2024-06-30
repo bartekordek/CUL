@@ -25,8 +25,8 @@ void TimeTests::TearDownTestCase()
 
 TEST_F( TimeTests, MeasureTime )
 {
-    CUL::GUTILS::DumbPtr<CUL::LOG::ILogger> logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
-    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer( logger ) );
+    CUL::LOG::ILogger& logger = CUL::LOG::ILogger::getInstance();
+    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer( &logger ) );
     timer->start();
     unsigned ms2Sleep = 1000;
     ITimer::sleepMiliSeconds( ms2Sleep );
@@ -36,8 +36,8 @@ TEST_F( TimeTests, MeasureTime )
 
 TEST_F( TimeTests, Reset )
 {
-    CUL::GUTILS::DumbPtr<CUL::LOG::ILogger> logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
-    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer(logger ) );
+    CUL::LOG::ILogger& logger = CUL::LOG::ILogger::getInstance();
+    auto timer = std::unique_ptr<ITimer>( TimerFactory::getChronoTimer( &logger ) );
     timer->start();
     unsigned ms2Sleep = 1000;
     ITimer::sleepMiliSeconds( ms2Sleep );

@@ -25,8 +25,8 @@ void FrameCounterTests::TearDownTestCase()
 
 TEST_F( FrameCounterTests, fpsCurrentCountShouldBe0 )
 {
-    CUL::GUTILS::DumbPtr< CUL::LOG::ILogger> logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
-    FPSCounter fpsCounter(logger );
+    CUL::LOG::ILogger& logger = CUL::LOG::ILogger::getInstance();
+    FPSCounter fpsCounter( &logger );
     fpsCounter.setMeasurePeriod( measurePeriod );
     fpsCounter.start();
     fpsCounter.stop();
@@ -35,8 +35,8 @@ TEST_F( FrameCounterTests, fpsCurrentCountShouldBe0 )
 
 TEST_F( FrameCounterTests, fpsAverageCountShouldBe0 )
 {
-    CUL::GUTILS::DumbPtr<CUL::LOG::ILogger> logger = CUL::LOG::ILogger::createSimpleStandardOutputLogger();
-    FPSCounter fpsCounter(logger);
+    CUL::LOG::ILogger& logger = CUL::LOG::ILogger::getInstance();
+    FPSCounter fpsCounter( &logger );
     fpsCounter.setMeasurePeriod( measurePeriod );
     fpsCounter.start();
     fpsCounter.stop();

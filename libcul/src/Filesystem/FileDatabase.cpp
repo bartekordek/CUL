@@ -468,8 +468,8 @@ WHERE PATH='" +
     constexpr bool PrintInfo = false;
     if( PrintInfo  && !result.Found )
     {
-        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Could not find: " + path );
-        LOG::ILogger::getInstance()->log( "[FileDatabase::getFileInfo] Used SQL command: " + sqlQuery );
+        LOG::ILogger::getInstance().log( "[FileDatabase::getFileInfo] Could not find: " + path );
+        LOG::ILogger::getInstance().log( "[FileDatabase::getFileInfo] Used SQL command: " + sqlQuery );
     }
 
     if( rc != SQLITE_OK )

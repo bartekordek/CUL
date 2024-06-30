@@ -134,7 +134,7 @@ void IFile::calculateMD5()
 
     if( isBigFile )
     {
-        LOG::ILogger::getInstance()->log( "[IFile::calculateMD5] Big file: " + getPath().getPath() );
+        LOG::ILogger::getInstance().log( "[IFile::calculateMD5] Big file: " + getPath().getPath() );
         std::ifstream file( m_path.getString(), std::ios::binary );
         file.unsetf( std::ios::skipws );
 

@@ -21,17 +21,15 @@ public:
     ILogger();
     virtual ~ILogger();
 
-    virtual void log(
-        const String& text,
-        const Severity severity = Severity::INFO ) = 0;
-
-    static ILogger* createSimpleStandardOutputLogger();
-    static ILogger* getInstance();
+    virtual void log( const String& text, const Severity severity = Severity::INFO ) = 0;
+    virtual void log( const char* text, const Severity severity = Severity::INFO ) = 0;
+    virtual void logVariable( Severity severity, const char* msg... ) = 0;
+    static ILogger& getInstance();
 
 protected:
-
 private:
     static ILogger* s_instance;
+
 private:
     ILogger( const ILogger& arg ) = delete;
     ILogger& operator=( const ILogger& arg ) = delete;

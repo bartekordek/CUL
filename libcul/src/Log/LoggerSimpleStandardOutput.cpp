@@ -1,5 +1,7 @@
 #include "Log/LoggerSimpleStandardOutput.hpp"
 #include "IMPORT_spdlog.hpp"
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
 
 #undef ERROR
 
@@ -8,28 +10,57 @@ using namespace LOG;
 
 LoggerSimpleStandardOutput::LoggerSimpleStandardOutput()
 {
-    log( "Iniatializing LoggerSimpleStandardOutput... Done." );
 }
 
-void LoggerSimpleStandardOutput::log(
-    const String& text,
-    const Severity severity )
+void LoggerSimpleStandardOutput::log( const String& text, const Severity severity )
 {
-    std::lock_guard<std::mutex> logGuard( m_logMtx );
-    const auto message = text.cStr();
+    const char* message = text.cStr();
+    log(message, severity);
+}
+
+void LoggerSimpleStandardOutput::logVariable( Severity severity, const char* msg... )
+{
+    va_list args;
+    va_start( args, msg );
+    std::lock_guard<std::mutex> locker( m_variableMutex );
+    vsprintf( m_variableBuffer, msg, args );
+    log( m_variableBuffer, severity );
+    va_end( args );
+}
+
+void LoggerSimpleStandardOutput::log( const char* message, const Severity severity )
+{
     switch( severity )
     {
-    case Severity::CRITICAL:
-        spdlog::critical( message );
-        break;
-    case Severity::ERROR:
-        spdlog::error( message );
-        break;
-    case Severity::WARN:
-        spdlog::warn( message );
-        break;
-    case Severity::INFO:
-        spdlog::info( message );
+        case Severity::CRITICAL:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::critical( message );
+            break;
+        }
+        case Severity::ERROR:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::error( message );
+            break;
+        }
+        case Severity::WARN:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::warn( message );
+            break;
+        }
+        case Severity::INFO:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::info( message );
+            break;
+        }
+        default:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::info( message );
+        }
     }
 }
 

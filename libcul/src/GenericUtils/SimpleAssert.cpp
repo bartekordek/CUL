@@ -21,6 +21,10 @@ void Assert::simple( bool val, const String& msg, LOG::ILogger* loggerIn, bool g
     {
         loggerIn->log( msg, LOG::Severity::ERROR );
     }
+    else
+    {
+        LOG::ILogger::getInstance().log( msg, LOG::Severity::ERROR );
+    }
 
     if( generateStackTrace )
     {
