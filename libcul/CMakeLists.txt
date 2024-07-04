@@ -19,7 +19,6 @@ include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/stb" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tiny-image/src" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/rapidjson/include" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/hash-library" )
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/DevIL/DevIL/include" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tracy/public" )
 
@@ -67,8 +66,6 @@ PRIVATE boost_stacktrace_basic
 PRIVATE cppfs
 PUBLIC glm
 PRIVATE spdlog
-PRIVATE IL
-PRIVATE ILU
 PRIVATE udp-discovery
 PUBLIC zlibstatic
 PUBLIC TracyClient
@@ -91,15 +88,6 @@ else()
 endif()
 
 if( MSVC )
-    foreach(DevIL_BINARY ${DevIL_BINARIES})
-        message( "DevIL_BINARY: ${DevIL_BINARY}" )
-
-        add_custom_command(TARGET ${PROJECT_NAME_DYNAMIC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DevIL_BINARY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
-
-        add_custom_command(TARGET ${PROJECT_NAME_STATIC} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${DevIL_BINARY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE} )
-    endforeach(DevIL_BINARY)
-#CUL_OUTPUT_DIR
-
     set( CPPFSSOURCE ${CUL_OUTPUT_DIR}/deps/CUL/deps/cppfs/${CMAKE_BUILD_TYPE}/*.dll )
     set( CPPFSTARGET ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/ )
 

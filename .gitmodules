@@ -107,10 +107,6 @@
     ignore = dirty
 	path = deps/zlib
 	url = git@github.com:madler/zlib.git
-[submodule "deps/DevIL"]
-	ignore = dirty
-	path = deps/DevIL
-	url = git@github.com:bartekordek/DevIL.git
 [submodule "deps/hash-library"]
 	path = deps/hash-library
 	url = git@github.com:stbrumme/hash-library.git

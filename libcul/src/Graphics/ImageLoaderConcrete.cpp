@@ -4,7 +4,6 @@
 #include "Graphics/ImageLoaderTiny.hpp"
 #include "Graphics/ImageLoaderBMP.hpp"
 #include "Graphics/ImageLoaderData.hpp"
-#include "Graphics/ImageLoaderDevIL.hpp"
 
 using namespace CUL;
 using namespace Graphics;
@@ -34,11 +33,6 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config, CULInterf
         if( pngLoader == "TinyImageLoader" )
         {
             std::unique_ptr<TinyImageLoader> png( new TinyImageLoader( culInterface ) );
-            m_loaders["png"] = std::move( png );
-        }
-        else if( pngLoader == "DevIL" )
-        {
-            std::unique_ptr<ImageLoaderDevil> png( new ImageLoaderDevil( culInterface ) );
             m_loaders["png"] = std::move( png );
         }
         else
