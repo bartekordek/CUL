@@ -149,16 +149,10 @@ void Time::setTimeSec( std::uint64_t timeConverted )
     const std::int32_t dayclock = (std::int32_t)timeConverted % SECS_DAY;
     const std::int32_t dayno = (std::int32_t)timeConverted / SECS_DAY;
 
-    const auto value = dayclock % 60;
     m_seconds = static_cast<std::uint16_t>( dayclock % 60 );
     m_minutes = static_cast<std::uint16_t>( ( dayclock % 3600 ) / 60 );
     m_hours = static_cast<std::uint16_t>( dayclock / 3600 );
     m_wday = static_cast<std::uint16_t>( ( dayno + 4 ) % 7 ); /* day 0 was a thursday */
-
-    const auto seconds = timeConverted / 1000;
-    const auto minutes = seconds / 60;
-    const auto hours = minutes / 60;
-    const auto days = hours / 24;
 
     const std::time_t timeT = static_cast<std::time_t>( timeConverted );
     const auto tm = std::localtime( &timeT );

@@ -17,7 +17,6 @@ IImage* STBIImageLoader::loadImage( const FS::Path& path, bool )
     int width = 0, height = 0, orig_format = 0;
 
     stbi_uc* rawData = stbi_load( path.getPath().cStr(), &width, &height, &orig_format, req_format );
-
     CUL::Assert::simple( rawData != nullptr, "cannot export data." );
     auto data = reinterpret_cast<DataType*>( rawData );
 
@@ -25,12 +24,19 @@ IImage* STBIImageLoader::loadImage( const FS::Path& path, bool )
     ii.path = path;
     ii.size.width = width;
     ii.size.height = height;
+    ii.canvasSize = ii.size;
 
     if( req_format == STBI_rgb )
     {
         ii.depth = 24;
         ii.pitch = 3 * width;
         ii.pixelFormat = PixelFormat::ARGB;
+    }
+    else if( req_format == STBI_rgb_alpha )
+    {
+        ii.depth = 24;
+        ii.pitch = 3 * width;
+        ii.pixelFormat = PixelFormat::RGBA;
     }
     else
     {
