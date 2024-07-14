@@ -28,7 +28,7 @@ public:
 
 protected:
 private:
-    static ILogger* s_instance;
+    static ILogger* s_instancePtr;
 
 private:
     ILogger( const ILogger& arg ) = delete;

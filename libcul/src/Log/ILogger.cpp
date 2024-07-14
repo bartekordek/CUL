@@ -3,11 +3,11 @@
 
 using ILogger = CUL::LOG::ILogger;
 
-ILogger* ILogger::s_instance = nullptr;
+ILogger* ILogger::s_instancePtr = nullptr;
 
 ILogger::ILogger()
 {
-    s_instance = this;
+    s_instancePtr = this;
 }
 
 ILogger& ILogger::getInstance()
