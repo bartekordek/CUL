@@ -62,7 +62,6 @@ PUBLIC AdditionalDeps
 PUBLIC boost_assert
 PUBLIC boost_circular_buffer
 PUBLIC boost_core
-PRIVATE boost_stacktrace_basic
 PRIVATE cppfs
 PUBLIC glm
 PRIVATE spdlog
@@ -70,6 +69,12 @@ PRIVATE udp-discovery
 PUBLIC zlibstatic
 PUBLIC TracyClient
 )
+
+if (MSVC)
+list(APPEND DEPENDENCIES PRIVATE boost_stacktrace_windbg_cached)
+else()
+list(APPEND DEPENDENCIES PRIVATE boost_stacktrace_basic)
+endif()
 
 set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
