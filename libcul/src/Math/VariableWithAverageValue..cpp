@@ -1,7 +1,5 @@
 #include "CUL/Math/VariableWithAverageValue.hpp"
 
-#include "CUL/IMPORT_boost_circular_buffer.hpp"
-
 using namespace CUL;
 using namespace MATH;
 
