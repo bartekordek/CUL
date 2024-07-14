@@ -3,6 +3,7 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 
 NAMESPACE_BEGIN( CUL )
 

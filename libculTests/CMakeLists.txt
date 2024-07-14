@@ -18,6 +18,7 @@ else()
 endif()
 
 include_directories(src)
+include_directories("${CUL_ROOT_DIR}/libcul/src")
 file( GLOB_RECURSE SOURCES inc/*.hpp src/*.hpp src/*.cpp )
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 
