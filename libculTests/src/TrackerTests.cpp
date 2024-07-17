@@ -1,6 +1,6 @@
 #include "TrackerTests.hpp"
 #include "CUL/Log/ILogger.hpp"
-#include "Memory/MemoryTracker.hpp"
+#include "CUL/Memory/MemoryTracker.hpp"
 #include "CUL/Memory/MemoryUtils.hpp"
 
 TrackerTests::TrackerTests()

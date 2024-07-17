@@ -1,5 +1,5 @@
 #include "CUL/Memory/MemoryUtils.hpp"
-#include "Memory/MemoryTracker.hpp"
+#include "CUL/Memory/MemoryTracker.hpp"
 #include "CUL/IMPORT_tracy.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
