@@ -34,26 +34,24 @@ Currently, the project is built in the Linux env, but not everything was tested.
 
 ## Code Example
 
-For code examples, please check sub-project libculTests/tests.
+For code examples, please check how they are being used in the tests:
+```libculTests/src```
 
 ## Motivation
 
-The main reason for this library is for me to learn. Also, as it is a utility library, the main functionality is to have some repeating code in one, easy-to-use place.
+My motivation to create such a library:
+- The main reason for this library is for me to learn.
+- Also, as it is a utility library, the main functionality is to have some repeating code in one, easy-to-use place.
 
 ## Installation
 
 Just add cul_static or cul_dynamic to your cmake project.
-
-## API Reference
-
-To be done.
-
-## Tests
-
-The exact way to run the tests is in the .github files or vscode tasks/launch files.
-
-## Contributors
+Just like examples, take a look at:
+```
+libculTests/CMakeLists.txt
+```
 
 
 ## License
-Beer/coffee license (check my account for more information.
+Beer/coffee license. Check my account for more information.
+You can use it just like an MIT license.
