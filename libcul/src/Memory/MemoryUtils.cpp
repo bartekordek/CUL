@@ -5,30 +5,19 @@
 
 NAMESPACE_BEGIN( CUL )
 
-bool g_enableMemoryTracker = true;
-
 void TrackRealloc( void* inAddr, std::uint64_t inSize )
 {
-    if( g_enableMemoryTracker )
-    {
-        MemoryTracker::getInstance().logRealloc(inAddr, inSize);
-    }
+    MemoryTracker::getInstance().logRealloc(inAddr, inSize);
 }
 
 void TrackAlloc( void* inAddr, std::uint64_t inSize )
 {
-    if( g_enableMemoryTracker )
-    {
-        MemoryTracker::getInstance().logAlloc(inAddr, inSize);
-    }
+    MemoryTracker::getInstance().logAlloc( inAddr, inSize );
 }
 
 void TrackFree( void* inAddr )
 {
-    if( g_enableMemoryTracker )
-    {
-        MemoryTracker::getInstance().logFree( inAddr );
-    }
+    MemoryTracker::getInstance().logFree( inAddr );
 }
 
 NAMESPACE_END( CUL )

@@ -16,12 +16,24 @@ public:
 
     }
 
-    StringStatic( const StringStatic& arg )
+    StringStatic(const char* arg):
+        m_size(std::strlen(arg))
     {
+        Assert::simple( m_size < Capacity, "TOO SMALL BUFFER!" );
+        std::strcpy( m_value, arg );
     }
 
-    StringStatic( StringStatic&& arg )
+    StringStatic( const StringStatic& arg ):
+        m_size( arg.size)
     {
+        Assert::simple( m_size < Capacity, "TOO SMALL BUFFER!" );
+        std::strcpy( m_value, arg.m_value );
+    }
+
+    StringStatic( StringStatic&& arg ) : m_size( arg.size )
+    {
+        std::strcpy( m_value, arg.m_value );
+        arg.m_size = 0u;
     }
 
     StringStatic& operator=( const StringStatic& arg )
@@ -46,9 +58,19 @@ public:
         return *this;
     }
 
+    StringStatic& operator=( const char* arg )
+    {
+        m_size = std::strlen(arg);
+        Assert::simple( m_size < Capacity, "TOO SMALL BUFFER!" );
+
+        std::strcpy( m_value, arg );
+
+        return *this;
+    }
+
     void append(const char* inStr)
     {
-        const std::uint16_t stringLength = std::strlen( inStr );
+        const std::uint16_t stringLength = static_cast<std::uint16_t>( std::strlen( inStr ) );
         append(inStr, stringLength);
     }
 

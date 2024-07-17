@@ -5,8 +5,6 @@
 
 NAMESPACE_BEGIN( CUL )
 
-constexpr std::uint8_t g_maxStackSize = 8u;
-
 thread_local bool g_blockCurrentThread = false;
 
 MemoryTracker& MemoryTracker::getInstance()
@@ -26,13 +24,14 @@ void MemoryTracker::logRealloc( void* inOldPtr, std::uint64_t inSize )
         return;
     }
 
-    StackString ss;
-    getStackHere(ss);
+    AllocationInfo ai;
+    ai.Size = inSize;
+    getStackHere( ai.StackLines );
 
     std::lock_guard<std::mutex> locker(m_dataMtx);
     const auto it = m_allocations.find( inOldPtr );
     m_allocations.erase( it );
-    m_allocations[inOldPtr] = ss;
+    m_allocations[inOldPtr] = ai;
 }
 
 void MemoryTracker::logAlloc( void* inPtr, std::uint64_t inSize )
@@ -42,11 +41,12 @@ void MemoryTracker::logAlloc( void* inPtr, std::uint64_t inSize )
         return;
     }
 
-    StackString ss;
-    getStackHere( ss );
+    AllocationInfo ai;
+    ai.Size = inSize;
+    getStackHere( ai.StackLines );
 
     std::lock_guard<std::mutex> locker( m_dataMtx );
-    m_allocations[inPtr] = ss;
+    m_allocations[inPtr] = ai;
 }
 
 void MemoryTracker::logFree( void* inPtr )
@@ -66,7 +66,7 @@ void MemoryTracker::toggleTracking( bool inToggleTracking )
     m_enableTracking = inToggleTracking;
 }
 
-void MemoryTracker::getStackHere( StackString& outString )
+void MemoryTracker::getStackHere( StackLinesArray& outStackLines )
 {
     g_blockCurrentThread = true;
     GUTILS::ScopeExit se([](){
@@ -86,7 +86,7 @@ void MemoryTracker::getStackHere( StackString& outString )
             continue;
         }
 
-        if( outputStackSize > g_maxStackSize )
+        if( outputStackSize >= G_maxStackSize )
         {
             return;
         }
@@ -107,8 +107,24 @@ void MemoryTracker::getStackHere( StackString& outString )
 
         sprintf( buff, "%s:%d", sourceFile.c_str(), (int)currentTraceLine.source_line() );
 
-        outString.append( buff );
+        outStackLines[outputStackSize] = buff;
         ++outputStackSize;
+    }
+}
+
+void MemoryTracker::dumpActiveAllocations() const
+{
+    LOG::ILogger& logger = LOG::ILogger::getInstance();
+
+    std::lock_guard<std::mutex> locker( m_dataMtx );
+    for( const auto& [addr, stackInfo]: m_allocations )
+    {
+        logger.logVariable(LOG::Severity::INFO, "Stack info:\nsize:%d bytes\nstack value:", stackInfo.Size );
+
+        for( const auto& line: stackInfo.StackLines )
+        {
+            logger.log( line.c_str() );
+        }
     }
 }
 
