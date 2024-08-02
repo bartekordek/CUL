@@ -2,8 +2,18 @@
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/Memory/MemoryTracker.hpp"
 #include "CUL/Memory/MemoryUtils.hpp"
+#include "CUL/ITimer.hpp"
 
 TrackerTests::TrackerTests()
+{
+    CUL::MemoryTracker::getInstance().init();
+}
+
+void TrackerTests::SetUp()
+{
+}
+
+void TrackerTests::TearDown()
 {
 }
 
@@ -14,7 +24,7 @@ TEST_F( TrackerTests, firstOne )
     mt.toggleTracking( true );
 
     std::uint64_t* testValue = new std::uint64_t;
-
+    CUL::ITimer::sleepMiliSeconds( 2048 );
     mt.dumpActiveAllocations();
 
     delete testValue;

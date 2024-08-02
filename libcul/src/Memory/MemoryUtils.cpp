@@ -5,14 +5,14 @@
 
 NAMESPACE_BEGIN( CUL )
 
-void TrackRealloc( void* inAddr, std::uint64_t inSize )
+void TrackRealloc( void* oldPtr, void* newPtr, std::uint64_t inSize )
 {
-    MemoryTracker::getInstance().logRealloc(inAddr, inSize);
+    MemoryTracker::getInstance().logRealloc( oldPtr, newPtr, inSize, 5u );
 }
 
 void TrackAlloc( void* inAddr, std::uint64_t inSize )
 {
-    MemoryTracker::getInstance().logAlloc( inAddr, inSize );
+    MemoryTracker::getInstance().logAlloc( inAddr, inSize, 5u );
 }
 
 void TrackFree( void* inAddr )

@@ -10,7 +10,11 @@
 using namespace CUL;
 using namespace FS;
 
+#if defined(CUL_WINDOWS)
+String Path::extensionSeparator = String( L"." );
+#else // #if defined(CUL_WINDOWS)
 String Path::extensionSeparator = String( "." );
+#endif // #if defined(CUL_WINDOWS)
 
 const String& Path::getDirSeparator()
 {
