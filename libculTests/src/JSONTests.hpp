@@ -24,7 +24,7 @@ protected:
     static void TearDownTestCase();
 
     static CUL::GUTILS::DumbPtr<CUL::CULInterface> m_culInterface;
-    CUL::String jsonTestFileName = { "test.json" };
+    CUL::String jsonTestFileName{ "test.json" };
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

@@ -7,6 +7,7 @@
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
 #include "CUL/STL_IMPORTS/STD_memory_resource.hpp"
+#include "CUL/STL_IMPORTS/STD_thread.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -32,7 +33,7 @@ public:
     MemoryTracker& operator=( const MemoryTracker& ) = delete;
     MemoryTracker& operator=( MemoryTracker&& ) = delete;
 
-    void init();
+    CULLib_API void init();
 
     CULLib_API void logRealloc( void* inOldPtr, void* inNewPtr, std::uint64_t inSize, std::size_t skipFirstLinesCount = 0 );
     CULLib_API void logAlloc( void* inPtr, std::uint64_t inSize, std::size_t skipFirstLinesCount = 0 );

@@ -74,8 +74,7 @@ void CSVFile::load( bool keepLineEndingCharacter )
 {
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
-    infile.open(
-        m_path.getPath().cStr(),
+    infile.open( m_path.getPath().getChar(),
         std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
@@ -97,47 +96,24 @@ void CSVFile::load( bool keepLineEndingCharacter )
 
 void CSVFile::parseLine( const String& line )
 {
-    Row inRow;//TODO: there is a problem with parsing.
-    auto lineCp = line;//huj
-    size_t delimeterPos = line.find( m_delimeter );
-    String cell;
-    while( delimeterPos != std::string::npos )
+    std::vector<String> splitLine = line.split( m_delimeter );
+
+    if( m_cellsContainQuotationMarks == false )
     {
-        size_t cellEnd = m_cellsContainQuotationMarks ?
-            delimeterPos - 2 : delimeterPos;
-
-        size_t cellStart = m_cellsContainQuotationMarks ?
-            static_cast<size_t>( 1 ) : static_cast<size_t>( 0 );
-
-        size_t newCellOffset = m_cellsContainQuotationMarks ?
-            static_cast<size_t>( 3 ) : static_cast<size_t>( 1 );
-
-        cell = lineCp.substr( cellStart, cellEnd );
-        inRow.push_back( cell );
-        lineCp = lineCp.substr( cellEnd + newCellOffset );
-        delimeterPos = lineCp.find( m_delimeter );
+        for( String& cell : splitLine )
+        {
+            const Length cellLength = cell.size();
+            if( cell[0] == '\"' && cell[cellLength - 1] == '\"' )
+            {
+                cell.erase( cellLength - 1 );
+                cell.erase( 0 );
+            }
+        }
     }
 
-    if( m_cellsContainQuotationMarks )
-    {
-        cell = lineCp.substr( 1, lineCp.size() - 2 );
-    }
-    else
-    {
-        cell = lineCp.substr( 0, lineCp.size() );
-    }
+    m_columnsCount = std::max( m_columnsCount, (unsigned)splitLine.size() );
 
-    if( !cell.empty() )
-    {
-        inRow.push_back( cell );
-    }
-
-    m_columnsCount = std::max( m_columnsCount, (unsigned)inRow.size() );
-
-    if( !inRow.empty() )
-    {
-        m_rows.push_back( inRow );
-    }
+    m_rows.push_back( splitLine );
 }
 
 void CSVFile::unload()
@@ -173,12 +149,12 @@ void CSVFile::cacheFile()
         String line;
         for( const auto& cell : row )
         {
-            line += cell;
-            line += m_delimeter;
+            line.append( cell );
+            line.append( m_delimeter );
         }
 
-        m_cached += line;
-        m_cached += "\n";
+        m_cached.append( line );
+        m_cached.append('\n');
     }
 }
 

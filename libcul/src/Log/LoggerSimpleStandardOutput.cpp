@@ -14,8 +14,7 @@ LoggerSimpleStandardOutput::LoggerSimpleStandardOutput()
 
 void LoggerSimpleStandardOutput::log( const String& text, const Severity severity )
 {
-    const char* message = text.cStr();
-    log(message, severity);
+    log( text.getChar(), severity );
 }
 
 void LoggerSimpleStandardOutput::logVariable( Severity severity, const char* msg... )
@@ -64,6 +63,44 @@ void LoggerSimpleStandardOutput::log( const char* message, const Severity severi
     }
 }
 
+void LoggerSimpleStandardOutput::log( const wchar_t* message, const Severity severity )
+{
+// [Bartlomiej.Kordek] spdlog does not support wchar on linux ecosystem.
+#if CUL_USE_WCHAR
+    switch( severity )
+    {
+        case Severity::CRITICAL:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::critical( message );
+            break;
+        }
+        case Severity::ERROR:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::error( message );
+            break;
+        }
+        case Severity::WARN:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::warn( message );
+            break;
+        }
+        case Severity::INFO:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::info( message );
+            break;
+        }
+        default:
+        {
+            std::lock_guard<std::mutex> logGuard( m_logMtx );
+            spdlog::info( message );
+        }
+    }
+#endif // CUL_USE_WCHAR
+}
 
 LoggerSimpleStandardOutput::~LoggerSimpleStandardOutput()
 {

@@ -18,30 +18,37 @@
 #define CUL_USE_TRACY_ALLOC_TRACK 1
 
 #if defined CUL_EXPORT && defined CUL_LINUX
-#define CULLib_API
-#define CULLib_API_POST
-#define CULLib_API_TEMPLATE
+    #define CULLib_API
+    #define CULLib_API_POST
+    #define CULLib_API_TEMPLATE
 #elif defined CUL_EXPORT && defined CUL_WINDOWS
-#define CULLib_API __declspec(dllexport)
-#define CULLib_API_POST __cdecl
-#define CULLib_API_TEMPLATE
+    #define CULLib_API __declspec(dllexport)
+    #define CULLib_API_POST __cdecl
+    #define CULLib_API_TEMPLATE
 #else
-#define CULLib_API
-#define CULLib_API_POST
-#define CULLib_API_TEMPLATE
+    #define CULLib_API
+    #define CULLib_API_POST
+    #define CULLib_API_TEMPLATE
 #endif
 
 #if defined( _MSC_VER)
-#define CUL_COMPILER_MSVC
+    #define CUL_COMPILER_MSVC
 #elif defined( __GNUC__ ) || defined( __GNUG__ )
-#define CUL_COMPILER_GCC
+    #define CUL_COMPILER_GCC
 #elif defined( __clang__ )
-#define CUL_COMPILER_CLANG
+    #define CUL_COMPILER_CLANG
 #else
-#define CUL_COMPILER_UNKOWN
+    #define CUL_COMPILER_UNKOWN
 #endif
 
 // Silly warnings removal.
 #ifdef _MSC_VER
 #pragma warning( disable : 4514 ) // unreferenced inline function has been removed
+#endif
+
+
+#if defined(CUL_WINDOWS)
+    #define CUL_USE_WCHAR 1
+#else
+    #define CUL_USE_WCHAR 0
 #endif

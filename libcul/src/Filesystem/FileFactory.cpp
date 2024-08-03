@@ -70,7 +70,7 @@ IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
 
 Graphics::IImage* FileFactory::createRawImageRawPtr( const Path& path )
 {
-    std::unique_ptr< Graphics::IImageLoader> il( Graphics::IImageLoader::createConcrete( nullptr, m_culInterface ) );
+    const auto il = m_culInterface->getImageLoader();
     return il->loadImage( path );
 }
 

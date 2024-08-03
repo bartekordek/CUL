@@ -80,7 +80,7 @@ void CULInterface::initialize()
     CUL::Memory::MemoryPool::s_logger = m_logger;
 #endif  // #if CUL_GLOBAL_MEMORY_POOL
 
-    m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
+    //m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
     m_args.reset( new GUTILS::ConsoleUtilities() );
 

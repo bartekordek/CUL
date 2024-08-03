@@ -24,7 +24,7 @@ TEST_F( TrackerTests, firstOne )
     mt.toggleTracking( true );
 
     std::uint64_t* testValue = new std::uint64_t;
-    CUL::ITimer::sleepMiliSeconds( 2048 );
+    CUL::ITimer::sleepMiliSeconds( 3 );
     mt.dumpActiveAllocations();
 
     delete testValue;

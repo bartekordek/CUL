@@ -113,7 +113,7 @@
             ]
         },
         {
-            "label": "[LINUX][DEBUG][BUILLD][libculTests]",
+            "label": "[LINUX][DEBUG][BUILLD][libculTests_static]",
             "type": "shell",
             "command": "cmake",
             "args": [
@@ -123,7 +123,7 @@
                 "DEBUG",
                 "-j16",
                 "--target",
-                "libculTests"
+                "libculTests_static"
             ],
             "presentation": {
                 "echo": true,
@@ -136,7 +136,33 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn":"[LINUX][CMAKE][CREATE][DEBUG]"
+            "dependsOn": "[LINUX][CMAKE][CREATE][DEBUG]"
         },
+        {
+            "label": "[LINUX][DEBUG][BUILLD][libculTests_dynamic]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build-Linux",
+                "--config",
+                "DEBUG",
+                "-j16",
+                "--target",
+                "libculTests_dynamic"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "dependsOn": "[LINUX][CMAKE][CREATE][DEBUG]"
+        }
     ]
 }

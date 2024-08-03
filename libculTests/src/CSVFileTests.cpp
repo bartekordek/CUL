@@ -23,6 +23,7 @@ void CSVFileTests::SetUp()
 TEST_F( CSVFileTests, Load )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
+    filePtr->setDelimeter( "," );
     filePtr->load();
     GTEST_ASSERT_GT( filePtr->getRowsCount(), 0 );
 }
@@ -38,6 +39,7 @@ TEST_F( CSVFileTests, UnLoad )
 TEST_F( CSVFileTests, ReadFirstVal )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
+    filePtr->fileContainsQuotationMarks( false );
     filePtr->load();
     auto value = filePtr->getVal( 0, 0 );
     GTEST_ASSERT_EQ( value, "CSV_ISO_LANG" );

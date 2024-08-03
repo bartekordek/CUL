@@ -31,7 +31,7 @@ void FilesystemTests::SetUp()
 TEST_F( FilesystemTests, GetExtension )
 {
     Path file( "SomeDirectory/SomeFile.extension" );
-    ASSERT_EQ( file.getExtension(), ".extension" );
+    ASSERT_EQ( file.getExtension(), "extension" );
 }
 
 TEST_F( FilesystemTests, GetDirectory )

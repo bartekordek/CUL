@@ -80,10 +80,9 @@ void FileDatabase::getListOfSizes( std::vector<uint64_t>& out ) const
 
     if( ( rc != SQLITE_OK ) && ( rc != SQLITE_MISUSE ) )
     {
-        std::string errMessage = zErrMsg;
-        if( errMessage.find( "no such table" ) == std::string::npos )  // new database.
+        if(String::cmp(zErrMsg, "no such table") != 0) // new database.
         {
-            CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+            CUL::Assert::check(false, "DB ERROR: %s", zErrMsg);
         }
     }
 }
@@ -107,8 +106,7 @@ std::vector<CUL::String> FileDatabase::getListOfMd5() const
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check(false, "DB ERROR: %s", zErrMsg);
     }
 
     return result;
@@ -141,8 +139,7 @@ void FileDatabase::getFiles( uint64_t size, const CUL::String& md5, std::vector<
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check(false, "DB ERROR: %s", zErrMsg);
     }
 }
 
@@ -173,8 +170,7 @@ void FileDatabase::getFiles( uint64_t size, std::vector<FileInfo>& out ) const
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check( false, "DB ERROR: %s", zErrMsg);
     }
 }
 
@@ -330,8 +326,7 @@ int64_t FileDatabase::getFileCount() const
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check( false, "DB ERROR: %s", zErrMsg);
     }
 
     return result;
@@ -395,8 +390,9 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     CUL::String sqlQuery = "";
     if( foundFile.Found )
     {
+        const std::string binaryForm = filePathNormalized.cStr();
         sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', MD5='" + md5 + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" +
-                   filePathNormalized.getBinary() + "'";
+                   binaryForm + "'";
 
         //CUL::LOG::ILogger::getInstance()->log( "Found updated file: " + filePath );
         //CUL::LOG::ILogger::getInstance()->log( "New/Old diff: ");
@@ -412,7 +408,8 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     }
     else
     {
-        sqlQuery = "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ('" + filePathNormalized.getBinary() + "', '" + fileSize +
+        const std::string binaryValue = filePathNormalized.cStr();
+        sqlQuery = "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ('" + binaryValue + "', '" + fileSize +
             "', '" + md5 + "', '" + modTime + "');";
     }
 
@@ -440,12 +437,12 @@ FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
     FileDatabase::FileInfo result;
     String pathInBinary = path;
     pathInBinary.convertToHexData();
-
+    const std::string binaryForm = pathInBinary.cStr();
     String sqlQuery =
         "SELECT * \
 FROM FILES \
 WHERE PATH='" +
-        pathInBinary.getBinary() + "';";
+        binaryForm + "';";
 
     const char* queryAsCharPtr = sqlQuery.cStr();
     auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
@@ -474,8 +471,7 @@ WHERE PATH='" +
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check( false, "DB ERROR: %s", zErrMsg );
     }
 
     return result;
@@ -501,7 +497,8 @@ void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
     CUL::String path = pathRaw;
     path.convertToHexData();
 
-    std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + path.getBinary() + "';";
+    const std::string binaryForm = path.cStr();
+    std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + binaryForm + "';";
 
     char* zErrMsg = nullptr;
     auto callback = []( void* thisPtrValue, int argc, char** argv, char** info )

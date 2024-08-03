@@ -37,7 +37,7 @@ public:
     FS::Path path;
     SSize2Di size;
     SSize2Di canvasSize;
-    String colorFormat = "";
+    String colorFormat;
     PixelFormat pixelFormat = PixelFormat::NONE;
     int depth = 0;
     int pitch = 0;

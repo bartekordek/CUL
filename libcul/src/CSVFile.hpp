@@ -56,7 +56,8 @@ private:
     void parseLine( const String& line );
     void cacheFile();
 
-    String m_delimeter = ",";
+    String m_delimeter{ "," };
+    //String::UnderlyingChar m_delimeter{ ',' };
     bool m_cellsContainQuotationMarks = true;
     Path m_path;
     Rows m_rows;

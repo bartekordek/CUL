@@ -3,6 +3,7 @@
 #include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+#include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 #if _MSC_VER
@@ -11,24 +12,29 @@
 #endif
 
 NAMESPACE_BEGIN( CUL )
-using Length = unsigned int;
+using Length = std::int64_t;
 
 class StringImpl;
 class CULLib_API String final
 {
 public:
+    static constexpr std::size_t SSO_Size = 128;
+    static constexpr float CapacityCoeficient = 1.8f;
 #ifdef _MSC_VER
     using UnderlyingType = std::wstring;
     using UnderlyingChar = wchar_t;
+#define NullTerminator L'\0'
 #else
     using UnderlyingType = std::string;
     using UnderlyingChar = char;
+#define NullTerminator '\0'
 #endif
+    static constexpr Length UnderlyingCharSize = sizeof( UnderlyingChar );
 
-    explicit String() noexcept;
+    String() noexcept;
     String( const String& arg ) noexcept;
     String( String&& arg ) noexcept;
-    String( const bool arg ) noexcept;
+    explicit String( bool arg ) noexcept;
     String( const char* arg ) noexcept;
     String( const wchar_t* arg ) noexcept;
     String( unsigned char* arg ) noexcept;
@@ -36,14 +42,25 @@ public:
     String( const std::wstring& arg ) noexcept;
     String( float arg ) noexcept;
     String( double arg ) noexcept;
-    String( int arg ) noexcept;
-    String( unsigned int arg ) noexcept;
+    explicit String( std::int32_t arg ) noexcept;
+    String( std::uint32_t arg ) noexcept;
     String( int64_t arg ) noexcept;
     String( uint64_t arg ) noexcept;
 
+    void createFrom( const String& arg );
+    void createFromMove( String& arg );
+    void createFrom( bool arg );
+    void createFrom( const char* arg );
+    void createFrom( const std::string& arg );
+    void createFrom( const std::wstring& arg );
+    void createFrom( const wchar_t* arg );
+    void createFrom( std::int32_t arg );
+    void createFrom( std::uint32_t arg );
+    void createFrom( float arg );
+
     String& operator=( const String& arg );
     String& operator=( String&& arg ) noexcept;
-    String& operator=( const bool arg );
+    String& operator=( bool arg );
     String& operator=( const char* arg );
     String& operator=( const wchar_t* arg );
     String& operator=( unsigned char* arg );
@@ -51,7 +68,7 @@ public:
     String& operator=( const std::wstring& arg );
     String& operator=( float arg );
     String& operator=( double arg );
-    String& operator=( int arg );
+    String& operator=( std::int32_t arg );
     String& operator=( unsigned arg );
     String& operator=( int64_t arg );
     String& operator=( uint64_t arg );
@@ -59,6 +76,9 @@ public:
     String operator+( const String& arg ) const;
 
     String& operator+=( const String& arg );
+
+    UnderlyingChar operator[]( Length inPos ) const;
+    UnderlyingChar& operator[]( Length inPos );
 
     bool operator==( const String& arg ) const;
     bool operator!=( const String& arg ) const;
@@ -69,11 +89,11 @@ public:
     bool operator==( const char* arg ) const;
     bool operator!=( const char* arg ) const;
 
-    bool operator!=( int arg ) const;
-    bool operator==( int arg ) const;
+    bool operator!=( std::int32_t arg ) const;
+    bool operator==( std::int32_t arg ) const;
 
-    bool operator!=( unsigned int arg ) const;
-    bool operator==( unsigned int arg ) const;
+    bool operator!=( std::uint32_t arg ) const;
+    bool operator==( std::uint32_t arg ) const;
 
     bool operator!=( float arg ) const;
     bool operator==( float arg ) const;
@@ -86,8 +106,30 @@ public:
 
     bool operator()( const String& v1, const String& v2 ) const;
 
-    size_t find( const String& arg ) const;
-    String substr( size_t pos = 0, size_t len = UnderlyingType::npos ) const;
+    void append( const String& arg );
+
+    void append( const char* inChar );
+    void append( const char* inChar, Length inCharLength );
+    void append( char inChar );
+
+    void append( const wchar_t* inChar );
+    void append( const wchar_t* inChar, Length inCharLength );
+    void append( wchar_t inChar );
+
+    std::int32_t find( const String& arg ) const;
+    std::int32_t find( const String& arg, Length startPos ) const;
+
+    std::int32_t find( char arg ) const;
+    std::int32_t find( char arg, Length startPos ) const;
+    std::int32_t find( const char* arg ) const;
+    std::int32_t find( const char* arg, Length startPos, Length argSize = -1 ) const;
+
+    std::int32_t find( wchar_t arg ) const;
+    std::int32_t find( wchar_t arg, Length startPos ) const;
+    std::int32_t find( const wchar_t* arg ) const;
+    std::int32_t find( const wchar_t* arg, Length startPos, Length argSize = -1 ) const;
+
+    String substr( Length pos = 0, Length len = -1 ) const;
 
     void toLower();
     String toLowerR()const;
@@ -97,8 +139,8 @@ public:
     bool contains( const char* inputString ) const;
 
     void replace( const String& inWhat, const String& inFor );
-    void replace( const char inWhat, const char inFor );
-    void replace( const wchar_t inWhat, const wchar_t inFor );
+    void replace( const char inWhat, const char inFor, bool allOccurences );
+    void replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences );
     void removeAll( const char inWhat );
 
     bool equals( const char* arg ) const;
@@ -111,7 +153,7 @@ public:
 
     std::wstring wstring() const;
 
-    const UnderlyingType& getString() const;
+    const UnderlyingType getString() const;
 
     const char* cStr() const;
     const wchar_t* wCstr() const;
@@ -127,27 +169,70 @@ public:
 
 
     Length length() const;
-    size_t size() const;
+    Length size() const;
     Length capacity() const;
     void clear();
     bool empty() const;
+    void reserve( std::int32_t newSize, bool keepValues );
+    void erase( Length index );
 
     void convertToHexData();
     void convertFromHexToString();
     void setBinary( const char* value );
-    const std::string getBinary() const;
 
     const std::vector<String> split( const String& delimiter ) const;
+
+    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in );
+    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize );
+    static Length wideStringToChar( char& out, wchar_t in );
+
+    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in );
+    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize );
+    static Length charToWideString( Length codePage, wchar_t& out, char in );
+
+    static void copyString( char* target, const char* source );
+    static void copyString( char* target, Length targetSize, const char* source, Length sourceSize );
+    static void copyString( wchar_t* target, const wchar_t* source );
+    static void copyString( wchar_t* target, Length targetSize, const wchar_t* source, Length sourceSize );
+
+    static std::int32_t cmp( const char* s1, const char* s2 );
+    static std::int32_t cmp( const wchar_t* s1, const wchar_t* s2 );
+
+    static std::int32_t strLen( const char* inString );
+    static std::int32_t strLen( const wchar_t* inString );
+
+    static void toLower( char* inOut );
+    static void toLower( char* inOut, std::int32_t size );
+
+    static void toLower( wchar_t* inOut );
+    static void toLower( wchar_t* inOut, std::int32_t size );
+
+    static void toUpper( char* inOut );
+    static void toUpper( char* inOut, std::int32_t size );
+
+    static void toUpper( wchar_t* inOut );
+    static void toUpper( wchar_t* inOut, std::int32_t size );
 
     ~String();
 
 protected:
 private:
-    UnderlyingType m_value;
-    std::string m_binaryValue;
-    std::string m_fallback;
-    bool m_isBinary = false;
-    mutable std::string m_temp;
+    void verify();
+
+    void grow( Length targetSize, bool keepValue );
+    void releaseBuffer();
+    Length calcualteCapacity( Length inSize ) const;
+    UnderlyingChar* m_value = nullptr;
+    Length m_capacity{ SSO_Size };
+    Length m_size{ 0u };
+    std::array<UnderlyingChar, SSO_Size> m_staticValue{};
+    bool m_isBinary{ false };
+
+#if defined(CUL_WINDOWS)
+    mutable char* m_temp{ nullptr };
+#else
+    mutable wchar_t* m_temp{ nullptr };
+#endif // #if defined(CUL_WINDOWS)
 };
 
 struct CULLib_API StringHash

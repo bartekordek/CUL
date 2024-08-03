@@ -62,8 +62,6 @@ public:
 
     bool exists() const;
 
-    static const String& getDirSeparator();
-
     virtual ~Path();
 
 protected:
@@ -85,7 +83,13 @@ private:
     mutable uint64_t m_fileSize = 0u;
     mutable String m_md5;
 
-    static String extensionSeparator;
+    #if defined( CUL_WINDOWS )
+    static constexpr String::UnderlyingChar DefaultDirSeparator{ L'\\' };
+    static constexpr String::UnderlyingChar ExtensionSeparator{ L'.' };
+    #else // #if defined(CUL_WINDOWS)
+    static constexpr String::UnderlyingChar DefaultDirSeparator{ '/' };
+    static constexpr String::UnderlyingChar ExtensionSeparator{ '.' };
+    #endif // #if defined(CUL_WINDOWS)
 };
 
 const Path CULLib_API operator+( const Path& lval, const Path& rval );
