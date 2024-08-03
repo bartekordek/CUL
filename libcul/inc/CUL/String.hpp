@@ -3,6 +3,7 @@
 #include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+#include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 #if _MSC_VER
@@ -11,12 +12,14 @@
 #endif
 
 NAMESPACE_BEGIN( CUL )
-using Length = unsigned int;
+using Length = std::int64_t;
 
 class StringImpl;
 class CULLib_API String final
 {
 public:
+    static constexpr std::size_t SSO_Size = 32;
+    static constexpr float CapacityCoeficient = 1.5f;
 #ifdef _MSC_VER
     using UnderlyingType = std::wstring;
     using UnderlyingChar = wchar_t;
@@ -24,8 +27,9 @@ public:
     using UnderlyingType = std::string;
     using UnderlyingChar = char;
 #endif
+    static constexpr Length UnderlyingCharSize = sizeof( UnderlyingChar );
 
-    explicit String() noexcept;
+    String() noexcept;
     String( const String& arg ) noexcept;
     String( String&& arg ) noexcept;
     String( const bool arg ) noexcept;
@@ -36,7 +40,7 @@ public:
     String( const std::wstring& arg ) noexcept;
     String( float arg ) noexcept;
     String( double arg ) noexcept;
-    String( int arg ) noexcept;
+    String( std::int32_t arg ) noexcept;
     String( unsigned int arg ) noexcept;
     String( int64_t arg ) noexcept;
     String( uint64_t arg ) noexcept;
@@ -51,7 +55,7 @@ public:
     String& operator=( const std::wstring& arg );
     String& operator=( float arg );
     String& operator=( double arg );
-    String& operator=( int arg );
+    String& operator=( std::int32_t arg );
     String& operator=( unsigned arg );
     String& operator=( int64_t arg );
     String& operator=( uint64_t arg );
@@ -59,6 +63,9 @@ public:
     String operator+( const String& arg ) const;
 
     String& operator+=( const String& arg );
+
+    UnderlyingChar operator[]( Length inPos ) const;
+    UnderlyingChar& operator[]( Length inPos );
 
     bool operator==( const String& arg ) const;
     bool operator!=( const String& arg ) const;
@@ -86,8 +93,9 @@ public:
 
     bool operator()( const String& v1, const String& v2 ) const;
 
-    size_t find( const String& arg ) const;
-    String substr( size_t pos = 0, size_t len = UnderlyingType::npos ) const;
+    std::int32_t find( const String& arg ) const;
+    std::int32_t find( const String& arg, Length startPos ) const;
+    String substr( std::int32_t pos = 0, std::int32_t len = -1 ) const;
 
     void toLower();
     String toLowerR()const;
@@ -131,6 +139,8 @@ public:
     Length capacity() const;
     void clear();
     bool empty() const;
+    void reserve( std::int32_t newSize, bool keepValues );
+    void erase( Length index );
 
     void convertToHexData();
     void convertFromHexToString();
@@ -139,15 +149,54 @@ public:
 
     const std::vector<String> split( const String& delimiter ) const;
 
+    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in );
+    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize );
+    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in );
+    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize );
+  
+    static void copyString( char* target, const char* source );
+    static void copyString( char* target, Length targetSize, const char* source, Length sourceSize );
+    static void copyString( wchar_t* target, const wchar_t* source );
+    static void copyString( wchar_t* target, Length targetSize, const wchar_t* source, Length sourceSize );
+
+    static std::int32_t cmp( const char* s1, const char* s2 );
+    static std::int32_t cmp( const wchar_t* s1, const wchar_t* s2 );
+
+    static std::int32_t strLen( const char* inString );
+    static std::int32_t strLen( const wchar_t* inString );
+
+    static void toLower( char* inOut );
+    static void toLower( char* inOut, std::int32_t size );
+
+    static void toLower( wchar_t* inOut );
+    static void toLower( wchar_t* inOut, std::int32_t size );
+
+    static void toUpper( char* inOut );
+    static void toUpper( char* inOut, std::int32_t size );
+
+    static void toUpper( wchar_t* inOut );
+    static void toUpper( wchar_t* inOut, std::int32_t size );
+
     ~String();
 
 protected:
 private:
-    UnderlyingType m_value;
-    std::string m_binaryValue;
-    std::string m_fallback;
-    bool m_isBinary = false;
-    mutable std::string m_temp;
+    void createFrom( const String& arg );
+    void createFromMove( String& arg );
+    void createFrom( bool arg );
+    void createFrom( const char* arg );
+    void createFrom( const std::string& arg );
+    void createFrom( const std::wstring& arg );
+    void createFrom( const wchar_t* arg );
+    void createFrom( std::int32_t arg );
+
+    void grow( Length targetSize, bool keepValue );
+    void releaseBuffer();
+    Length calcualteCapacity( Length inSize ) const;
+    Length m_capacity{ SSO_Size };
+    Length m_size{ 0u };
+    std::array<UnderlyingChar, SSO_Size> m_staticValue{};
+    UnderlyingChar* m_value = nullptr;
 };
 
 struct CULLib_API StringHash

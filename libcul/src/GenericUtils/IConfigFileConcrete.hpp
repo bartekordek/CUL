@@ -33,7 +33,7 @@ private:
     GUTILS::DumbPtr<FS::IFile> m_file;
     FS::Path m_path;
     std::map<String, String> m_values;
-    String m_empty = "";
+    String m_empty;
 
 
     // Deleted:

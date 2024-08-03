@@ -80,10 +80,9 @@ void FileDatabase::getListOfSizes( std::vector<uint64_t>& out ) const
 
     if( ( rc != SQLITE_OK ) && ( rc != SQLITE_MISUSE ) )
     {
-        std::string errMessage = zErrMsg;
-        if( errMessage.find( "no such table" ) == std::string::npos )  // new database.
+        if(std::strstr(zErrMsg, "no such table") != nullptr) // new database.
         {
-            CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+            CUL::Assert::check(false, "DB ERROR: %s", zErrMsg);
         }
     }
 }
@@ -107,8 +106,7 @@ std::vector<CUL::String> FileDatabase::getListOfMd5() const
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check(false, "DB ERROR: %s", zErrMsg);
     }
 
     return result;
@@ -141,8 +139,7 @@ void FileDatabase::getFiles( uint64_t size, const CUL::String& md5, std::vector<
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check(false, "DB ERROR: %s", zErrMsg);
     }
 }
 
@@ -173,8 +170,7 @@ void FileDatabase::getFiles( uint64_t size, std::vector<FileInfo>& out ) const
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check( false, "DB ERROR: %s", zErrMsg);
     }
 }
 
@@ -330,8 +326,7 @@ int64_t FileDatabase::getFileCount() const
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check( false, "DB ERROR: %s", zErrMsg);
     }
 
     return result;
@@ -474,8 +469,7 @@ WHERE PATH='" +
 
     if( rc != SQLITE_OK )
     {
-        std::string errMessage = zErrMsg;
-        CUL::Assert::simple( false, "DB ERROR: " + errMessage );
+        CUL::Assert::check( false, "DB ERROR: %s", zErrMsg );
     }
 
     return result;

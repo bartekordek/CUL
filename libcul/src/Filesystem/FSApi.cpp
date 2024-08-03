@@ -146,7 +146,7 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
         ZoneScoped;
         if( errorCode.value() != 0 )
         {
-            CUL::Assert::simple( false, errorCode.message() );
+            CUL::Assert::check( false, errorCode.message().c_str() );
         }
 
         const std::filesystem::path entryPath = entry.path();
@@ -198,11 +198,7 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
         return;
     }
 
-#if defined( CUL_WINDOWS )
-    std::filesystem::path p = inPath.getPath().wCstr();
-#else
-    std::filesystem::path p = inPath.getPath().cStr();
-#endif
+    std::filesystem::path p = inPath.getPath().getChar();
     std::filesystem::file_time_type ftime = std::filesystem::last_write_time( p );
     std::uint64_t timeConverted = static_cast<std::uint64_t>( to_time_t( ftime ) );
     outTime.setTimeSec( timeConverted );
@@ -224,7 +220,8 @@ IFile* FSApi::getDirectory( const Path& directory )
 {
     ZoneScoped;
     Directory* result = new Directory( directory, m_culInterface );
-    std::filesystem::path directoryBf( directory.getPath().cStr() );
+    const auto inPath = directory.getPath().getChar();
+    std::filesystem::path directoryBf( inPath );
     using DI = std::filesystem::directory_iterator;
     DI end;
     for( DI it( directoryBf ); it != end; ++it )
@@ -250,10 +247,10 @@ IFile* FSApi::getDirectory( const Path& directory )
 bool FSApi::isRegularFile( const String& path )
 {
     std::error_code existsErrorCode;
-    bool result = std::filesystem::is_regular_file( path.getString(), existsErrorCode );
+    bool result = std::filesystem::is_regular_file( path.getChar(), existsErrorCode );
     if( existsErrorCode.value() != 0 )
     {
-        LOG::ILogger::getInstance().log( "[" + String( path ) + "] " + existsErrorCode.message() );
+        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::ERROR, "[%s] %s", path.getChar(), existsErrorCode.message().c_str() );
     }
     return result;
 }
@@ -285,7 +282,7 @@ String FSApi::getFileSize( const Path& path )
             }
             else
             {
-                CUL::Assert::simple( false, isRegularFileCheck.message() );
+                CUL::Assert::check( false, isRegularFileCheck.message().c_str() );
             }
         }
     }

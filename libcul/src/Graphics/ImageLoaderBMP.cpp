@@ -92,7 +92,7 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
 
     if( fileHeader.file_type != 0x4D42 )
     {
-        CUL::Assert::simple( false, "Error! Unrecognized file format, file: " + path.getPath() );
+        CUL::Assert::check(false, "Error! Unrecognized file format, file: %s", path.getPath().cStr());
     }
 
     BMPInfoHeader infoHeader;
@@ -121,7 +121,7 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
         }
         else
         {
-            CUL::Assert::simple( false, "Warning! The file \"" + path.getPath() + "\" does not seem to contain bit mask information\n" );
+            CUL::Assert::check(false, "Warning! The file [%s] does not seem to contain bit mask information\n", path.getPath().cStr());
         }
     }
 

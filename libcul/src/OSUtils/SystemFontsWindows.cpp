@@ -150,10 +150,6 @@ void SystemFontsWindows::getWindowsPath()
     DWORD offset;
     PVOID buffer;
     DWORD cjBuffer = 0;
-    
-
-    m_logger->log( "DEFAULT FONT NAME: " + CUL::String( hf ) );
-    m_logger->log( "DEFAULT FONT NAME: " + CUL::String( defaultFontName ) );
 
     FS::Path windowsPath( windir );
     FS::Path windowsFonts = windowsPath + "/Fonts";

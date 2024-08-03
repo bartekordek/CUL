@@ -370,7 +370,7 @@ bool Path::exists() const
     const bool result = std::filesystem::is_regular_file( pathAsStdPath, outErrorCode );
     if( outErrorCode.value() != 0 && outErrorCode.value() != 2 )
     {
-        CUL::Assert::simple( false, CUL::String( outErrorCode.message() ) );
+        CUL::Assert::check( false, outErrorCode.message().c_str() );
     }
 #endif
     return result;

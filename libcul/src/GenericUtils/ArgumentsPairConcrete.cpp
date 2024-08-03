@@ -29,7 +29,7 @@ void ArgumentsPairConcrete::setArgs( const int argc, char** argv )
     bool skip = false;
     for( int i = 0; i < argc; ++i )
     {
-        const String argument = argv[i];
+        const String argument( argv[i] );
         m_argumentsPtrs.push_back( argument );
         if( false == skip )
         {
@@ -40,7 +40,7 @@ void ArgumentsPairConcrete::setArgs( const int argc, char** argv )
                 skip = true;
                 if( ( i + 1  ) < argc )
                 {
-                    const String value = argv[i+1];
+                    const String value(argv[i+1]);
                     nameValue.value = value;
                 }
             }
@@ -89,13 +89,13 @@ void ArgumentsPairConcrete::createDummyArgs()
 #pragma warning( disable: 4996 )
 #endif
     strcpy( line1, "Dummy program name." );
-    m_argumentsPtrs.push_back( line1 );
+    m_argumentsPtrs.emplace_back( line1 );
     auto line2 = new char[23];
     strcpy( line2, "First dummy parameter." );
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
-    m_argumentsPtrs.push_back( line2 );
+    m_argumentsPtrs.emplace_back( line2 );
 }
 
 void ArgumentsPairConcrete::clearArgs()
