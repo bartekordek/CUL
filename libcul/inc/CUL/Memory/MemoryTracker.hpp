@@ -1,5 +1,7 @@
 #pragma once
 
+#if defined( CUL_STATIC )
+
 #include "CUL/CUL.hpp"
 #include "CUL/StringStatic.hpp"
 
@@ -40,12 +42,12 @@ public:
     CULLib_API void logFree( void* inPtr );
     CULLib_API void toggleTracking( bool inToggleTracking );
     CULLib_API void dumpActiveAllocations() const;
-
-protected:
+    CULLib_API bool waitForAllCallStacksToBeDecoded() const;
+    CULLib_API std::int32_t getActiveAllocations() const;
 private:
-    MemoryTracker();
+    CULLib_API MemoryTracker();
     void getStackHere( StackLinesArray& outStackLines, std::size_t skipFirstLinesCount = 0 );
-    ~MemoryTracker();
+    CULLib_API ~MemoryTracker();
     void registerStack( void* ptr, std::uint64_t inSize, std::size_t skipFirstLinesCount );
     void unregisterStack( void* ptr, std::uint64_t inSize, std::size_t skipFirstLinesCount );
     void decode( const StackInfo& stackInfo );
@@ -53,7 +55,7 @@ private:
     std::thread m_mainLoopThread;
     bool m_runMainLoop{ true };
     void mainLoop();
-    std::mutex g_traceDequeMtx;
+    mutable std::mutex g_traceDequeMtx;
 
     bool m_enableTracking{ false };
     mutable std::mutex m_dataMtx;
@@ -64,3 +66,5 @@ private:
 };
 
 NAMESPACE_END(CUL)
+
+#endif  // #if defined( CUL_STATIC )

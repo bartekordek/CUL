@@ -3,15 +3,15 @@
 #include "CUL/UselessMacros.hpp"
 
 #if _WIN32
-#define CUL_WINDOWS
-#if defined CUL_STATIC
-#define CUL_IMPORT
-#else // CUL_STATIC
-#define CUL_EXPORT
-#endif //CUL_STATIC
+    #define CUL_WINDOWS
+    #if defined( CUL_STATIC )
+        #define CUL_IMPORT
+    #else // CUL_STATIC
+        #define CUL_EXPORT
+    #endif //CUL_STATIC
 #else // _WIN32
-#define CUL_LINUX
-#define CUL_EXPORT
+    #define CUL_LINUX
+    #define CUL_EXPORT
 #endif // _WIN32
 
 #define CUL_GLOBAL_MEMORY_POOL 0
@@ -21,7 +21,7 @@
     #define CULLib_API
     #define CULLib_API_POST
     #define CULLib_API_TEMPLATE
-#elif defined CUL_EXPORT && defined CUL_WINDOWS
+#elif defined CUL_EXPORT && defined( CUL_WINDOWS )
     #define CULLib_API __declspec(dllexport)
     #define CULLib_API_POST __cdecl
     #define CULLib_API_TEMPLATE
@@ -47,7 +47,7 @@
 #endif
 
 
-#if defined(CUL_WINDOWS)
+#if defined( CUL_WINDOWS )
     #define CUL_USE_WCHAR 1
 #else
     #define CUL_USE_WCHAR 0

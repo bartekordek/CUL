@@ -1,3 +1,5 @@
+#if defined( CUL_STATIC )
+
 #include "CUL/Memory/MemoryTracker.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/GenericUtils/ScopeExit.hpp"
@@ -308,6 +310,24 @@ void MemoryTracker::dumpActiveAllocations() const
     }
 }
 
+bool MemoryTracker::waitForAllCallStacksToBeDecoded() const
+{
+    bool dequeIsEmpty{ false };
+    while( dequeIsEmpty == false )
+    {
+        std::lock_guard<std::mutex> locker( g_traceDequeMtx );
+        dequeIsEmpty = Deque::g_traceDeque.empty();
+    }
+
+    return true;
+}
+
+CULLib_API std::int32_t MemoryTracker::getActiveAllocations() const
+{
+    std::lock_guard<std::mutex> locker( m_dataMtx );
+    return m_allocations.size();
+}
+
 MemoryTracker::~MemoryTracker()
 {
     m_runMainLoop = false;
@@ -318,3 +338,5 @@ MemoryTracker::~MemoryTracker()
 }
 
 NAMESPACE_END( CUL )
+
+#endif  // #if defined( CUL_STATIC )
