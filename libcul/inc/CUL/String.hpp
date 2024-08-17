@@ -44,8 +44,8 @@ public:
     String( double arg ) noexcept;
     explicit String( std::int32_t arg ) noexcept;
     String( std::uint32_t arg ) noexcept;
-    String( int64_t arg ) noexcept;
-    String( uint64_t arg ) noexcept;
+    String( std::int64_t arg ) noexcept;
+    String( std::uint64_t arg ) noexcept;
 
     void createFrom( const String& arg );
     void createFromMove( String& arg );
@@ -72,9 +72,9 @@ public:
     String& operator=( float arg );
     String& operator=( double arg );
     String& operator=( std::int32_t arg );
-    String& operator=( unsigned arg );
-    String& operator=( int64_t arg );
-    String& operator=( uint64_t arg );
+    String& operator=( std::uint32_t arg );
+    String& operator=( std::int64_t arg );
+    String& operator=( std::uint64_t arg );
 
     String operator+( const String& arg ) const;
 

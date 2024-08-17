@@ -81,14 +81,14 @@ String::String( std::uint32_t arg ) noexcept
     createFrom( arg );
 }
 
-String::String( int64_t arg ) noexcept
+String::String( std::int64_t arg ) noexcept
 {
     createFrom( arg );
 }
 
-String::String( uint64_t arg ) noexcept
+String::String( std::uint64_t arg ) noexcept
 {
-    CUL::Assert::simple( false, "Method not implemented" );
+    createFrom( arg );
 }
 
 String& String::operator=( const String& arg )
@@ -175,36 +175,21 @@ String& String::operator=( std::int32_t arg )
     return *this;
 }
 
-String& String::operator=( unsigned arg )
+String& String::operator=( std::uint32_t arg )
 {
-#if defined( CUL_WINDOWS )
-    const std::wstring temp = std::to_wstring( arg );
-    operator=( temp );
-#else // #if defined( CUL_WINDOWS )
-    throw std::logic_error( "Method not implemented" );
-#endif // #if defined( CUL_WINDOWS )
+    createFrom( arg );
     return *this;
 }
 
-String& String::operator=( int64_t arg )
+String& String::operator=( std::int64_t arg )
 {
-#if defined( CUL_WINDOWS )
-    const std::wstring temp = std::to_wstring( arg );
-    operator=( temp );
-#else // #if defined( CUL_WINDOWS )
-    throw std::logic_error( "Method not implemented" );
-#endif // #if defined( CUL_WINDOWS )
+    createFrom( arg );
     return *this;
 }
 
-String& String::operator=( uint64_t arg )
+String& String::operator=( std::uint64_t arg )
 {
-#if defined( CUL_WINDOWS )
-    const std::wstring temp = std::to_wstring( arg );
-    operator=( temp );
-#else // #if defined( CUL_WINDOWS )
-    throw std::logic_error( "Method not implemented" );
-#endif // #if defined( CUL_WINDOWS )
+    createFrom( arg );
     return *this;
 }
 
@@ -1004,74 +989,26 @@ int String::toInt()
 
 int64_t String::toInt64() const
 {
-    throw std::logic_error( "Method not implemented" );
-    //    if( m_value.empty() )
-//    {
-//        return 0;
-//    }
-//
-//    auto copy = m_value;
-//    if( m_value[0] == 'u' )
-//    {
-//        copy = m_value.substr( 1, m_value.size() );
-//    }
-//#if defined( _MSC_VER )
-//    std::string resultString = FS::ws2s( copy );
-//    std::istringstream iss( resultString );
-//#else
-//    std::istringstream iss( copy );
-//#endif
-//    int64_t value;
-//    iss >> value;
-//    return value;
-    return 0;
+    return std::stoll( m_value, nullptr, 0 );
 }
 
 uint64_t String::toUint64() const
 {
-    throw std::logic_error( "Method not implemented" );
-    //    if( m_value.empty() )
-//    {
-//        return 0u;
-//    }
-//    auto copy = m_value;
-//    if( m_value[0] == 'u' )
-//    {
-//        copy = m_value.substr( 1, m_value.size() );
-//    }
-//#if defined( _MSC_VER )
-//    std::string resultString = FS::ws2s( copy );
-//    std::istringstream iss( resultString );
-//#else
-//    std::istringstream iss( copy );
-//#endif
-//    uint64_t value;
-//    iss >> value;
-//    return value;
-    return 0u;
+    return std::stoull( m_value, nullptr, 0 );
 }
 
 std::uint64_t String::toUInt() const
 {
-    throw std::logic_error( "Method not implemented" );
-    //return m_value.empty() ? 0u : std::stoull( m_value, nullptr, 0 );
-    return 0u;
+    return std::stoull( m_value, nullptr, 0 );
 }
 
 bool String::toBool() const
 {
-    throw std::logic_error( "Method not implemented" );
-    //if( m_value.empty() )
-    //{
-    //    return false;
-    //}
-
-    //if( toLowerR() == "true" )
-    //{
-    //    return true;
-    //}
-
-    return false;
+#if defined( CUL_WINDOWS )
+    return cmp( m_value, L"true" ) == 0;
+#else // #if defined( CUL_WINDOWS )
+    return cmp( m_value, "true" ) == 0;
+#endif // #if defined( CUL_WINDOWS )
 }
 
 Length String::length() const
@@ -1273,8 +1210,8 @@ Length String::wideStringToChar( char& inOut, wchar_t inChar )
 
 #else   // #if defined( CUL_WINDOWS )
     throw std::logic_error( "Method not implemented" );
-#endif  // #if defined( CUL_WINDOWS )
     return -1;
+#endif  // #if defined( CUL_WINDOWS )
 }
 
 Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in )
@@ -1327,8 +1264,8 @@ Length String::charToWideString( Length codePage, wchar_t& out, char in )
 
 #else   // #if defined( CUL_WINDOWS )
     throw std::logic_error( "Method not implemented" );
-#endif  // #if defined( CUL_WINDOWS )
     return -1;
+#endif  // #if defined( CUL_WINDOWS )
 }
 
 void String::copyString( char* target, const char* source )
