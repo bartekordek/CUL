@@ -56,7 +56,10 @@ public:
     void createFrom( const wchar_t* arg );
     void createFrom( std::int32_t arg );
     void createFrom( std::uint32_t arg );
+    void createFrom( std::int64_t arg );
+    void createFrom( std::uint64_t arg );
     void createFrom( float arg );
+    void createFrom( double arg );
 
     String& operator=( const String& arg );
     String& operator=( String&& arg ) noexcept;

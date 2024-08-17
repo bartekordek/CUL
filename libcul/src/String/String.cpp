@@ -46,7 +46,7 @@ String::String( const wchar_t* arg ) noexcept
     createFrom( arg );
 }
 
-String::String( unsigned char* arg ) noexcept
+String::String( unsigned char* /*arg*/ ) noexcept
 {
     CUL::Assert::simple( false, "Method not implemented" );
 }
@@ -68,7 +68,7 @@ String::String( float arg ) noexcept
 
 String::String( double arg ) noexcept
 {
-    CUL::Assert::simple( false, "Method not implemented" );
+    createFrom( arg );
 }
 
 String::String( std::int32_t arg ) noexcept
@@ -83,7 +83,7 @@ String::String( std::uint32_t arg ) noexcept
 
 String::String( int64_t arg ) noexcept
 {
-    CUL::Assert::simple( false, "Method not implemented" );
+    createFrom( arg );
 }
 
 String::String( uint64_t arg ) noexcept
@@ -159,18 +159,13 @@ String& String::operator=( const std::wstring& arg )
 
 String& String::operator=( float arg )
 {
-    //createFrom( arg );
+    createFrom( arg );
     return *this;
 }
 
 String& String::operator=( double arg )
 {
-#if defined( CUL_WINDOWS )
-    const std::wstring temp = std::to_wstring( arg );
-    operator=( temp );
-#else // #if defined( CUL_WINDOWS )
-    throw std::logic_error( "Method not implemented" );
-#endif // #if defined( CUL_WINDOWS )
+    createFrom( arg );
     return *this;
 }
 
@@ -1646,7 +1641,37 @@ void String::createFrom( std::uint32_t arg )
     createFrom( temp );
 }
 
+void String::createFrom( std::int64_t arg )
+{
+#if defined( CUL_WINDOWS )
+    const std::wstring temp = std::to_wstring( arg );
+#else   // #if defined( CUL_WINDOWS )
+    const std::string temp = std::to_string( arg );
+#endif  // #if defined( CUL_WINDOWS )
+    createFrom( temp );
+}
+
+void String::createFrom( std::uint64_t arg )
+{
+#if defined( CUL_WINDOWS )
+    const std::wstring temp = std::to_wstring( arg );
+#else   // #if defined( CUL_WINDOWS )
+    const std::string temp = std::to_string( arg );
+#endif  // #if defined( CUL_WINDOWS )
+    createFrom( temp );
+}
+
 void String::createFrom( float arg )
+{
+#if defined( CUL_WINDOWS )
+    const std::wstring temp = std::to_wstring( arg );
+#else   // #if defined( CUL_WINDOWS )
+    const std::string temp = std::to_string( arg );
+#endif  // #if defined( CUL_WINDOWS )
+    createFrom( temp );
+}
+
+void String::createFrom( double arg )
 {
 #if defined( CUL_WINDOWS )
     const std::wstring temp = std::to_wstring( arg );

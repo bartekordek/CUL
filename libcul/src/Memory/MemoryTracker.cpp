@@ -255,7 +255,6 @@ void MemoryTracker::getStackHere( StackLinesArray& outStackLines, std::size_t sk
             g_blockCurrentThread = false;
     } );
 
-    //boost::stacktrace::stacktrace stackTrace = std::move( boost::stacktrace::stacktrace() );
     boost::stacktrace::stacktrace stackTrace;
     boost::stacktrace::frame copy;
     const auto& stVec = stackTrace.as_vector();
