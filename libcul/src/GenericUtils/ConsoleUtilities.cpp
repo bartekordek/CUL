@@ -22,8 +22,7 @@ void ConsoleUtilities::printInputParameters()
     const auto argv = m_args->getArgsVal();
     for( int i = 0; i < argc; ++i )
     {
-        CUL::String logInfo = "ARG[" + CUL::String( i ) + "] = " + argv[i];
-        CUL::LOG::LOG_CONTAINER::getLogger()->log( logInfo );
+        CUL::LOG::LOG_CONTAINER::getLogger()->logVariable( LOG::Severity::INFO, "Arg[%d] = %s", i, argv[i] );
     }
 }
 #ifdef _MSC_VER

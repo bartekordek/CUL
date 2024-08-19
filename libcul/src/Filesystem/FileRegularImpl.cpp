@@ -38,7 +38,7 @@ void FileRegularImpl::reload()
 
 void FileRegularImpl::load( bool keepLineEndingCharacter )
 {
-    CUL::Assert::simple( exists(), "Cannot open the file: " + m_path.getPath() );
+    CUL::Assert::check(exists(), "Cannot open the file: %s", m_path.getPath().cStr());
 
     m_rows.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
@@ -100,8 +100,8 @@ void FileRegularImpl::cacheFile()
     m_cached = "";
     for( const auto& line : m_rows )
     {
-        m_cached += line;
-        m_cached += "\n";
+        m_cached.append( line );
+        m_cached.append( '\n' );
         m_rowsAsChars.push_back( const_cast<char*>( line.cStr() ) );
     }
 }

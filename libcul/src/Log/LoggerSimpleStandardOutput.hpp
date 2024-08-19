@@ -17,6 +17,7 @@ public:
 
     void log( const String& text, const Severity severity = Severity::INFO ) override;
     void log( const char* text, const Severity severity = Severity::INFO ) override;
+    void log( const wchar_t* text, const Severity severity = Severity::INFO ) override;
 
     void logVariable( Severity severity, const char* msg... ) override;
 

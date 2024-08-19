@@ -10,9 +10,6 @@ set( PROJECT_NAME_STATIC cul_static )
 project(${PROJECT_NAME_DYNAMIC} LANGUAGES CXX)
 project(${PROJECT_NAME_STATIC} LANGUAGES CXX)
 
-if( MSVC )
-endif()
-
 set( CMAKE_ENABLE_EXPORTS true )
 
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/stb" )

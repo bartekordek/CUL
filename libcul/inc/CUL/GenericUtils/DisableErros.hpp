@@ -23,6 +23,7 @@
 #pragma warning( disable: 4774 )
 #pragma warning( disable: 4800 )
 #pragma warning( disable: 4820 )
+#pragma warning( disable : 4996 )
 #pragma warning( disable: 5026 )
 #pragma warning( disable: 5027 )
 #pragma warning( disable: 5039 )

@@ -5,20 +5,22 @@
 
 NAMESPACE_BEGIN( CUL )
 
-void TrackRealloc( void* inAddr, std::uint64_t inSize )
+#if defined( CUL_STATIC )
+void TrackRealloc( void* oldPtr, void* newPtr, std::uint64_t inSize )
 {
-    MemoryTracker::getInstance().logRealloc(inAddr, inSize);
+    MemoryTracker::getInstance().logRealloc( oldPtr, newPtr, inSize, 5u );
 }
 
 void TrackAlloc( void* inAddr, std::uint64_t inSize )
 {
-    MemoryTracker::getInstance().logAlloc( inAddr, inSize );
+    MemoryTracker::getInstance().logAlloc( inAddr, inSize, 5u );
 }
 
 void TrackFree( void* inAddr )
 {
     MemoryTracker::getInstance().logFree( inAddr );
 }
+#endif // #if defined( CUL_STATIC )
 
 NAMESPACE_END( CUL )
 
@@ -131,7 +133,7 @@ void operator delete[]( void* p, std::size_t /* targetSize */ ) throw()
         std::free( p );
     }
 }
-#elif TRACY_ENABLE
+#elif TRACY_ENABLE && defined(CUL_STATIC)
 constexpr std::size_t g_callstackDepth = 8u;
 void* operator new( std::size_t count )
 {

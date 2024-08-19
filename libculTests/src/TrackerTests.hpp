@@ -15,13 +15,8 @@ protected:
     {
     }
 
-    virtual void SetUp()
-    {
-    }
-
-    virtual void TearDown()
-    {
-    }
+    virtual void SetUp();
+    virtual void TearDown();
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

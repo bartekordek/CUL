@@ -10,13 +10,6 @@
 using namespace CUL;
 using namespace FS;
 
-String Path::extensionSeparator = String( "." );
-
-const String& Path::getDirSeparator()
-{
-    return extensionSeparator;
-}
-
 Path::Path() noexcept
 {
 }
@@ -313,19 +306,25 @@ void Path::preparePaths()
     FsPath bPath( m_fullPath.wstring() );
     m_baseName = bPath.stem();
     m_extension = bPath.extension();
+    const auto dot = m_extension[0];
+    if( dot == L'.' )
+    {
+        m_extension.erase( 0 );
+    }
     m_dir = bPath.parent_path();
 #else
     FsPath bPath( m_fullPath.string() );
     auto bPathAsString = bPath.string();
-    if( bPathAsString.empty() )
-    {
-        auto x = 0;
-    }
 
     auto stem = bPath.stem();
     m_baseName = stem.c_str();
     auto extension = bPath.extension();
     m_extension = extension.c_str();
+    const auto dot = m_extension[0];
+    if( dot == '.' )
+    {
+        m_extension.erase( 0 );
+    }
 
     auto parentPath = bPath.parent_path();
 
@@ -349,10 +348,15 @@ void Path::normalizePaths()
 
 void Path::normalizePath( String& path )
 {
-#ifdef _MSC_VER
-    path.replace( std::wstring( L"\\" ), std::wstring( L"/" ) );
+    if( path.empty() )
+    {
+        return;
+    }
+
+#if defined(CUL_WINDOWS)
+    path.replace( L'\\', L'/', true );
 #else
-    path.replace( "\\", "/" );
+    path.replace( '\\', '/', true );
 #endif
 }
 
@@ -361,12 +365,12 @@ bool Path::exists() const
 #if defined( _MSC_VER ) && _MSC_VER < 1920
     const bool result = std::experimental::filesystem::is_regular_file( m_fullPath.cStr() );
 #else
-    const std::filesystem::path pathAsStdPath = m_fullPath.getString();
+    const std::filesystem::path pathAsStdPath = m_fullPath.getChar();
     std::error_code outErrorCode;
     const bool result = std::filesystem::is_regular_file( pathAsStdPath, outErrorCode );
     if( outErrorCode.value() != 0 && outErrorCode.value() != 2 )
     {
-        CUL::Assert::simple( false, CUL::String( outErrorCode.message() ) );
+        CUL::Assert::check( false, outErrorCode.message().c_str() );
     }
 #endif
     return result;

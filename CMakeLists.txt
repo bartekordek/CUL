@@ -97,6 +97,10 @@ option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
 option( RAPIDJSON_BUILD_EXAMPLES "Build examples." OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/rapidjson )
 
+if (MSVC)
+    set(SPDLOG_WCHAR_SUPPORT ON CACHE BOOL "" FORCE)
+    set(SPDLOG_WCHAR_FILENAMES ON CACHE BOOL "" FORCE)
+endif()
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
 
 set(BUILD_EXAMPLE OFF CACHE BOOL "DISABLE EXAMPLE" FORCE)

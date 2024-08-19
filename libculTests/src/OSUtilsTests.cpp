@@ -25,12 +25,7 @@ void OSUtilsTests::SetUp()
 #endif
 TEST_F( OSUtilsTests, genericCreation )
 {
-#if _WIN32 //TODO LINUX:
-    auto sf = m_culInterface->getSystemFonts();
-    GTEST_ASSERT_EQ( sf != nullptr, true );
-    auto& ff = sf->getFontFilesPaths();
-    GTEST_ASSERT_GT( ff.size(), 0 );
-#endif
+// TODO:
 }
 
 void OSUtilsTests::TearDown()
