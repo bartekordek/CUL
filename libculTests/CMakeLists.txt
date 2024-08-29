@@ -10,11 +10,10 @@ set(EXEC_DYNAMIC ${PROJECT_NAME}_dynamic)
 set(EXEC_STATIC ${PROJECT_NAME}_static)
 
 if (MSVC)
-    add_compile_options(/W4 /WX)
+    add_compile_options()
     add_compile_options( /MP )
 else()
     add_compile_options(-Wall -Wextra -pedantic)
-    add_definitions(-Wfatal-errors)
 endif()
 
 include_directories(src)

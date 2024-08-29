@@ -13,7 +13,8 @@ class CULLib_API Assert
 {
 public:
     static void simple( bool val, const char* msg = nullptr, LOG::ILogger* loggerIn = nullptr );
-    static void check(bool value, const char* msg...);
+    static void simple( bool val, const String& msg, LOG::ILogger* loggerIn = nullptr );
+    static void check( bool value, const char* msg... );
 
 protected:
 private:

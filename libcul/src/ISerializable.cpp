@@ -11,17 +11,20 @@ ISerializable::ISerializable()
 String ISerializable::serialize( CounterType tabsSize, const bool separator ) const
 {
     String tabs = getTab( tabsSize );
-    String result = tabs + "{\n";
-
-    result += getSerializationContent( tabsSize + 1, separator );
+    String result = tabs;
+    result.append( "{\n" );
+    const String serialized = getSerializationContent( tabsSize + 1, separator );
+    result.append( serialized );
 
     if( separator )
     {
-        result = result + tabs + "},\n";
+        result.append( tabs );
+        result.append( "},\n" );
     }
     else
     {
-        result = result + tabs + "}\n";
+        result.append( tabs );
+        result.append( "}\n" );
     }
 
     return result;

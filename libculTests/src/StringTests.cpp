@@ -18,7 +18,7 @@ TEST_F( StringTests, ConversionTest )
     test1.convertToHexData();
     test1.convertFromHexToString();
 
-    ASSERT_TRUE( CUL::String::cmp( someString.c_str(), test1.wCstr() ) == 0 );
+    ASSERT_TRUE(test1 == someString);
 #endif // #if defined( CUL_WINDOWS )
 }
 
