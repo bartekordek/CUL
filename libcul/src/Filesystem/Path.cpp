@@ -302,7 +302,7 @@ void Path::preparePaths()
         return;
     }
 
-#if defined _MSC_VER
+#if CUL_USE_WCHAR
     FsPath bPath( m_fullPath.wstring() );
     m_baseName = bPath.stem();
     m_extension = bPath.extension();

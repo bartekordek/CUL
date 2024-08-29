@@ -325,7 +325,7 @@ bool MemoryTracker::waitForAllCallStacksToBeDecoded() const
 CULLib_API std::int32_t MemoryTracker::getActiveAllocations() const
 {
     std::lock_guard<std::mutex> locker( m_dataMtx );
-    return m_allocations.size();
+    return static_cast<std::int32_t>( m_allocations.size() );
 }
 
 MemoryTracker::~MemoryTracker()

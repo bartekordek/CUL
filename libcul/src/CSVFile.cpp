@@ -144,16 +144,20 @@ const String& CSVFile::getAsOneString() const
 void CSVFile::cacheFile()
 {
     m_cached = "";
-    for( const auto& row : m_rows )
+    for(const auto& row : m_rows)
     {
         String line;
-        for( const auto& cell : row )
-        {
-            line.append( cell );
-            line.append( m_delimeter );
-        }
 
-        m_cached.append( line );
+        const std::size_t length = row.size();
+        for(std::size_t i = 0; i < length; ++i)
+        {
+            line.append(row[i]);
+            if(i != length - 1)
+            {
+                line.append(m_delimeter);
+            }
+        }
+        m_cached.append(line);
         m_cached.append('\n');
     }
 }

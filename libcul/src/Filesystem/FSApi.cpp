@@ -150,7 +150,7 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
         }
 
         const std::filesystem::path entryPath = entry.path();
-        String::UnderlyingType tempString = entryPath;
+        const String tempString = entryPath.c_str();
 
         const std::u32string someString = entryPath.u32string();
 #ifdef _MSC_VER

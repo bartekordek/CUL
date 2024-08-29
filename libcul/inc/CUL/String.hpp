@@ -20,7 +20,7 @@ class CULLib_API String final
 public:
     static constexpr std::size_t SSO_Size = 128;
     static constexpr float CapacityCoeficient = 1.8f;
-#ifdef _MSC_VER
+#if CUL_USE_WCHAR
     using UnderlyingType = std::wstring;
     using UnderlyingChar = wchar_t;
 #define NullTerminator L'\0'
@@ -220,18 +220,21 @@ public:
 
 protected:
 private:
+    void setSize( Length newSize );
     void verify();
 
     void grow( Length targetSize, bool keepValue );
     void releaseBuffer();
+    void resetWithMaxValue();
     Length calcualteCapacity( Length inSize ) const;
-    UnderlyingChar* m_value = nullptr;
     Length m_capacity{ SSO_Size };
     Length m_size{ 0u };
     std::array<UnderlyingChar, SSO_Size> m_staticValue{};
+    UnderlyingChar* m_value{ &m_staticValue[0] };
+    UnderlyingChar* m_dynamicValue{ nullptr };
     bool m_isBinary{ false };
 
-#if defined(CUL_WINDOWS)
+#if CUL_USE_WCHAR
     mutable char* m_temp{ nullptr };
 #else
     mutable wchar_t* m_temp{ nullptr };

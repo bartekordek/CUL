@@ -66,7 +66,10 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config, CULInterf
 
 IImage* ImageLoaderConcrete::loadImage( const FS::Path& path, bool rgba )
 {
-    return getLoader( path.getExtension() )->loadImage( path, rgba );
+    const auto extension = path.getExtension();
+    const auto loader = getLoader(extension);
+
+    return loader->loadImage( path, rgba );
 }
 
 IImage* ImageLoaderConcrete::loadImage(DataType* data, unsigned width, unsigned height)
