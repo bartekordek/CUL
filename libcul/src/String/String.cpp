@@ -1384,11 +1384,6 @@ void String::toUpper( wchar_t* inOut, std::int32_t size )
 
 void String::setSize( Length newSize )
 {
-    if( newSize == 215 )
-    {
-        auto ddd = 0;
-    }
-
     m_size = newSize;
 }
 
@@ -1501,8 +1496,8 @@ void String::createFrom( const char* arg )
 
 void String::createFrom( const std::string& arg )
 {
-    const Length argLen = arg.size();
-    const Length newLength = argLen * 1.2;
+    const Length argLen = static_cast<Length>(arg.size());
+    const Length newLength = static_cast<Length>(argLen * 1.2f);
     if( newLength >= m_capacity )
     {
         m_capacity = calcualteCapacity( newLength );
