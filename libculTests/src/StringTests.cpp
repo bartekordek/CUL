@@ -9,6 +9,62 @@ void StringTests::TearDownTestCase()
 {
 }
 
+TEST_F( StringTests, Wchar_FindMiddle_True )
+{
+    CUL::String t1( L"hi cat hello" );
+    const auto it = t1.find( L"cat" );
+    ASSERT_TRUE( it == 3 );
+}
+
+TEST_F( StringTests, Char_FindMiddle_True )
+{
+    CUL::String t1( "hi cat hello" );
+    const auto it = t1.find( "cat" );
+    ASSERT_TRUE( it == 3 );
+}
+
+TEST_F( StringTests, FindTest_True )
+{
+    CUL::String t1( "hello, world" );
+    const auto it = t1.find( "world" );
+    ASSERT_TRUE( it == 7 );
+}
+
+TEST_F( StringTests, FindTest_False )
+{
+    CUL::String t1( "hello, world" );
+    const auto it = t1.find( "ddasd" );
+    ASSERT_TRUE( it == -1 );
+}
+
+TEST_F( StringTests, EndingTest_True_Char )
+{
+    CUL::String t1( "hello, world" );
+    const bool res = t1.doesEndWith( "world" );
+    ASSERT_TRUE( res );
+}
+
+TEST_F( StringTests, EndingTest_False_Char )
+{
+    CUL::String t1( "hello, world" );
+    const bool res = t1.doesEndWith( "worldd" );
+    ASSERT_FALSE( res );
+}
+
+TEST_F( StringTests, EndingTest_True_Wide )
+{
+    CUL::String t1( "hello, world" );
+    const bool res = t1.doesEndWith( L"world" );
+    ASSERT_TRUE( res );
+}
+
+TEST_F( StringTests, EndingTest_False_Wide )
+{
+    CUL::String t1( "hello, world" );
+    const bool res = t1.doesEndWith( L"worlde" );
+    ASSERT_FALSE( res );
+}
+
 TEST_F( StringTests, ConversionTest )
 {
 #if defined( CUL_WINDOWS )
@@ -20,6 +76,13 @@ TEST_F( StringTests, ConversionTest )
 
     ASSERT_TRUE(test1 == someString);
 #endif // #if defined( CUL_WINDOWS )
+}
+
+TEST_F( StringTests, RemoveAllChar )
+{
+    CUL::String t1( "abcdaea" );
+    t1.removeAll('a');
+    ASSERT_TRUE( t1 == "bcde" );
 }
 
 TEST_F( StringTests, lower )

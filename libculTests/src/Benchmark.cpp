@@ -51,10 +51,9 @@ TEST_F( Benchmark, test0 )
 
 TEST_F( Benchmark, test1 )
 {
-    std::int32_t dd = 0;
     for( const auto& val : vec1 )
     {
-        dd = dummyCalc( val );
+        dummyCalc( val );
     }
 }
 

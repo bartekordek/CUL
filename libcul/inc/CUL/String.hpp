@@ -150,7 +150,8 @@ public:
     bool equals( const std::string& arg ) const;
     bool equals( const String& arg ) const;
 
-    bool doesEndWith( const UnderlyingType& end ) const;
+    bool doesEndWith( const std::string& end ) const;
+    bool doesEndWith( const std::wstring& end ) const;
 
     std::string string() const;
 
@@ -184,14 +185,18 @@ public:
     void setBinary( const char* value );
 
     const std::vector<String> split( const String& delimiter ) const;
+    const std::vector<String> split( const char delimiter ) const;
+    const std::vector<String> split( const wchar_t delimiter ) const;
 
     static Length wideStringToChar( char* out, Length outSize, const wchar_t* in );
     static Length wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize );
     static Length wideStringToChar( char& out, wchar_t in );
+    static Length wideStringToChar( std::string& out, const std::wstring& in );
 
     static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in );
     static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize );
     static Length charToWideString( Length codePage, wchar_t& out, char in );
+    static Length charToWideString( std::wstring& out, const std::string& in );
 
     static void copyString( char* target, const char* source );
     static void copyString( char* target, Length targetSize, const char* source, Length sourceSize );
@@ -199,7 +204,9 @@ public:
     static void copyString( wchar_t* target, Length targetSize, const wchar_t* source, Length sourceSize );
 
     static std::int32_t cmp( const char* s1, const char* s2 );
+    static bool equals( const char* s1, const char* s2, std::size_t length );
     static std::int32_t cmp( const wchar_t* s1, const wchar_t* s2 );
+    static bool equals( const wchar_t* s1, const wchar_t* s2, std::size_t length );
 
     static std::int32_t strLen( const char* inString );
     static std::int32_t strLen( const wchar_t* inString );

@@ -96,7 +96,16 @@ void CSVFile::load( bool keepLineEndingCharacter )
 
 void CSVFile::parseLine( const String& line )
 {
-    std::vector<String> splitLine = line.split( m_delimeter );
+    std::vector<String> splitLine;
+
+    if( m_delimeter.size() == 1 )
+    {
+        splitLine = line.split( m_delimeter[0] );
+    }
+    else
+    {
+        splitLine = line.split( m_delimeter );
+    }
 
     if( m_cellsContainQuotationMarks == false )
     {

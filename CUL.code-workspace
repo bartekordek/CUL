@@ -113,7 +113,8 @@
             "UNZIP.H": "cpp",
             "xmemory0": "cpp",
             "*.def": "cpp",
-            "*.inc": "cpp"
+            "*.inc": "cpp",
+            "*.ipp": "cpp"
         }
     }
 }
