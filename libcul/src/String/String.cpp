@@ -1435,12 +1435,12 @@ bool String::equals( const wchar_t* s1, const wchar_t* s2, std::size_t length )
 
 std::int32_t String::strLen( const char* inString )
 {
-    return static_cast<Length>( std::strlen( inString ) );
+    return static_cast<std::int32_t>( std::strlen( inString ) );
 }
 
 std::int32_t String::strLen( const wchar_t* inString )
 {
-    return std::wcslen( inString );
+    return static_cast<std::int32_t>( std::wcslen( inString ) );
 }
 
 void String::toLower( char* inOut )
@@ -1452,7 +1452,7 @@ void String::toLower( char* inOut, std::int32_t size )
 {
     for( std::int32_t i = 0; i < size; ++i )
     {
-        inOut[i] = std::tolower( inOut[i] );
+        inOut[i] = static_cast<char>( std::tolower( inOut[i] ) );
     }
 }
 
@@ -1629,11 +1629,7 @@ void String::createFrom( const std::string& arg )
     }
     else
     {
-        const Length newSize = charToWideString( CP_ACP, m_value, m_capacity, arg.c_str(), argLen );
-        if( newSize != newLength )
-        {
-            LOG::ILogger::getInstance().logVariable( LOG::Severity::WARN, "Difference between" );
-        }
+        charToWideString( CP_ACP, m_value, m_capacity, arg.c_str(), argLen );
     }
 #else // #if CUL_USE_WCHAR
     if( argLen == 0 )
