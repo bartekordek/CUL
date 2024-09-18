@@ -14,6 +14,29 @@
 NAMESPACE_BEGIN( CUL )
 using Length = std::int64_t;
 
+enum class ECharTypes: std::uint8_t
+{
+    Unkown = 0u,
+    Char,
+    Wchar
+};
+
+
+class CULLib_API StringUtil
+{
+public:
+    static void valueToHex( std::uint16_t inValue, std::array<std::uint8_t, 2>& outValue );
+    static void valueToHex( std::uint8_t inValue, std::uint8_t& outValue );
+    static std::uint16_t hexToValue( std::uint16_t outValue );
+    static void valueToHex( char in, std::array<char, 2>& outValue );
+    static void valueToHex( std::uint8_t in, std::array<char, 2>& outValue );
+    static std::uint8_t hexToValue( const std::array<char, 2>& in );
+    static std::uint8_t hexToValue( char in );
+
+protected:
+private:
+};
+
 class StringImpl;
 class CULLib_API String final
 {
@@ -180,13 +203,15 @@ public:
     void reserve( std::int32_t newSize, bool keepValues );
     void erase( Length index );
 
-    void convertToHexData();
-    void convertFromHexToString();
-    void setBinary( const char* value );
+    void serialize();
+    void deserialize();
 
     const std::vector<String> split( const String& delimiter ) const;
     const std::vector<String> split( const char delimiter ) const;
     const std::vector<String> split( const wchar_t delimiter ) const;
+
+
+    bool getIsSerialized() const;
 
     static Length wideStringToChar( char* out, Length outSize, const wchar_t* in );
     static Length wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize );
@@ -227,12 +252,17 @@ public:
 
 protected:
 private:
+    void deserializeImpl( ECharTypes type );
     void setSize( Length newSize );
     void verify();
+    void tryFitIntoSSO();
 
     void grow( Length targetSize, bool keepValue );
     void releaseBuffer();
     void resetWithMaxValue();
+    void verifyTerminator();
+    void terminate();
+
     Length calcualteCapacity( Length inSize ) const;
     Length m_capacity{ SSO_Size };
     Length m_size{ 0u };
@@ -246,6 +276,7 @@ private:
 #else
     mutable wchar_t* m_temp{ nullptr };
 #endif // #if defined(CUL_WINDOWS)
+    bool m_serialized{ false };
 };
 
 struct CULLib_API StringHash

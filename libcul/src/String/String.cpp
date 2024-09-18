@@ -11,6 +11,7 @@
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_wctype.hpp"
 #include "CUL/STL_IMPORTS/STD_codecvt.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
 using namespace CUL;
 
@@ -111,6 +112,7 @@ String& String::operator=( const String& arg )
 {
     if( this != &arg )
     {
+        clear();
         createFrom( arg );
     }
     return *this;
@@ -120,6 +122,7 @@ String& String::operator=( String&& arg ) noexcept
 {
     if( this != &arg )
     {
+        clear();
         createFromMove( arg );
     }
     return *this;
@@ -127,18 +130,21 @@ String& String::operator=( String&& arg ) noexcept
 
 String& String::operator=( bool arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( const char* arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( const wchar_t* arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
@@ -153,8 +159,8 @@ String& String::operator=( const wchar_t* arg )
 #endif
 String& String::operator=( unsigned char* /*arg*/ )
 {
-    throw std::logic_error( "Method not implemented" );
-
+    clear();
+    CUL::Assert::check( false, "Method not implemented" );
     return *this;
 }
 #ifdef _MSC_VER
@@ -163,48 +169,56 @@ String& String::operator=( unsigned char* /*arg*/ )
 
 String& String::operator=( const std::string& arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( const std::wstring& arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( float arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( double arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( std::int32_t arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( std::uint32_t arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( std::int64_t arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
 
 String& String::operator=( std::uint64_t arg )
 {
+    clear();
     createFrom( arg );
     return *this;
 }
@@ -965,6 +979,11 @@ const String::UnderlyingType String::getString() const
 
 const char* String::cStr() const
 {
+    if( m_size == 0 )
+    {
+        return nullptr;
+    }
+
 #if CUL_USE_WCHAR
     // TODO: check when it should be released, possible leak.
     const Length charLength = m_size != 0 ? 2 * m_size : 2;
@@ -988,7 +1007,6 @@ const wchar_t* String::wCstr() const
     charToWideString(0, m_temp, wcharBufferSize, m_value, m_size);
     return m_temp;
 #endif // #if CUL_USE_WCHAR
-    return nullptr;
 }
 
 const String::UnderlyingChar* String::getChar() const
@@ -998,28 +1016,18 @@ const String::UnderlyingChar* String::getChar() const
 
 float String::toFloat() const
 {
-    throw std::logic_error( "Method not implemented" );
-    //return m_value.empty() ? 0.0f : std::stof( m_value, nullptr );
-    return 0.f;
+    return std::stof( m_value );
 }
 
 double String::toDouble() const
 {
-    throw std::logic_error( "Method not implemented" );
-    //return m_value.empty() ? 0.0 : std::stod( m_value, nullptr );
+    CUL::Assert::check( false, "Method not implemented" );
     return 0.0;
 }
 
 int String::toInt()
 {
-    throw std::logic_error( "Method not implemented" );
-    //removeAll( 'u' );
-    //if( m_value.empty() )
-    //{
-    //    return 0;
-    //}
-
-    //return std::stoi( m_value );
+    CUL::Assert::check( false, "Method not implemented" );
     return 0;
 }
 
@@ -1064,9 +1072,14 @@ Length String::capacity() const
 
 void String::clear()
 {
+    if( m_size == 0 )
+    {
+        return;
+    }
+
+    std::memset( &m_value[0], 0, m_size * UnderlyingCharSize );
+
     setSize( 0 );
-    m_value[0] = NullTerminator;
-    m_value[1] = NullTerminator;
 }
 
 bool String::empty() const
@@ -1090,15 +1103,111 @@ void String::erase( Length index )
 
 constexpr char hexmap[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-std::string data2StringHex( unsigned char* data, size_t len )
+
+void StringUtil::valueToHex( std::uint16_t inValue, std::array<std::uint8_t, 2>& outValue )
 {
-    std::string s( len * 2u, ' ' );
-    for( size_t i = 0; i < len; ++i )
+    outValue[0] = hexmap[( inValue & 0xF0 ) >> 8];
+    outValue[1] = hexmap[( inValue & 0x0F ) >> 0];
+}
+
+void StringUtil::valueToHex( std::uint8_t inValue, std::uint8_t& outValue )
+{
+    outValue = hexmap[( inValue & 0x0F ) >> 0];
+}
+
+std::uint16_t StringUtil::hexToValue( std::uint16_t outValue )
+{
+    std::uint16_t MSB = outValue & 0xF0 >> 4;
+    std::uint16_t LSB = outValue & 0x0F >> 0;
+    return 16u * MSB + LSB;
+}
+
+std::uint8_t hexToChar(std::uint8_t in)
+{
+    char x = 'f';
+    char* xx = &x;
+
+    if( in < 10 )
     {
-        s[2u * i] = hexmap[( data[i] & 0xF0 ) >> 4];
-        s[2u * i + 1] = hexmap[data[i] & 0x0F];
+        return in + 48u;
     }
-    return s;
+
+    if( in <= 15 )
+    {
+        return in + 87u;
+    }
+
+    return in + 65u;
+}
+
+void StringUtil::valueToHex( std::uint8_t in, std::array<char, 2>& outValue )
+{
+    if( in == 0u )
+    {
+        outValue[0] = '0';
+        outValue[1] = '0';
+        return;
+    }
+
+    if( in < 10u )
+    {
+        outValue[0] = '0';
+        outValue[1] = in + 48u;
+        return;
+    }
+
+    std::uint8_t* inPtr = &in;
+
+    std::uint8_t upper = ( in & 0xF0 );
+    std::uint8_t lower = ( in & 0x0F );
+
+    std::uint8_t MSB_i = lower;
+    std::uint8_t LSB_i = upper >> 4;
+
+    outValue[1] = hexToChar( MSB_i );
+    outValue[0] = hexToChar( LSB_i );
+}
+
+void StringUtil::valueToHex( char in, std::array<char, 2>& outValue )
+{
+    char* inPtr = &in;
+
+    std::uint8_t upper = ( in & 0xF0 );
+    std::uint8_t lower = ( in & 0x0F );
+
+    std::uint8_t MSB_i = lower;
+    std::uint8_t LSB_i = upper >> 4;
+
+    outValue[1] = hexToChar( MSB_i );
+    outValue[0] = hexToChar( LSB_i );
+}
+
+std::uint8_t StringUtil::hexToValue( const std::array<char, 2>& in )
+{
+    if( in[0] == '0' && in[1] == '0' )
+    {
+        return 0u;
+    }
+
+    std::uint8_t MSB_i = hexToValue( in[1] );
+    std::uint8_t LSB_i = hexToValue( in[0] );
+
+    return MSB_i + LSB_i * 16u;
+}
+
+std::uint8_t StringUtil::hexToValue( char in )
+{
+    if( in < 61 )
+    {
+        return static_cast<std::uint8_t>( in ) - 48u;
+    }
+
+    if( in < 103 )
+    {
+        return static_cast<std::uint8_t>( in ) - 87u;
+    }
+
+    return 0u;
 }
 
 uint16_t hexCharToInt( char valu )
@@ -1126,59 +1235,191 @@ uint16_t stringHex2Data( char val[4] )
     return result;
 }
 
-void String::convertToHexData()
-{
-#if CUL_USE_WCHAR
-    if( m_size > 0 )
-    {
-        const size_t sizeOfWchar = sizeof( wchar_t );
-        const size_t wholeDataSize = m_size * sizeOfWchar;
 
-        const std::string hexValue = data2StringHex( (unsigned char*)m_value, wholeDataSize );
-        releaseBuffer();
-        createFrom( hexValue );
-        m_isBinary = true;
-    }
-#else // #if defined(CUL_WINDOWS)
-#endif // #if defined(CUL_WINDOWS)
-}
-
-void String::setBinary( const char* value )
+void String::serialize()
 {
-    releaseBuffer();
-    createFrom( value );
-    m_isBinary = true;
-}
-
-void String::convertFromHexToString()
-{
-#if CUL_USE_WCHAR
     if( m_size == 0 )
     {
         return;
     }
 
-    constexpr size_t dataWidth = 4;
+    std::string result;
 
-    std::wstring result;
-    const char* binaryValue = cStr();
-    const auto size = static_cast<std::size_t>( m_size );
-    for( std::size_t i = 0; i < size; i += dataWidth )
+    std::uint8_t* valueAsBytesPtr = reinterpret_cast<std::uint8_t*>( m_value );
+    std::size_t dataLength = (m_size + 1u) * UnderlyingCharSize;
+
+    std::array<char, 2> twoBytes;
+    for( std::size_t i = 0u; i < dataLength; ++i )
     {
-        std::string currentHex( binaryValue, i, dataWidth );
-        char charStr[4];
-        charStr[2] = currentHex[0];
-        charStr[3] = currentHex[1];
-        charStr[0] = currentHex[2];
-        charStr[1] = currentHex[3];
-        wchar_t val = stringHex2Data( charStr );
-        result.push_back( val );
+        std::uint8_t current = valueAsBytesPtr[i];
+        std::uint8_t* ptrToCurrent = &valueAsBytesPtr[i];
+
+        StringUtil::valueToHex( current, twoBytes );
+        result += twoBytes[0];
+        result += twoBytes[1];
+        auto xx = 0;
     }
-    releaseBuffer();
-    createFrom( result );
-    m_isBinary = false;
-#else // #if defined(CUL_WINDOWS)
-#endif // #if defined(CUL_WINDOWS)
+
+    createFrom( result.data() );
+    m_serialized = true;
+}
+
+void String::deserialize()
+{
+    if( m_size == 0 )
+    {
+        return;
+    }
+
+#if CUL_USE_WCHAR
+    std::string temp;
+    wideStringToChar( temp, m_value );
+#else   // #if CUL_USE_WCHAR
+    std::string temp( m_value );
+#endif  // #if CUL_USE_WCHAR
+
+    std::size_t dataLength = temp.size();
+    std::vector<std::uint8_t> target;
+    target.reserve( dataLength );
+    std::array<char, 2> hexValue;
+
+    wchar_t t = 't';
+    std::uint8_t tt = t;
+
+    for( std::size_t i = 0u; i < dataLength - 1; i += 2 )
+    {
+        hexValue[0] = temp[i];
+        hexValue[1] = temp[i + 1];
+        std::uint8_t value = StringUtil::hexToValue( hexValue );
+
+        if( value == tt )
+        {
+            auto x = 0;
+        }
+
+        target.push_back( value );
+    }
+
+    Length zeroCount{ 0u };
+    for( Length i = target.size() - 1; i >= 0; --i )
+    {
+        if( target[i] == NullTerminator )
+        {
+            ++zeroCount;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    if( zeroCount < 2 )
+    {
+        target.push_back( 0 );
+        target.push_back( 0 );
+    }
+
+    const std::size_t newSize = target.size();
+    const std::size_t ssoByteSize = SSO_Size * UnderlyingCharSize;
+
+    delete m_dynamicValue;
+    m_dynamicValue = nullptr;
+    m_value = &m_staticValue[0];
+
+    std::uint8_t* newValuePtr{ nullptr };
+    if( newSize + 1 > SSO_Size )
+    {
+        newValuePtr = new std::uint8_t[newSize + 1u];
+        m_dynamicValue = reinterpret_cast<UnderlyingChar*>( newValuePtr );
+        m_value = m_dynamicValue;
+    }
+    else
+    {
+        newValuePtr = reinterpret_cast<std::uint8_t*>( m_value );
+    }
+
+    for( std::size_t i = 0u; i < newSize; ++i )
+    {
+        newValuePtr[i] = target[i];
+    }
+
+    const auto asCharacterArray = reinterpret_cast<UnderlyingChar*>( newValuePtr );
+    const auto sizeCalculated = strLen( asCharacterArray );
+    m_size = ( newSize - 1u ) / UnderlyingCharSize;
+    UnderlyingChar& terminator = m_value[m_size];
+    terminator = NullTerminator;
+
+    for( Length it = m_size; it >= 0; --it )
+    {
+        const UnderlyingChar& currentChar = m_value[it];
+        if( currentChar != NullTerminator )
+        {
+            m_size = it + 1;
+            break;
+        }
+    }
+
+    m_serialized = false;
+    tryFitIntoSSO();
+}
+
+void String::tryFitIntoSSO()
+{
+    if( m_size == 0 )
+    {
+        return;
+    }
+
+    if( m_size + 1 > static_cast<Length>( SSO_Size ) )
+    {
+        return;
+    }
+
+    if( m_dynamicValue == nullptr )
+    {
+        return;
+    }
+
+    copyString( &m_staticValue[0], SSO_Size, m_dynamicValue, m_size );
+    delete m_dynamicValue;
+    m_dynamicValue = nullptr;
+    m_value = &m_staticValue[0];
+    m_capacity = SSO_Size;
+    terminate();
+}
+
+void String::deserializeImpl( ECharTypes type )
+{
+    if( type == ECharTypes::Char )
+    {
+    }
+    else if( type == ECharTypes::Wchar )
+    {
+        std::wstring tmp;
+        tmp.reserve( m_size );
+        std::uint16_t* ptr = reinterpret_cast<std::uint16_t*>( m_value );
+        std::array<wchar_t, 2> converted;
+        const std::size_t length = static_cast<std::size_t>( m_size );
+        for( std::size_t i = 1u; i < length - 1; i += 2u )
+        {
+            std::uint16_t* val = reinterpret_cast<std::uint16_t*>( &m_value[i] );
+
+            //converted[0] = m_value[i];
+            //converted[1] = m_value[i + 1];
+            //wchar_t unhexed = StringUtil::hexToValue( converted );
+            //tmp += unhexed;
+        }
+
+        createFrom( tmp );
+    }
+}
+
+void String::verifyTerminator()
+{
+    const auto terminator = m_value[m_size + 1u];
+    if( terminator != NullTerminator )
+    {
+    }
 }
 
 const std::vector<String> String::split( const String& delimiter ) const
@@ -1250,6 +1491,11 @@ const std::vector<String> String::split( const wchar_t delimiter ) const
     return result;
 }
 
+bool String::getIsSerialized() const
+{
+    return m_serialized;
+}
+
 Length String::wideStringToChar( char* out, Length outSize, const wchar_t* in )
 {
     return wideStringToChar( out, outSize, in, strLen( in ) );
@@ -1258,27 +1504,13 @@ Length String::wideStringToChar( char* out, Length outSize, const wchar_t* in )
 Length String::wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize )
 {
     std::size_t result = 0u;
-#if CUL_USE_WCHAR
-    UINT codePage = CP_ACP;
-    DWORD dwFlags = WC_COMPOSITECHECK;
-    const int sizeNeeded = WideCharToMultiByte( codePage, dwFlags, in, inSize, NULL, 0, NULL, NULL );
-    if( sizeNeeded < outSize )
-    {
-        WideCharToMultiByte( codePage, dwFlags, in, inSize, out, sizeNeeded, NULL, NULL );
-        result = sizeNeeded;
-        out[sizeNeeded] = NullTerminator;
-        return true;
-    }
-    CUL::Assert::check( false, "TOO SMALL BUFFER." );
-#else // #if CUL_USE_WCHAR
+
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
     const std::string stringCpy = converterX.to_bytes(in);
-    copyString( out, stringCpy.c_str() );
+    copyString( out, outSize, stringCpy.c_str(), stringCpy.size() );
 
     return true;
-#endif // #if CUL_USE_WCHAR
-    return false;
 }
 
 Length String::wideStringToChar( char& inOut, wchar_t inChar)
@@ -1319,32 +1551,12 @@ Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, 
 {
     CUL::Assert::simple(outSize >= inSize, "NOT ENOUGH PLACE FOR STRING");
 
-    Length result = 0u;
-#if CUL_USE_WCHAR
-    int cbMultiByte = -1;
-
-    /*
-    Flags indicating the conversion type. The application can specify a combination of the following values, with MB_PRECOMPOSED being the
-    default. MB_PRECOMPOSED and MB_COMPOSITE are mutually exclusive. MB_USEGLYPHCHARS and MB_ERR_INVALID_CHARS can be set regardless of the
-    state of the other flags.
-    */
-    DWORD dwFlags = 0;
-    int wcharsNum = MultiByteToWideChar( codePage, dwFlags, in, cbMultiByte, NULL, 0 );
-
-    if( wcharsNum < outSize )
-    {
-        MultiByteToWideChar( codePage, dwFlags, in, cbMultiByte, out, wcharsNum );
-        result = wcharsNum;
-    }
-    return result;
-#else // #if CUL_USE_WCHAR
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
-    const std::wstring wstringCopy = converterX.from_bytes(in);
-    copyString(out, outSize, wstringCopy.c_str(), wstringCopy.size());
-
+    const std::wstring wstringCopy = converterX.from_bytes( in );
+    copyString( out, outSize, wstringCopy.c_str(), wstringCopy.size() );
+    out[inSize] = L'\0';
     return wstringCopy.size();
-#endif // #if CUL_USE_WCHAR
 }
 
 Length String::charToWideString( Length codePage, wchar_t& out, char in )
@@ -1390,7 +1602,7 @@ void String::copyString( wchar_t* target, Length targetSize, const wchar_t* sour
 {
     CUL::Assert::simple( targetSize >= sourceSizeS, "TARGET TOO SMALL!" );
     const std::size_t sourceSize = static_cast<std::size_t>( sourceSizeS );
-    for( std::size_t i = 0; i <= sourceSize; ++i )
+    for( std::size_t i = 0; i < sourceSize; ++i )
     {
         const UnderlyingChar sourceChar = source[i];
         target[i] = sourceChar;
@@ -1498,6 +1710,11 @@ void String::toUpper( wchar_t* inOut, std::int32_t size )
 void String::setSize( Length newSize )
 {
     m_size = newSize;
+    if( m_size == 128 )
+    {
+        auto x = 0;
+    }
+    terminate();
 }
 
 void String::verify()
@@ -1511,6 +1728,11 @@ void String::verify()
 
 void String::createFrom(const String& arg)
 {
+    if( arg.find( L"descriptorsets_vk.cpp" ) != -1 )
+    {
+        auto x = 0;
+    }
+
     if(arg.m_size == 0)
     {
         m_size = 0;
@@ -1551,12 +1773,13 @@ void String::createFromMove( String& arg )
     }
     else
     {
+        delete m_dynamicValue;
+        m_dynamicValue = nullptr;
+        m_value = &m_staticValue[0];
         if( m_size > 0 )
         {
-            delete m_dynamicValue;
-            m_dynamicValue = nullptr;
-            m_value = &m_staticValue[0];
             copyString( m_value, m_size, arg.m_value, m_size );
+            terminate();
         }
     }
 
@@ -1610,7 +1833,7 @@ void String::createFrom( const char* arg )
 void String::createFrom( const std::string& arg )
 {
     const Length argLen = static_cast<Length>(arg.size());
-    const Length newLength = static_cast<Length>(argLen * 1.2f);
+    const Length newLength = static_cast<Length>( static_cast<float>( argLen ) * 1.2f );
     if( newLength >= m_capacity )
     {
         m_capacity = calcualteCapacity( newLength );
@@ -1654,6 +1877,11 @@ void String::createFrom( const std::wstring& arg )
     wideStringToChar(m_value, m_capacity, arg.c_str(), argLen);
 #endif
     setSize( argLen );
+}
+
+void String::terminate()
+{
+    m_value[m_size] = NullTerminator;
 }
 
 void String::createFrom( const wchar_t* arg )
@@ -1805,7 +2033,7 @@ void String::releaseBuffer()
     {
         delete[] m_dynamicValue;
     }
-    setSize( 0 );
+
     m_value = nullptr;
     m_dynamicValue = nullptr;
     m_capacity = SSO_Size;
@@ -1817,13 +2045,13 @@ void String::releaseBuffer()
     }
 
     m_value = &m_staticValue[0];
+    setSize( 0 );
 }
 
 String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )
 {
-    String left( arg1 );
-    String result = left + arg2;
-
+    String result( arg1 );
+    result.append( arg2 );
     return result;
 }
 

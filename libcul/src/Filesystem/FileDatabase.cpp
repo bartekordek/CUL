@@ -117,9 +117,8 @@ void FileDatabase::getFiles( uint64_t size, const CUL::String& md5, std::vector<
     ZoneScoped;
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\" AND MD5=\"" + md5 + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
-        CUL::String filePath;
-        filePath.setBinary( argv[0] );
-        filePath.convertFromHexToString();
+        CUL::String filePath( argv[0] );
+        filePath.deserialize();
         const CUL::String size = argv[1];
         const CUL::String md5 = argv[2];
         const CUL::String lastMod = argv[3];
@@ -148,9 +147,7 @@ void FileDatabase::getFiles( uint64_t size, std::vector<FileInfo>& out ) const
     ZoneScoped;
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
-        CUL::String filePath;
-        filePath.setBinary( argv[0] );
-        filePath.convertFromHexToString();
+        CUL::String filePath( argv[0] );
         const CUL::String size = argv[1];
         const CUL::String md5 = argv[2];
         const CUL::String lastMod = argv[3];
@@ -180,6 +177,7 @@ void FileDatabase::loadFilesFromDatabase()
     CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::initDb();" );
     initDb();
 
+    std::lock_guard<std::mutex> locker( m_fetchListMtx );
     m_fetchList = new ListAndApi();
 
     m_fetchList->thisPtr = this;
@@ -193,9 +191,16 @@ void FileDatabase::loadFilesFromDatabase()
     {
         ZoneScoped;
         ListAndApi* rd = reinterpret_cast<ListAndApi*>( thisPtrValue );
-        String file;
-        file.setBinary( argv[0] );
-        file.convertFromHexToString();
+        String file( argv[0] );
+        file.deserialize();
+
+        if( file.find( L"descriptorsets_vk.cpp" ) != -1 )
+        {
+            auto x = 0;
+            String filex( argv[0] );
+            filex.deserialize();
+        }
+
         rd->FilesList.push_back( file );
         ++*rd->m_currentFileIndex;
 
@@ -248,6 +253,12 @@ bool FileDatabase::deleteRemnants()
     ZoneScoped;
     String status = "loadFilesFromDatabase -> deleting remnants...";
     ThreadUtil::getInstance().setThreadStatus( status );
+
+    if( m_fetchList == nullptr )
+    {
+        return false;
+    }
+
     size_t filesCount = m_fetchList->FilesList.size();
 
     status = "loadFilesFromDatabase -> deleting remnants... collecting not existing files...";
@@ -290,7 +301,7 @@ void FileDatabase::getFilesMatching( const CUL::String& fileSize, const CUL::Str
     auto callback = [] ( void* voidValue, int argc, char** argv, char** info ){
         std::list<CUL::String>* resultPtr = reinterpret_cast<std::list<CUL::String>*>( voidValue );
         CUL::String foundPath( argv[0] );
-        foundPath.convertFromHexToString();
+        foundPath.deserialize();
         resultPtr->push_back( foundPath );
         return 0;
     };
@@ -379,7 +390,7 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     }
 
     CUL::String filePathNormalized = filePath;
-    filePathNormalized.convertToHexData();
+    filePathNormalized.serialize();
     auto foundFile = getFileInfo( filePath );
     char* zErrMsg = nullptr;
     auto callback = [] ( void*, int, char**, char** ){
@@ -436,7 +447,7 @@ FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
     waitForInit();
     FileDatabase::FileInfo result;
     String pathInBinary = path;
-    pathInBinary.convertToHexData();
+    pathInBinary.serialize();
     const std::string binaryForm = pathInBinary.cStr();
     String sqlQuery =
         "SELECT * \
@@ -446,14 +457,13 @@ WHERE PATH='" +
 
     const char* queryAsCharPtr = sqlQuery.cStr();
     auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
-        CUL::String path;
-        path.setBinary( argv[0] );
+        CUL::String path( argv[0] );
         auto fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
         fileInfoFromPtr->Found = true;
         fileInfoFromPtr->MD5 = argv[2];
         fileInfoFromPtr->Size = argv[1];
         fileInfoFromPtr->ModTime = argv[3];
-        path.convertFromHexToString();
+        path.deserialize();
         fileInfoFromPtr->FilePath = path;
 
         return 0;
@@ -495,7 +505,7 @@ void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
     ZoneScoped;
     CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::removeFileFromDB pathRaw = " + pathRaw );
     CUL::String path = pathRaw;
-    path.convertToHexData();
+    path.serialize();
 
     const std::string binaryForm = path.cStr();
     std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + binaryForm + "';";
@@ -526,11 +536,11 @@ void FileDatabase::removeFilesFromDb( const std::vector<CUL::String>& paths )
         CUL::String pathNormal = paths[i];
 
         auto pathSanitized = pathNormal;
-        pathSanitized.convertToHexData();
+        pathSanitized.serialize();
         pathsListed += pathSanitized + "', '";
     }
     CUL::String lastPath = paths[pathsSize - 1];
-    lastPath.convertToHexData();
+    lastPath.serialize();
     pathsListed += lastPath + "')";
 
     CUL::String sqlQuery = CUL::String( "DELETE FROM FILES WHERE PATH IN " ) + pathsListed + ";";

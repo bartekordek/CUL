@@ -16,13 +16,11 @@ struct ListAndApi;
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
 
-
+using MD5Value = String;
 
 class CULLib_API FileDatabase final
 {
 public:
-    using MD5Value = String;
-
     struct FileInfo
     {
         bool Found = false;
@@ -74,6 +72,7 @@ private:
 
     std::future<bool> m_deleteRemnantsDone;
     ListAndApi* m_fetchList = nullptr;
+    std::mutex m_fetchListMtx;
 
 private:
     FileDatabase( const FileDatabase& rhv ) = delete;

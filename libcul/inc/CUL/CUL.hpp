@@ -52,3 +52,6 @@
 #else
     #define CUL_USE_WCHAR 0
 #endif
+
+// If on your platform is not true, String class should be updated.
+static_assert( sizeof(char) == 1 );
