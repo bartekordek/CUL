@@ -3,6 +3,7 @@
 #include "CUL/GenericUtils/Singleton.hpp"
 #include "CUL/String.hpp"
 #include "CUL/Threading/Priority.hpp"
+#include "CUL/Threading/ThreadUtilObserver.hpp"
 
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
@@ -10,6 +11,7 @@
 #include "CUL/STL_IMPORTS/STD_deque.hpp"
 #include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
+#include "CUL/STL_IMPORTS/STD_future.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -31,7 +33,7 @@ struct ThreadInfo final
     EPriority Priority = EPriority::None;
 };
 
-class CULLib_API MultiWorkerSystem final: public Singleton<MultiWorkerSystem>
+class CULLib_API MultiWorkerSystem final: public Singleton<MultiWorkerSystem>, public CThreadUtilObserver
 {
 public:
     MultiWorkerSystem();
@@ -61,8 +63,10 @@ public:
 protected:
 private:
     void workerMethod( int8_t threadId, EPriority priority );
+    void onThreadsStateUpdated( const std::vector<ThreadMeta>& ti ) override;
+    void removeThreadFromWorkers( const std::thread::id& id );
 
-    std::vector<ThreadInfo> m_threads;
+    std::unordered_map<std::thread::id, ThreadInfo*> m_threads;
     mutable std::mutex m_threadsMtx;
 
     bool m_runWorkers = true;
@@ -73,6 +77,14 @@ private:
     mutable std::array<std::mutex, (size_t)EPriority::COUNT> m_tasksMtxs;
 
     std::unordered_map<EPriority, int> m_sleepMapping;
+
+
+    //void updateWorkerStatus( const std::vector<String>& in );
+    //void fetchWorkerStatus();
+    //std::vector<String> m_workerStatus;
+    //std::mutex m_workerStatusMtx;
+
+    std::future<void> m_changeWorkers;
 };
 
 NAMESPACE_END(CUL)

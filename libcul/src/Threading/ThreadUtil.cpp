@@ -2,6 +2,7 @@
 #include "CUL/ITimer.hpp"
 #include "CUL/Threading/MultiWorkerSystem.hpp"
 #include "CUL/Threading/TaskCallback.hpp"
+#include "CUL/Threading/ThreadUtilObserver.hpp"
 
 #include "CUL/IMPORT_tracy.hpp"
 
@@ -45,6 +46,12 @@ CULLib_API bool ThreadUtil::getIsCurrentThreadNameEqualTo( const String& name ) 
 void ThreadUtil::sleepFor( uint16_t ms )
 {
     std::this_thread::sleep_for( std::chrono::milliseconds( ms ) );
+}
+
+void ThreadUtil::registerObserver( CThreadUtilObserver* observer )
+{
+    std::lock_guard<std::mutex> locker(m_observersMtx);
+    m_observers.insert( observer );
 }
 
 String ThreadUtil::getThreadName( const std::thread::id* threadId ) const
@@ -96,7 +103,7 @@ void ThreadUtil::setThreadName( const String& name, const std::thread::id* threa
         }
         else
         {
-            ThreadInfo ti;
+            ThreadMeta ti;
             ti.Name = name;
             m_threadInfo[currentThreadId] = ti;
         }
@@ -129,7 +136,7 @@ void ThreadUtil::setThreadStatusImpl( const String& status, const std::thread::i
     }
     else
     {
-        ThreadInfo ti;
+        ThreadMeta ti;
         ti.Status = status;
         m_threadInfo[threadId] = ti;
     }
@@ -151,6 +158,24 @@ void ThreadUtil::threadInfoWorker()
             task();
             m_tasks.pop_back();
         }
+    }
+}
+
+void ThreadUtil::notifyObservers()
+{
+    std::vector<ThreadMeta> data;
+    {
+        std::lock_guard<std::mutex> locker( m_threadInfoMtx );
+        for( const auto& ti : m_threadInfo )
+        {
+            data.push_back(ti.second);
+        }
+    }
+
+    std::lock_guard<std::mutex> locker( m_observersMtx );
+    for( const auto& observer: m_observers )
+    {
+        observer->onThreadsStateUpdated( data );
     }
 }
 
