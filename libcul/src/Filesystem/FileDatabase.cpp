@@ -229,7 +229,7 @@ void FileDatabase::loadFilesFromDatabase()
     }
     else
     {
-        constexpr bool mt = false;
+        constexpr bool mt = true;
         if( mt )
         {
             CUL::TaskCallback* taskCbck = new CUL::TaskCallback();

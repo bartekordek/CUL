@@ -6,6 +6,8 @@
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
+#undef deleteFile
+
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
 class Time;
@@ -40,6 +42,8 @@ public:
 
     std::vector<Path> ListAllFiles( const Path& directory );
     void ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback );
+
+    void deleteFile( const Path& path );
 
     ~FSApi();
 

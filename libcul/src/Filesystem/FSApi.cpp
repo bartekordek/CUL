@@ -166,6 +166,22 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
     }
 }
 
+void FSApi::deleteFile( const Path& path )
+{
+    std::error_code ec;
+    const std::filesystem::path target = path.getPath().getChar();
+
+    std::filesystem::remove( target, ec );
+
+    static std::error_condition ok;
+    if( ec != ok )
+    {
+        const auto messageStr = ec.message();
+        const char* msg = messageStr.c_str();
+        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::ERROR, "FSApi::DeleteFile error: [%s]", msg );
+    }
+}
+
 bool FSApi::isDirectory( const Path& path )
 {
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
