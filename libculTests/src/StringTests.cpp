@@ -1,5 +1,6 @@
 #include "CUL/String.hpp"
 #include "StringTest.hpp"
+#include "CUL/Filesystem/Path.hpp"
 
 void StringTests::SetUpTestCase()
 {
@@ -254,4 +255,19 @@ TEST_F( StringTests, operatorTest )
 
     CUL::String string4( 3.0f );
     std::cout << "string 4 = " << string4.cStr() << "\n";
+}
+
+TEST_F( StringTests, deserializationTest00 )
+{
+    CUL::String string0( "44003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d0041006300740069006f006e002f0031003900390039002f004300440041002000310030002d00390039002e007000640066000000" );
+    string0.deserialize();
+    ASSERT_TRUE( string0 == "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 10-99.pdf" );
+}
+
+TEST_F( StringTests, pathToFile00 )
+{
+    CUL::FS::Path current( "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 02-99.pdf" );
+    CUL::String pathAsString = current;
+    pathAsString.serialize();
+    ASSERT_TRUE( pathAsString == "44003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d0041006300740069006f006e002f0031003900390039002f004300440041002000300032002d00390039002e007000640066000000" );
 }

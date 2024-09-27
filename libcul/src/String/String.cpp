@@ -1336,6 +1336,7 @@ void String::deserialize()
     else
     {
         newValuePtr = reinterpret_cast<std::uint8_t*>( m_value );
+        m_capacity = SSO_Size;
     }
 
     for( std::size_t i = 0u; i < newSize; ++i )
