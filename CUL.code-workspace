@@ -114,7 +114,8 @@
             "xmemory0": "cpp",
             "*.def": "cpp",
             "*.inc": "cpp",
-            "*.ipp": "cpp"
+            "*.ipp": "cpp",
+            "netfwd": "cpp"
         }
     }
 }

@@ -68,9 +68,11 @@ TEST_F( StringTests, EndingTest_False_Wide )
     ASSERT_FALSE( res );
 }
 
-TEST_F( StringTests, ConversionTest00 )
+TEST_F( StringTests, ConversionTest00a )
 {
-#if defined( CUL_WINDOWS )
+    CUL::String test0( "ę" );
+    test0.serialize();
+
     CUL::String test1;
     const std::wstring someString = L"ę";
     test1 = someString;
@@ -78,13 +80,24 @@ TEST_F( StringTests, ConversionTest00 )
     test1.deserialize();
 
     ASSERT_TRUE( test1 == someString );
-#endif  // #if defined( CUL_WINDOWS )
 }
 
+TEST_F( StringTests, ConversionTest00b )
+{
+    CUL::String test0( "ę" );
+    test0.serialize();
+
+#if CUL_USE_WCHAR
+    CUL::String test1( "0190144000000" );
+#else
+    CUL::String test1( "1c49900" );
+#endif
+
+    ASSERT_TRUE( test1 == test0 );
+}
 
 TEST_F( StringTests, ConversionTest01 )
 {
-#if defined( CUL_WINDOWS )
     CUL::String test1;
     const std::wstring someString = L"ABC";
     test1 = someString;
@@ -92,90 +105,62 @@ TEST_F( StringTests, ConversionTest01 )
     test1.deserialize();
 
     ASSERT_TRUE( test1 == someString );
-#endif  // #if defined( CUL_WINDOWS )
 }
-
 
 TEST_F( StringTests, ConversionTest02 )
 {
-#if defined( CUL_WINDOWS )
     CUL::String test1;
     const std::wstring someString = L"D:/Books/Adam Boduch - Wst�p do programowania w j�zyku C#.pdf";
     test1 = someString;
     test1.serialize();
     test1.deserialize();
 
-    if( test1 == someString )
-    {
-        ASSERT_TRUE( true );
-    }
-    else
-    {
-        ASSERT_TRUE( true );
-    }
-#endif // #if defined( CUL_WINDOWS )
+    ASSERT_TRUE( test1 == someString );
 }
 
 TEST_F( StringTests, ConversionTest03 )
 {
-#if defined( CUL_WINDOWS )
     CUL::String test1;
     const std::wstring someString = L"D:/$AV_ASW/$VAULT/8d59f3a938dcf487f60581a6e7b4fa375d558ab60f5cbd89ef981b95e825d723.dat";
     test1 = someString;
     test1.serialize();
     test1.deserialize();
 
-    if( test1 == someString )
-    {
-        ASSERT_TRUE( true );
-    }
-    else
-    {
-        ASSERT_TRUE( true );
-    }
-#endif  // #if defined( CUL_WINDOWS )
+    ASSERT_TRUE( test1 == someString );
 }
 
 TEST_F( StringTests, ConversionTest04 )
 {
-    const std::string someString = "44003a002f002400410056005f004100530057002f0024005600410055004c0054002f0038006400350039006600330061003900330038006400630066003400380037006600360030003500380031006100360065003700620034006600610033003700350064003500350038006100620036003000660035006300620064003800390065006600390038003100620039003500650038003200350064003700320033002e00640061007400";
+    const std::string someString =
+        "044003a002f002400410056005f004100530057002f0024005600410055004c0054002f0038006400350039006600330061003900330038006400630066003"
+        "4003"
+        "800370066003600300035003800310061003600650037006200340066006100330037003500640035003500380061006200360030006600350063006200640"
+        "0380"
+        "0390065006600390038003100620039003500650038003200350064003700320033002e0064006100740000";
     const std::string someOhterString( "D:/$AV_ASW/$VAULT/8d59f3a938dcf487f60581a6e7b4fa375d558ab60f5cbd89ef981b95e825d723.dat" );
     CUL::String test1( someString );
     test1.deserialize();
 
-    if( test1 == someOhterString )
-    {
-        ASSERT_TRUE( true );
-    }
-    else
-    {
-        ASSERT_TRUE( true );
-    }
+    ASSERT_TRUE( test1 == someOhterString );
 }
 
 TEST_F( StringTests, ConversionTest05 )
 {
     const std::wstring someString =
-        L"D:/Books/Beletrystyka/criminal action/Clancy Tom - ebooki [PL][.doc][.rtf][.pdf]/Clancy Tom - Jack Ryan 05 - Czerwony królik.rtf";
+        L"D:/Books/Beletrystyka/criminal action/Clancy Tom - ebooki [PL][.doc][.rtf][.pdf]/Clancy Tom - Jack Ryan 05 - Czerwony "
+        L"królik.rtf";
     CUL::String test1( someString );
     test1.serialize();
     test1.deserialize();
 
-    if( test1 == someString )
-    {
-        ASSERT_TRUE( true );
-    }
-    else
-    {
-        ASSERT_TRUE( true );
-    }
+    ASSERT_TRUE( test1 == someString );
 }
 
 //
 TEST_F( StringTests, RemoveAllChar )
 {
     CUL::String t1( "abcdaea" );
-    t1.removeAll('a');
+    t1.removeAll( 'a' );
     ASSERT_TRUE( t1 == "bcde" );
 }
 //
@@ -259,7 +244,10 @@ TEST_F( StringTests, operatorTest )
 
 TEST_F( StringTests, deserializationTest00 )
 {
-    CUL::String string0( "44003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d0041006300740069006f006e002f0031003900390039002f004300440041002000310030002d00390039002e007000640066000000" );
+    CUL::String string0(
+        "044003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d00410063007"
+        "4006"
+        "9006f006e002f0031003900390039002f004300440041002000310030002d00390039002e007000640066000000" );
     string0.deserialize();
     ASSERT_TRUE( string0 == "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 10-99.pdf" );
 }
@@ -269,5 +257,12 @@ TEST_F( StringTests, pathToFile00 )
     CUL::FS::Path current( "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 02-99.pdf" );
     CUL::String pathAsString = current;
     pathAsString.serialize();
-    ASSERT_TRUE( pathAsString == "44003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d0041006300740069006f006e002f0031003900390039002f004300440041002000300032002d00390039002e007000640066000000" );
+#if CUL_USE_WCHAR
+    ASSERT_TRUE( pathAsString ==
+                 "044003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d004100"
+                 "6300740069006f006e002f0031003900390039002f004300440041002000300032002d00390039002e007000640066000000" );
+#else
+    ASSERT_TRUE( pathAsString ==
+                 "1443a2f426f6f6b734c6962726172792f4d6167617a696e65732f43442d416374696f6e2f313939392f4344412030322d39392e70646600" );
+#endif
 }

@@ -27,11 +27,12 @@ class CULLib_API StringUtil
 public:
     static void valueToHex( std::uint16_t inValue, std::array<std::uint8_t, 2>& outValue );
     static void valueToHex( std::uint8_t inValue, std::uint8_t& outValue );
-    static std::uint16_t hexToValue( std::uint16_t outValue );
+    static std::uint16_t hexToValue( std::uint16_t inValue );
     static void valueToHex( char in, std::array<char, 2>& outValue );
-    static void valueToHex( std::uint8_t in, std::array<char, 2>& outValue );
-    static std::uint8_t hexToValue( const std::array<char, 2>& in );
-    static std::uint8_t hexToValue( char in );
+    static void valueToHex( std::uint8_t in, std::array<uint8_t, 2>& outValue );
+    static std::uint8_t hexToValue( const std::array<uint8_t, 2>& in );
+    static std::uint8_t hexToValue( std::uint8_t in );
+    static std::uint8_t charToValue( std::uint8_t in );
 
 protected:
 private:
@@ -42,7 +43,7 @@ class CULLib_API String final
 {
 public:
     static constexpr std::size_t SSO_Size = 128;
-    static constexpr float CapacityCoeficient = 1.8f;
+    static constexpr float CapacityCoeficient = 1.5f;
 #if CUL_USE_WCHAR
     using UnderlyingType = std::wstring;
     using UnderlyingChar = wchar_t;
@@ -252,7 +253,12 @@ public:
 
 protected:
 private:
-    void deserializeImpl( ECharTypes type );
+#if CUL_USE_WCHAR
+    void deserializeWchar( std::wstring& out );
+#else
+    void deserializeWchar( std::string& out );
+#endif
+    void deserializeChar( std::string& out );
     void setSize( Length newSize );
     void verify();
     void tryFitIntoSSO();
