@@ -75,6 +75,8 @@ class DelegateTemplateTwoParam final: public DelegateTemplate
 {
 public:
     using DelegateInput = std::function < void( Type1, Type2 )>;
+    DelegateTemplateTwoParam() = default;
+
     void addDelegate( DelegateInput delegate )
     {
         m_delegates.push_back( delegate );
@@ -88,6 +90,8 @@ public:
             m_delegates[i]( value1, value2 );
         }
     }
+
+    virtual ~DelegateTemplateTwoParam() = default;
 
 protected:
 private:
