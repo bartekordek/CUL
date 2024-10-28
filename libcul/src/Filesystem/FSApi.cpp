@@ -13,101 +13,11 @@
 using namespace CUL;
 using namespace FS;
 
-#define USE_CPPFS 0
-
 FSApi::FSApi( CULInterface* cul, FS::FileFactory* ff ) :
     m_culInterface( cul ),
     m_fileFactory( ff )
 {
 }
-
-#if USE_CPPFS
-
-String FSApi::getCurrentDir()
-{
-    throw std::logic_error( "Method not implemented" );
-    return String();
-}
-
-IFile* FSApi::getDirectory( const Path& directory )
-{
-    throw std::logic_error( "Method not implemented" );
-    return nullptr;
-}
-
-void FSApi::getCreationTime( const Path& path, Time& outValue )
-{
-    throw std::logic_error( "Method not implemented" );
-}
-
-void FSApi::getLastModificationTime( const Path& path, Time& outValue )
-{
-    cppfs::FileHandle file = cppfs::fs::open( path.getPath().string() );
-    TimeConcrete tc;
-    tc.setTimeUs( file.modificationTime() );
-    return tc;
-}
-
-String FSApi::getFileSize( const Path& path )
-{
-    throw std::logic_error( "Method not implemented" );
-    return String();
-}
-
-bool FSApi::fileExist( const Path& path )
-{
-    cppfs::FileHandle file = cppfs::fs::open( path.getPath().string() );
-    bool result = file.exists();
-    return result;
-}
-
-bool FSApi::isDirectory( const Path& path )
-{
-    cppfs::FileHandle file = cppfs::fs::open( path.getPath().string() );
-
-    bool result = file.isDirectory();
-    return result;
-}
-
-std::vector<Path> FSApi::ListAllFiles( const Path& directory )
-{
-    std::vector<Path> result;
-
-    cppfs::FileHandle dir = cppfs::fs::open( directory.getPath().string() );
-
-    if( dir.isDirectory() )
-    {
-        for( cppfs::FileIterator it = dir.begin(); it != dir.end(); ++it )
-        {
-            std::string path = directory.getPath().string() + "/" + *it;
-            cppfs::FileHandle file = cppfs::fs::open( path );
-
-            if( file.isDirectory() )
-            {
-                std::vector<Path> dirFiles = ListAllFiles( path );
-                for( const auto& fileFile : dirFiles )
-                {
-                    result.push_back( fileFile );
-                }
-            }
-            else
-            {
-                Path r_path = path;
-                result.push_back( r_path );
-            }
-        }
-    }
-
-
-    return result;
-}
-
-FSApi::~FSApi()
-{
-}
-
-
-#else  // #if USE_CPPFS
 
 std::vector<Path> FSApi::ListAllFiles( const Path& directory )
 {
@@ -216,7 +126,8 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 
     std::filesystem::path p = inPath.getPath().getChar();
     std::filesystem::file_time_type ftime = std::filesystem::last_write_time( p );
-    std::uint64_t timeConverted = static_cast<std::uint64_t>( to_time_t( ftime ) );
+
+    const std::uint64_t timeConverted = static_cast<std::uint64_t>( to_time_t( ftime ) );
     outTime.setTimeSec( timeConverted );
 }
 
@@ -314,4 +225,3 @@ String FSApi::getFileSize( const Path& path )
 FSApi::~FSApi()
 {
 }
-#endif  // #if USE_CPPFS

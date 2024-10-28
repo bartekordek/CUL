@@ -3,34 +3,33 @@
 
 using namespace CUL;
 
-
 Time::Time()
 {
 }
 
-Time::Time( const Time& rhv ):
-      m_ns( rhv.m_ns ),
-      m_years( rhv.m_years ),
-      m_months( rhv.m_months ),
-      m_days( rhv.m_days ),
-      m_hours( rhv.m_hours ),
-      m_minutes( rhv.m_minutes ),
-      m_seconds( rhv.m_seconds ),
-      m_miliseonds( rhv.m_miliseonds ),
+Time::Time( const Time& rhv )
+    : m_ns( rhv.m_ns ),
+      m_year( rhv.m_year ),
+      m_month( rhv.m_month ),
+      m_day( rhv.m_day ),
+      m_hour( rhv.m_hour ),
+      m_minute( rhv.m_minute ),
+      m_second( rhv.m_second ),
+      m_miliseond( rhv.m_miliseond ),
       m_wday( rhv.m_wday ),
       m_asString( rhv.m_asString )
 {
 }
 
-Time::Time( Time&& rhv ):
-      m_ns( rhv.m_ns ),
-      m_years( rhv.m_years ),
-      m_months( rhv.m_months ),
-      m_days( rhv.m_days ),
-      m_hours( rhv.m_hours ),
-      m_minutes( rhv.m_minutes ),
-      m_seconds( rhv.m_seconds ),
-      m_miliseonds( rhv.m_miliseonds ),
+Time::Time( Time&& rhv )
+    : m_ns( rhv.m_ns ),
+      m_year( rhv.m_year ),
+      m_month( rhv.m_month ),
+      m_day( rhv.m_day ),
+      m_hour( rhv.m_hour ),
+      m_minute( rhv.m_minute ),
+      m_second( rhv.m_second ),
+      m_miliseond( rhv.m_miliseond ),
       m_wday( rhv.m_wday ),
       m_asString( std::move( rhv.m_asString ) )
 {
@@ -41,13 +40,13 @@ Time& Time::operator=( const Time& rhv )
     if( &rhv != this )
     {
         m_ns = rhv.m_ns;
-        m_years = rhv.m_years;
-        m_months = rhv.m_months;
-        m_days = rhv.m_days;
-        m_hours = rhv.m_hours;
-        m_minutes = rhv.m_minutes;
-        m_seconds = rhv.m_seconds;
-        m_miliseonds = rhv.m_miliseonds;
+        m_year = rhv.m_year;
+        m_month = rhv.m_month;
+        m_day = rhv.m_day;
+        m_hour = rhv.m_hour;
+        m_minute = rhv.m_minute;
+        m_second = rhv.m_second;
+        m_miliseond = rhv.m_miliseond;
         m_wday = rhv.m_wday;
         m_asString = rhv.m_asString;
     }
@@ -59,17 +58,87 @@ Time& Time::operator=( Time&& rhv )
     if( &rhv != this )
     {
         m_ns = rhv.m_ns;
-        m_years = rhv.m_years;
-        m_months = rhv.m_months;
-        m_days = rhv.m_days;
-        m_hours = rhv.m_hours;
-        m_minutes = rhv.m_minutes;
-        m_seconds = rhv.m_seconds;
-        m_miliseonds = rhv.m_miliseonds;
+        m_year = rhv.m_year;
+        m_month = rhv.m_month;
+        m_day = rhv.m_day;
+        m_hour = rhv.m_hour;
+        m_minute = rhv.m_minute;
+        m_second = rhv.m_second;
+        m_miliseond = rhv.m_miliseond;
         m_wday = rhv.m_wday;
         m_asString = std::move( rhv.m_asString );
     }
     return *this;
+}
+
+void Time::setYear( std::uint16_t inYear )
+{
+    m_year = inYear;
+}
+
+std::uint16_t Time::getYear() const
+{
+    return m_year;
+}
+
+void Time::setMonth( std::uint8_t inMonth )
+{
+    m_month = inMonth;
+}
+
+std::uint8_t Time::getMonth() const
+{
+    return m_month;
+}
+
+void Time::setDay( std::uint8_t inDay )
+{
+    m_day = inDay;
+}
+
+std::uint8_t Time::getDay() const
+{
+    return m_day;
+}
+
+void Time::setHour( std::uint8_t inHour )
+{
+    m_hour = inHour;
+}
+
+std::uint8_t Time::getHour() const
+{
+    return m_hour;
+}
+
+void Time::setMinute( std::uint8_t inMinute )
+{
+    m_minute = inMinute;
+}
+
+std::uint8_t Time::getMinute() const
+{
+    return m_minute;
+}
+
+void Time::setSecond( std::uint8_t inSecond )
+{
+    m_second = inSecond;
+}
+
+std::uint8_t Time::getSecond() const
+{
+    return m_second;
+}
+
+void Time::setMiliSecond( std::uint16_t inMiliSecond )
+{
+    m_miliseond = inMiliSecond;
+}
+
+std::uint16_t Time::getMiliSecond() const
+{
+    return m_miliseond;
 }
 
 void Time::setTimeMs( std::uint64_t time )
@@ -149,20 +218,20 @@ void Time::setTimeSec( std::uint64_t timeConverted )
     const std::int32_t dayclock = (std::int32_t)timeConverted % SECS_DAY;
     const std::int32_t dayno = (std::int32_t)timeConverted / SECS_DAY;
 
-    m_seconds = static_cast<std::uint16_t>( dayclock % 60 );
-    m_minutes = static_cast<std::uint16_t>( ( dayclock % 3600 ) / 60 );
-    m_hours = static_cast<std::uint16_t>( dayclock / 3600 );
+    m_second = static_cast<std::uint16_t>( dayclock % 60 );
+    m_minute = static_cast<std::uint16_t>( ( dayclock % 3600 ) / 60 );
+    m_hour = static_cast<std::uint16_t>( dayclock / 3600 );
     m_wday = static_cast<std::uint16_t>( ( dayno + 4 ) % 7 ); /* day 0 was a thursday */
 
     const std::time_t timeT = static_cast<std::time_t>( timeConverted );
     const auto tm = std::localtime( &timeT );
 
-    m_years = static_cast<std::uint16_t>( 1900 + tm->tm_year );
-    m_months = static_cast<std::uint16_t>( ( tm->tm_mon + 1 ) );
-    m_days = static_cast<std::uint16_t>( tm->tm_mday );
-    m_hours = static_cast<std::uint16_t>( tm->tm_hour );
-    m_minutes = static_cast<std::uint16_t>( tm->tm_min );
-    m_seconds = static_cast<std::uint16_t>( tm->tm_sec );
+    m_year = static_cast<std::uint16_t>( 1900 + tm->tm_year );
+    m_month = static_cast<std::uint16_t>( ( tm->tm_mon + 1 ) );
+    m_day = static_cast<std::uint16_t>( tm->tm_mday );
+    m_hour = static_cast<std::uint16_t>( tm->tm_hour );
+    m_minute = static_cast<std::uint16_t>( tm->tm_min );
+    m_second = static_cast<std::uint16_t>( tm->tm_sec );
 
     std::tm ts = *std::localtime( &timeT );
     char buf[80];
@@ -173,35 +242,35 @@ void Time::setTimeSec( std::uint64_t timeConverted )
 
 void Time::updateString()
 {
-    m_asString = std::to_string( m_years );
+    m_asString = std::to_string( m_year );
     m_asString += "/";
-    if( m_months < 10u )
+    if( m_month < 10u )
     {
         m_asString += "0";
     }
-    m_asString += std::to_string( m_months );
+    m_asString += std::to_string( m_month );
     m_asString += "/";
 
-    if( m_days < 10u )
+    if( m_day < 10u )
     {
         m_asString += "0";
     }
 
-    m_asString += std::to_string( m_days );
+    m_asString += std::to_string( m_day );
     m_asString += " ";
-    if( m_hours < 10u )
+    if( m_hour < 10u )
     {
         m_asString += "0";
     }
-    m_asString += std::to_string( m_hours );
+    m_asString += std::to_string( m_hour );
     m_asString += ":";
-    if( m_minutes < 10u )
+    if( m_minute < 10u )
     {
         m_asString += "0";
     }
-    m_asString += std::to_string( m_minutes );
+    m_asString += std::to_string( m_minute );
     m_asString += ":";
-    m_asString += std::to_string( m_seconds );
+    m_asString += std::to_string( m_second );
 }
 
 Time::~Time()
