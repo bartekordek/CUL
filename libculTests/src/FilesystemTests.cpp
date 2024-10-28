@@ -28,6 +28,25 @@ void FilesystemTests::SetUp()
 {
 }
 
+TEST_F( FilesystemTests, ModificationTime )
+{
+#if defined( CUL_TODO )  // Disabled because build github build machine modifies files.
+    Path file( "FSTEST/Config.txt" );
+    CUL::Time modTime;
+    file.getLastModificationTime( modTime );
+    const auto modTimeAsString = modTime.toString();
+    CUL::LOG::LOG_CONTAINER::getLogger()->logVariable( CUL::LOG::Severity::INFO, "Mod time: %s", modTimeAsString.cStr() );
+
+    ASSERT_TRUE( modTime.getYear() == 2023u );
+    ASSERT_TRUE( modTime.getMonth() == 5u );
+    ASSERT_TRUE( modTime.getDay() == 6u );
+
+    ASSERT_TRUE( modTime.getHour() == 1u );
+    ASSERT_TRUE( modTime.getMinute() == 59u );
+    ASSERT_TRUE( modTime.getSecond() == 37u );
+#endif  // #if defined(CUL_TODO)
+}
+
 TEST_F( FilesystemTests, GetExtension )
 {
     Path file( "SomeDirectory/SomeFile.extension" );
@@ -78,9 +97,8 @@ TEST_F( FilesystemTests, FileNotExist )
 TEST_F( FilesystemTests, listFilesCount )
 {
     std::unique_ptr<CUL::FS::IFile> directory( m_culInterface->getFS()->getDirectory( "FSTEST" ) );
-    ASSERT_EQ( 4, directory->getChildList().size() );
+    ASSERT_EQ( 5, directory->getChildList().size() );
 }
-
 
 void FilesystemTests::TearDown()
 {
