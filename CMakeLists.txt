@@ -78,6 +78,11 @@ add_subdirectory( ${CUL_DEPS_PATH}/boost/type_traits )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/variant )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/winapi )
 
+set(OPTION_BUILD_TESTS OFF CACHE BOOL "Disable testing" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(OPTION_SELF_CONTAINED ON CACHE BOOL "" FORCE)
+set(OPTION_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
 # TODO!
 #add_subdirectory( ${CUL_DEPS_PATH}/cppcheck )
 
