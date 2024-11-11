@@ -59,7 +59,6 @@ PUBLIC AdditionalDeps
 PUBLIC boost_assert
 PUBLIC boost_circular_buffer
 PUBLIC boost_core
-PRIVATE cppfs
 PUBLIC glm
 PRIVATE spdlog
 PRIVATE udp-discovery
@@ -90,11 +89,6 @@ else()
 endif()
 
 if( MSVC )
-    set( CPPFSSOURCE ${CUL_OUTPUT_DIR}/deps/CUL/deps/cppfs/${CMAKE_BUILD_TYPE}/*.dll )
-    set( CPPFSTARGET ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/ )
-
-    file(TO_NATIVE_PATH ${CPPFSSOURCE} CPPFSSOURCE)
-    file(TO_NATIVE_PATH ${CPPFSTARGET} CPPFSTARGET)
 else()
     if( NOT APPLE )
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")

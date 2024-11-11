@@ -110,9 +110,6 @@
 [submodule "deps/hash-library"]
 	path = deps/hash-library
 	url = git@github.com:stbrumme/hash-library.git
-[submodule "deps/cppfs"]
-	path = deps/cppfs
-	url = git@github.com:cginternals/cppfs.git
 [submodule "deps/udp-discovery-cpp"]
 	path = deps/udp-discovery-cpp
 	url = git@github.com:bartekordek/udp-discovery-cpp.git

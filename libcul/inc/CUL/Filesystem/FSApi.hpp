@@ -20,7 +20,6 @@ class CULLib_API FSApi final
 {
 public:
     // FSApiFS
-    // FSApiCppFS
     // ?
 
     FSApi( CULInterface* cul, FS::FileFactory* ff );
