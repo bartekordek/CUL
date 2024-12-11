@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/Basic/ThreeState.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_array.hpp"
@@ -193,7 +193,7 @@ public:
     int64_t toInt64() const;
     uint64_t toUint64() const;
     std::uint64_t toUInt() const;
-    bool toBool() const;
+    ThreeState toBool() const;
 
 
     Length length() const;

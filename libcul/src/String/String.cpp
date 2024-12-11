@@ -1046,13 +1046,38 @@ std::uint64_t String::toUInt() const
     return std::stoull( m_value, nullptr, 0 );
 }
 
-bool String::toBool() const
+ThreeState String::toBool() const
 {
+    if( empty() )
+    {
+        return ThreeState::Undetermined;
+    }
+
+    String lowerCaseValue = toLowerR();
+
 #if CUL_USE_WCHAR
-    return cmp( m_value, L"true" ) == 0;
+    if( lowerCaseValue == L"true" )
+    {
+        return ThreeState::True;
+    }
+
+    if( cmp( m_value, L"false" ) )
+    {
+        return ThreeState::False;
+    }
 #else // #if CUL_USE_WCHAR
-    return cmp( m_value, "true" ) == 0;
+    if( lowerCaseValue == "true" )
+    {
+        return ThreeState::True;
+    }
+
+    if( cmp( m_value, "false" ) )
+    {
+        return ThreeState::False;
+    }
 #endif // #if CUL_USE_WCHAR
+
+    return ThreeState::Undetermined;
 }
 
 Length String::length() const
