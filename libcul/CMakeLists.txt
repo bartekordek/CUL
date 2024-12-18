@@ -18,6 +18,7 @@ include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/rapidjson/include" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/hash-library" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000" )
 include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tracy/public" )
+include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/nativefiledialog-extended/src/include")
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -64,6 +65,7 @@ PRIVATE spdlog
 PRIVATE udp-discovery
 PUBLIC zlibstatic
 PUBLIC TracyClient
+PRIVATE nfd
 )
 
 if (MSVC)

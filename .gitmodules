@@ -134,3 +134,6 @@
 [submodule "deps/tracy"]
 	path = deps/tracy
 	url = git@github.com:wolfpld/tracy.git
+[submodule "deps/nativefiledialog-extended"]
+	path = deps/nativefiledialog-extended
+	url = git@github.com:btzy/nativefiledialog-extended.git

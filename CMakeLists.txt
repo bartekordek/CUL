@@ -90,6 +90,7 @@ add_subdirectory( ${CUL_DEPS_PATH}/glm )
 
 set( gtest_force_shared_crt ON CACHE BOOL "" FORCE )
 add_subdirectory( ${CUL_DEPS_PATH}/googletest )
+add_subdirectory( ${CUL_DEPS_PATH}/nativefiledialog-extended )
 
 option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
 option( RAPIDJSON_BUILD_EXAMPLES "Build examples." OFF )
