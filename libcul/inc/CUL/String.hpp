@@ -253,6 +253,7 @@ public:
 
 protected:
 private:
+    void init();
 #if CUL_USE_WCHAR
     void deserializeWchar( std::wstring& out );
 #else
@@ -270,10 +271,10 @@ private:
     void terminate();
 
     Length calcualteCapacity( Length inSize ) const;
+    UnderlyingChar* m_value{nullptr};
     Length m_capacity{ SSO_Size };
     Length m_size{ 0u };
     std::array<UnderlyingChar, SSO_Size> m_staticValue{};
-    UnderlyingChar* m_value{ &m_staticValue[0] };
     UnderlyingChar* m_dynamicValue{ nullptr };
     bool m_isBinary{ false };
 

@@ -19,93 +19,112 @@ String::String() noexcept:
     m_capacity( SSO_Size ),
     m_size(0)
 {
-    m_value = &m_staticValue[0];
-    m_value[0] = NullTerminator;
+    init();
     resetWithMaxValue();
 }
 
 String::String( const String& arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( String&& arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFromMove( arg );
 }
 
 String::String( bool arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( const char* arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( const wchar_t* arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( unsigned char* /*arg*/ ) noexcept
 {
+    init();
     resetWithMaxValue();
     CUL::Assert::simple( false, "Method not implemented" );
 }
 
 String::String( const std::string& arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( const std::wstring& arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( float arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( double arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( std::int32_t arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( std::uint32_t arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( std::int64_t arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
 }
 
 String::String( std::uint64_t arg ) noexcept
 {
+    init();
     resetWithMaxValue();
     createFrom( arg );
+}
+
+void String::init()
+{
+    m_value = &m_staticValue[0];
+    m_value[0] = NullTerminator;
 }
 
 String& String::operator=( const String& arg )
@@ -1136,8 +1155,8 @@ constexpr char hexmap[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a
 
 void StringUtil::valueToHex( std::uint16_t inValue, std::array<std::uint8_t, 2>& outValue )
 {
-    outValue[0] = hexmap[( inValue & 0xF0 ) >> 8];
-    outValue[1] = hexmap[( inValue & 0x0F ) >> 0];
+    outValue[0u] = hexmap[( inValue & 0xF0 ) >> 8];
+    outValue[1u] = hexmap[( inValue & 0x0F ) >> 0];
 }
 
 void StringUtil::valueToHex( std::uint8_t inValue, std::uint8_t& outValue )
@@ -1368,8 +1387,8 @@ void String::deserializeWchar( std::string& out )
 #if CUL_USE_WCHAR
     for( std::size_t i = 0u; i < dataLength - 1; i += 2 )
     {
-        hexValue[0] = temp[i];
-        hexValue[1] = temp[i + 1];
+        hexValue[0u] = temp[i];
+        hexValue[1u] = temp[i + 1u];
         std::uint8_t value = StringUtil::hexToValue( hexValue );
 
         target.push_back( value );
@@ -1803,10 +1822,6 @@ void String::toUpper( wchar_t* inOut, std::int32_t size )
 void String::setSize( Length newSize )
 {
     m_size = newSize;
-    if( m_size == 128 )
-    {
-        auto x = 0;
-    }
     terminate();
 }
 
@@ -1821,11 +1836,6 @@ void String::verify()
 
 void String::createFrom(const String& arg)
 {
-    if( arg.find( L"descriptorsets_vk.cpp" ) != -1 )
-    {
-        auto x = 0;
-    }
-
     if(arg.m_size == 0)
     {
         m_size = 0;
