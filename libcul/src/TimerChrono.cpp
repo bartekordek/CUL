@@ -84,6 +84,7 @@ void TimerChrono::timerLoop()
 
         unsigned id = getUniqueNumber();
         std::thread* thread = new std::thread( &TimerChrono::threadWrap, this, id );
+        std::lock_guard lock( m_threadsMtx );
         m_threads[id] = thread;
     }
 }
@@ -124,8 +125,6 @@ void TimerChrono::threadWrap( size_t index )
             getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][DELETED]" );
         }
     } );
-
-
 
     if( logMe )
     {
