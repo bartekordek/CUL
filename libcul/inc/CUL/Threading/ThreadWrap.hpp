@@ -10,6 +10,7 @@ class ThreadWrapper final
 {
 public:
     CULLib_API ThreadWrapper();
+    CULLib_API ThreadWrapper( std::function<void( void )> threadBody );
     CULLib_API void setBody( std::function<void( void )> threadBody );
     CULLib_API void run();
     CULLib_API void waitForCompletion();
