@@ -19,6 +19,7 @@ public:
 
     CUL::String pickFolder();
     CUL::String saveDialog( const Filter& inFilter );
+    CUL::String openDialog( const Filter& inFilter );
 
     PathDialog( const PathDialog& ) = delete;
     PathDialog( PathDialog&& ) = delete;

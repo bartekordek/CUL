@@ -70,6 +70,34 @@ CUL::String PathDialog::saveDialog(const Filter& inFilter)
     return resultPath;
 }
 
+CUL::String PathDialog::openDialog( const Filter& inFilter )
+{
+    CUL::String resultPath;
+    nfdfilteritem_t filter;
+    filter.name = inFilter.Name.getChar();
+    filter.spec = inFilter.Spec.getChar();
+
+    nfdchar_t* outPath{ nullptr };
+    nfdresult_t result = NFD_OpenDialog( &outPath, &filter, 1, nullptr );
+    if( result == NFD_OKAY )
+    {
+        resultPath = outPath;
+    }
+    else if( result == NFD_CANCEL )
+    {
+    }
+    else
+    {
+    }
+
+    if( outPath )
+    {
+        NFD_FreePath( outPath );
+    }
+
+    return resultPath;
+}
+
 PathDialog::~PathDialog()
 {
     NFD_Quit();
