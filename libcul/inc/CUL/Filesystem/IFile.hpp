@@ -91,6 +91,7 @@ private:
 
     void waitForBackgroundLoad();
     std::unique_ptr<ThreadWrapper> m_backgroundLoadThread;
+    bool m_loaded{ false };
 
 private:  // Deleted:
     IFile() = delete;

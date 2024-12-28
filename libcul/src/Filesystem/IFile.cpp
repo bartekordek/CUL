@@ -209,6 +209,7 @@ void IFile::loadBackground( bool keepLineEndingCharacter, std::function<void( vo
         {
             load( keepLineEndingCharacter );
             finishCallback();
+            m_loaded = true;
         } );
 }
 
@@ -223,8 +224,7 @@ void IFile::waitForBackgroundLoad()
 
 bool IFile::getIsLoaded() const
 {
-    throw std::logic_error("Method not implemented");
-    return false;
+    return m_loaded;
 }
 
 IFile::~IFile()

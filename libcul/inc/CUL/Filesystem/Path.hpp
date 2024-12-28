@@ -61,6 +61,7 @@ public:
     operator const String() const;
 
     bool exists() const;
+    bool getIsEmpty() const;
 
     virtual ~Path();
 

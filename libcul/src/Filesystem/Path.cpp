@@ -376,6 +376,11 @@ bool Path::exists() const
     return result;
 }
 
+bool Path::getIsEmpty() const
+{
+    return m_fullPath.empty();
+}
+
 const Path CULLib_API CUL::FS::operator+( const Path& lval, const Path& rval )
 {
     Path result( lval );

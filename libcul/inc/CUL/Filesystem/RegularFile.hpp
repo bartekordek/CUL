@@ -18,6 +18,8 @@ class CULLib_API RegularFile final: public IFile
 {
 public:
     RegularFile( const String& path, CULInterface* interface );
+    const Path& getPath() const override;
+    const String& getAsOneString() const override;
 
     ~RegularFile();
 
@@ -26,7 +28,6 @@ private:
     void loadFromString( const String& contents, bool keepLineEndingCharacter = false ) override;
     void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false ) override;
     void changePath( const Path& newPath ) override;
-    const Path& getPath() const override;
 
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
@@ -34,7 +35,6 @@ private:
     void unload() override;
     const String& firstLine() const override;
     const String& lastLine() const override;
-    const String& getAsOneString() const override;
     const char** getContent() const override;
     unsigned getLinesCount() const override;
     void cacheFile();
