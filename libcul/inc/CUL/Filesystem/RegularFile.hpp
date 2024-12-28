@@ -14,13 +14,12 @@ NAMESPACE_BEGIN( FS )
 #pragma warning( disable : 4820 )
 #endif
 
-class FileRegularImpl final:
-    public IFile
+class CULLib_API RegularFile final: public IFile
 {
 public:
-    FileRegularImpl( const String& path, CULInterface* interface );
+    RegularFile( const String& path, CULInterface* interface );
 
-    ~FileRegularImpl();
+    ~RegularFile();
 
 protected:
 private:
@@ -49,12 +48,12 @@ private:
     String m_cached;
     bool m_keepLineEndingCharacter = false;
 
-private: // Deleted:
-    FileRegularImpl( const FileRegularImpl& file ) = delete;
-    FileRegularImpl( FileRegularImpl&& file ) = delete;
-    FileRegularImpl( const Path& path ) = delete;
-    FileRegularImpl& operator=( const FileRegularImpl& rhv ) = delete;
-    FileRegularImpl& operator=( FileRegularImpl&& rhv ) = delete;
+private:  // Deleted:
+    RegularFile( const RegularFile& file ) = delete;
+    RegularFile( RegularFile&& file ) = delete;
+    RegularFile( const Path& path ) = delete;
+    RegularFile& operator=( const RegularFile& rhv ) = delete;
+    RegularFile& operator=( RegularFile&& rhv ) = delete;
 };
 
 #ifdef _MSC_VER

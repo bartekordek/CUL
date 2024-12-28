@@ -1,4 +1,4 @@
-#include "FileRegularImpl.hpp"
+#include "CUL/Filesystem/RegularFile.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
@@ -7,53 +7,46 @@
 using namespace CUL::FS;
 using String = const CUL::String;
 
-FileRegularImpl::FileRegularImpl( const String& path, CULInterface* interface ):
-    IFile( path, interface ),
-    m_path( path )
+RegularFile::RegularFile( const String& path, CULInterface* interface ) : IFile( path, interface ), m_path( path )
 {
 }
 
-void FileRegularImpl::changePath( const Path& newPath )
+void RegularFile::changePath( const Path& newPath )
 {
     m_path = newPath;
     IFile::setPath( newPath );
 }
 
-const Path& FileRegularImpl::getPath() const
+const Path& RegularFile::getPath() const
 {
     return m_path;
 }
 
-void FileRegularImpl::reload( bool keepLineEndingCharacter )
+void RegularFile::reload( bool keepLineEndingCharacter )
 {
     unload();
     load( keepLineEndingCharacter );
 }
 
-void FileRegularImpl::reload()
+void RegularFile::reload()
 {
     unload();
     load( m_keepLineEndingCharacter );
 }
 
-void FileRegularImpl::load( bool keepLineEndingCharacter )
+void RegularFile::load( bool keepLineEndingCharacter )
 {
-    CUL::Assert::check(exists(), "Cannot open the file: %s", m_path.getPath().cStr());
+    CUL::Assert::check( exists(), "Cannot open the file: %s", m_path.getPath().cStr() );
 
     m_rows.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     std::ifstream infile;
-    infile.open(
-        m_path.getPath().cStr(),
-        std::ios_base::in );
+    infile.open( m_path.getPath().cStr(), std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
     {
-        if(
-            false == line.empty() && // Skip empty line
-            (
-            line.back() == ( '\r' ) ||
-            line.back() == ( '\n' ) ) )
+        if( false == line.empty() &&  // Skip empty line
+            ( line.back() == ( '\r' ) || line.back() == ( '\n' ) ) )
         {
             line.pop_back();
         }
@@ -62,35 +55,35 @@ void FileRegularImpl::load( bool keepLineEndingCharacter )
             line += '\n';
         }
 
-        m_rows.push_back( line );
+        m_rows.emplace_back( line );
     }
     infile.close();
 
     cacheFile();
 }
 
-void FileRegularImpl::unload()
+void RegularFile::unload()
 {
     m_rows.clear();
     m_cached = "";
 }
 
-const String& FileRegularImpl::firstLine() const
+const String& RegularFile::firstLine() const
 {
     return m_rows.front();
 }
 
-const String& FileRegularImpl::lastLine() const
+const String& RegularFile::lastLine() const
 {
     return m_rows.back();
 }
 
-const String& FileRegularImpl::getAsOneString() const
+const String& RegularFile::getAsOneString() const
 {
     return m_cached;
 }
 
-void FileRegularImpl::cacheFile()
+void RegularFile::cacheFile()
 {
     if( getIsCacheEnabled() == false )
     {
@@ -106,12 +99,12 @@ void FileRegularImpl::cacheFile()
     }
 }
 
-FileType FileRegularImpl::getType() const
+FileType RegularFile::getType() const
 {
     return FileType::TXT;
 }
 
-void FileRegularImpl::loadFromString( const String& contents, bool keepLineEndingCharacter /*= false */ )
+void RegularFile::loadFromString( const String& contents, bool keepLineEndingCharacter /*= false */ )
 {
     m_cached = contents;
     m_keepLineEndingCharacter = keepLineEndingCharacter;
@@ -119,11 +112,11 @@ void FileRegularImpl::loadFromString( const String& contents, bool keepLineEndin
     for( const auto& line : lines )
     {
         m_rows.emplace_back( line );
-        m_rowsAsChars.push_back(m_rows.back().cStr());
+        m_rowsAsChars.push_back( m_rows.back().cStr() );
     }
 }
 
-void FileRegularImpl::loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter /*= false */ )
+void RegularFile::loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter /*= false */ )
 {
     m_cached.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
@@ -150,13 +143,13 @@ void FileRegularImpl::loadFromStringNoEmptyLines( const String& contents, bool k
     }
 }
 
-void FileRegularImpl::addLine( const String& line )
+void RegularFile::addLine( const String& line )
 {
     m_rows.push_back( line );
     cacheFile();
 }
 
-void FileRegularImpl::saveFile()
+void RegularFile::saveFile()
 {
     auto pathString = m_path.getPath().getString();
     std::ofstream file( pathString );
@@ -169,17 +162,16 @@ void FileRegularImpl::saveFile()
     file.close();
 }
 
-unsigned FileRegularImpl::getLinesCount() const
+unsigned RegularFile::getLinesCount() const
 {
     return static_cast<unsigned>( m_rows.size() );
 }
 
-const char** FileRegularImpl::getContent() const
+const char** RegularFile::getContent() const
 {
     return const_cast<const char**>( &m_rowsAsChars[0] );
 }
 
-
-FileRegularImpl::~FileRegularImpl()
+RegularFile::~RegularFile()
 {
 }

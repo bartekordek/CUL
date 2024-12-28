@@ -5,9 +5,11 @@
 #include "CUL/Time.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
 
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
+class ThreadWrapper;
 NAMESPACE_BEGIN( FS )
 
 enum class FileType : short
@@ -38,9 +40,11 @@ public:
     virtual void reload( bool keepLineEndingCharacter ) = 0;
     virtual void reload() = 0;
     virtual void load( bool keepLineEndingCharacter = false ) = 0;
+    virtual void loadBackground( bool keepLineEndingCharacter, std::function<void(void)> finishCallback );
     virtual void loadFromString( const String& contents, bool keepLineEndingCharacter = false );
     virtual void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false );
     virtual void unload() = 0;
+    virtual bool getIsLoaded() const;
 
     void getCreationTime(Time& outTime);
     void getLastModificationTime( Time& outTime );
@@ -83,7 +87,10 @@ private:
     Time m_lastModificationTime;
 
     String m_sizeBytes;
-    bool m_cacheEnabled = true;
+    bool m_cacheEnabled{ true };
+
+    void waitForBackgroundLoad();
+    std::unique_ptr<ThreadWrapper> m_backgroundLoadThread;
 
 private:  // Deleted:
     IFile() = delete;

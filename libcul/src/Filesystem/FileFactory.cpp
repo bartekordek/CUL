@@ -1,5 +1,5 @@
 #include "CUL/Filesystem/FileFactory.hpp"
-#include "FileRegularImpl.hpp"
+#include "CUL/Filesystem/RegularFile.hpp"
 #include "CSVFile.hpp"
 #include "JSON/JSONFileConcrete.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
@@ -29,29 +29,25 @@ IFile* FileFactory::createFileFromPath( const Path& path )
     {
         return createJSONFileRawPtr( path );
     }
-    else if( ext == ".json" )
+
+    if( ext == ".json" )
     {
         return createJSONFileRawPtr( path );
     }
-    else if(
-        ext == ".bmp" ||
-        ext == ".png" ||
-        ext == ".jpg" ||
-        ext == ".jpeg" )
+
+    if( ext == ".bmp" || ext == ".png" || ext == ".jpg" || ext == ".jpeg" )
     {
         CUL::Assert::simple( false, "Not implemented." );
         return nullptr;
     }
-    else
-    {
-        return createRegularFileRawPtr( path );
-    }
+
+    return createRegularFileRawPtr( path );
 }
 
 IFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
     ZoneScoped;
-    auto file = new FileRegularImpl( path.getPath(), m_culInterface );
+    auto file = new RegularFile( path.getPath(), m_culInterface );
     return file;
 }
 

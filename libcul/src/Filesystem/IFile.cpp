@@ -1,6 +1,7 @@
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Threading/ThreadUtil.hpp"
+#include "CUL/Threading/ThreadWrap.hpp"
 
 #include "CUL/CULInterface.hpp"
 #include "CUL/Log/ILogger.hpp"
@@ -184,8 +185,6 @@ void IFile::calculateMD5()
         m_md5 = sha256( vec.data(), fileSizeAsNumber );
         file.close();
     }
-
-    return;
 }
 
 const String& IFile::getSizeBytes()
@@ -202,8 +201,35 @@ void IFile::calculateSizeBytes()
     m_sizeBytes = p_cullInterface->getFS()->getFileSize( m_path );
 }
 
+void IFile::loadBackground( bool keepLineEndingCharacter, std::function<void( void )> finishCallback )
+{
+    waitForBackgroundLoad();
+    m_backgroundLoadThread = std::make_unique<ThreadWrapper>(
+        [finishCallback, keepLineEndingCharacter, this]()
+        {
+            load( keepLineEndingCharacter );
+            finishCallback();
+        } );
+}
+
+void IFile::waitForBackgroundLoad()
+{
+    if( m_backgroundLoadThread )
+    {
+        m_backgroundLoadThread->waitForCompletion();
+        m_backgroundLoadThread.reset( nullptr );
+    }
+}
+
+bool IFile::getIsLoaded() const
+{
+    throw std::logic_error("Method not implemented");
+    return false;
+}
+
 IFile::~IFile()
 {
+    waitForBackgroundLoad();
 }
 
 #if defined( DEBUG_THIS_FILE )
