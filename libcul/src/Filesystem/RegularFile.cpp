@@ -25,21 +25,22 @@ const Path& RegularFile::getPath() const
 void RegularFile::reload( bool keepLineEndingCharacter )
 {
     unload();
-    load( keepLineEndingCharacter );
+    load( keepLineEndingCharacter, m_removeBottomEmptyLines );
 }
 
 void RegularFile::reload()
 {
     unload();
-    load( m_keepLineEndingCharacter );
+    load( m_keepLineEndingCharacter, m_removeBottomEmptyLines );
 }
 
-void RegularFile::load( bool keepLineEndingCharacter )
+void RegularFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
 {
     CUL::Assert::check( exists(), "Cannot open the file: %s", m_path.getPath().cStr() );
 
     m_rows.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
+    m_removeBottomEmptyLines = removeBottomEmptyLines;
     std::ifstream infile;
     infile.open( m_path.getPath().cStr(), std::ios_base::in );
     std::string line;
@@ -58,6 +59,23 @@ void RegularFile::load( bool keepLineEndingCharacter )
         m_rows.emplace_back( line );
     }
     infile.close();
+
+    if( m_removeBottomEmptyLines )
+    {
+        const std::int32_t rowsCount = static_cast<std::int32_t>( m_rows.size() );
+        for(std::int32_t i = rowsCount - 1; i >= 0; --i)
+        {
+            String& row = m_rows[static_cast<std::size_t>( i )];
+            if( row == "\n" || row.empty() || row == "\r\n" )
+            {
+                m_rows.erase( m_rows.begin() + i );
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 
     cacheFile();
 }

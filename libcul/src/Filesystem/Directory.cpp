@@ -29,11 +29,6 @@ void Directory::reload()
 }
 
 //TODO
-void Directory::load( bool )
-{
-}
-
-//TODO
 void Directory::unload()
 {
 }

@@ -55,24 +55,25 @@ void CSVFile::setDelimeter( const String& delimeter )
 void CSVFile::reload( bool keepLineEndingCharacter )
 {
     unload();
-    load( keepLineEndingCharacter );
+    load( keepLineEndingCharacter, m_removeBottomEmptyLines );
 }
 
 void CSVFile::reload()
 {
     unload();
-    load( m_keepLineEndingCharacter );
+    load( m_keepLineEndingCharacter, m_removeBottomEmptyLines );
 }
 
 void CSVFile::loadCSV( bool valuesContainQuotationMarks, bool keepLineEndingCharacter )
 {
     m_cellsContainQuotationMarks = valuesContainQuotationMarks;
-    load( keepLineEndingCharacter );
+    load( keepLineEndingCharacter, m_removeBottomEmptyLines );
 }
 
-void CSVFile::load( bool keepLineEndingCharacter )
+void CSVFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
 {
     m_keepLineEndingCharacter = keepLineEndingCharacter;
+    m_removeBottomEmptyLines = removeBottomEmptyLines;
     std::ifstream infile;
     infile.open( m_path.getPath().getChar(),
         std::ios_base::in );

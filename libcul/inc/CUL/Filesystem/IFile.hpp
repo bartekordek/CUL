@@ -39,8 +39,8 @@ public:
     virtual void changePath( const Path& newPath ) = 0;
     virtual void reload( bool keepLineEndingCharacter ) = 0;
     virtual void reload() = 0;
-    virtual void load( bool keepLineEndingCharacter = false ) = 0;
-    virtual void loadBackground( bool keepLineEndingCharacter, std::function<void(void)> finishCallback );
+    virtual void load( bool keepLineEndingCharacter, bool removeBottomEmptyLines );
+    virtual void loadBackground( bool keepLineEndingCharacter, bool removeBottomEmptyLines, std::function<void( void )> finishCallback );
     virtual void loadFromString( const String& contents, bool keepLineEndingCharacter = false );
     virtual void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false );
     virtual void unload() = 0;
@@ -74,6 +74,8 @@ public:
     virtual ~IFile();
 
 protected:
+    bool m_keepLineEndingCharacter{ false };
+    bool m_removeBottomEmptyLines{ false };
     CUL::CULInterface* p_cullInterface = nullptr;
 
 private:

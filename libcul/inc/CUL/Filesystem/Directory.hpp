@@ -17,7 +17,6 @@ public:
     void changePath( const Path& newPath ) override;
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
-    void load( bool keepLineEndingCharacter = false ) override;
     void unload() override;
     const String& firstLine() const override;
     const String& lastLine() const override;

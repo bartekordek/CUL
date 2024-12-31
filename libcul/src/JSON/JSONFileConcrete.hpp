@@ -33,7 +33,7 @@ private:
 
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
-    void load( bool keepLineEndingCharacter = false ) override;
+    void load( bool keepLineEndingCharacter, bool removeBottomEmptyLines ) override;
     void unload() override;
 
     const String& firstLine() const override;

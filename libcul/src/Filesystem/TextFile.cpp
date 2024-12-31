@@ -19,10 +19,6 @@ void TextFile::reload()
 {
 }
 
-void TextFile::load( bool  )
-{
-}
-
 void TextFile::unload()
 {
 }

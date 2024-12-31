@@ -47,6 +47,11 @@ void IFile::saveFile()
     throw std::logic_error( "Method not implemented" );
 }
 
+void IFile::load( bool /*keepLineEndingCharacter*/, bool /*removeBottomEmptyLines*/ )
+{
+    throw std::logic_error( "Method not implemented" );
+}
+
 void IFile::loadFromString( const String& /*contents*/, bool /*keepLineEndingCharacter = false */ )
 {
     throw std::logic_error( "Method not implemented" );
@@ -201,18 +206,20 @@ void IFile::calculateSizeBytes()
     m_sizeBytes = p_cullInterface->getFS()->getFileSize( m_path );
 }
 
-void IFile::loadBackground( bool keepLineEndingCharacter, std::function<void( void )> finishCallback )
+void IFile::loadBackground( bool keepLineEndingCharacter, bool removeBottomEmptyLines, std::function<void( void )> finishCallback )
 {
     waitForBackgroundLoad();
-    m_backgroundLoadThread = std::make_unique<ThreadWrapper>( [finishCallback, keepLineEndingCharacter, this]() {
-        load( keepLineEndingCharacter );
-        if( finishCallback )
+    m_backgroundLoadThread = std::make_unique<ThreadWrapper>(
+        [finishCallback, keepLineEndingCharacter, removeBottomEmptyLines, this]()
         {
-            finishCallback();
-        }
+            load( keepLineEndingCharacter, removeBottomEmptyLines );
+            if( finishCallback )
+            {
+                finishCallback();
+            }
 
-        m_loaded = true;
-    } );
+            m_loaded = true;
+        } );
 }
 
 void IFile::waitForBackgroundLoad()

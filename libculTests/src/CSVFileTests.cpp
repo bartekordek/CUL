@@ -24,14 +24,14 @@ TEST_F( CSVFileTests, Load )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
     filePtr->setDelimeter( "," );
-    filePtr->load();
+    filePtr->load( true, false );
     GTEST_ASSERT_GT( filePtr->getRowsCount(), 0 );
 }
 
 TEST_F( CSVFileTests, UnLoad )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
-    filePtr->load();
+    filePtr->load( true, false );
     filePtr->unload();
     GTEST_ASSERT_EQ( filePtr->getRowsCount(), 0 );
 }
@@ -40,7 +40,7 @@ TEST_F( CSVFileTests, ReadFirstVal )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
     filePtr->fileContainsQuotationMarks( false );
-    filePtr->load();
+    filePtr->load( true, false );
     auto value = filePtr->getVal( 0, 0 );
     GTEST_ASSERT_EQ( value, "CSV_ISO_LANG" );
 }
@@ -48,7 +48,7 @@ TEST_F( CSVFileTests, ReadFirstVal )
 TEST_F( CSVFileTests, LineCount )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
-    filePtr->load();
+    filePtr->load( true, false );
     auto rowCount = filePtr->getRowsCount();
     auto lineCount = filePtr->getLinesCount();
     GTEST_ASSERT_EQ( rowCount, lineCount );

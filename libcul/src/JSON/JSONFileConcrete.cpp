@@ -40,10 +40,11 @@ void JSONFileConcrete::reload()
     parse();
 }
 
-void JSONFileConcrete::load( bool keepLineEndingCharacter )
+void JSONFileConcrete::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
 {
     m_keepLineEndingCharacter = keepLineEndingCharacter;
-    m_fileContents->load( keepLineEndingCharacter );
+    m_removeBottomEmptyLines = removeBottomEmptyLines;
+    m_fileContents->load( keepLineEndingCharacter, removeBottomEmptyLines );
     parse();
 }
 

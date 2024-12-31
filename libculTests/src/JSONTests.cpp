@@ -82,13 +82,13 @@ TEST_F( JSONTests, fileLoadTest )
 {
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
     GTEST_ASSERT_EQ( true == jsonFilePtr->exists(), true );
-    jsonFilePtr->load();
+    jsonFilePtr->load( true, false );
 }
 
 TEST_F( JSONTests, getRootElement )
 {
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
-    jsonFilePtr->load();
+    jsonFilePtr->load( true, false );
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
     GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
@@ -97,7 +97,7 @@ TEST_F( JSONTests, getRootElement )
 TEST_F( JSONTests, findProperty )
 {
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
-    jsonFilePtr->load();
+    jsonFilePtr->load( true, false );
     auto rootElement = jsonFilePtr->getRoot();
 
     auto age = rootElement->findChild( "age" );
@@ -109,7 +109,7 @@ TEST_F( JSONTests, findProperty )
 TEST_F( JSONTests, arraySize )
 {
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
-    jsonFilePtr->load();
+    jsonFilePtr->load( true, false );
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
     GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
@@ -124,7 +124,7 @@ TEST_F( JSONTests, arraySize )
 TEST_F( JSONTests, arrayCorrectness )
 {
     JFile jsonFilePtr( m_culInterface->getFF()->createJSONFileRawPtr( jsonTestFileName ) );
-    jsonFilePtr->load();
+    jsonFilePtr->load( true, false );
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
     GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );

@@ -41,7 +41,7 @@ TEST_F( FileTest, fileFileDontExtistFileReturnsFalse )
 TEST_F( FileTest, basicFileLoadFirstLine )
 {
     std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
-    file->load();
+    file->load( false, false );
     auto firstLine = file->firstLine();
     auto asCstring = firstLine.cStr();
     GTEST_ASSERT_EQ( CUL::String( "Line1" ), asCstring );
@@ -50,14 +50,14 @@ TEST_F( FileTest, basicFileLoadFirstLine )
 TEST_F( FileTest, basicFileLoadlastLine )
 {
     std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
-    file->load();
+    file->load( false, false );
     GTEST_ASSERT_EQ( CUL::String( "Line3" ), file->lastLine().cStr() );
 }
 
 TEST_F( FileTest, loadCachedFileRegular )
 {
     std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
-    file->load();
+    file->load( false, false );
     auto text = file->getAsOneString().cStr();
     GTEST_ASSERT_NE( CUL::String( "" ), text );
 }

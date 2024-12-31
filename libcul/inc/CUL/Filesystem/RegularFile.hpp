@@ -31,7 +31,7 @@ private:
 
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
-    void load( bool keepLineEndingCharacter = false ) override;
+    void load( bool keepLineEndingCharacter, bool removeBottomEmptyLines ) override;
     void unload() override;
     const String& firstLine() const override;
     const String& lastLine() const override;
@@ -46,7 +46,6 @@ private:
     std::vector<String> m_rows;
     std::vector<const char*> m_rowsAsChars;
     String m_cached;
-    bool m_keepLineEndingCharacter = false;
 
 private:  // Deleted:
     RegularFile( const RegularFile& file ) = delete;
