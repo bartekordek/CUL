@@ -20,8 +20,8 @@ public:
 protected:
 private:
     void threadBody();
-    std::thread m_mainThread;
     std::function<void( void )> m_body;
+    std::thread m_mainThread;
 
 //Deleted:
     ThreadWrapper( const ThreadWrapper& value ) = delete;

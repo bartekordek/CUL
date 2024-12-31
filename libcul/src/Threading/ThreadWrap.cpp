@@ -6,9 +6,9 @@ ThreadWrapper::ThreadWrapper()
 {
 }
 
-ThreadWrapper::ThreadWrapper( std::function<void( void )> threadBody ) :
-    m_mainThread( std::thread( &ThreadWrapper::threadBody, this ) )
+ThreadWrapper::ThreadWrapper( std::function<void( void )> threadBody ) : m_body( threadBody )
 {
+    m_mainThread = std::thread( &ThreadWrapper::threadBody, this );
 }
 
 void ThreadWrapper::setBody( std::function<void( void )> threadBody )
@@ -19,7 +19,7 @@ void ThreadWrapper::setBody( std::function<void( void )> threadBody )
 void ThreadWrapper::run()
 {
     waitForCompletion();
-    m_mainThread = std::thread( &ThreadWrapper::threadBody, this );
+    
 }
 
 void ThreadWrapper::threadBody()

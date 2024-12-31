@@ -204,13 +204,15 @@ void IFile::calculateSizeBytes()
 void IFile::loadBackground( bool keepLineEndingCharacter, std::function<void( void )> finishCallback )
 {
     waitForBackgroundLoad();
-    m_backgroundLoadThread = std::make_unique<ThreadWrapper>(
-        [finishCallback, keepLineEndingCharacter, this]()
+    m_backgroundLoadThread = std::make_unique<ThreadWrapper>( [finishCallback, keepLineEndingCharacter, this]() {
+        load( keepLineEndingCharacter );
+        if( finishCallback )
         {
-            load( keepLineEndingCharacter );
             finishCallback();
-            m_loaded = true;
-        } );
+        }
+
+        m_loaded = true;
+    } );
 }
 
 void IFile::waitForBackgroundLoad()
