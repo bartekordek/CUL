@@ -62,17 +62,17 @@ public:
         m_height = height;
     }
 
-    const Type getWidth() const
+    Type getWidth() const
     {
         return m_width;
     }
 
-    const Type getHeight() const
+    Type getHeight() const
     {
         return m_height;
     }
 
-    const Type getRatio() const
+    Type getRatio() const
     {
         return m_width / m_height;
     }
