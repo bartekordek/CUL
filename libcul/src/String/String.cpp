@@ -2136,7 +2136,7 @@ void String::removeTrailingLineEnd()
     {
         UnderlyingChar& currentChar = m_value[i];
         UnderlyingChar* Add = &currentChar;
-        if( ( currentChar == LineEnding ) || ( currentChar == LineEndingCarriage ) )
+        if( ( currentChar == LineEnding ) /*|| ( currentChar == LineEndingCarriage )*/ )
         {
             currentChar = NullTerminator;
             --m_size;

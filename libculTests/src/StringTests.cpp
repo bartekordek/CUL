@@ -88,7 +88,7 @@ TEST_F( StringTests, ConversionTest00b )
     test0.serialize();
 
 #if CUL_USE_WCHAR
-    CUL::String test1( "0190144000000" );
+    CUL::String test1( "019010000" );
 #else
     CUL::String test1( "1c49900" );
 #endif

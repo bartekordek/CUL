@@ -34,6 +34,24 @@ void RegularFile::reload()
     load( m_keepLineEndingCharacter, m_removeBottomEmptyLines );
 }
 
+void RegularFile::overwriteContents( const CUL::String& value )
+{
+    CUL::String valueCopy = value;
+
+    m_rows.clear();
+    m_rowsAsChars.clear();
+    m_cached.clear();
+
+    const bool hasCarriage = valueCopy.find( '\r' ) != -1;
+    if( hasCarriage )
+    {
+        valueCopy.removeAll( '\r' );
+    }
+
+    m_rows = valueCopy.split( '\n' );
+    cacheFile();
+}
+
 void RegularFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
 {
     CUL::Assert::check( exists(), "Cannot open the file: %s", m_path.getPath().cStr() );
@@ -112,9 +130,14 @@ void RegularFile::cacheFile()
     for( const auto& line : m_rows )
     {
         m_cached.append( line );
-        m_cached.append( '\n' );
-        m_rowsAsChars.push_back( const_cast<char*>( line.cStr() ) );
+        if( line.find( '\n' ) == -1 && line.find( "\r\n" ) == -1 )
+        {
+            m_cached.append( '\n' );
+        }
+
     }
+
+    initializeRowsChar();
 }
 
 FileType RegularFile::getType() const
@@ -155,6 +178,11 @@ void RegularFile::loadFromStringNoEmptyLines( const String& contents, bool keepL
         m_cached += line;
     }
 
+    initializeRowsChar();
+}
+
+void RegularFile::initializeRowsChar()
+{
     for( const auto& line : m_rows )
     {
         m_rowsAsChars.push_back( line.cStr() );
@@ -175,7 +203,14 @@ void RegularFile::saveFile()
     for( size_t i = 0; i < rowsCount; ++i )
     {
         const String& line = m_rows[i];
-        file << line.cStr() << "\n";
+        if( line.empty() )
+        {
+            file << '\n';
+        }
+        else
+        {
+            file << line.cStr() << "\n";
+        }
     }
     file.close();
 }

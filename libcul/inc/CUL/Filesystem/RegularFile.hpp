@@ -20,7 +20,8 @@ public:
     RegularFile( const String& path, CULInterface* interface );
     const Path& getPath() const override;
     const String& getAsOneString() const override;
-
+    void overwriteContents( const CUL::String& value );
+    void saveFile() override;
     ~RegularFile();
 
 protected:
@@ -40,7 +41,7 @@ private:
     void cacheFile();
     FileType getType() const override;
     void addLine( const String& line ) override;
-    void saveFile() override;
+    void initializeRowsChar();
 
     Path m_path;
     std::vector<String> m_rows;
