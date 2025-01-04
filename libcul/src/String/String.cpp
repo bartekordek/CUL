@@ -13,6 +13,8 @@
 #include "CUL/STL_IMPORTS/STD_codecvt.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
+#define CUL_DEBUG_STRING 0
+
 using namespace CUL;
 
 String::String() noexcept:
@@ -2118,10 +2120,31 @@ Length String::calcualteCapacity( Length inSize ) const
 
 void String::resetWithMaxValue()
 {
+#if CUL_DEBUG_STRING
     const std::size_t capacity = static_cast<std::size_t>(m_capacity);
     for(std::size_t i = 0; i < capacity; ++i)
     {
         m_staticValue[i] = L'D';
+    }
+#endif // CUL_DEBUG_STRING
+}
+
+void String::removeTrailingLineEnd()
+{
+    const std::int32_t stringLength = static_cast<std::int32_t>( m_size );
+    for( std::int32_t i = stringLength - 1; i >= 0; --i )
+    {
+        UnderlyingChar& currentChar = m_value[i];
+        UnderlyingChar* Add = &currentChar;
+        if( ( currentChar == LineEnding ) || ( currentChar == LineEndingCarriage ) )
+        {
+            currentChar = NullTerminator;
+            --m_size;
+        }
+        else
+        {
+            break;
+        }
     }
 }
 

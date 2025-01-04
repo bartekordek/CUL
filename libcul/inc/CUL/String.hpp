@@ -48,10 +48,14 @@ public:
     using UnderlyingType = std::wstring;
     using UnderlyingChar = wchar_t;
 #define NullTerminator L'\0'
+#define LineEnding L'\n'
+#define LineEndingCarriage L'\r\n'
 #else
     using UnderlyingType = std::string;
     using UnderlyingChar = char;
 #define NullTerminator '\0'
+#define LineEnding '\n'
+#define LineEndingCarriage '\r\n'
 #endif
     static constexpr Length UnderlyingCharSize = sizeof( UnderlyingChar );
 
@@ -195,7 +199,6 @@ public:
     std::uint64_t toUInt() const;
     ThreeState toBool() const;
 
-
     Length length() const;
     Length size() const;
     Length capacity() const;
@@ -248,6 +251,8 @@ public:
 
     static void toUpper( wchar_t* inOut );
     static void toUpper( wchar_t* inOut, std::int32_t size );
+
+    void removeTrailingLineEnd();
 
     ~String();
 
