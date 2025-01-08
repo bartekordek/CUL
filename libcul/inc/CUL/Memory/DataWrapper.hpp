@@ -22,6 +22,7 @@ public:
     void* getData();
     const void* getData() const;
     std::size_t getSize() const;
+    std::size_t getElementCount() const;
 
     void createFrom( const std::vector<float>& inData );
     void createFrom( const std::vector<std::uint32_t>& inData );

@@ -100,6 +100,16 @@ std::size_t DataWrapper::getSize() const
     return m_value.size();
 }
 
+std::size_t DataWrapper::getElementCount() const
+{
+    if( m_type == ETypes::Float || m_type == ETypes::Uint32 )
+    {
+        return m_value.size() / 4u;
+    }
+
+    return 0u;
+}
+
 DataWrapper::~DataWrapper()
 {
     release();
