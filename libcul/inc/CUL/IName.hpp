@@ -18,7 +18,7 @@ public:
     IName& operator=( const IName& rhv );
     IName& operator=( IName&& rhv ) noexcept;
     const String& getName() const;
-    void setName( const String& name );
+    virtual void setName( const String& name );
 
     std::function<void( const String& newName )> AfterNameChangeCallback;
 
