@@ -31,6 +31,7 @@ void TimerChrono::start()
 void TimerChrono::stop()
 {
     m_started = false;
+    m_runLoop = false;
 }
 
 void TimerChrono::reset()
