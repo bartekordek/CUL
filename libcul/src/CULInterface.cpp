@@ -50,7 +50,7 @@ CULInterface* CULInterface::getInstance()
 CULInterface::CULInterface( const FS::Path& configFilePath ):
     m_configFilePath( configFilePath )
 {
-    CUL::Assert::simple( s_instance == nullptr );
+    CUL::Assert::simple( s_instance == nullptr, "Propably DLL Hell. There is already a instance of CUL Interface." );
 
     s_instance = this;
 }

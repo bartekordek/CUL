@@ -107,7 +107,7 @@ void TimerChrono::threadWrap( size_t index )
     m_worker->addTask( [index,this, logMe] (){
         std::lock_guard lock( m_threadsMtx );
         auto it = m_threads.find( index );
-        CUL::Assert::simple( it != m_threads.end() );
+        CUL::Assert::simple( it != m_threads.end(), "COULD NOT FIND THREAD!" );
 
         if( it->second->joinable() )
         {
