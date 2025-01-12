@@ -83,53 +83,10 @@ void TimerChrono::timerLoop()
     {
         ITimer::sleepMicroSeconds( m_sleepUs );
 
-        unsigned id = getUniqueNumber();
-        std::thread* thread = new std::thread( &TimerChrono::threadWrap, this, id );
-        std::lock_guard lock( m_threadsMtx );
-        m_threads[id] = thread;
-    }
-}
-
-void TimerChrono::threadWrap( size_t index )
-{
-    const bool logMe = false;
-
-    if( logMe )
-    {
-        getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][BEGIN]" );
-    }
-
-    if( m_callback )
-    {
-        m_callback();
-    }
-
-    m_worker->addTask( [index,this, logMe] (){
-        std::lock_guard lock( m_threadsMtx );
-        auto it = m_threads.find( index );
-        CUL::Assert::simple( it != m_threads.end(), "COULD NOT FIND THREAD!" );
-
-        if( it->second->joinable() )
+        if( m_callback )
         {
-            it->second->join();
+            m_callback();
         }
-
-        std::thread* threadPtr = it->second;
-
-        m_threads.erase( it );
-
-        delete threadPtr;
-        removeUniqueNumber( index );
-
-        if( logMe )
-        {
-            getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][DELETED]" );
-        }
-    } );
-
-    if( logMe )
-    {
-        getLogger()->log( "threadWrap[" + CUL::String( (int) index ) + "][END]" );
     }
 }
 
@@ -146,15 +103,6 @@ TimerChrono::~TimerChrono()
     while( m_worker && m_worker->tasksLeft() )
     {
 
-    }
-
-    while( true )
-    {
-        std::lock_guard lock( m_threadsMtx );
-        if( m_threads.size() == 0 )
-        {
-            break;
-        }
     }
 
     const bool logMe = false;

@@ -45,7 +45,6 @@ public:
 protected:
 private:
     void timerLoop();
-    void threadWrap( size_t index );
 
     unsigned getUniqueNumber();
     void removeUniqueNumber( std::size_t value );
@@ -60,8 +59,6 @@ private:
     unsigned m_sleepUs = 0u;
     std::function<void(void)> m_callback;
 
-    std::mutex m_threadsMtx;
-    std::map<size_t,std::thread*> m_threads;
     std::thread m_callbackThread;
 
     std::mutex m_threadsVectorLock;
