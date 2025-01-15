@@ -8,7 +8,7 @@
 using namespace CUL;
 using namespace LOG;
 
-LoggerSimpleStandardOutput::LoggerSimpleStandardOutput()
+LoggerSimpleStandardOutput::LoggerSimpleStandardOutput(): m_variableBuffer{}
 {
 }
 
