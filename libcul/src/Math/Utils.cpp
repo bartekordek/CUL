@@ -13,3 +13,39 @@ const glm::vec3 Utils::sphericalToVector( float xAngle, float zAngle, float r )
 
     return result;
 }
+
+CULLib_API bool Utils::equals( float val1, float val2, float epsilon )
+{
+    return std::abs( val1 - val2 ) < epsilon;
+}
+
+CULLib_API bool Utils::equals( double val1, double val2, double epsilon )
+{
+    return std::abs( val1 - val2 ) < epsilon;
+}
+
+CULLib_API float Utils::floatModulo( float inValue, float moduloVal )
+{
+    if( inValue <= moduloVal )
+    {
+        return inValue;
+    }
+
+    const float count = static_cast<float>( static_cast<std::int32_t>( inValue / moduloVal ) );
+    const float mul = count * moduloVal;
+
+    return inValue - mul;
+}
+
+CULLib_API double Utils::floatModulo( double inValue, double moduloVal )
+{
+    if( inValue <= moduloVal )
+    {
+        return inValue;
+    }
+
+    const double count = static_cast<double>( static_cast<std::int32_t>( inValue / moduloVal ) );
+    const double mul = count * moduloVal;
+
+    return inValue - mul;
+}

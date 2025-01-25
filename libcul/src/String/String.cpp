@@ -244,6 +244,11 @@ String& String::operator=( std::uint64_t arg )
     return *this;
 }
 
+const char* String::operator*() const
+{
+    return cStr();
+}
+
 String String::operator+( const String& arg ) const
 {
     String result;

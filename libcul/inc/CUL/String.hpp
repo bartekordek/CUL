@@ -104,6 +104,8 @@ public:
     String& operator=( std::int64_t arg );
     String& operator=( std::uint64_t arg );
 
+    const char* operator*() const;
+
     String operator+( const String& arg ) const;
 
     String& operator+=( const String& arg );
