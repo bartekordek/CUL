@@ -1,3 +1,5 @@
+#pragma once
+
 #include "CUL/CUL.hpp"
 #include "CUL/UselessMacros.hpp"
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "CUL/CUL.hpp"
 
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
