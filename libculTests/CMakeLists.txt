@@ -4,7 +4,7 @@ get_filename_component( basename ${CMAKE_CURRENT_SOURCE_DIR} NAME )
 
 project( ${basename} LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 set(EXEC_DYNAMIC ${PROJECT_NAME}_dynamic)
 set(EXEC_STATIC ${PROJECT_NAME}_static)

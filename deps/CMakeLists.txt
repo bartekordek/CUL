@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(cul LANGUAGES CXX C)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(EXEC AdditionalDeps)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
