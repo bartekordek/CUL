@@ -115,7 +115,11 @@
             "*.def": "cpp",
             "*.inc": "cpp",
             "*.ipp": "cpp",
-            "netfwd": "cpp"
+            "netfwd": "cpp",
+            "source_location": "cpp",
+            "multi_span": "cpp",
+            "span": "cpp",
+            "string_span": "cpp"
         }
     }
 }

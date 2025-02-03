@@ -2,7 +2,6 @@
 
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/Filesystem/FS.hpp"
-#include "CUL/Log/ILogContainer.hpp"
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 
@@ -14,9 +13,9 @@ CUL::GUTILS::DumbPtr<CUL::CULInterface> FilesystemTests::m_culInterface = nullpt
 
 FilesystemTests::FilesystemTests()
 {
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "FilesystemTests::FilesystemTests()" );
+    m_culInterface->getLogger()->log( "FilesystemTests::FilesystemTests()" );
     auto cwd = m_culInterface->getFS()->getCurrentDir();
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "Current dir: " + cwd.string() );
+    m_culInterface->getLogger()->log( "Current dir: " + cwd.string() );
 }
 
 void FilesystemTests::SetUpTestCase()
@@ -74,7 +73,7 @@ TEST_F( FilesystemTests, GetFullPath )
 TEST_F( FilesystemTests, FileExistence )
 {
     std::string filePath = "../media/Dummy.txt";
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "Trying to find: " + filePath );
+    m_culInterface->getLogger()->log( "Trying to find: " + filePath );
     Path file( filePath.c_str() );
     ASSERT_EQ( file.exists(), true );
 }

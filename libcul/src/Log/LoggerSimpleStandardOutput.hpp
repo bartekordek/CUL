@@ -3,6 +3,12 @@
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/STL_IMPORTS/STD_queue.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
+
+namespace spdlog
+{
+class logger;
+}
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( LOG )
@@ -25,12 +31,15 @@ protected:
 private:
     LoggerSimpleStandardOutput( const LoggerSimpleStandardOutput& arg ) = delete;
     LoggerSimpleStandardOutput& operator=( const LoggerSimpleStandardOutput& arg ) = delete;
+    void init();
 
+    std::shared_ptr<spdlog::logger> m_logger;
     std::queue<LogEntry> m_logslist;
     std::mutex m_logMtx;
 
     std::mutex m_variableMutex;
-    char m_variableBuffer[1024];
+    static constexpr std::size_t s_bufferSize{ 1024 };
+    char m_variableBuffer[s_bufferSize];
 };
 
 NAMESPACE_END( LOG )

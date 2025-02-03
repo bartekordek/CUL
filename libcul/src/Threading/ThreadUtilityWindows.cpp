@@ -1,6 +1,6 @@
 #include "ThreadUtilityWindows.hpp"
 #ifdef _WIN32 //compile only on windows.
-#include "GUARD_windows.hpp"
+#include "CUL/IMPORT_windows.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 const DWORD MS_VC_EXCEPTION = 0x406D1388;

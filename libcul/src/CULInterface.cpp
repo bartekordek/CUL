@@ -5,7 +5,6 @@
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
-#include "CUL/Log/ILogContainer.hpp"
 #include "GenericUtils/IConfigFileConcrete.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/GenericUtils/Singleton.hpp"
@@ -23,11 +22,9 @@ static CUL::LOG::ILogger* g_logger = nullptr;
 
 using namespace CUL;
 
-
-
 #if CUL_GLOBAL_MEMORY_POOL
 
-#endif // #if CUL_GLOBAL_MEMORY_POOL
+#endif  // #if CUL_GLOBAL_MEMORY_POOL
 
 CULInterface* CULInterface::s_instance = nullptr;
 
@@ -47,8 +44,7 @@ CULInterface* CULInterface::getInstance()
     return s_instance;
 }
 
-CULInterface::CULInterface( const FS::Path& configFilePath ):
-    m_configFilePath( configFilePath )
+CULInterface::CULInterface( const FS::Path& configFilePath ) : m_configFilePath( configFilePath )
 {
     CUL::Assert::simple( s_instance == nullptr, "Propably DLL Hell. There is already a instance of CUL Interface." );
 
@@ -60,7 +56,7 @@ void CULInterface::initialize()
     m_fileFactory = new FS::FileFactory( this );
     m_fsApi = std::make_unique<FS::FSApi>( this, m_fileFactory );
 
-    m_logger = LOG::LOG_CONTAINER::getLogger();
+    m_logger = &LOG::ILogger::getInstance();
 
     if( !m_configFilePath.getPath().empty() )
     {
@@ -68,7 +64,6 @@ void CULInterface::initialize()
     }
 
     m_imageLoader.reset( Graphics::IImageLoader::createConcrete( m_configFile, this ) );
-
 
     m_logger->log( "Initialized logger." );
     if( !g_logger )
@@ -80,7 +75,7 @@ void CULInterface::initialize()
     CUL::Memory::MemoryPool::s_logger = m_logger;
 #endif  // #if CUL_GLOBAL_MEMORY_POOL
 
-    //m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
+    // m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
     m_args.reset( new GUTILS::ConsoleUtilities() );
 
@@ -136,8 +131,6 @@ CULInterface::~CULInterface()
 {
     delete m_sysFonts;
     m_sysFonts = nullptr;
-
-    LOG::LOG_CONTAINER::destroyLogger();
 
 #if CUL_GLOBAL_MEMORY_POOL
     Memory::MemoryPool::s_logger = m_logger;

@@ -1,28 +1,27 @@
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/Log/ILogger.hpp"
 #include "ArgumentsPairConcrete.hpp"
-#include "CUL/Log/ILogContainer.hpp"
 
 using namespace CUL;
 using namespace GUTILS;
 
-ConsoleUtilities::ConsoleUtilities():
-    m_args( new ArgumentsPairConcrete() )
+ConsoleUtilities::ConsoleUtilities() : m_args( new ArgumentsPairConcrete() )
 {
 }
 
 #ifdef _MSC_VER
 #pragma warning( push, 0 )
-#pragma warning( disable: 5045 )
+#pragma warning( disable : 5045 )
 #endif
 void ConsoleUtilities::printInputParameters()
 {
-    CUL::LOG::LOG_CONTAINER::getLogger()->log( "ConsoleUtilities::printInputParameters()" );
+    LOG::ILogger::getInstance().log( "ConsoleUtilities::printInputParameters()" );
     const auto argc = *m_args->getArgCount();
     const auto argv = m_args->getArgsVal();
     for( int i = 0; i < argc; ++i )
     {
-        CUL::LOG::LOG_CONTAINER::getLogger()->logVariable( LOG::Severity::INFO, "Arg[%d] = %s", i, argv[i] );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::INFO, "Arg[%d] = %s", i, argv[i] );
     }
 }
 #ifdef _MSC_VER

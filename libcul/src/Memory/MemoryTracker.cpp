@@ -30,9 +30,9 @@ struct StackInfo final
     }
 
     StackInfo( const StackInfo& rhv ) = delete;
-    StackInfo( StackInfo&& arg ) noexcept:
-        Register( arg.Register ),
-        Trace( std::move( arg.Trace ) ),
+    StackInfo( StackInfo&& arg ) noexcept
+        : Register( arg.Register ),
+          Trace( std::move( arg.Trace ) ),
           Size( arg.Size ),
           Data( arg.Data ),
           SkipFirstLinesCount( arg.SkipFirstLinesCount )
@@ -42,11 +42,10 @@ struct StackInfo final
         arg.SkipFirstLinesCount = 0u;
     }
 
-
     StackInfo& operator=( const StackInfo& arg ) = delete;
-    StackInfo& operator=(StackInfo&& arg) noexcept
+    StackInfo& operator=( StackInfo&& arg ) noexcept
     {
-        if( this  != &arg )
+        if( this != &arg )
         {
             Register = arg.Register;
             Trace = std::move( arg.Trace );
@@ -65,12 +64,12 @@ struct StackInfo final
 
 namespace Deque
 {
-    static constexpr std::uint64_t PoolSize = 8u * 1024u * 1024u;  // 16MB
-    std::array<std::byte, PoolSize> BufferBlocks;
-    std::pmr::monotonic_buffer_resource BufferSrc{ BufferBlocks.data(), PoolSize };
+static constexpr std::uint64_t PoolSize = 8u * 1024u * 1024u;  // 16MB
+std::array<std::byte, PoolSize> BufferBlocks;
+std::pmr::monotonic_buffer_resource BufferSrc{ BufferBlocks.data(), PoolSize };
 
-    std::pmr::deque<StackInfo> g_traceDeque{ &BufferSrc };
-}
+std::pmr::deque<StackInfo> g_traceDeque{ &BufferSrc };
+}  // namespace Deque
 
 MemoryTracker& MemoryTracker::getInstance()
 {
@@ -203,7 +202,8 @@ void convertBoostToAllocationInfo( AllocationInfo& out, const boost::stacktrace:
             return;
         }
 
-        char buff[1024];
+        constexpr std::size_t bufferSize{ 1024 };
+        char buffer[bufferSize];
         std::string sourceFile = currentTraceLine.source_file();
         if( sourceFile.empty() )
         {
@@ -216,9 +216,9 @@ void convertBoostToAllocationInfo( AllocationInfo& out, const boost::stacktrace:
             continue;
         }
 
-        sprintf( buff, "%s:%d", sourceFile.c_str(), (int)currentTraceLine.source_line() );
+        snprintf( buffer, bufferSize, "%s:%d", sourceFile.c_str(), (int)currentTraceLine.source_line() );
 
-        outStackLines[outputStackSize] = buff;
+        outStackLines[outputStackSize] = buffer;
         ++outputStackSize;
         if( outputStackSize == out.Size )
         {
@@ -232,7 +232,7 @@ void MemoryTracker::decode( const StackInfo& stackInfo )
     if( stackInfo.Register )
     {
         AllocationInfo ai;
-        convertBoostToAllocationInfo(ai, *stackInfo.Trace);
+        convertBoostToAllocationInfo( ai, *stackInfo.Trace );
         ai.Size = stackInfo.Size;
         std::lock_guard<std::mutex> locker( m_dataMtx );
         g_blockCurrentThread = true;
@@ -253,9 +253,11 @@ void MemoryTracker::decode( const StackInfo& stackInfo )
 void MemoryTracker::getStackHere( StackLinesArray& outStackLines, std::size_t skipFirstLinesCount )
 {
     g_blockCurrentThread = true;
-    GUTILS::ScopeExit se([](){
+    GUTILS::ScopeExit se(
+        []()
+        {
             g_blockCurrentThread = false;
-    } );
+        } );
 
     boost::stacktrace::stacktrace stackTrace;
     boost::stacktrace::frame copy;
@@ -265,7 +267,7 @@ void MemoryTracker::getStackHere( StackLinesArray& outStackLines, std::size_t sk
     for( size_t i = 0; i < stackTraceSize; ++i )
     {
         const boost::stacktrace::frame& currentTraceLine = stVec[i];
-        if (currentTraceLine.empty() == true)
+        if( currentTraceLine.empty() == true )
         {
             continue;
         }
@@ -280,16 +282,17 @@ void MemoryTracker::getStackHere( StackLinesArray& outStackLines, std::size_t sk
             continue;
         }
 
-        char buff[1024];
+        constexpr std::size_t bufferSize{ 1024u };
+        char buffer[bufferSize];
         std::string sourceFile = currentTraceLine.source_file();
         if( sourceFile.empty() )
         {
             sourceFile = "unkown";
         }
 
-        sprintf( buff, "%s:%d", sourceFile.c_str(), (int)currentTraceLine.source_line() );
+        snprintf( buffer, bufferSize, "%s:%d", sourceFile.c_str(), (int)currentTraceLine.source_line() );
 
-        outStackLines[outputStackSize] = buff;
+        outStackLines[outputStackSize] = buffer;
         ++outputStackSize;
     }
 }
@@ -299,11 +302,11 @@ void MemoryTracker::dumpActiveAllocations() const
     LOG::ILogger& logger = LOG::ILogger::getInstance();
 
     std::lock_guard<std::mutex> locker( m_dataMtx );
-    for( const auto& [addr, stackInfo]: m_allocations )
+    for( const auto& [addr, stackInfo] : m_allocations )
     {
-        logger.logVariable(LOG::Severity::INFO, "Stack info:\nsize:%d bytes\n", stackInfo.Size );
+        logger.logVariable( LOG::Severity::INFO, "Stack info:\nsize:%d bytes\n", stackInfo.Size );
 
-        for( const auto& line: stackInfo.StackLines )
+        for( const auto& line : stackInfo.StackLines )
         {
             logger.log( line.c_str() );
         }

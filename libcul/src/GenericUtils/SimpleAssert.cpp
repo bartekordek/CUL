@@ -4,6 +4,7 @@
 
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdio.hpp"
 
 #include "IMPORT_boost_assert.hpp"
 #include "IMPORT_boost_stacktrace.hpp"
@@ -18,23 +19,24 @@ void Assert::simple( bool val, const String& msg, LOG::ILogger* loggerIn )
     simple( val, msg.cStr(), loggerIn );
 }
 
-void Assert::check(bool value, const char* msg...)
+void Assert::check( bool value, const char* msg... )
 {
-    if(value)
+    if( value )
     {
         return;
     }
 
     va_list args;
-    va_start(args, msg);
-    char buffer[512];
-    vsprintf(buffer, msg, args);
+    va_start( args, msg );
+    constexpr std::size_t bufferSize{ 512 };
+    char buffer[bufferSize];
+    snprintf( buffer, bufferSize, msg, args );
 
-    va_end(args);
+    va_end( args );
 
-    BOOST_ASSERT_MSG(value, buffer);
+    BOOST_ASSERT_MSG( value, buffer );
 
-    if(generateStackTrace)
+    if( generateStackTrace )
     {
         dumpStackTrace();
     }
@@ -53,7 +55,7 @@ void Assert::simple( bool val, const char* msg, LOG::ILogger* loggerIn )
     }
     else
     {
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::ERROR , msg);
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::ERROR, msg );
     }
 
     if( generateStackTrace )
@@ -67,11 +69,11 @@ void Assert::simple( bool val, const char* msg, LOG::ILogger* loggerIn )
 
 void Assert::dumpStackTrace()
 {
-    std::ofstream stackDumpFile("dump.log");
+    std::ofstream stackDumpFile( "dump.log" );
 
     auto stackTrace = boost::stacktrace::stacktrace();
     size_t stackTraceSize = stackTrace.size();
-    for(size_t i = 0; i < stackTraceSize; ++i)
+    for( size_t i = 0; i < stackTraceSize; ++i )
     {
         stackDumpFile << stackTrace[i] << "\n";
     }

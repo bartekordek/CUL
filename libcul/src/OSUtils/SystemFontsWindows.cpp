@@ -1,11 +1,10 @@
 #if _WIN32
 #include "OSUtils/SystemFontsWindows.hpp"
 #include "CUL/Filesystem/FS.hpp"
-#include "GUARD_windows.hpp"
+#include "CUL/IMPORT_windows.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/Windows/INCLUDE_dwrite.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/Log/ILogContainer.hpp"
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 
