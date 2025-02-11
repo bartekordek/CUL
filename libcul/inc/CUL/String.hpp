@@ -192,6 +192,8 @@ public:
     const wchar_t* wCstr() const;
     const UnderlyingChar* getChar() const;
 
+    bool isFloat() const;
+
     float toFloat() const;
     double toDouble() const;
     int toInt();

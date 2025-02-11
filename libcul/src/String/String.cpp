@@ -1040,6 +1040,15 @@ const String::UnderlyingChar* String::getChar() const
     return m_value;
 }
 
+bool String::isFloat() const
+{
+    std::istringstream iss( cStr() );
+    float tmp;
+    iss >> std::noskipws >> tmp;
+
+    return iss.eof() && !iss.fail();
+}
+
 float String::toFloat() const
 {
     return std::stof( m_value );
