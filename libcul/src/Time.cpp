@@ -242,35 +242,11 @@ void Time::setTimeSec( std::uint64_t timeConverted )
 
 void Time::updateString()
 {
-    m_asString = std::to_string( m_year );
-    m_asString += "/";
-    if( m_month < 10u )
-    {
-        m_asString += "0";
-    }
-    m_asString += std::to_string( m_month );
-    m_asString += "/";
+    constexpr std::size_t bufferLength{ 64u };
+    char buffer[bufferLength];
 
-    if( m_day < 10u )
-    {
-        m_asString += "0";
-    }
-
-    m_asString += std::to_string( m_day );
-    m_asString += " ";
-    if( m_hour < 10u )
-    {
-        m_asString += "0";
-    }
-    m_asString += std::to_string( m_hour );
-    m_asString += ":";
-    if( m_minute < 10u )
-    {
-        m_asString += "0";
-    }
-    m_asString += std::to_string( m_minute );
-    m_asString += ":";
-    m_asString += std::to_string( m_second );
+    snprintf( buffer, bufferLength, "%04d/%02d/%02d %02d:%02d:%02d", m_year, m_month, m_day, m_hour, m_minute, m_second );
+    m_asString = buffer;
 }
 
 Time::~Time()
