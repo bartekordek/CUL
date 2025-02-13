@@ -12,6 +12,7 @@
 
 using namespace CUL;
 
+thread_local std::thread::id* g_currentThreadId{ nullptr };
 
 ThreadUtil& ThreadUtil::getInstance()
 {
@@ -24,10 +25,10 @@ ThreadUtil::ThreadUtil()
     m_updateThreadInfoThread = std::thread( &ThreadUtil::threadInfoWorker, this );
 }
 
-std::vector<String> ThreadUtil::getThreadNames() const
+std::vector<ThreadString> ThreadUtil::getThreadNames() const
 {
     ZoneScoped;
-    std::vector<String> result;
+    std::vector<ThreadString> result;
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
     for( const auto& thread : m_threadInfo )
@@ -37,7 +38,7 @@ std::vector<String> ThreadUtil::getThreadNames() const
     return result;
 }
 
-CULLib_API bool ThreadUtil::getIsCurrentThreadNameEqualTo( const String& name ) const
+bool ThreadUtil::getIsCurrentThreadNameEqualTo( const ThreadString& name ) const
 {
     const auto currentThreadIdName = getThreadName();
     return name == currentThreadIdName;
@@ -54,91 +55,129 @@ void ThreadUtil::registerObserver( CThreadUtilObserver* observer )
     m_observers.insert( observer );
 }
 
-String ThreadUtil::getThreadName( const std::thread::id* threadId ) const
+const std::thread::id ThreadUtil::getThreadId( const ThreadString& name ) const
 {
     ZoneScoped;
-    const std::thread::id currentThreadId = threadId ? *threadId : std::this_thread::get_id();
+
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
-    const auto it = m_threadInfo.find( currentThreadId );
-    if( it == m_threadInfo.end() )
+    const auto it = m_threadInfo.find( name );
+    if( it != m_threadInfo.end() )
     {
-        return "";
+        return it->second.ID;
     }
 
-    return it->second.Name;
+    return std::thread::id();
 }
 
-String ThreadUtil::getThreadStatus( const std::thread::id* threadId ) const
+CULLib_API const std::thread::id& ThreadUtil::getCurrentThreadId() const
 {
-    ZoneScoped;
-    const std::thread::id currentThreadId = threadId ? *threadId : std::this_thread::get_id();
-    std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
-    const auto it = m_threadInfo.find( currentThreadId );
-    if( it == m_threadInfo.end() )
+    if( g_currentThreadId == nullptr )
     {
-        return "";
+        g_currentThreadId = new std::thread::id();
+
+        *g_currentThreadId = std::this_thread::get_id();
     }
 
-    return it->second.Status;
+    return *g_currentThreadId;
 }
 
-const std::thread::id ThreadUtil::getCurrentThreadId() const
+ThreadString ThreadUtil::getThreadName( const std::thread::id* inThreadId ) const
 {
     ZoneScoped;
-    const std::thread::id currentThreadId = std::this_thread::get_id();
-    return currentThreadId;
-}
 
-void ThreadUtil::setThreadName( const String& name, const std::thread::id* threadId )
-{
-    ZoneScoped;
-    const std::thread::id currentThreadId = threadId ? *threadId : std::this_thread::get_id();
+    const std::thread::id* threadId{ inThreadId ? inThreadId : &getCurrentThreadId() };
+
+    std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
+
+    for( const auto& threadPair : m_threadInfo )
     {
-        std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
-
-        const auto it = m_threadInfo.find( currentThreadId );
-        if( it != m_threadInfo.end() )
+        if( threadPair.second.ID == *threadId )
         {
-            it->second.Name = name;
-        }
-        else
-        {
-            ThreadMeta ti;
-            ti.Name = name;
-            m_threadInfo[currentThreadId] = ti;
+            return threadPair.first;
         }
     }
 
-#ifdef _MSC_VER
-    setCurrentThreadNameWin( name );
+    return "";
+}
+
+ThreadString ThreadUtil::getThreadStatus( const std::thread::id* inThreadId ) const
+{
+    ZoneScoped;
+
+    const std::thread::id* threadId{ inThreadId ? inThreadId : &getCurrentThreadId() };
+
+    std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
+
+    for( const auto& threadPair : m_threadInfo )
+    {
+        if( threadPair.second.ID == *threadId )
+        {
+            return threadPair.second.Status;
+        }
+    }
+
+    return "";
+}
+void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id* inThreadId )
+{
+    ZoneScoped;
+    const std::thread::id& currentThreadId = getCurrentThreadId();
+    const std::thread::id* threadId{ inThreadId ? inThreadId : &currentThreadId };
+
+    std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
+    bool found{ false };
+    for( const auto& threadPair : m_threadInfo )
+    {
+        if( threadPair.second.ID == *threadId )
+        {
+            ThreadMeta metaCopy = threadPair.second;
+            metaCopy.Name = name;
+            m_threadInfo.erase( name );
+            m_threadInfo[name] = metaCopy;
+
+            found = true;
+        }
+    }
+
+    if( found == false )
+    {
+        ThreadMeta meta;
+        meta.ID = *threadId;
+        meta.Name = name;
+        m_threadInfo[name] = meta;
+    }
+
+#if defined( _MSC_VER )
+    if( *threadId == currentThreadId )
+    {
+        setCurrentThreadNameWin( name );
+    }
 #endif
 }
 
-void ThreadUtil::setThreadStatus( const String& status, const std::thread::id* threadId )
+void ThreadUtil::setThreadStatus( const ThreadString& status, const std::thread::id* inThreadId )
 {
     ZoneScoped;
-    const std::thread::id currentThreadId = threadId ? *threadId : std::this_thread::get_id();
+    const std::thread::id* threadId{ inThreadId ? inThreadId : &getCurrentThreadId() };
 
     std::lock_guard<std::mutex> locker( m_tasksMtx );
-    m_tasks.push_front( [this, status, currentThreadId]() {
-        setThreadStatusImpl( status, currentThreadId );
+    m_tasks.push_front( [this, status, threadId]() {
+            setThreadStatusImpl( status, *threadId );
     } );
 }
 
-void ThreadUtil::setThreadStatusImpl( const String& status, const std::thread::id& threadId )
+void ThreadUtil::setThreadStatusImpl( const ThreadString& status, const std::thread::id& threadId )
 {
     ZoneScoped;
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
-    const auto it = m_threadInfo.find( threadId );
-    if( it != m_threadInfo.end() )
+
+    for( auto& threadPair : m_threadInfo )
     {
-        it->second.Status = status;
-    }
-    else
-    {
-        ThreadMeta ti;
-        ti.Status = status;
-        m_threadInfo[threadId] = ti;
+        if( threadPair.second.ID == threadId )
+        {
+            ThreadMeta& metaCopy = threadPair.second;
+            metaCopy.Status = status;
+        }
     }
 }
 

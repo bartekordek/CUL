@@ -51,7 +51,7 @@ void Worker::consumeThreadFunction()
     {
         if( m_updateThreadName )
         {
-            CUL::ThreadUtil::getInstance().setThreadName( m_threadName );
+            CUL::ThreadUtil::getInstance().setThreadName( m_threadName.cStr() );
             m_updateThreadName = false;
         }
 

@@ -17,6 +17,8 @@ NAMESPACE_BEGIN( CUL )
 
 class CThreadUtilObserver;
 
+using ThreadString = std::string;
+
 class ThreadUtil final
 {
 public:
@@ -24,26 +26,26 @@ public:
 
     CULLib_API static ThreadUtil& getInstance();
 
-    CULLib_API const std::thread::id getCurrentThreadId() const;
-    CULLib_API void setThreadName( const String& name, const std::thread::id* threadId = nullptr );
-    CULLib_API void setThreadStatus( const String& name, const std::thread::id* threadId = nullptr );
-    CULLib_API String getThreadName( const std::thread::id* threadId = nullptr ) const;
-    CULLib_API String getThreadStatus( const std::thread::id* threadId = nullptr ) const;
-    CULLib_API std::vector<String> getThreadNames() const;
-    CULLib_API bool getIsCurrentThreadNameEqualTo( const String& name ) const;
+    CULLib_API void setThreadName( const ThreadString& name, const std::thread::id* threadId = nullptr );
+    CULLib_API void setThreadStatus( const ThreadString& name, const std::thread::id* threadId = nullptr );
+    CULLib_API ThreadString getThreadName( const std::thread::id* threadId = nullptr ) const;
+    CULLib_API ThreadString getThreadStatus( const std::thread::id* threadId = nullptr ) const;
+    CULLib_API std::vector<ThreadString> getThreadNames() const;
+    CULLib_API bool getIsCurrentThreadNameEqualTo( const ThreadString& name ) const;
     CULLib_API void sleepFor( uint16_t ms );
     CULLib_API void registerObserver( CThreadUtilObserver* observer );
-
+    CULLib_API const std::thread::id getThreadId(const std::string& name) const;
+    CULLib_API const std::thread::id& getCurrentThreadId() const; 
     CULLib_API ~ThreadUtil();
 
 protected:
 private:
-    void setThreadStatusImpl( const String& status, const std::thread::id& threadId );
+    void setThreadStatusImpl( const ThreadString& status, const std::thread::id& threadId );
     void threadInfoWorker();
     void notifyObservers();
     std::atomic_bool m_runThreadWorker{ true };
 
-    std::map<std::thread::id, ThreadMeta> m_threadInfo;
+    std::unordered_map<std::string, ThreadMeta> m_threadInfo;
     mutable std::mutex m_threadInfoMtx;
     std::thread m_updateThreadInfoThread;
 

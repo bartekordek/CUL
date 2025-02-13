@@ -251,7 +251,7 @@ void FileDatabase::loadFilesFromDatabase()
 bool FileDatabase::deleteRemnants()
 {
     ZoneScoped;
-    String status = "loadFilesFromDatabase -> deleting remnants...";
+    std::string status = "loadFilesFromDatabase -> deleting remnants...";
     ThreadUtil::getInstance().setThreadStatus( status );
 
     if( m_fetchList == nullptr )
@@ -280,7 +280,7 @@ bool FileDatabase::deleteRemnants()
         }
 
         const String status = "loadFilesFromDatabase -> deleting remnants... collecting not existing files..." + CUL::String( perc );
-        CUL::ThreadUtil::getInstance().setThreadStatus( status );
+        CUL::ThreadUtil::getInstance().setThreadStatus( status.cStr() );
     }
 
     CUL::ThreadUtil::getInstance().setThreadStatus( "loadFilesFromDatabase -> deleting remnants... collecting not existing files... done." );
@@ -503,7 +503,10 @@ void FileDatabase::waitForInit() const
 void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
 {
     ZoneScoped;
-    CUL::ThreadUtil::getInstance().setThreadStatus( "FileDatabase::removeFileFromDB pathRaw = " + pathRaw );
+    constexpr std::size_t bufferSize{ 512 };
+    static char buffer[bufferSize];
+    snprintf( buffer, bufferSize, "FileDatabase::removeFileFromDB pathRaw: %s", pathRaw.cStr() );
+    CUL::ThreadUtil::getInstance().setThreadStatus( buffer );
     CUL::String path = pathRaw;
     path.serialize();
 

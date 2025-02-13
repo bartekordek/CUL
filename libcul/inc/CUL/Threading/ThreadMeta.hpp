@@ -9,8 +9,8 @@ NAMESPACE_BEGIN( CUL )
 
 struct ThreadMeta
 {
-    String Name;
-    String Status;
+    std::string Name;
+    std::string Status;
     std::thread::id ID;
 };
 

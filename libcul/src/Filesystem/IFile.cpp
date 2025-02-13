@@ -170,8 +170,13 @@ void IFile::calculateMD5()
             ++it;
             coef = static_cast<float>( bytesPerRead * it ) / static_cast<float>( currentFileSizeBytes );
             percentage = static_cast<unsigned>( 100.f * coef );
-            CUL::ThreadUtil::getInstance().setThreadStatus(
-                "[IFile::calculateMD5] Big file: " + getPath().getPath() + ", " + percentage + "%", &threadId );
+            const String pathString = getPath().getPath().string();
+
+            constexpr std::size_t bufferSize{ 128 };
+            char name[bufferSize];
+            snprintf( name, bufferSize, "[IFile::calculateMD5] Big file: %s, %d %%", pathString.cStr(), percentage );
+
+            CUL::ThreadUtil::getInstance().setThreadStatus( name, &threadId );
         }
         m_md5 = sha256.getHash();
         file.close();
