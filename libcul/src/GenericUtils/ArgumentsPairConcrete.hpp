@@ -24,10 +24,10 @@ public:
 
 protected:
 private:
+    void pushArg( const String& name, const String& value ) override;
     void setArgs( const int argc, char** argv ) override;
     int* getArgCount() override;
     char** getArgsVal() override;
-    const ArgumentsVec& getArgsValVec() const override;
     void createDummyArgs() override;
     void clearArgs();
     const String& getFlagValue( const String& flagName ) const override;

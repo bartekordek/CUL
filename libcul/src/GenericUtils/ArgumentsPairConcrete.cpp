@@ -9,6 +9,15 @@ ArgumentsPairConcrete::ArgumentsPairConcrete()
 {
 }
 
+void ArgumentsPairConcrete::pushArg( const String& name, const String& value )
+{
+    NameValue nv;
+    nv.name = name;
+    nv.value = value;
+
+    m_values.push_back( nv );
+}
+
 ArgumentsPairConcrete::~ArgumentsPairConcrete()
 {
 }
@@ -71,11 +80,6 @@ char** CUL::GUTILS::ArgumentsPairConcrete::getArgsVal()
     m_valBegining = const_cast<char*>( m_argumentsPtrs.begin()->cStr() );
     m_valBeginingTable = &m_valBegining;
     return m_valBeginingTable;
-}
-
-const IArgumentsList::ArgumentsVec& ArgumentsPairConcrete::getArgsValVec() const
-{
-    return m_argumentsPtrs;
 }
 
 void ArgumentsPairConcrete::createDummyArgs()

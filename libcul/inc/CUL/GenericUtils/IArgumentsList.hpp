@@ -22,10 +22,10 @@ public:
 
     virtual int* getArgCount() = 0;
     virtual char** getArgsVal() = 0;
-    virtual const ArgumentsVec& getArgsValVec() const = 0;
     virtual void setArgs( const int argc, char** argv ) = 0;
     virtual void createDummyArgs() = 0;
     virtual const String& getFlagValue( const String& flagName ) const = 0;
+    virtual void pushArg( const String& name, const String& value ) = 0;
 
     static IArgumentsList* getConcrete();
 

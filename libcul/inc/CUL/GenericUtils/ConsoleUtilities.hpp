@@ -16,6 +16,7 @@ public:
     CULLib_API IArgumentsList& getArgs();
     CULLib_API const String& getFlagValue( const String& flagName ) const;
     CULLib_API void setArgs( const int argc, char** argv );
+    CULLib_API void setArgs( const char* args );
 
     CULLib_API ~ConsoleUtilities();
 
