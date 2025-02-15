@@ -36,13 +36,13 @@ void TimerChrono::stop()
 
 void TimerChrono::reset()
 {
-    startPoint = clock.now();
+    m_startPoint = clock.now();
     m_started = true;
 }
 
 const Time& TimerChrono::getElapsed() const
 {
-    const auto difference = clock.now() - startPoint;
+    const auto difference = clock.now() - m_startPoint;
     const auto currentCount = std::chrono::duration_cast<std::chrono::nanoseconds>( difference ).count();
     const std::int64_t ns = static_cast<std::int64_t>( currentCount );
 
@@ -51,10 +51,9 @@ const Time& TimerChrono::getElapsed() const
     return *time;
 }
 
-
 std::int64_t TimerChrono::getElapsedNs() const
 {
-    const auto difference = clock.now() - startPoint;
+    const auto difference = clock.now() - m_startPoint;
     const std::int64_t ns =  std::chrono::duration_cast<std::chrono::nanoseconds>( difference ).count();
     return ns;
 }

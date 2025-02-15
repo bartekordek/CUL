@@ -52,7 +52,7 @@ private:
 
     std::chrono::high_resolution_clock clock;
     std::unique_ptr<Time> time;
-    std::chrono::high_resolution_clock::time_point startPoint;
+    std::chrono::high_resolution_clock::time_point m_startPoint;
 
     std::thread m_timerThread;
     std::atomic<bool> m_runLoop = false;

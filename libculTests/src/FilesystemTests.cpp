@@ -29,20 +29,21 @@ void FilesystemTests::SetUp()
 
 TEST_F( FilesystemTests, ModificationTime )
 {
-#if defined( CUL_TODO )  // Disabled because build github build machine modifies files.
+#define CUL_TODO 0
+#if CUL_TODO  // Disabled because build github build machine modifies files.
     Path file( "FSTEST/Config.txt" );
     CUL::Time modTime;
     file.getLastModificationTime( modTime );
     const auto modTimeAsString = modTime.toString();
-    CUL::LOG::LOG_CONTAINER::getLogger()->logVariable( CUL::LOG::Severity::INFO, "Mod time: %s", modTimeAsString.cStr() );
+    CUL::LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::INFO, "Mod time: %s", modTimeAsString.cStr() );
 
-    ASSERT_TRUE( modTime.getYear() == 2023u );
-    ASSERT_TRUE( modTime.getMonth() == 5u );
-    ASSERT_TRUE( modTime.getDay() == 6u );
+    ASSERT_TRUE( modTime.getYear() == 2025u );
+    ASSERT_TRUE( modTime.getMonth() == 2u );
+    ASSERT_TRUE( modTime.getDay() == 2u );
 
-    ASSERT_TRUE( modTime.getHour() == 1u );
-    ASSERT_TRUE( modTime.getMinute() == 59u );
-    ASSERT_TRUE( modTime.getSecond() == 37u );
+    ASSERT_TRUE( modTime.getHour() == 23u );
+    ASSERT_TRUE( modTime.getMinute() == 50u );
+    ASSERT_TRUE( modTime.getSecond() == 43u );
 #endif  // #if defined(CUL_TODO)
 }
 

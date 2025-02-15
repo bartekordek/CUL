@@ -3,7 +3,7 @@
 #include "CUL/Threading/MultiWorkerSystem.hpp"
 #include "CUL/Threading/TaskCallback.hpp"
 #include "CUL/Threading/ThreadUtilObserver.hpp"
-
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/IMPORT_tracy.hpp"
 
 #ifdef _MSC_VER
@@ -85,7 +85,7 @@ ThreadString ThreadUtil::getThreadName( const std::thread::id* inThreadId ) cons
 {
     ZoneScoped;
 
-    const std::thread::id* threadId{ inThreadId ? inThreadId : &getCurrentThreadId() };
+    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &getCurrentThreadId() };
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
 
@@ -104,7 +104,7 @@ ThreadString ThreadUtil::getThreadStatus( const std::thread::id* inThreadId ) co
 {
     ZoneScoped;
 
-    const std::thread::id* threadId{ inThreadId ? inThreadId : &getCurrentThreadId() };
+    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &getCurrentThreadId() };
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
 
@@ -122,30 +122,32 @@ void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id*
 {
     ZoneScoped;
     const std::thread::id& currentThreadId = getCurrentThreadId();
-    const std::thread::id* threadId{ inThreadId ? inThreadId : &currentThreadId };
+    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &currentThreadId };
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
     bool found{ false };
-    for( const auto& threadPair : m_threadInfo )
-    {
-        if( threadPair.second.ID == *threadId )
-        {
-            ThreadMeta metaCopy = threadPair.second;
-            metaCopy.Name = name;
-            m_threadInfo.erase( name );
-            m_threadInfo[name] = metaCopy;
 
-            found = true;
-        }
+    const auto it = std::find_if( m_threadInfo.begin(), m_threadInfo.end(),
+                                  [threadId]( const auto& pair )
+                                  {
+                                      return pair.second.ID == *threadId;
+                                  } );
+
+    ThreadMeta meta;
+    meta.ID = *threadId;
+    meta.Name = name;
+
+    if( it != m_threadInfo.end() )
+    {
+        meta.Status = it->second.Status;
+        m_threadInfo.erase( it );
+    }
+    else
+    {
+
     }
 
-    if( found == false )
-    {
-        ThreadMeta meta;
-        meta.ID = *threadId;
-        meta.Name = name;
-        m_threadInfo[name] = meta;
-    }
+    m_threadInfo[name] = meta;
 
 #if defined( _MSC_VER )
     if( *threadId == currentThreadId )
