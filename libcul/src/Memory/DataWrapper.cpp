@@ -55,6 +55,12 @@ void DataWrapper::createFrom( const std::vector<float>& inData )
     load( static_cast<const void*>( inData.data() ), dataSize, CUL::ETypes::Float );
 }
 
+void DataWrapper::createFrom( const float* inData, std::size_t inDataSize )
+{
+    const std::uint64_t dataSize = sizeof( float ) * inDataSize;
+    load( static_cast<const void*>( inData ), dataSize, CUL::ETypes::Float );
+}
+
 void DataWrapper::createFrom( const std::vector<std::uint32_t>& inData )
 {
     const std::uint64_t dataSize = sizeof( std::uint32_t ) * inData.size();

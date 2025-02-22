@@ -25,6 +25,8 @@ public:
     std::size_t getElementCount() const;
 
     void createFrom( const std::vector<float>& inData );
+    void createFrom( const float* inData, std::size_t inDataSize );
+
     void createFrom( const std::vector<std::uint32_t>& inData );
 
     void setType( ETypes inType );
