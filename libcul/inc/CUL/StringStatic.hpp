@@ -91,7 +91,7 @@ public:
 
     void print()const
     {
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::INFO, "\nCurrent string value:\n%s", m_value );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "\nCurrent string value:\n%s", m_value );
     }
 
     const char* c_str() const

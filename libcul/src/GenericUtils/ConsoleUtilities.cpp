@@ -21,7 +21,7 @@ void ConsoleUtilities::printInputParameters()
     const auto argv = m_args->getArgsVal();
     for( int i = 0; i < argc; ++i )
     {
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::INFO, "Arg[%d] = %s", i, argv[i] );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "Arg[%d] = %s", i, argv[i] );
     }
 }
 #ifdef _MSC_VER

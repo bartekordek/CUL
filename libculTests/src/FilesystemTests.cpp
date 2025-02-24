@@ -35,7 +35,7 @@ TEST_F( FilesystemTests, ModificationTime )
     CUL::Time modTime;
     file.getLastModificationTime( modTime );
     const auto modTimeAsString = modTime.toString();
-    CUL::LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::INFO, "Mod time: %s", modTimeAsString.cStr() );
+    CUL::LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Info, "Mod time: %s", modTimeAsString.cStr() );
 
     ASSERT_TRUE( modTime.getYear() == 2025u );
     ASSERT_TRUE( modTime.getMonth() == 2u );

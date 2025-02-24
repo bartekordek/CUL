@@ -304,7 +304,7 @@ void MemoryTracker::dumpActiveAllocations() const
     std::lock_guard<std::mutex> locker( m_dataMtx );
     for( const auto& [addr, stackInfo] : m_allocations )
     {
-        logger.logVariable( LOG::Severity::INFO, "Stack info:\nsize:%d bytes\n", stackInfo.Size );
+        logger.logVariable( LOG::Severity::Info, "Stack info:\nsize:%d bytes\n", stackInfo.Size );
 
         for( const auto& line : stackInfo.StackLines )
         {

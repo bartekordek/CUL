@@ -51,11 +51,11 @@ void Assert::simple( bool val, const char* msg, LOG::ILogger* loggerIn )
 
     if( loggerIn )
     {
-        loggerIn->log( msg, LOG::Severity::ERROR );
+        loggerIn->log( msg, LOG::Severity::Error );
     }
     else
     {
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::ERROR, msg );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Error, msg );
     }
 
     if( generateStackTrace )

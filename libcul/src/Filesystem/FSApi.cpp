@@ -88,7 +88,7 @@ void FSApi::deleteFile( const Path& path )
     {
         const auto messageStr = ec.message();
         const char* msg = messageStr.c_str();
-        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::ERROR, "FSApi::DeleteFile error: [%s]", msg );
+        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "FSApi::DeleteFile error: [%s]", msg );
     }
 }
 
@@ -179,7 +179,7 @@ bool FSApi::isRegularFile( const String& path )
     if( existsErrorCode.value() != 0 )
     {
         const std::string errorCodeMessageStr = existsErrorCode.message();
-        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::ERROR, "[%s] %s", pathChar, errorCodeMessageStr.c_str() );
+        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "[%s] %s", pathChar, errorCodeMessageStr.c_str() );
     }
     return result;
 }

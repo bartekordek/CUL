@@ -43,26 +43,26 @@ void LoggerSimpleStandardOutput::logVariable( Severity severity, const char* msg
 void LoggerSimpleStandardOutput::log( const char* message, const Severity severity )
 {
     switch( severity )
-        case Severity::CRITICAL:
+        case Severity::Critical:
     {
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->critical( message );
             break;
         }
-        case Severity::ERROR:
+        case Severity::Error:
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->error( message );
             break;
         }
-        case Severity::WARN:
+        case Severity::Warn:
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->warn( message );
             break;
         }
-        case Severity::INFO:
+        case Severity::Info:
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->info( message );
@@ -82,25 +82,25 @@ void LoggerSimpleStandardOutput::log( const wchar_t* message, const Severity sev
 #if CUL_USE_WCHAR
     switch( severity )
     {
-        case Severity::CRITICAL:
+        case Severity::Critical:
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->critical( message );
             break;
         }
-        case Severity::ERROR:
+        case Severity::Error:
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->error( message );
             break;
         }
-        case Severity::WARN:
+        case Severity::Warn:
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->warn( message );
             break;
         }
-        case Severity::INFO:
+        case Severity::Info:
         {
             std::lock_guard<std::mutex> logGuard( m_logMtx );
             m_logger->info( message );

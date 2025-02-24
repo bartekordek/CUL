@@ -7,14 +7,14 @@ NAMESPACE_BEGIN(CUL)
 
 NAMESPACE_BEGIN(MATH)
 
-class Utils final
+class CULLib_API Utils final
 {
 public:
-    CULLib_API static const glm::vec3 sphericalToVector( float xAngle, float zAngle, float r );
-    CULLib_API static bool equals( float val1, float val2, float epsilon );
-    CULLib_API static bool equals( double val1, double val2, double epsilon );
-    CULLib_API static float floatModulo( float inValue, float moduloVal ); 
-    CULLib_API static double floatModulo( double inValue, double moduloVal ); 
+    static const glm::vec3 sphericalToVector( float xAngle, float zAngle, float r );
+    static bool equals( float val1, float val2, float epsilon );
+    static bool equals( double val1, double val2, double epsilon );
+    static float floatModulo( float inValue, float moduloVal ); 
+    static double floatModulo( double inValue, double moduloVal ); 
 
 protected:
 private:
