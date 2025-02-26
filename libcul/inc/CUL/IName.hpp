@@ -27,7 +27,6 @@ public:
 protected:
 private:
     String m_name;
-    
 };
 
 NAMESPACE_END( CUL )

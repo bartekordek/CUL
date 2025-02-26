@@ -305,6 +305,7 @@ bool String::operator!=( const char* arg ) const
 bool String::operator==( const char* arg ) const
 {
 #if CUL_USE_WCHAR
+    fetchTemp();
     const Length argLen = strLen( arg );
 
     if( argLen == 0 && m_size == 0 )
@@ -312,12 +313,7 @@ bool String::operator==( const char* arg ) const
         return true;
     }
 
-    const Length bufferSize = 2 * argLen;
-    UnderlyingChar* buffer = new UnderlyingChar[static_cast<std::size_t>( bufferSize )];
-    charToWideString( CP_ACP, buffer, bufferSize, arg, argLen );
-    const bool result = cmp( m_value, buffer ) == 0;
-    delete[] buffer;
-    return result;
+    return cmp( m_temp, arg ) == 0;
 #else // #if CUL_USE_WCHAR
     return cmp(m_value, arg) == 0;
 #endif // #if CUL_USE_WCHAR
@@ -427,9 +423,9 @@ void String::append( const char* inChar, Length charLength )
     m_value[m_size + length] = NullTerminator;
 
     m_size += charLength;
-
 #endif // #if CUL_USE_WCHAR
     verify();
+    deleteTemp();
 }
 
 void String::append( char inChar )
@@ -457,6 +453,7 @@ void String::append( char inChar )
     ++m_size;
 #endif // #if CUL_USE_WCHAR
     verify();
+    deleteTemp();
 }
 
 void String::append( const wchar_t* inWchar )
@@ -485,6 +482,7 @@ void String::append( const wchar_t* inChar, Length otherSize )
     throw std::logic_error( "Method not implemented" );
 #endif // #if CUL_USE_WCHAR
     verify();
+    deleteTemp();
 }
 
 void String::append( wchar_t inChar )
@@ -499,6 +497,7 @@ void String::append( wchar_t inChar )
     throw std::logic_error( "Method not implemented" );
 #endif // #if CUL_USE_WCHAR
     verify();
+    deleteTemp();
 }
 
 std::int32_t String::find( const String& arg ) const
@@ -799,6 +798,7 @@ void String::replace( const String& inWhat, const String& inFor )
             m_value[index + i] = inFor.m_value[i];
         }
     }
+    deleteTemp();
 }
 
 void String::replace( const char inWhat, const char inFor, bool allOccurences )
@@ -841,6 +841,7 @@ void String::replace( const char inWhat, const char inFor, bool allOccurences )
         }
     }
 #endif // #if defined(CUL_WINDOWS)
+    deleteTemp();
 }
 
 void String::replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences )
@@ -882,6 +883,7 @@ void String::replace( const wchar_t inWhat, const wchar_t inFor, bool allOccuren
         }
     }
 #endif // #if defined(CUL_WINDOWS)
+    deleteTemp();
 }
 
 void String::removeAll( const char inWhat )
@@ -911,6 +913,7 @@ void String::removeAll( const char inWhat )
             --m_size;
         }
     }
+    deleteTemp();
 }
 
 bool String::equals( const char* arg ) const
@@ -1010,12 +1013,8 @@ const char* String::cStr() const
         return nullptr;
     }
 
+    fetchTemp();
 #if CUL_USE_WCHAR
-    // TODO: check when it should be released, possible leak.
-    const Length charLength = m_size != 0 ? 2 * m_size : 2;
-    delete[] m_temp;
-    m_temp = new char[static_cast<std::size_t>( charLength )];
-    wideStringToChar( m_temp, charLength, m_value, m_size );
     return m_temp;
 #else // #if CUL_USE_WCHAR
     return m_value;
@@ -1024,15 +1023,31 @@ const char* String::cStr() const
 
 const wchar_t* String::wCstr() const
 {
+    fetchTemp();
 #if CUL_USE_WCHAR
     return m_value;
 #else // #if CUL_USE_WCHAR
-    delete[] m_temp;
-    const std::size_t wcharBufferSize = 2u * m_size;
-    m_temp = new wchar_t[wcharBufferSize];
-    charToWideString(0, m_temp, wcharBufferSize, m_value, m_size);
     return m_temp;
 #endif // #if CUL_USE_WCHAR
+}
+
+void String::fetchTemp() const
+{
+    if( m_temp )
+    {
+        return;
+    }
+
+#if CUL_USE_WCHAR
+    // TODO: check when it should be released, possible leak.
+    const Length charLength = m_size != 0 ? 2 * m_size : 2;
+    m_temp = new char[static_cast<std::size_t>( charLength )];
+    wideStringToChar( m_temp, charLength, m_value, m_size );
+#else   // #if CUL_USE_WCHAR
+    const std::size_t wcharBufferSize = 2u * m_size;
+    m_temp = new wchar_t[wcharBufferSize];
+    charToWideString( 0, m_temp, wcharBufferSize, m_value, m_size );
+#endif  // #if CUL_USE_WCHAR
 }
 
 const String::UnderlyingChar* String::getChar() const
@@ -1351,6 +1366,7 @@ void String::serialize()
 
     m_size = newBufferSize;
     m_serialized = true;
+    deleteTemp();
 }
 
 void String::deserialize()
@@ -1382,6 +1398,7 @@ void String::deserialize()
 
     m_serialized = false;
     tryFitIntoSSO();
+    deleteTemp();
 }
 
 #if CUL_USE_WCHAR
@@ -1457,6 +1474,7 @@ void String::deserializeWchar( std::string& out )
     out = (char*)newValuePtr;
 #endif
     delete[] newValuePtr;
+    deleteTemp();
 }
 
 void String::deserializeChar( std::string& out )
@@ -1880,6 +1898,7 @@ void String::createFrom(const String& arg)
 
 void String::createFromMove( String& arg )
 {
+
     m_value = m_dynamicValue;
     m_size = arg.m_size;
     m_capacity = arg.m_capacity;
@@ -1917,6 +1936,7 @@ void String::createFrom( bool arg )
 #else // #if CUL_USE_WCHAR
     std::strcpy( m_value, arg ? "true" : "false" );
 #endif // #if CUL_USE_WCHAR
+    deleteTemp();
 }
 
 void String::createFrom( const char* arg )
@@ -1947,6 +1967,7 @@ void String::createFrom( const char* arg )
         setSize( newLength );
     }
 #endif // #if CUL_USE_WCHAR
+    deleteTemp();
 }
 
 void String::createFrom( const std::string& arg )
@@ -1986,6 +2007,7 @@ void String::createFrom( const std::string& arg )
     }
 #endif // #if CUL_USE_WCHAR
     setSize( argLen );
+    deleteTemp();
 }
 
 void String::createFrom( const std::wstring& arg )
@@ -2001,11 +2023,13 @@ void String::createFrom( const std::wstring& arg )
 
     operator=( out );
 #endif
+    deleteTemp();
 }
 
 void String::terminate()
 {
     m_value[m_size] = NullTerminator;
+    deleteTemp();
 }
 
 void String::createFrom( const wchar_t* arg )
@@ -2029,6 +2053,7 @@ void String::createFrom( const wchar_t* arg )
     wideStringToChar(m_value, m_capacity, arg, newLength );
 #endif
     setSize( newLength );
+    deleteTemp();
 }
 
 void String::createFrom( std::int32_t arg )
@@ -2039,6 +2064,7 @@ void String::createFrom( std::int32_t arg )
     const std::string temp = std::to_string( arg );
 #endif // #if CUL_USE_WCHAR
     createFrom( temp );
+    deleteTemp();
 }
 
 void String::createFrom( std::uint32_t arg )
@@ -2049,6 +2075,7 @@ void String::createFrom( std::uint32_t arg )
     const std::string temp = std::to_string( arg );
 #endif // #if CUL_USE_WCHAR
     createFrom( temp );
+    deleteTemp();
 }
 
 void String::createFrom( std::int64_t arg )
@@ -2059,6 +2086,7 @@ void String::createFrom( std::int64_t arg )
     const std::string temp = std::to_string( arg );
 #endif // #if CUL_USE_WCHAR
     createFrom( temp );
+    deleteTemp();
 }
 
 void String::createFrom( std::uint64_t arg )
@@ -2069,6 +2097,7 @@ void String::createFrom( std::uint64_t arg )
     const std::string temp = std::to_string( arg );
 #endif // #if CUL_USE_WCHAR
     createFrom( temp );
+    deleteTemp();
 }
 
 void String::createFrom( float arg )
@@ -2079,6 +2108,7 @@ void String::createFrom( float arg )
     const std::string temp = std::to_string( arg );
 #endif // #if CUL_USE_WCHAR
     createFrom( temp );
+    deleteTemp();
 }
 
 void String::createFrom( double arg )
@@ -2089,6 +2119,7 @@ void String::createFrom( double arg )
     const std::string temp = std::to_string( arg );
 #endif // #if CUL_USE_WCHAR
     createFrom( temp );
+    deleteTemp();
 }
 
 void String::grow( Length targetSize, bool keepValue )
@@ -2149,7 +2180,6 @@ void String::removeTrailingLineEnd()
     for( std::int32_t i = stringLength - 1; i >= 0; --i )
     {
         UnderlyingChar& currentChar = m_value[i];
-        UnderlyingChar* Add = &currentChar;
         if( ( currentChar == LineEnding ) /*|| ( currentChar == LineEndingCarriage )*/ )
         {
             currentChar = NullTerminator;
@@ -2160,6 +2190,7 @@ void String::removeTrailingLineEnd()
             break;
         }
     }
+    deleteTemp();
 }
 
 String::~String()
@@ -2183,14 +2214,16 @@ void String::releaseBuffer()
     m_dynamicValue = nullptr;
     m_capacity = SSO_Size;
 
-    if( m_temp )
-    {
-        delete[] m_temp;
-        m_temp = nullptr;
-    }
+    deleteTemp();
 
     m_value = &m_staticValue[0];
     setSize( 0 );
+}
+
+void String::deleteTemp()
+{
+    delete[] m_temp;
+    m_temp = nullptr;
 }
 
 String CULLib_API CUL::operator+( const char* arg1, const String& arg2 )

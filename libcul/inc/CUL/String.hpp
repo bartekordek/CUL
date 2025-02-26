@@ -277,6 +277,8 @@ private:
     void resetWithMaxValue();
     void verifyTerminator();
     void terminate();
+    void fetchTemp() const;
+    void deleteTemp();
 
     Length calcualteCapacity( Length inSize ) const;
     UnderlyingChar* m_value{nullptr};

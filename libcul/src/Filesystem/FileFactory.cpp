@@ -23,19 +23,23 @@ FileFactory::FileFactory( CULInterface* culInterface ):
 
 IFile* FileFactory::createFileFromPath( const Path& path )
 {
-    auto ext = path.getExtension();
+    CUL::String ext = path.getExtension();
     ext.toLower();
-    if( ext == ".csv" )
+    if( ext.equals( ".csv" ) || ext.equals(  "csv" ) )
     {
         return createJSONFileRawPtr( path );
     }
 
-    if( ext == ".json" )
+    if( ext.equals( ".json" ) || ext.equals( "json" ) )
     {
         return createJSONFileRawPtr( path );
     }
 
-    if( ext == ".bmp" || ext == ".png" || ext == ".jpg" || ext == ".jpeg" )
+    if(
+        ext.equals( "bmp" ) || ext.equals( ".bmp" ) || 
+        ext.equals( "jpg" ) || ext.equals( ".jpg" ) || 
+        ext.equals( "jpeg" ) || ext.equals( ".jpeg" ) || 
+        ext.equals( "png" ) || ext.equals( ".png" ) )
     {
         CUL::Assert::simple( false, "Not implemented." );
         return nullptr;
