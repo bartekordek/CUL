@@ -257,6 +257,8 @@ public:
 
     void removeTrailingLineEnd();
 
+    static String createFromPrintf( const char* msg... );
+
     ~String();
 
 protected:

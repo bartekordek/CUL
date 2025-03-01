@@ -12,10 +12,25 @@
 #include "CUL/STL_IMPORTS/STD_wctype.hpp"
 #include "CUL/STL_IMPORTS/STD_codecvt.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
 
 #define CUL_DEBUG_STRING 0
 
 using namespace CUL;
+
+String String::createFromPrintf( const char* msg... )
+{
+    va_list args;
+    va_start( args, msg );
+    constexpr std::size_t bufferSize{ 1024u };
+    char buffer[bufferSize];
+    snprintf( buffer, bufferSize, msg, args );
+    va_end( args );
+
+    String result( buffer );
+
+    return result;
+}
 
 String::String() noexcept:
     m_capacity( SSO_Size ),
