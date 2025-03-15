@@ -140,7 +140,7 @@ TEST_F( UtilsTest, triangleWidth )
 TEST_F( UtilsTest, timerTest )
 {
     CUL::LOG::ILogger& logger = CUL::LOG::ILogger::getInstance();
-    auto chronoTimer = CUL::TimerFactory::getChronoTimer( &logger );
+    auto chronoTimer = CUL::TimerFactory::getChronoTimerPtr( &logger );
     chronoTimer->runEveryPeriod( [] (){
         std::cout << "Time!\n";
     }, 1000 * 1000 );

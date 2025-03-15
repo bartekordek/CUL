@@ -20,7 +20,7 @@ ITimer::~ITimer()
 {
 }
 
-ITimer* TimerFactory::getChronoTimer( LOG::ILogger* logger )
+ITimer* TimerFactory::getChronoTimerPtr( LOG::ILogger* logger )
 {
     auto ptr = new TimerChrono( logger );
 

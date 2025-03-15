@@ -125,7 +125,6 @@ void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id*
     const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &currentThreadId };
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
-    bool found{ false };
 
     const auto it = std::find_if( m_threadInfo.begin(), m_threadInfo.end(),
                                   [threadId]( const auto& pair )

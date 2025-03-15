@@ -49,7 +49,8 @@ private:
 class CULLib_API TimerFactory
 {
 public:
-    static ITimer* getChronoTimer( LOG::ILogger* logger );
+    static ITimer* getChronoTimerPtr( LOG::ILogger* logger );
+
 private:
 };
 
