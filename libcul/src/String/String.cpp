@@ -1709,14 +1709,25 @@ Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, 
 
 Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize )
 {
-    CUL::Assert::simple(outSize >= inSize, "NOT ENOUGH PLACE FOR STRING");
+    CUL::Assert::simple( outSize >= inSize, "NOT ENOUGH PLACE FOR STRING" );
 
-    using convert_typeX = std::codecvt_utf8<wchar_t>;
-    std::wstring_convert<convert_typeX, wchar_t> converterX;
-    const std::wstring wstringCopy = converterX.from_bytes( in );
-    copyString( out, outSize, wstringCopy.c_str(), wstringCopy.size() );
-    out[inSize] = L'\0';
-    return wstringCopy.size();
+    const int size_needed = MultiByteToWideChar( codePage,
+                                                 0,       // flags
+                                                 in,      // from
+                                                 inSize,  // from byte count
+                                                 NULL,    // to
+                                                 0 );     // to char count
+    std::wstring result( size_needed, 0 );
+    const std::int32_t resultSize = MultiByteToWideChar( codePage,
+                         0,                                    // flags
+                         in,                                   // from
+                         inSize,                               // from byte count
+                         result.data(),                        // to
+                         static_cast<int>( result.size() ) );  // to char count
+
+    copyString( out, outSize, result.data(), resultSize + 1 );
+
+    return resultSize;
 }
 
 Length String::charToWideString( Length codePage, wchar_t& out, char in )
@@ -1967,7 +1978,8 @@ void String::createFrom( const char* arg )
     else
     {
         charToWideString( CP_ACP, m_value, m_capacity, arg );
-        setSize( strLen( m_value ) );
+        const std::int32_t size = strLen( m_value );
+        setSize( size );
     }
 #else // #if CUL_USE_WCHAR
     if( newLength == 0 )
