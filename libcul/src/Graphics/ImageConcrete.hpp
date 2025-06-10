@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/Graphics/IImage.hpp"
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -21,6 +22,7 @@ public:
 
     void setPath( const FS::Path& path );
     void setData( DataType* data );
+    void setData( DataType* data, std::function<void(void*)> deleter );
     void setImageInfo( const ImageInfo& ii );
 
     ~ImageConcrete();
@@ -31,6 +33,7 @@ private:
 
     ImageInfo m_imageInfo;
     DataType* m_data = nullptr;
+    std::function<void(void*)> m_deleter;
 
 private: // Deleted
     ImageConcrete( const ImageConcrete& arg ) = delete;

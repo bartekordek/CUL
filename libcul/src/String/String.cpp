@@ -12,6 +12,7 @@
 #include "CUL/STL_IMPORTS/STD_codecvt.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
+#include "CUL/STL_IMPORTS/STD_cwchar.hpp"
 
 #define CUL_DEBUG_STRING 0
 
@@ -1711,6 +1712,7 @@ Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, 
 {
     CUL::Assert::simple( outSize >= inSize, "NOT ENOUGH PLACE FOR STRING" );
 
+#if defined(CUL_WINDOWS)
     const int size_needed = MultiByteToWideChar( codePage,
                                                  0,       // flags
                                                  in,      // from
@@ -1726,8 +1728,38 @@ Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, 
                          static_cast<int>( result.size() ) );  // to char count
 
     copyString( out, outSize, result.data(), resultSize + 1 );
-
     return resultSize;
+#else // #if defined(CUL_WINDOWS)
+    std::size_t length;
+    wchar_t* dest = out;
+    mbstate_t mbs;
+    memset(&mbs, 0, sizeof(mbs));
+    mbrlen ( NULL, 0, &mbs );  /* initialize mbs */
+
+    std::size_t max = static_cast<std::size_t>(inSize);
+    const char* pt = in;
+
+    Length writtent{0};
+    while( max > 0 )
+    {
+        length = mbrtowc( dest, pt, max, &mbs );
+        if( ( length == 0 ) || ( length>=max ) )
+        {
+            break;
+        }
+        wprintf (L"[%lc]", *dest);
+        pt += length;
+        max -= length;
+        ++dest;
+        ++writtent;
+        if( writtent >= outSize )
+        {
+            break;
+        }
+    }
+
+    return static_cast<decltype(outSize)>( writtent );
+#endif // #if defined(CUL_WINDOWS)
 }
 
 Length String::charToWideString( Length codePage, wchar_t& out, char in )
@@ -2167,7 +2199,7 @@ void String::grow( Length targetSize, bool keepValue )
 
     if( oldCapacity != SSO_Size )
     {
-        delete m_value;
+        delete[] m_value;
     }
 
     m_value = newArray;

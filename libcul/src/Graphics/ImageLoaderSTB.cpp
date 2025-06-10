@@ -46,7 +46,9 @@ IImage* STBIImageLoader::loadImage( const FS::Path& path, bool )
     }
 
     auto iimage = new ImageConcrete();
-    iimage->setData( data );
+    iimage->setData( data, [](void* inPtr){
+        stbi_image_free( inPtr );
+    } );
     iimage->setImageInfo( ii );
 
     return iimage;

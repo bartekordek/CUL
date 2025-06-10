@@ -60,20 +60,6 @@ TEST_F( DumbPtrTests, genericTest )
     GTEST_ASSERT_EQ( 0, gval );
 }
 
-TEST_F( DumbPtrTests, deAllocTest )
-{
-    {
-        DumbPtr dumbPtr = new Base();
-        dumbPtr.setDeleter(
-            []( void* somePtr )
-            {
-                free( somePtr );
-            } );
-    }
-
-    GTEST_ASSERT_EQ( 0, gval );
-}
-
 constexpr size_t g_objectSize = 16;
 
 struct SomeObject

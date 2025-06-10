@@ -2,6 +2,7 @@
 
 #include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
+#include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
 NAMESPACE_BEGIN( CUL )
 

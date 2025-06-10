@@ -139,6 +139,31 @@
             "dependsOn": "[LINUX][CMAKE][CREATE][DEBUG]"
         },
         {
+            "label": "[LINUX][DEBUG][BUILLD][libculTests_static][Faster]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build-Linux",
+                "--config",
+                "DEBUG",
+                "-j16",
+                "--target",
+                "libculTests_static"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
             "label": "[LINUX][DEBUG][BUILLD][libculTests_dynamic]",
             "type": "shell",
             "command": "cmake",

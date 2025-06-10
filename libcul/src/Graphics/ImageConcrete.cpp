@@ -22,10 +22,17 @@ void ImageConcrete::setPath( const FS::Path& path )
     m_imageInfo.path = path;
 }
 
-void ImageConcrete::setData( DataType* data)
+void ImageConcrete::setData( DataType* data )
 {
     releaseImage();
     m_data = data;
+}
+
+void ImageConcrete::setData( DataType* data, std::function<void(void*)> deleter )
+{
+    releaseImage();
+    m_data = data;
+    m_deleter = deleter;
 }
 
 void ImageConcrete::setImageInfo( const ImageInfo& ii )
@@ -40,6 +47,14 @@ ImageConcrete::~ImageConcrete()
 
 void ImageConcrete::releaseImage()
 {
-    delete[] m_data;
+    if( m_deleter )
+    {
+        m_deleter( m_data );
+    }
+    else
+    {
+        delete[] m_data;
+    }
+
     m_data = nullptr;
 }
