@@ -19,10 +19,10 @@ NAMESPACE_BEGIN( MATH )
 using ST = TriangleRectangularSimple2D;
 #if _MSC_VER
 #pragma warning( push )
-#pragma warning( disable: 4514 )
-#pragma warning( disable: 4625 )
-#pragma warning( disable: 4710 )
-#pragma warning( disable: 4820 )
+#pragma warning( disable : 4514 )
+#pragma warning( disable : 4625 )
+#pragma warning( disable : 4710 )
+#pragma warning( disable : 4820 )
 #endif
 template <typename Type>
 class Vector3D: public Epsilon<Type>, public ISerializable, public GUTILS::IOnChange
@@ -48,9 +48,7 @@ public:
         setAxisValue( AxisCarthesian::Z, zVal );
     }
 
-    Vector3D( const Vector3D<Type>& v2 ):
-        ISerializable(),
-        GUTILS::IOnChange()
+    Vector3D( const Vector3D<Type>& v2 ) : ISerializable(), GUTILS::IOnChange()
     {
         copyFromOtherVector( v2 );
     }
@@ -70,10 +68,7 @@ public:
     {
         auto index = static_cast<AxisCarthesian>( 0 );
         auto indexR = static_cast<RotationType>( 0 );
-        for(
-            unsigned i = static_cast<unsigned>( AxisCarthesian::X );
-            i < static_cast<unsigned>( AxisCarthesian::ERROR );
-            ++i )
+        for( unsigned i = static_cast<unsigned>( AxisCarthesian::X ); i < static_cast<unsigned>( AxisCarthesian::ERROR ); ++i )
         {
             index = static_cast<AxisCarthesian>( i );
             indexR = static_cast<RotationType>( i );
@@ -101,11 +96,11 @@ public:
         result = result + tabs + "\"rotation\":\n";
         result = result + tabs + "{\n";
         result = result + tabs +
-        "    \"yaw\": " + String( m_rotationTraingles[(size_t)RotationType::YAW].getAngle().getValueF( angleType ) ) + ",\n";
+                 "    \"yaw\": " + String( m_rotationTraingles[(size_t)RotationType::YAW].getAngle().getValueF( angleType ) ) + ",\n";
         result = result + tabs +
-        "    \"pitch\": " + String( m_rotationTraingles[(size_t)RotationType::PITCH].getAngle().getValueF( angleType ) ) + ",\n";
+                 "    \"pitch\": " + String( m_rotationTraingles[(size_t)RotationType::PITCH].getAngle().getValueF( angleType ) ) + ",\n";
         result = result + tabs +
-        "    \"roll\": " + String( m_rotationTraingles[(size_t)RotationType::ROLL].getAngle().getValueF( angleType ) ) + "\n";
+                 "    \"roll\": " + String( m_rotationTraingles[(size_t)RotationType::ROLL].getAngle().getValueF( angleType ) ) + "\n";
         result = result + tabs + "}\n";
         return result;
     }
@@ -157,10 +152,7 @@ public:
         setAxisValue( AxisCarthesian::Z, val );
     }
 
-    void setXYZ(
-        const Type xVal,
-        const Type yVal,
-        const Type zVal )
+    void setXYZ( const Type xVal, const Type yVal, const Type zVal )
     {
         setAxisValue( AxisCarthesian::X, xVal );
         setAxisValue( AxisCarthesian::Y, yVal );
@@ -213,9 +205,7 @@ public:
 
     bool operator==( const Vector3D& ivector ) const
     {
-        if(
-            Epsilon<Type>::equals( getX(), ivector.getX() ) &&
-            Epsilon<Type>::equals( getY(), ivector.getY() ) &&
+        if( Epsilon<Type>::equals( getX(), ivector.getX() ) && Epsilon<Type>::equals( getY(), ivector.getY() ) &&
             Epsilon<Type>::equals( getZ(), ivector.getZ() ) )
         {
             return true;
@@ -266,13 +256,13 @@ public:
     // How to fix this.
     // TODO
 #pragma warning( push )
-#pragma warning( disable: 5045 )
+#pragma warning( disable : 5045 )
 #endif
     Vector3D<Type>& operator*=( const Type& t )
     {
         for( size_t i = static_cast<size_t>( AxisCarthesian::X ); i < static_cast<size_t>( AxisCarthesian::ERROR ); ++i )
         {
-            m_values[ i ] *= t;
+            m_values[i] *= t;
         }
         return *this;
     }
@@ -302,7 +292,7 @@ public:
         return result;
     }
 
-    //TODO:
+    // TODO:
     Vector3D<Type>& operator-=( const Vector3D<Type>& right )
     {
         auto index = static_cast<AxisCarthesian>( 0 );
@@ -485,14 +475,14 @@ using Vector3Df = Vector3D<float>;
 // How to fix this.
 // TODO
 #pragma warning( push )
-#pragma warning( disable: 5045 )
+#pragma warning( disable : 5045 )
 #endif
 template <typename Type>
 const Type max( const std::vector<Vector3D<Type>>& values, const Axis axis )
 {
     CUL::Assert::simple( values.size() != 0, "VECTOR IS EMPTY." );
     Type result = values.at( 0 ).getAxis( axis );
-    for( const auto value : values )
+    for( const auto& value : values )
     {
         if( value.getAxis( axis ) > result )
         {
@@ -507,7 +497,7 @@ const Type min( const std::vector<Vector3D<Type>>& values, const Axis axis )
 {
     CUL::Assert::simple( values.size() != 0, "VECTOR IS EMPTY." );
     Type result = values.at( 0 ).getAxis( axis );
-    for( const auto value : values )
+    for( const auto& value : values )
     {
         if( value.getAxis( axis ) < result )
         {
@@ -533,11 +523,7 @@ const Type min( const Vector3D<Type>& p1, const Vector3D<Type>& p2, const Axis a
 }
 
 template <typename Type>
-const Type max(
-    const Vector3D<Type>& p1,
-    const Vector3D<Type>& p2,
-    const Vector3D<Type>& p3,
-    const AxisCarthesian axis )
+const Type max( const Vector3D<Type>& p1, const Vector3D<Type>& p2, const Vector3D<Type>& p3, const AxisCarthesian axis )
 {
     const Type v1 = p1.getAxis( axis );
     const Type v2 = p2.getAxis( axis );
@@ -546,11 +532,7 @@ const Type max(
 }
 
 template <typename Type>
-const Type max(
-    const Vector3D<Type>& p1,
-    const Vector3D<Type>& p2,
-    const Vector3D<Type>& p3,
-    const Axis axis )
+const Type max( const Vector3D<Type>& p1, const Vector3D<Type>& p2, const Vector3D<Type>& p3, const Axis axis )
 {
     const Type v1 = p1.getAxis( axis );
     const Type v2 = p2.getAxis( axis );
@@ -559,11 +541,7 @@ const Type max(
 }
 
 template <typename Type>
-const Type min(
-    const Vector3D<Type>& p1,
-    const Vector3D<Type>& p2,
-    const Vector3D<Type>& p3,
-    const AxisCarthesian axis )
+const Type min( const Vector3D<Type>& p1, const Vector3D<Type>& p2, const Vector3D<Type>& p3, const AxisCarthesian axis )
 {
     const Type v1 = p1.getAxis( axis );
     const Type v2 = p2.getAxis( axis );
@@ -573,11 +551,7 @@ const Type min(
 }
 
 template <typename Type>
-const Type min(
-    const Vector3D<Type>& p1,
-    const Vector3D<Type>& p2,
-    const Vector3D<Type>& p3,
-    const Axis axis )
+const Type min( const Vector3D<Type>& p1, const Vector3D<Type>& p2, const Vector3D<Type>& p3, const Axis axis )
 {
     const Type v1 = p1.getAxis( axis );
     const Type v2 = p2.getAxis( axis );

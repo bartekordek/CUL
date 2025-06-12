@@ -13,17 +13,20 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/runDir",
             "environment": [],
+            "env": {
+                "TRACY_NO_INVARIANT_CHECK": "1"
+            },
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
+                    "ignoreFailures": true,
                 }
             ],
-            "preLaunchTask": "[LINUX][DEBUG][BUILLD][libculTests_static]",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "[LINUX][DEBUG][BUILLD][libculTests_static][Faster]"
         },
         {
             "name": "[Windows] Run tests",
