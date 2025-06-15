@@ -2232,6 +2232,108 @@ void String::resetWithMaxValue()
 #endif // CUL_DEBUG_STRING
 }
 
+void String::removeFromStart( const wchar_t* inStr )
+{
+    std::size_t inStrLen{0u};
+    if( startsWith( inStr, &inStrLen ) == false )
+    {
+        return;
+    }
+
+    const std::size_t sizeAsSizeT = static_cast<std::size_t>( m_size );
+    const std::size_t newSize = sizeAsSizeT - inStrLen;
+    for( std::size_t i = 0u; i < sizeAsSizeT; ++i )
+    {
+        if( i < newSize )
+        {
+            m_value[i] = m_value[i + inStrLen];
+        }
+        else
+        {
+            m_value[i] = NullTerminator;
+        }
+    }
+
+    m_size = static_cast<Length>( newSize );
+}
+
+bool String::startsWith( const wchar_t* inStr, std::size_t* outInStrLen ) const
+{
+#if CUL_USE_WCHAR
+    const std::wstring sample = inStr;
+#else   // #if CUL_USE_WCHAR
+    std::string sample;
+    wideStringToChar( sample, inStr );
+#endif  // #if CUL_USE_WCHAR
+
+    const std::size_t inStrLen = sample.size();
+    const Length inStrLenLen = static_cast<Length>( inStrLen );
+    if( outInStrLen )
+    {
+        *outInStrLen = inStrLenLen;
+    }
+
+    for( std::size_t i = 0u; i < inStrLen && i < static_cast<std::size_t>( m_size ); ++i )
+    {
+        if( sample[i] != m_value[i] )
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void String::removeFromStart( const char* inStr )
+{
+    std::size_t inStrLen{ 0u };
+    if( startsWith( inStr, &inStrLen ) == false )
+    {
+        return;
+    }
+
+    const std::size_t sizeAsSizeT = static_cast<std::size_t>( m_size );
+    const std::size_t newSize = sizeAsSizeT - inStrLen;
+    for( std::size_t i = 0u; i < sizeAsSizeT; ++i )
+    {
+        if( i < newSize )
+        {
+            m_value[i] = m_value[i + inStrLen];
+        }
+        else
+        {
+            m_value[i] = NullTerminator;
+        }
+    }
+
+    m_size = static_cast<Length>( newSize );
+}
+
+bool String::startsWith( const char* inStr, std::size_t* outInStrLen ) const
+{
+#if CUL_USE_WCHAR
+    std::wstring sample;
+    charToWideString( sample, inStr );
+#else   // #if CUL_USE_WCHAR
+    const std::string sample = inStr;
+#endif  // #if CUL_USE_WCHAR
+
+    const std::size_t inStrLen = sample.size();
+    const Length inStrLenLen = static_cast<Length>( inStrLen );
+
+    if( outInStrLen )
+    {
+        *outInStrLen = inStrLen;
+    }
+
+    for( std::size_t i = 0u; i < inStrLen && i < static_cast<std::size_t>( m_size ); ++i )
+    {
+        if( sample[i] != m_value[i] )
+        {
+            return false;
+        }
+    }
+    return true;
+}
 void String::removeTrailingLineEnd()
 {
     const std::int32_t stringLength = static_cast<std::int32_t>( m_size );

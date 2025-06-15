@@ -18,10 +18,6 @@ void ArgumentsPairConcrete::pushArg( const String& name, const String& value )
     m_values.push_back( nv );
 }
 
-ArgumentsPairConcrete::~ArgumentsPairConcrete()
-{
-}
-
 #ifdef _MSC_VER
 // Yes, I know that is a Spectre mitigation.
 // But for now, I let this as TODO, since i don't know
@@ -130,4 +126,8 @@ const String& ArgumentsPairConcrete::getFlagValue(
     {
         return id->value;
     }
+}
+
+ArgumentsPairConcrete::~ArgumentsPairConcrete()
+{
 }

@@ -256,6 +256,11 @@ public:
     static void toUpper( wchar_t* inOut, std::int32_t size );
 
     void removeTrailingLineEnd();
+    void removeFromStart( const wchar_t* inStr );
+    void removeFromStart( const char* inStr );
+
+    bool startsWith( const char* inArg, std::size_t* outInStrLen = nullptr ) const;
+    bool startsWith( const wchar_t* inArg, std::size_t* outInStrLen = nullptr ) const;
 
     static String createFromPrintf( const char* msg... );
 
