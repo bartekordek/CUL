@@ -1790,10 +1790,10 @@ void String::copyString( char* target, const char* source )
     copyString( target, strLen( target ), source, strLen( source ) );
 }
 
-void String::copyString(char* target, Length targetSize, const char* source, Length sourceSize)
+void String::copyString( char* target, Length targetSize, const char* source, Length sourceSize )
 {
-    CUL::Assert::simple(targetSize >= sourceSize, "TARGET TOO SMALL!");
-    std::strncpy(target, source, static_cast<std::size_t>(sourceSize + 1));
+    CUL::Assert::simple( targetSize >= sourceSize, "TARGET TOO SMALL!" );
+    std::strncpy( target, source, static_cast<std::size_t>( sourceSize + 1 ) );
 }
 
 void String::copyString( wchar_t* target, const wchar_t* source )
