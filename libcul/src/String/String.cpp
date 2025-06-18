@@ -1705,7 +1705,7 @@ Length String::wideStringToChar( std::string& out, const std::wstring& inChar )
 
 Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in )
 {
-    return charToWideString( codePage, out, outSize, in, std::strlen( in ) );
+    return charToWideString( codePage, out, outSize, in, static_cast<Length>( std::strlen( in ) ) );
 }
 
 Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize )
@@ -1713,13 +1713,13 @@ Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, 
     CUL::Assert::simple( outSize >= inSize, "NOT ENOUGH PLACE FOR STRING" );
 
 #if defined(CUL_WINDOWS)
-    const int size_needed = MultiByteToWideChar( codePage,
+    const int size_needed = MultiByteToWideChar( static_cast<UINT>( codePage ),
                                                  0,       // flags
                                                  in,      // from
                                                  inSize,  // from byte count
                                                  NULL,    // to
                                                  0 );     // to char count
-    std::wstring result( size_needed, 0 );
+    std::wstring result( static_cast<std::size_t>( size_needed ), 0 );
     const std::int32_t resultSize = MultiByteToWideChar( codePage,
                          0,                                    // flags
                          in,                                   // from
@@ -1782,7 +1782,7 @@ Length String::charToWideString( std::wstring& out, const std::string& in )
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     out = converterX.from_bytes( in );
-    return out.size();
+    return static_cast<Length>( out.size() );
 }
 
 void String::copyString( char* target, const char* source )
@@ -2267,10 +2267,9 @@ bool String::startsWith( const wchar_t* inStr, std::size_t* outInStrLen ) const
 #endif  // #if CUL_USE_WCHAR
 
     const std::size_t inStrLen = sample.size();
-    const Length inStrLenLen = static_cast<Length>( inStrLen );
     if( outInStrLen )
     {
-        *outInStrLen = inStrLenLen;
+        *outInStrLen = inStrLen;
     }
 
     for( std::size_t i = 0u; i < inStrLen && i < static_cast<std::size_t>( m_size ); ++i )
@@ -2318,7 +2317,6 @@ bool String::startsWith( const char* inStr, std::size_t* outInStrLen ) const
 #endif  // #if CUL_USE_WCHAR
 
     const std::size_t inStrLen = sample.size();
-    const Length inStrLenLen = static_cast<Length>( inStrLen );
 
     if( outInStrLen )
     {
