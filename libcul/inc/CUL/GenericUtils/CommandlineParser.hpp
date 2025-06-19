@@ -4,6 +4,7 @@
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+#include "CUL/IMPORT_windows.hpp"
 
 namespace CUL
 {
@@ -24,6 +25,9 @@ public:
     CULLib_API const String getFlagValue( const String& inFlagName ) const;
     CULLib_API const String& getExecutablePath() const;
     CULLib_API const String& getAppName() const;
+#if defined( CUL_WINDOWS )
+    CULLib_API void passVariables( HINSTANCE inInst, PSTR cmd );
+#endif // #if defined(CUL_WINDOWS)
 
 protected:
 private:

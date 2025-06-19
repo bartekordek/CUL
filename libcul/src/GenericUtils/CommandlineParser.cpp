@@ -14,6 +14,46 @@ CommandlineParser::CommandlineParser()
 {
 }
 
+#if defined( CUL_WINDOWS )
+void CommandlineParser::passVariables( HINSTANCE /*inInst*/, PSTR cmd )
+{
+    TCHAR szFileName[MAX_PATH];
+
+    GetModuleFileName( NULL, szFileName, MAX_PATH );
+
+    {
+        Argument arg;
+        arg.Index = 0;
+        arg.Name = "ExecPath";
+        arg.Value = szFileName;
+        m_values["ExecPath"] = arg;
+    }
+
+    String cmdStr = cmd;
+    const std::vector<String> splitedStr = cmdStr.split( " " );
+    const std::size_t argsCount = splitedStr.size();
+    for( std::size_t i = 0u; i < argsCount; ++i )
+    {
+        const char* argument = splitedStr[i].cStr();
+        const String argStr = argument;
+
+        Argument arg;
+        arg.Name = argStr;
+        arg.Name.removeFromStart( "--" );
+        arg.Index = static_cast<decltype( arg.Index )>( i );
+        if( i + 1 < argsCount )
+        {
+            const String argValue = splitedStr[i + 1];
+            if( argValue.startsWith( "--" ) == false )
+            {
+                arg.Value = argValue;
+            }
+        }
+        m_values[arg.Name.string()] = arg;
+    }
+}
+#endif  // #if defined(CUL_WINDOWS)
+
 void CommandlineParser::passVariables( const std::int32_t argc, const char** argv )
 {
     const std::size_t argCount = static_cast<std::size_t>( argc );
@@ -44,7 +84,7 @@ void CommandlineParser::passVariables( const std::int32_t argc, const char** arg
             Argument arg;
             arg.Name = argStr;
             arg.Name.removeFromStart( "--" );
-            arg.Index = i;
+            arg.Index = static_cast<decltype( arg.Index )>( i );
             if( i + 1 < argCount )
             {
                 const String argValue = argv[i + 1];
@@ -58,7 +98,7 @@ void CommandlineParser::passVariables( const std::int32_t argc, const char** arg
     }
 }
 
-const String CommandlineParser::getArgument( std::size_t inArg ) const
+const String CommandlineParser::getArgument( std::size_t /*inArg*/ ) const
 {
     return {};
 }
@@ -89,7 +129,7 @@ const String& CommandlineParser::getAppName() const
     return appName;
 }
 
-const String CommandlineParser::getFlagValue( const String& inFlagName ) const
+const String CommandlineParser::getFlagValue( const String& /*inFlagName*/ ) const
 {
     return {};
 }
