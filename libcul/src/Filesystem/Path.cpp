@@ -171,6 +171,16 @@ const String& Path::getDir() const
     return m_dir;
 }
 
+bool Path::isRootOf( const Path& inPath ) const
+{
+    if( inPath.getPath().contains( "Music" ) )
+    {
+        auto x = 0;
+    }
+
+    return inPath.m_dir.contains( m_dir );
+}
+
 uint64_t Path::getFileSize() const
 {
     auto calculateSize = [this]() {
@@ -311,7 +321,16 @@ void Path::preparePaths()
     {
         m_extension.erase( 0 );
     }
-    m_dir = bPath.parent_path();
+
+    m_isDir = FSCpp::is_directory( bPath );
+    if( m_isDir )
+    {
+        m_dir = bPath;
+    }
+    else
+    {
+        m_dir = bPath.parent_path();
+    }
 #else
     FsPath bPath( m_fullPath.string() );
     auto bPathAsString = bPath.string();
@@ -327,15 +346,19 @@ void Path::preparePaths()
     }
 
     auto parentPath = bPath.parent_path();
-
-    if (parentPath.empty())
-    {
-        auto x = 0;
-    }
-
     auto parentPathAsString = parentPath.string();
 
     m_dir = parentPathAsString;
+
+    m_isDir = FSCpp::is_directory( bPath );
+    if( m_isDir )
+    {
+        m_dir = bPath;
+    }
+    else
+    {
+        m_dir = parentPathAsString;
+    }
 #endif
     normalizePaths();
 }

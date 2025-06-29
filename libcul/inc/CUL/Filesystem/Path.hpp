@@ -62,6 +62,7 @@ public:
 
     bool exists() const;
     bool getIsEmpty() const;
+    bool isRootOf( const Path& inPath ) const;
 
     virtual ~Path();
 

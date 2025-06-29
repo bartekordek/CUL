@@ -33,6 +33,11 @@ using namespace FS;
 
 static FileDatabase* g_dbInstance = nullptr;
 
+void EscapeCharacters(String& inOutString)
+{
+    inOutString.replace( "\\", "\\\\" );
+}
+
 bool FileDatabase::FileInfo::operator==( const FileInfo& second ) const
 {
     return ( Size == second.Size ) && ( MD5 == second.MD5 );
@@ -118,13 +123,19 @@ void FileDatabase::getFiles( uint64_t size, const CUL::String& md5, std::vector<
     const CUL::String sqlQuery = CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\" AND MD5=\"" + md5 + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** ) {
         CUL::String filePath( argv[0] );
-        filePath.deserialize();
         const CUL::String size = argv[1];
         const CUL::String md5 = argv[2];
         const CUL::String lastMod = argv[3];
         auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
         FileInfo fi;
         fi.FilePath = filePath;
+        CUL::String pathCopy = fi.FilePath.getPath();
+        if( pathCopy.empty() == false )
+        {
+            pathCopy.singleQuoteRestore();
+            fi.FilePath = pathCopy;
+        }
+
         fi.MD5 = md5;
         fi.ModTime = lastMod;
         fi.Size = size;
@@ -153,6 +164,7 @@ void FileDatabase::getFiles( uint64_t size, std::vector<FileInfo>& out ) const
         const CUL::String lastMod = argv[3];
         auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
         FileInfo fi;
+        filePath.singleQuoteRestore();
         fi.FilePath = filePath;
         fi.MD5 = md5;
         fi.ModTime = lastMod;
@@ -192,13 +204,12 @@ void FileDatabase::loadFilesFromDatabase()
         ZoneScoped;
         ListAndApi* rd = reinterpret_cast<ListAndApi*>( thisPtrValue );
         String file( argv[0] );
-        file.deserialize();
+        file.singleQuoteRestore();
 
         if( file.find( L"descriptorsets_vk.cpp" ) != -1 )
         {
             auto x = 0;
             String filex( argv[0] );
-            filex.deserialize();
         }
 
         rd->FilesList.push_back( file );
@@ -301,7 +312,6 @@ void FileDatabase::getFilesMatching( const CUL::String& fileSize, const CUL::Str
     auto callback = [] ( void* voidValue, int argc, char** argv, char** info ){
         std::list<CUL::String>* resultPtr = reinterpret_cast<std::list<CUL::String>*>( voidValue );
         CUL::String foundPath( argv[0] );
-        foundPath.deserialize();
         resultPtr->push_back( foundPath );
         return 0;
     };
@@ -345,6 +355,8 @@ int64_t FileDatabase::getFileCount() const
 
 void FileDatabase::initDb()
 {
+    constexpr std::size_t sizeOfWchar = sizeof( wchar_t );
+
     ZoneScoped;
     CUL::ThreadUtil::getInstance().setThreadStatus( "Initi db..." );
     int rc = sqlite3_open( m_databasePath.getPath().cStr(), &m_db );
@@ -364,7 +376,7 @@ void FileDatabase::initDb()
     {
         sqlQuery =
             "CREATE TABLE FILES (\
-        PATH varchar(1024),\
+        PATH BINARY(2048),\
         SIZE BIGINT(255),\
         MD5 varchar(1024),\
         LAST_MODIFICATION varchar(1024),\
@@ -384,13 +396,8 @@ void FileDatabase::initDb()
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
 {
     ZoneScoped;
-    if( filePath.contains("Adam Boduch") )
-    {
-        const auto x = 0;
-    }
-
     CUL::String filePathNormalized = filePath;
-    filePathNormalized.serialize();
+    filePathNormalized.singleQuoteEscape();
     auto foundFile = getFileInfo( filePath );
     char* zErrMsg = nullptr;
     auto callback = [] ( void*, int, char**, char** ){
@@ -447,13 +454,14 @@ FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
     waitForInit();
     FileDatabase::FileInfo result;
     String pathInBinary = path;
-    pathInBinary.serialize();
+    pathInBinary.singleQuoteEscape();
     const std::string binaryForm = pathInBinary.cStr();
     String sqlQuery =
         "SELECT * \
 FROM FILES \
 WHERE PATH='" +
         binaryForm + "';";
+    pathInBinary.singleQuoteRestore();
 
     const char* queryAsCharPtr = sqlQuery.cStr();
     auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
@@ -463,14 +471,13 @@ WHERE PATH='" +
         fileInfoFromPtr->MD5 = argv[2];
         fileInfoFromPtr->Size = argv[1];
         fileInfoFromPtr->ModTime = argv[3];
-        path.deserialize();
-        fileInfoFromPtr->FilePath = path;
 
         return 0;
     };
     char* zErrMsg = nullptr;
 
     int rc = sqlite3_exec( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+    result.FilePath = pathInBinary;
 
     constexpr bool PrintInfo = false;
     if( PrintInfo  && !result.Found )
@@ -508,7 +515,7 @@ void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
     snprintf( buffer, bufferSize, "FileDatabase::removeFileFromDB pathRaw: %s", pathRaw.cStr() );
     CUL::ThreadUtil::getInstance().setThreadStatus( buffer );
     CUL::String path = pathRaw;
-    path.serialize();
+    path.singleQuoteEscape();
 
     const std::string binaryForm = path.cStr();
     std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + binaryForm + "';";
@@ -539,11 +546,9 @@ void FileDatabase::removeFilesFromDb( const std::vector<CUL::String>& paths )
         CUL::String pathNormal = paths[i];
 
         auto pathSanitized = pathNormal;
-        pathSanitized.serialize();
         pathsListed += pathSanitized + "', '";
     }
     CUL::String lastPath = paths[pathsSize - 1];
-    lastPath.serialize();
     pathsListed += lastPath + "')";
 
     CUL::String sqlQuery = CUL::String( "DELETE FROM FILES WHERE PATH IN " ) + pathsListed + ";";
