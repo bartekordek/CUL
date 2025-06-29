@@ -32,6 +32,9 @@ protected:
     void TestBody() override
     {
     }
+
+public:
+    CUL::String dummyFilePath = "../media/Dummy.txt";
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

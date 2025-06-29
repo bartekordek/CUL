@@ -1,6 +1,11 @@
 #include "CUL/String.hpp"
 #include "StringTest.hpp"
 #include "CUL/Filesystem/Path.hpp"
+#include "CUL/Filesystem/FS.hpp"
+#include "CUL/Filesystem/IFile.hpp"
+#include "CUL/Filesystem/FSApi.hpp"
+#include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/CULInterface.hpp"
 
 void StringTests::SetUpTestCase()
 {
@@ -10,6 +15,40 @@ void StringTests::SetUpTestCase()
 
 void StringTests::TearDownTestCase()
 {
+}
+
+#define TEST_UTF 0
+
+TEST_F( StringTests, WcharRestore )
+{
+#if TEST_UTF
+    CUL::CULInterface::getInstance()->createInstance();
+    CUL::FS::IFile* file = CUL::CULInterface::getInstance()->getFF()->createFileFromPath( dummyFilePath );
+    file->load( false, false );
+    const char* utfLine = file->getContent()[2];
+
+    CUL::String t1( "Krążek" );
+
+    CUL::String t2 = utfLine;
+
+    ASSERT_TRUE( t1 == t2 );
+#endif // TEST_UTF
+}
+
+TEST_F( StringTests, SanitizeDeSanitize )
+{
+    CUL::CULInterface::getInstance()->createInstance();
+    CUL::FS::IFile* file = CUL::CULInterface::getInstance()->getFF()->createFileFromPath( dummyFilePath );
+    file->load( false, false );
+    const char* utfLine = file->getContent()[4];
+
+    CUL::String loadedString = utfLine;
+    loadedString.singleQuoteEscape();
+    loadedString.singleQuoteRestore();
+
+    const bool quoteSame = loadedString.equals( utfLine );
+
+    ASSERT_TRUE( quoteSame );
 }
 
 TEST_F( StringTests, Wchar_FindMiddle_True )

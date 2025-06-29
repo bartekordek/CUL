@@ -163,6 +163,9 @@ public:
 
     String substr( Length pos = 0, Length len = -1 ) const;
 
+    Length count( wchar_t inChar ) const;
+    Length count( char inChar ) const;
+
     void toLower();
     String toLowerR()const;
     void toUpper();
@@ -173,11 +176,17 @@ public:
     void replace( const String& inWhat, const String& inFor );
     void replace( const char inWhat, const char inFor, bool allOccurences );
     void replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences );
+
+    void removeFrist();
+    void removeLast();
     void removeAll( const char inWhat );
 
     bool equals( const char* arg ) const;
     bool equals( const std::string& arg ) const;
     bool equals( const String& arg ) const;
+
+    bool doesBeginWith( const std::string& end ) const;
+    bool doesBeginWith( const std::wstring& end ) const;
 
     bool doesEndWith( const std::string& end ) const;
     bool doesEndWith( const std::wstring& end ) const;
@@ -263,6 +272,9 @@ public:
     bool startsWith( const wchar_t* inArg, std::size_t* outInStrLen = nullptr ) const;
 
     static String createFromPrintf( const char* msg... );
+
+    void singleQuoteEscape();
+    void singleQuoteRestore();
 
     ~String();
 

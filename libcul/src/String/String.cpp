@@ -18,6 +18,12 @@
 
 using namespace CUL;
 
+#if CUL_USE_WCHAR
+const std::wstring SingleQuote{ L"'" };
+#else
+const std::string SingleQuote{ "'" };
+#endif
+
 String String::createFromPrintf( const char* msg... )
 {
     va_list args;
@@ -901,6 +907,34 @@ void String::replace( const wchar_t inWhat, const wchar_t inFor, bool allOccuren
     deleteTemp();
 }
 
+void String::removeFrist()
+{
+    if( m_size == 0u )
+    {
+        return;
+    }
+
+    --m_size;
+    const auto sizeCasted = static_cast<std::size_t>( m_size );
+    for( std::size_t i = 0u; i < sizeCasted; ++i )
+    {
+        m_value[i] = m_value[i + 1];
+    }
+    m_value[sizeCasted] = NullTerminator;
+}
+
+void String::removeLast()
+{
+    if( m_size == 0u )
+    {
+        return;
+    }
+
+    --m_size;
+    const auto sizeCasted = static_cast<std::size_t>( m_size );
+    m_value[sizeCasted] = NullTerminator;
+}
+
 void String::removeAll( const char inWhat )
 {
 #if CUL_USE_WCHAR
@@ -944,6 +978,55 @@ bool String::equals( const std::string& arg ) const
 bool String::equals( const String& arg ) const
 {
     return m_value == arg.m_value;
+}
+
+bool String::doesBeginWith( const std::string& end ) const
+{
+    if( m_size == 0 )
+    {
+        return false;
+    }
+
+    const auto endLen_t = end.size();
+    const auto endLen = static_cast<Length>( endLen_t );
+
+    if( m_size < endLen )
+    {
+        return false;
+    }
+
+#if CUL_USE_WCHAR
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
+    const std::wstring stringCpy = converterX.from_bytes( end );
+    return equals( &m_value[0], stringCpy.c_str(), endLen_t );
+#else   // #if CUL_USE_WCHAR
+    return equals( &m_value[0], end.c_str(), endLen_t );
+#endif  // #if CUL_USE_WCHAR
+}
+
+bool String::doesBeginWith( const std::wstring& end ) const
+{
+    if( m_size == 0 )
+    {
+        return false;
+    }
+
+    const auto endLen_t = end.size();
+    const auto endLen = static_cast<Length>( endLen_t );
+
+    if( m_size < endLen )
+    {
+        return false;
+    }
+
+#if CUL_USE_WCHAR
+    return equals( &m_value[0], end.c_str(), endLen_t );
+#else   // #if CUL_USE_WCHAR
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
+    const std::string stringCpy = converterX.to_bytes( end );
+
+    return equals( &m_value[0], stringCpy.c_str(), stringCpy.size() );
+#endif  // #if CUL_USE_WCHAR
 }
 
 bool String::doesEndWith( const std::string& end ) const
@@ -2349,6 +2432,177 @@ void String::removeTrailingLineEnd()
         }
     }
     deleteTemp();
+}
+
+void String::singleQuoteEscape()
+{
+    if( m_size == 0u )
+    {
+        return;
+    }
+
+    if( contains( "''" ) )
+    {
+        auto y = 0;
+    }
+
+    const Length sizeCast = static_cast<Length>( m_size );
+    for( Length i = sizeCast - 1; i >= 0; )
+    {
+        const std::size_t iCast = static_cast<std::size_t>( i );
+        if( m_value[iCast] != SingleQuote[0] )
+        {
+            --i;
+            continue;
+        }
+
+        if( i < 1 )
+        {
+            --i;
+            continue;
+        }
+
+        Length consecutiveQuotesCount{ 0 };
+        Length sizeCast2 = static_cast<Length>( m_size );
+        for( Length j = i; j >= 0; --j )
+        {
+            const std::size_t jCast = static_cast<std::size_t>( j );
+            if( m_value[jCast] == SingleQuote[0] )
+            {
+                ++consecutiveQuotesCount;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        const auto newSize = m_size + consecutiveQuotesCount;
+        grow( newSize, true );
+        m_size = newSize;
+
+        m_value[m_size] = NullTerminator;
+        sizeCast2 = static_cast<Length>( m_size );
+        for( Length j = sizeCast2 - 1; j > i; --j )
+        {
+            std::size_t jCast = static_cast<std::size_t>( j );
+            m_value[j] = m_value[j - consecutiveQuotesCount];
+        }
+
+        i -= consecutiveQuotesCount;
+    }
+}
+
+void String::singleQuoteRestore()
+{
+    if( m_size == 0u )
+    {
+        return;
+    }
+
+    if( count( std::string( "'" )[0] ) > 1 )
+    {
+        auto x = 0;
+    }
+
+    Length sizeCast = static_cast<Length>( m_size );
+    for( Length i = 0; i < m_size;  )
+    {
+        const std::size_t iCast = static_cast<std::size_t>( i );
+
+        if( m_value[iCast] != SingleQuote[0] )
+        {
+            ++i;
+            continue;
+        }
+
+        Length consecutiveQuotesCount{ 0 };
+        Length sizeCast2 = static_cast<Length>( m_size );
+        for( Length j = i; j < m_size; ++j )
+        {
+            const std::size_t jCast = static_cast<std::size_t>( j );
+            if( m_value[jCast] == SingleQuote[0] )
+            {
+                ++consecutiveQuotesCount;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if( consecutiveQuotesCount < 2 )
+        {
+            ++i;
+            continue;
+        }
+
+        const Length reduceSize = consecutiveQuotesCount > 1 ? consecutiveQuotesCount / 2 : 0;
+        const std::size_t reduceSizeCast = static_cast<std::size_t>( reduceSize );
+        const auto newSize = m_size - reduceSize;
+        const auto newSizeCast = static_cast<std::size_t>( newSize );
+
+        for( std::size_t j = i; j < newSizeCast; ++j )
+        {
+            m_value[j] = m_value[j + reduceSizeCast];
+        }
+        m_size = newSize;
+        m_value[m_size] = NullTerminator;
+        i += reduceSizeCast;
+    }
+}
+
+Length String::count( wchar_t inChar ) const
+{
+    if( m_size == 0u )
+    {
+        return 0;
+    }
+
+    Length result{ 0 };
+
+#if CUL_USE_WCHAR
+    wchar_t toBeFound = inChar;
+#else
+    char toBeFound;
+    wideStringToChar( toBeFound, inChar );
+#endif
+    const std::size_t sizeCasted = static_cast<std::size_t>( m_size );
+    for( std::size_t i = 0; i < sizeCasted; ++i )
+    {
+        if( m_value[i] == toBeFound )
+        {
+            ++result;
+        }
+    }
+
+    return result;
+}
+
+Length String::count( char inChar ) const
+{
+    if( m_size == 0u )
+    {
+        return 0;
+    }
+
+    Length result{ 0 };
+#if CUL_USE_WCHAR
+    wchar_t toBeFound;
+    charToWideString( CP_ACP, toBeFound, inChar );
+#else
+    char toBeFound = inChar;
+#endif
+    const std::size_t sizeCasted = static_cast<std::size_t>( m_size );
+    for( std::size_t i = 0; i < sizeCasted; ++i )
+    {
+        if( m_value[i] == toBeFound )
+        {
+            ++result;
+        }
+    }
+
+    return result;
 }
 
 String::~String()

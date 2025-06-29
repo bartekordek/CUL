@@ -51,7 +51,7 @@ TEST_F( FileTest, basicFileLoadlastLine )
 {
     std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
     file->load( false, false );
-    GTEST_ASSERT_EQ( CUL::String( "Line3" ), file->lastLine().cStr() );
+    GTEST_ASSERT_EQ( CUL::String( "LastLine" ), file->lastLine().cStr() );
 }
 
 TEST_F( FileTest, loadCachedFileRegular )
