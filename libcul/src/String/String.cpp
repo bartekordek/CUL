@@ -793,6 +793,7 @@ void String::replace( const String& inWhat, const String& inFor )
         {
             m_value[i] = inFor.m_value[i - index];
         }
+        setSize( newSize );
     }
     else if(diff < 0 )
     {
@@ -1745,16 +1746,26 @@ Length String::wideStringToChar( char* out, Length outSize, const wchar_t* in )
     return wideStringToChar( out, outSize, in, strLen( in ) );
 }
 
-Length String::wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize )
+Length String::wideStringToChar( char* out, Length outSize, const wchar_t* inChar, Length inSize )
 {
+#if CUL_USE_WCHAR
+    UINT codePage = CP_ACP;
+    DWORD dwFlags = WC_COMPOSITECHECK;
+    const int sizeNeeded = WideCharToMultiByte( codePage, dwFlags, inChar, inSize + 1, NULL, 0, NULL, NULL );
+
+    const auto convertedLength = WideCharToMultiByte( codePage, dwFlags, inChar, inSize + 1, out, sizeNeeded, NULL, NULL );
+
+    return convertedLength;
+#else // #if CUL_USE_WCHAR
     std::size_t result = 0u;
 
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
-    const std::string stringCpy = converterX.to_bytes(in);
+    const std::string stringCpy = converterX.to_bytes( inChar );
     copyString( out, outSize, stringCpy.c_str(), stringCpy.size() );
 
-    return true;
+    return String::strLen( out );
+#endif // #if CUL_USE_WCHAR
 }
 
 Length String::wideStringToChar( char& inOut, wchar_t inChar)
@@ -1767,8 +1778,7 @@ Length String::wideStringToChar( char& inOut, wchar_t inChar)
     char result[4];
     const auto convertedLength = WideCharToMultiByte( codePage, dwFlags, &inChar, 1, &result[0], sizeNeeded, NULL, NULL );
 
-    return 1;
-
+    return convertedLength;
 #else // #if CUL_USE_WCHAR
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -2434,16 +2444,55 @@ void String::removeTrailingLineEnd()
     deleteTemp();
 }
 
-void String::singleQuoteEscape()
+void String::sanitize()
+{
+    singleQuoteEscape();
+}
+
+void String::escapeCharacter( const UnderlyingType& characterToEscape )
 {
     if( m_size == 0u )
     {
         return;
     }
 
-    if( contains( "''" ) )
+    const Length sizeCast = static_cast<Length>( m_size );
+    for( Length i = sizeCast - 1; i >= 0; )
     {
-        auto y = 0;
+        const std::size_t iCast = static_cast<std::size_t>( i );
+        if( m_value[iCast] != characterToEscape[0] )
+        {
+            --i;
+            continue;
+        }
+
+        if( i < 1 )
+        {
+            --i;
+            continue;
+        }
+
+        const auto newSize = m_size + 1;
+        grow( newSize, true );
+        m_size = newSize;
+
+        m_value[m_size] = NullTerminator;
+        const auto sizeCast2 = static_cast<Length>( m_size );
+        for( Length j = sizeCast2 - 1; j > i; --j )
+        {
+            std::size_t jCast = static_cast<std::size_t>( j );
+            m_value[j] = m_value[j - 1];
+        }
+
+        i -= 1;
+    }
+}
+
+void String::singleQuoteEscape()
+{
+    if( m_size == 0u )
+    {
+        return;
     }
 
     const Length sizeCast = static_cast<Length>( m_size );
@@ -2505,7 +2554,6 @@ void String::singleQuoteRestore()
         auto x = 0;
     }
 
-    Length sizeCast = static_cast<Length>( m_size );
     for( Length i = 0; i < m_size;  )
     {
         const std::size_t iCast = static_cast<std::size_t>( i );
@@ -2517,7 +2565,6 @@ void String::singleQuoteRestore()
         }
 
         Length consecutiveQuotesCount{ 0 };
-        Length sizeCast2 = static_cast<Length>( m_size );
         for( Length j = i; j < m_size; ++j )
         {
             const std::size_t jCast = static_cast<std::size_t>( j );

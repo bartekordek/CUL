@@ -4,6 +4,7 @@
 #include "CUL/ITimer.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/Threading/TaskCallback.hpp"
+#include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 
 using namespace CUL;
 

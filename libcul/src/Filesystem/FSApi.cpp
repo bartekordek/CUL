@@ -174,12 +174,13 @@ IFile* FSApi::getDirectory( const Path& directory )
 bool FSApi::isRegularFile( const String& path )
 {
     std::error_code existsErrorCode;
-    const auto pathChar = path.cStr();
-    const bool result = std::filesystem::is_regular_file( pathChar, existsErrorCode );
+    const std::filesystem::path filePath = path.getChar();
+    const bool result = std::filesystem::is_regular_file( filePath, existsErrorCode );
     if( existsErrorCode.value() != 0 )
     {
         const std::string errorCodeMessageStr = existsErrorCode.message();
-        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "[%s] %s", pathChar, errorCodeMessageStr.c_str() );
+        const auto pathString = filePath.string();
+        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "FSApi::isRegularFile: [%s] %s", pathString.c_str(), errorCodeMessageStr.c_str() );
     }
     return result;
 }

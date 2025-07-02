@@ -173,7 +173,7 @@ const String& Path::getDir() const
 
 bool Path::isRootOf( const Path& inPath ) const
 {
-    if( inPath.getPath().contains( "Music" ) )
+    if( inPath.getPath().contains( "D:/Music" ) )
     {
         auto x = 0;
     }

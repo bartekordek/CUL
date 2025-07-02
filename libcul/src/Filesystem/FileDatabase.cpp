@@ -204,9 +204,9 @@ void FileDatabase::loadFilesFromDatabase()
         ZoneScoped;
         ListAndApi* rd = reinterpret_cast<ListAndApi*>( thisPtrValue );
         String file( argv[0] );
-        file.singleQuoteRestore();
+        //file.singleQuoteRestore();
 
-        if( file.find( L"descriptorsets_vk.cpp" ) != -1 )
+        if( file.find( L"Wniosek" ) != -1 )
         {
             auto x = 0;
             String filex( argv[0] );
@@ -396,8 +396,14 @@ void FileDatabase::initDb()
 void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime )
 {
     ZoneScoped;
+
+    if( filePath.contains( "fantastycznego humoru.doc" ) )
+    {
+        auto x = 0;
+    }
+
     CUL::String filePathNormalized = filePath;
-    filePathNormalized.singleQuoteEscape();
+    filePathNormalized.sanitize();
     auto foundFile = getFileInfo( filePath );
     char* zErrMsg = nullptr;
     auto callback = [] ( void*, int, char**, char** ){
@@ -454,7 +460,7 @@ FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
     waitForInit();
     FileDatabase::FileInfo result;
     String pathInBinary = path;
-    pathInBinary.singleQuoteEscape();
+    pathInBinary.sanitize();
     const std::string binaryForm = pathInBinary.cStr();
     String sqlQuery =
         "SELECT * \
@@ -515,7 +521,7 @@ void FileDatabase::removeFileFromDB( const CUL::String& pathRaw )
     snprintf( buffer, bufferSize, "FileDatabase::removeFileFromDB pathRaw: %s", pathRaw.cStr() );
     CUL::ThreadUtil::getInstance().setThreadStatus( buffer );
     CUL::String path = pathRaw;
-    path.singleQuoteEscape();
+    path.sanitize();
 
     const std::string binaryForm = path.cStr();
     std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + binaryForm + "';";

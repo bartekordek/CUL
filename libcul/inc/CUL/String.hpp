@@ -273,6 +273,8 @@ public:
 
     static String createFromPrintf( const char* msg... );
 
+    void sanitize();
+    void escapeCharacter( const UnderlyingType& characterToEscape );
     void singleQuoteEscape();
     void singleQuoteRestore();
 
