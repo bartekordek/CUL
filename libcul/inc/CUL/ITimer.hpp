@@ -25,7 +25,7 @@ public:
     virtual const Time& getElapsed() const = 0;
     virtual std::int64_t getElapsedNs() const = 0;
 
-    virtual void runEveryPeriod( std::function<void(void)> callback, unsigned uSeconds ) = 0;
+    virtual void runEveryPeriod( std::function<void( void )> callback, unsigned uSeconds ) = 0;
 
     static void sleepSeconds( unsigned int seconds );
     static void sleepMiliSeconds( unsigned int mSeconds );
@@ -34,7 +34,7 @@ public:
     static void sleepSeconds( int seconds );
     static void sleepMiliSeconds( int mSeconds );
     static void sleepMicroSeconds( int uSeconds );
-    static void sleepNanoSeconds(std::int64_t ns);
+    static void sleepNanoSeconds( std::int64_t ns );
 
     static void sleepSeconds( float seconds );
     static void sleepMiliSeconds( float mSeconds );
