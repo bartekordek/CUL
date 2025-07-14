@@ -47,9 +47,15 @@
             },
         },
         {
-            "label": "[LINUX][CMAKE][CREATE][DEBUG]",
+            "label": "[LINUX][CMAKE][CREATE]",
             "type": "shell",
-            "command": "cmake .. -DCMAKE_BUILD_TYPE=Debug",
+            "command": "cmake",
+            "args": [
+                "cmake",
+                "-S",
+                ".",
+                "-B Build-Windows"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -63,14 +69,20 @@
                 "clear": true
             },
             "options": {
-                "cwd": "${workspaceFolder}/Build-Linux"
+                "cwd": "${workspaceFolder}"
             },
             "dependsOn": "[LINUX][CMAKE][CREATE DIR]"
         },
         {
-            "label": "[WINDOWS][CMAKE][CREATE][DEBUG]",
+            "label": "[WINDOWS][CMAKE][CREATE]",
             "type": "shell",
-            "command": "CreateProjects.bat Debug",
+            "command": "cmake",
+            "args": [
+                "cmake",
+                "-S",
+                ".",
+                "-B Build-Windows"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -136,7 +148,7 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn": "[LINUX][CMAKE][CREATE][DEBUG]"
+            "dependsOn": "[LINUX][CMAKE][CREATE]"
         },
         {
             "label": "[LINUX][DEBUG][BUILLD][libculTests_static][Faster]",
@@ -187,7 +199,7 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn": "[LINUX][CMAKE][CREATE][DEBUG]"
+            "dependsOn": "[LINUX][CMAKE][CREATE]"
         }
     ]
 }
