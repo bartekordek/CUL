@@ -1,4 +1,5 @@
 #include "CUL/Math/VariableWithAverageValue.hpp"
+#include <CUL/STL_IMPORTS/STD_cmath.hpp>
 
 using namespace CUL;
 using namespace MATH;
