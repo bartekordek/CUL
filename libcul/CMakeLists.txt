@@ -12,13 +12,14 @@ project(${PROJECT_NAME_STATIC} LANGUAGES CXX)
 
 set( CMAKE_ENABLE_EXPORTS true )
 
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/stb" )
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tiny-image/src" )
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/rapidjson/include" )
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/hash-library" )
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000" )
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/tracy/public" )
-include_directories( SYSTEM "${CUL_ROOT_DIR}/deps/nativefiledialog-extended/src/include")
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/CPP-DateTime-library/src )
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/hash-library )
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/nativefiledialog-extended/src/include)
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/rapidjson/include )
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000 )
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/stb )
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tiny-image/src )
+include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public )
 
 if( MSVC )
     # warning level 4 and all warnings as errors
@@ -66,6 +67,7 @@ PRIVATE udp-discovery
 PUBLIC zlibstatic
 PUBLIC TracyClient
 PRIVATE nfd
+PUBLIC datetime
 )
 
 if (MSVC)
