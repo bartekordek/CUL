@@ -108,14 +108,6 @@ void FSApi::getCreationTime( const Path&, Time& )
     throw std::logic_error( "Method not implemented" );
 }
 
-template <typename TP>
-std::time_t to_time_t( TP tp )
-{
-    using namespace std::chrono;
-    auto sctp = time_point_cast<system_clock::duration>( tp - TP::clock::now() + system_clock::now() );
-    return system_clock::to_time_t( sctp );
-}
-
 void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 {
     ZoneScoped;
@@ -127,8 +119,16 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
     std::filesystem::path p = inPath.getPath().getChar();
     std::filesystem::file_time_type ftime = std::filesystem::last_write_time( p );
 
-    const std::uint64_t timeConverted = static_cast<std::uint64_t>( to_time_t( ftime ) );
-    outTime.setTimeSec( timeConverted );
+    const auto systemTime = std::chrono::clock_cast<std::chrono::system_clock>( ftime );
+    const std::time_t time = std::chrono::system_clock::to_time_t( systemTime );
+    if( time == -1 )
+    {
+        auto dupa = 0;
+    }
+    else
+    {
+        outTime.setTimeSec( time );
+    }
 }
 
 bool FSApi::fileExist( const Path& path )

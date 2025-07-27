@@ -6,55 +6,86 @@
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 #include "CUL/STL_IMPORTS/STD_chrono.hpp"
 
+namespace jed_utils
+{
+class datetime;
+}
+
 NAMESPACE_BEGIN( CUL )
+
+using TimeType = std::int32_t;
+
+enum class CULLib_API ETimePortion : std::uint8_t
+{
+    Year = 0u,
+    Month,
+    Day,
+    Hour,
+    Second,
+    Milisecond
+};
+
+struct CULLib_API BasicTime
+{
+    TimeType Year{ 0 };
+    TimeType Month{ 0 };
+    TimeType Day{ 0 };
+    TimeType Hour{ 0 };
+    TimeType Minute{ 0 };
+    TimeType Seconds{ 0 };
+};
 
 class CULLib_API Time final
 {
 public:
     Time();
+    Time( std::int32_t inYear, std::int32_t inMonth, std::int32_t inDay, std::int32_t inHour, std::int32_t inMinute, std::int32_t inSeconds );
 
     Time( const Time& arg );
     Time( Time&& arg );
     Time& operator=( const Time& arg );
     Time& operator=( Time&& arg );
 
-    void setTimeMs( std::uint64_t time );
-    void setTimeUs( std::uint64_t us );
-    void setTimeNs( std::uint64_t us );
-    void setTimeSec( std::uint64_t sec );
+    void setTimeMs( std::int64_t time );
+    void setTimeUs( std::int64_t us );
+    void setTimeNs( std::int64_t us );
+    void setTimeSec( std::time_t sec );
     float getMs() const;
     float getS() const;
     float getM() const;
     float getH() const;
     float getUs() const;
 
-    std::uint16_t getYear() const;
-    void setYear( std::uint16_t inYear );
+    TimeType getYear() const;
+    void setYear( TimeType inYear );
 
-    std::uint8_t getMonth() const;
-    void setMonth( std::uint8_t inMonth );
+    TimeType getMonth() const;
+    void setMonth( TimeType inMonth );
 
-    std::uint8_t getDay() const;
-    void setDay( std::uint8_t inDay );
+    TimeType getDay() const;
+    void setDay( TimeType inDay );
 
-    std::uint8_t getHour() const;
-    void setHour( std::uint8_t inHour );
+    TimeType getHour() const;
+    void setHour( TimeType inHour );
 
-    std::uint8_t getMinute() const;
-    void setMinute( std::uint8_t inMinute );
+    TimeType getMinute() const;
+    void setMinute( TimeType inMinute );
 
-    std::uint8_t getSecond() const;
-    void setSecond( std::uint8_t inSecond );
-
-    std::uint16_t getMiliSecond() const;
-    void setMiliSecond( std::uint16_t inMiliSecond );
+    TimeType getSecond() const;
+    void setSecond( TimeType inSecond );
 
     bool operator==( const Time& ) const;
     bool operator<( const Time& ) const;
     bool operator>( const Time& ) const;
 
     Time* copy() const;
-    const CUL::String& toString();
+    const String& toString() const;
+    const char* cStr() const;
+    void fromString( const String& inString );
+
+    static std::uint64_t dateTimeToEpoch( const BasicTime& inBt );
+
+    BasicTime operator-( const Time& arg ) const;
 
     ~Time();
 
@@ -62,15 +93,9 @@ protected:
 private:
     void updateString();
     float m_ns{ 0.f };
-    std::uint16_t m_year{ 0u };
-    std::uint8_t m_month{ 0u };
-    std::uint8_t m_day{ 0u };
-    std::uint8_t m_hour{ 0u };
-    std::uint8_t m_minute{ 0u };
-    std::uint8_t m_second{ 0u };
-    std::uint8_t m_miliseond{ 0u };
-    std::uint8_t m_wday{ 0u };
+    std::unique_ptr<jed_utils::datetime> m_dateTime;
     CUL::String m_asString;
+    std::uint64_t m_asEpoch;
 };
 
 NAMESPACE_END( CUL )

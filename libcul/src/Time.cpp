@@ -1,37 +1,44 @@
 #include "CUL/Time.hpp"
+#include "IMPORT_datetime.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 
 using namespace CUL;
 
-Time::Time()
+inline std::tm localtime_xp( std::time_t* timer )
+{
+    std::tm bt{};
+#if defined( __unix__ )
+    localtime_r( timer, &bt );
+#elif defined( _MSC_VER )
+    localtime_s( &bt, timer );
+#else
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock( mtx );
+    bt = *std::localtime( timer );
+#endif
+    return bt;
+}
+
+Time::Time() : m_dateTime( std::make_unique<jed_utils::datetime>() )
 {
 }
 
-Time::Time( const Time& rhv )
-    : m_ns( rhv.m_ns ),
-      m_year( rhv.m_year ),
-      m_month( rhv.m_month ),
-      m_day( rhv.m_day ),
-      m_hour( rhv.m_hour ),
-      m_minute( rhv.m_minute ),
-      m_second( rhv.m_second ),
-      m_miliseond( rhv.m_miliseond ),
-      m_wday( rhv.m_wday ),
-      m_asString( rhv.m_asString )
+Time::Time( std::int32_t inYear, std::int32_t inMonth, std::int32_t inDay, std::int32_t inHour, std::int32_t inMinute,
+            std::int32_t inSeconds )
+    : m_dateTime( std::make_unique<jed_utils::datetime>() )
 {
+    *m_dateTime = jed_utils::datetime( inYear, inMonth, inDay, inHour, inMinute, inSeconds );
 }
 
-Time::Time( Time&& rhv )
-    : m_ns( rhv.m_ns ),
-      m_year( rhv.m_year ),
-      m_month( rhv.m_month ),
-      m_day( rhv.m_day ),
-      m_hour( rhv.m_hour ),
-      m_minute( rhv.m_minute ),
-      m_second( rhv.m_second ),
-      m_miliseond( rhv.m_miliseond ),
-      m_wday( rhv.m_wday ),
-      m_asString( std::move( rhv.m_asString ) )
+Time::Time( const Time& rhv ) : m_ns( rhv.m_ns ), m_dateTime( std::make_unique<jed_utils::datetime>() ), m_asString( rhv.m_asString )
+{
+    *m_dateTime = *rhv.m_dateTime;
+}
+
+Time::Time( Time&& rhv ):
+    m_ns( rhv.m_ns ),
+    m_dateTime( std::move( m_dateTime ) ),
+    m_asString( std::move( rhv.m_asString ) )
 {
 }
 
@@ -39,16 +46,9 @@ Time& Time::operator=( const Time& rhv )
 {
     if( &rhv != this )
     {
-        m_ns = rhv.m_ns;
-        m_year = rhv.m_year;
-        m_month = rhv.m_month;
-        m_day = rhv.m_day;
-        m_hour = rhv.m_hour;
-        m_minute = rhv.m_minute;
-        m_second = rhv.m_second;
-        m_miliseond = rhv.m_miliseond;
-        m_wday = rhv.m_wday;
+        *m_dateTime = *rhv.m_dateTime;
         m_asString = rhv.m_asString;
+        m_ns = rhv.m_ns;
     }
     return *this;
 }
@@ -57,97 +57,90 @@ Time& Time::operator=( Time&& rhv )
 {
     if( &rhv != this )
     {
+        m_dateTime = std::move( rhv.m_dateTime );
         m_ns = rhv.m_ns;
-        m_year = rhv.m_year;
-        m_month = rhv.m_month;
-        m_day = rhv.m_day;
-        m_hour = rhv.m_hour;
-        m_minute = rhv.m_minute;
-        m_second = rhv.m_second;
-        m_miliseond = rhv.m_miliseond;
-        m_wday = rhv.m_wday;
         m_asString = std::move( rhv.m_asString );
     }
     return *this;
 }
 
-void Time::setYear( std::uint16_t inYear )
+void Time::setYear( TimeType inYear )
 {
-    m_year = inYear;
+    *m_dateTime = jed_utils::datetime(
+        inYear, m_dateTime->get_month(),
+        m_dateTime->get_day(),
+        m_dateTime->get_hour(),
+        m_dateTime->get_minute(),
+        m_dateTime->get_second() );
 }
 
-std::uint16_t Time::getYear() const
+TimeType Time::getYear() const
 {
-    return m_year;
+    return m_dateTime->get_year();
 }
 
-void Time::setMonth( std::uint8_t inMonth )
+void Time::setMonth( TimeType inMonth )
 {
-    m_month = inMonth;
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), inMonth, m_dateTime->get_day(), m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(), m_dateTime->get_second() );
 }
 
-std::uint8_t Time::getMonth() const
+TimeType Time::getMonth() const
 {
-    return m_month;
+    return m_dateTime->get_month();
 }
 
-void Time::setDay( std::uint8_t inDay )
+void Time::setDay( TimeType inDay )
 {
-    m_day = inDay;
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), inDay, m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(), m_dateTime->get_second() );
 }
 
-std::uint8_t Time::getDay() const
+TimeType Time::getDay() const
 {
-    return m_day;
+    return m_dateTime->get_day();
 }
 
-void Time::setHour( std::uint8_t inHour )
+void Time::setHour( TimeType inHour )
 {
-    m_hour = inHour;
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), m_dateTime->get_day(), inHour,
+                                       m_dateTime->get_minute(), m_dateTime->get_second() );
 }
 
-std::uint8_t Time::getHour() const
+TimeType Time::getHour() const
 {
-    return m_hour;
+    return m_dateTime->get_hour();
 }
 
-void Time::setMinute( std::uint8_t inMinute )
+void Time::setMinute( TimeType inMinute )
 {
-    m_minute = inMinute;
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), m_dateTime->get_day(), m_dateTime->get_hour(),
+                                       inMinute, m_dateTime->get_second() );
 }
 
-std::uint8_t Time::getMinute() const
+TimeType Time::getMinute() const
 {
-    return m_minute;
+    return m_dateTime->get_minute();
 }
 
-void Time::setSecond( std::uint8_t inSecond )
+void Time::setSecond( TimeType inSecond )
 {
-    m_second = inSecond;
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), m_dateTime->get_day(), m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(), inSecond );
 }
 
-std::uint8_t Time::getSecond() const
+TimeType Time::getSecond() const
 {
-    return m_second;
+    return m_dateTime->get_second();
 }
 
-void Time::setMiliSecond( std::uint16_t inMiliSecond )
-{
-    m_miliseond = inMiliSecond;
-}
-
-std::uint16_t Time::getMiliSecond() const
-{
-    return m_miliseond;
-}
-
-void Time::setTimeMs( std::uint64_t time )
+void Time::setTimeMs( std::int64_t time )
 {
     m_ns = static_cast<float>( time ) / 1000000.f;
     updateString();
 }
 
-void Time::setTimeUs( std::uint64_t us )
+void Time::setTimeUs( std::int64_t us )
 {
     m_ns = static_cast<float>( us ) * 1000.f;
     updateString();
@@ -201,52 +194,107 @@ Time* Time::copy() const
     return result;
 }
 
-const CUL::String& Time::toString()
+const CUL::String& Time::toString() const
 {
     return m_asString;
 }
 
-void Time::setTimeNs( std::uint64_t ns )
+const char* Time::cStr() const
+{
+    return m_asString.cStr();
+}
+
+void removePrecedingZero( String& inOutVal )
+{
+    while( ( inOutVal.empty() == false ) && ( inOutVal.doesBeginWith( "0" ) ) && ( inOutVal.size() > 1u ) )
+    {
+        inOutVal.erase( 0u );
+    }
+}
+
+void Time::fromString( const String& inString )
+{
+    if( inString.empty() )
+    {
+        return;
+    }
+
+    std::vector<String> dateTimeSeparated = inString.split( " " );
+
+    std::vector<String> dateSeparted = dateTimeSeparated[0].split( "-" );
+
+    if( dateSeparted.size() < 3u )
+    {
+        dateSeparted = dateTimeSeparated[0].split( "/" );
+    }
+
+    for( auto& currString : dateSeparted )
+    {
+        removePrecedingZero( currString );
+    }
+
+    const auto year = dateSeparted[0].toInt64();
+    const auto month = dateSeparted[1].toInt64();
+    const auto day = dateSeparted[2].toInt64();
+
+    std::vector<String> timeSeparated = dateTimeSeparated[01].split( ":" );
+    for( auto& currString : timeSeparated )
+    {
+        removePrecedingZero( currString );
+    }
+    const auto hour = timeSeparated[0].toInt64();
+    const auto minute = timeSeparated[1].toInt64();
+    const auto seconds = timeSeparated[2].toInt64();
+
+    m_asString = inString;
+    *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
+}
+
+void Time::setTimeNs( std::int64_t ns )
 {
     m_ns = ns;
     updateString();
 }
 
-void Time::setTimeSec( std::uint64_t timeConverted )
+void Time::setTimeSec( std::time_t timeConverted )
 {
-    constexpr std::int32_t SECS_DAY = 60 * 60 * 24;
-    const std::int32_t dayclock = (std::int32_t)timeConverted % SECS_DAY;
-    const std::int32_t dayno = (std::int32_t)timeConverted / SECS_DAY;
+    m_asEpoch = static_cast<decltype( m_asEpoch )>( timeConverted );
 
-    m_second = static_cast<std::uint16_t>( dayclock % 60 );
-    m_minute = static_cast<std::uint16_t>( ( dayclock % 3600 ) / 60 );
-    m_hour = static_cast<std::uint16_t>( dayclock / 3600 );
-    m_wday = static_cast<std::uint16_t>( ( dayno + 4 ) % 7 ); /* day 0 was a thursday */
+    const auto tm = localtime_xp( &timeConverted );
 
-    const std::time_t timeT = static_cast<std::time_t>( timeConverted );
-    const auto tm = std::localtime( &timeT );
+    const auto year = static_cast<TimeType>( 1900 + tm.tm_year );
+    const auto month = static_cast<TimeType>( ( tm.tm_mon + 1 ) );
+    const auto day = static_cast<TimeType>( tm.tm_mday );
+    const auto hour = static_cast<TimeType>( tm.tm_hour );
+    const auto minute = static_cast<TimeType>( tm.tm_min );
+    const auto seconds = static_cast<TimeType>( tm.tm_sec );
 
-    m_year = static_cast<std::uint16_t>( 1900 + tm->tm_year );
-    m_month = static_cast<std::uint16_t>( ( tm->tm_mon + 1 ) );
-    m_day = static_cast<std::uint16_t>( tm->tm_mday );
-    m_hour = static_cast<std::uint16_t>( tm->tm_hour );
-    m_minute = static_cast<std::uint16_t>( tm->tm_min );
-    m_second = static_cast<std::uint16_t>( tm->tm_sec );
-
-    std::tm ts = *std::localtime( &timeT );
-    char buf[80];
-    strftime( buf, sizeof( buf ), "%Y-%m-%d %H:%M:%S", &ts );
-    m_asString = buf;
+    *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
     m_ns = timeConverted * 1000000000;
+    updateString();
 }
 
 void Time::updateString()
 {
-    constexpr std::size_t bufferLength{ 64u };
-    char buffer[bufferLength];
+    m_asString = m_dateTime->to_string( "yyyy/MM/dd hh:mm:ss" );
+}
 
-    snprintf( buffer, bufferLength, "%04d/%02d/%02d %02d:%02d:%02d", m_year, m_month, m_day, m_hour, m_minute, m_second );
-    m_asString = buffer;
+BasicTime Time::operator-( const Time& arg ) const
+{
+    BasicTime result;
+    const jed_utils::timespan diff = *this->m_dateTime - *arg.m_dateTime;
+
+    result.Day = diff.get_days();
+    result.Hour = diff.get_hours();
+    result.Minute = diff.get_minutes();
+    result.Seconds = diff.get_seconds();
+
+    return result;
+}
+
+std::uint64_t Time::dateTimeToEpoch( const BasicTime& /*inBt*/ )
+{
+    return std::uint64_t(0);
 }
 
 Time::~Time()

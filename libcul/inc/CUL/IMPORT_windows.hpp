@@ -4,6 +4,9 @@
 
 #if defined( _MSC_VER )
 #include <windows.h>
+#include <pdh.h>
+#include <pdhmsg.h>
+
 #undef ERROR
 #endif  // #if defined(_MSC_VER)
 

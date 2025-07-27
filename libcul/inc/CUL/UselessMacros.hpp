@@ -4,7 +4,8 @@
 #define NAMESPACE_END( name ) }// name
 
 
-#define CUL_NONCOPYABLE( TypeName )                   \
+#define CUL_NONCOPYABLE( TypeName ) \
+public: \
 TypeName( TypeName&& ) = delete;                 \
 TypeName( const TypeName& ) = delete;            \
 TypeName& operator=( const TypeName& ) = delete; \
