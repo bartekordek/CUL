@@ -49,3 +49,16 @@ TEST_F( MemoryPoolTests, TESTING_1 )
     int averageInt = (int)averageVal;
     ASSERT_EQ( 4, averageInt );
 }
+
+TEST_F( MemoryPoolTests, MaxMin )
+{
+    MATH::VariableWithAverageValue average;
+    average.add( 1.f );
+    average.add( 2.f );
+    average.add( 3.f );
+
+    const std::int32_t minValue = static_cast<std::int32_t>( average.getMin() );
+    const std::int32_t maxValue = static_cast<std::int32_t>( average.getMax() );
+    ASSERT_EQ( 1, minValue );
+    ASSERT_EQ( 3, maxValue );
+}
