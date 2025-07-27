@@ -14,28 +14,29 @@ Path::Path() noexcept
 {
 }
 
-Path::Path( const Path& path ) noexcept:
-    m_isDir( path.m_isDir ),
-    m_fullPath( path.m_fullPath ),
-    m_extension( path.m_extension ),
-    m_baseName( path.m_baseName ),
-    m_dir( path.m_dir )
+Path::Path( const Path& path ) noexcept
+    : m_isDir( path.m_isDir ),
+      m_fullPath( path.m_fullPath ),
+      m_extension( path.m_extension ),
+      m_baseName( path.m_baseName ),
+      m_dir( path.m_dir ),
+      m_diskName( path.m_diskName )
 {
     normalizePaths();
 }
 
 Path::Path( Path&& path ) noexcept
     : m_isDir( path.m_isDir ),
-    m_fullPath( std::move( path.m_fullPath ) ),
-    m_extension( std::move( path.m_extension ) ),
-    m_baseName( std::move( path.m_baseName ) ),
-    m_dir( std::move( path.m_dir ) )
+      m_fullPath( std::move( path.m_fullPath ) ),
+      m_extension( std::move( path.m_extension ) ),
+      m_baseName( std::move( path.m_baseName ) ),
+      m_dir( std::move( path.m_dir ) ),
+      m_diskName( path.m_diskName )
 {
     normalizePaths();
 }
 
-Path::Path( const String& path ) noexcept :
-    m_fullPath( path )
+Path::Path( const String& path ) noexcept : m_fullPath( path )
 {
     preparePaths();
     normalizePaths();
@@ -130,7 +131,7 @@ Path& Path::operator+=( const std::string& rhv )
     return *this;
 }
 
-Path Path::operator+( const Path & rhv )
+Path Path::operator+( const Path& rhv )
 {
     Path result = *this;
     result += rhv;
@@ -173,17 +174,18 @@ const String& Path::getDir() const
 
 bool Path::isRootOf( const Path& inPath ) const
 {
-    if( inPath.getPath().contains( "D:/Music" ) )
-    {
-        auto x = 0;
-    }
-
     return inPath.m_dir.contains( m_dir );
+}
+
+const String& Path::getDiskName() const
+{
+    return m_diskName;
 }
 
 uint64_t Path::getFileSize() const
 {
-    auto calculateSize = [this]() {
+    auto calculateSize = [this]()
+    {
 #ifdef _MSC_VER
         FsPath file( m_fullPath.wstring() );
 #else
@@ -200,7 +202,7 @@ uint64_t Path::getFileSize() const
     if( m_sizeCalculated )
     {
         Time lastModTime;
-        getLastModificationTime(lastModTime);
+        getLastModificationTime( lastModTime );
         auto lastModTimeString = lastModTime.toString();
         if( lastModTimeString != m_modTime )
         {
@@ -222,7 +224,8 @@ void Path::setFileSize( uint64_t inFileSize )
 
 const String& Path::getMd5() const
 {
-    auto calculateMd5 = [this] (){
+    auto calculateMd5 = [this]()
+    {
         std::unique_ptr<CUL::FS::IFile> file;
 
         auto m_culInterface = CUL::CULInterface::getInstance();
@@ -360,6 +363,24 @@ void Path::preparePaths()
         m_dir = parentPathAsString;
     }
 #endif
+
+#if defined( CUL_WINDOWS )
+    std::int32_t it = m_dir.find( ":\\" );
+    if( it != -1 )
+    {
+        m_diskName = m_dir.substr( 0, it + 1 );
+    }
+    else
+    {
+        it = m_dir.find( ":/" );
+        if( it != -1 )
+        {
+            m_diskName = m_dir.substr( 0, it + 1 );
+        }
+    }
+#else
+#endif
+
     normalizePaths();
 }
 
@@ -376,7 +397,7 @@ void Path::normalizePath( String& path )
         return;
     }
 
-#if defined(CUL_WINDOWS)
+#if defined( CUL_WINDOWS )
     path.replace( L'\\', L'/', true );
 #else
     path.replace( '\\', '/', true );
@@ -390,11 +411,28 @@ bool Path::exists() const
 #else
     const std::filesystem::path pathAsStdPath = m_fullPath.getChar();
     std::error_code outErrorCode;
-    const bool result = std::filesystem::is_regular_file( pathAsStdPath, outErrorCode );
-    if( outErrorCode.value() != 0 && outErrorCode.value() != 2 )
+    bool result = std::filesystem::is_regular_file( pathAsStdPath, outErrorCode );
+    const std::int32_t errorCodeValue = outErrorCode.value();
+    if( errorCodeValue == 0 )
     {
-        CUL::Assert::check( false, outErrorCode.message().c_str() );
+        // Everything is okay!
     }
+    else if( errorCodeValue == 2 )
+    {
+        // Cannot find file specified.
+        result = false;
+    }
+    else if( errorCodeValue == 3 )
+    {
+        const auto xD = outErrorCode.message().c_str();
+        result = false;  // File does not exist or is accessed.
+    }
+    else
+    {
+        const std::string message = outErrorCode.message();
+        CUL::Assert::check( false, message.c_str() );
+    }
+
 #endif
     return result;
 }

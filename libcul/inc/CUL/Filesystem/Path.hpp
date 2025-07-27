@@ -63,6 +63,7 @@ public:
     bool exists() const;
     bool getIsEmpty() const;
     bool isRootOf( const Path& inPath ) const;
+    const String& getDiskName() const;
 
     virtual ~Path();
 
@@ -79,6 +80,7 @@ private:
     String m_extension;
     String m_baseName;
     String m_dir;
+    String m_diskName;
 
     mutable String m_modTime;
 
