@@ -172,7 +172,7 @@ void IFile::calculateMD5()
             percentage = static_cast<unsigned>( 100.f * coef );
             const String pathString = getPath().getPath().string();
 
-            constexpr std::size_t bufferSize{ 128 };
+            constexpr std::size_t bufferSize{ 512 };
             char name[bufferSize];
             snprintf( name, bufferSize, "[IFile::calculateMD5] Big file: %s, %d %%", pathString.cStr(), percentage );
 
