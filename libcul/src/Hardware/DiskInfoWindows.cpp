@@ -25,16 +25,11 @@ void CDiskInfoWindows::findDiskMappings()
     constexpr static std::size_t bufferLength = 11u;
     char buffer[bufferLength];
 
-    constexpr float TimeCoverageMs = 16.f * 1000.f;
+    constexpr float TimeCoverageMs = 8.f * 1000.f;
     const float howManySamples = TimeCoverageMs / getPoolIntervalMs();
 
     for (char currentDiskName = 'A'; currentDiskName <= 'Z'; ++currentDiskName)
     {
-        if( currentDiskName != 'D' )
-        {
-            continue;
-        }
-
         snprintf( buffer, bufferLength, "\\\\.\\%c:", currentDiskName );
         HANDLE hTarget = CreateFile( buffer, 0, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL );
         if( hTarget != INVALID_HANDLE_VALUE )
@@ -335,6 +330,29 @@ float CDiskInfoWindows::getDiskUsage( const std::string& inDiskName ) const
 
     return ( percentageWrite + percenttageRead ) / 2.f;
 #endif // CALCULATE_FROM_IDLE
+}
+
+std::vector<std::pair<std::string, float>> CDiskInfoWindows::getDisksUsage() const
+{
+    std::vector<std::pair<std::string, float>> result;
+
+    {
+        std::lock_guard<std::mutex> locker( m_diskHandlesMtx );
+        for( auto& [_, diskValue] : m_diskHandles )
+        {
+            std::pair<std::string, float> valuePair;
+            valuePair.first = diskValue.Name;
+            valuePair.second = diskValue.PercentageUsed.getAverage();
+            result.push_back( valuePair );
+        }
+    }
+    std::sort( result.begin(), result.end(),
+               []( const std::pair<std::string, float>& p1, const std::pair<std::string, float>& p2 )
+               {
+                   return p1.first < p2.first;
+               } );
+
+    return result;
 }
 
 CDiskInfoWindows::~CDiskInfoWindows()

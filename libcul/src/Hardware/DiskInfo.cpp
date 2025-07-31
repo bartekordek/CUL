@@ -2,6 +2,7 @@
 #include "CUL/IMPORT_windows.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "Hardware/DiskInfoWindows.hpp"
+#include "Hardware/DiskInfoDummy.hpp"
 #include <CUL/STL_IMPORTS/STD_algorithm.hpp>
 #include <CUL/STL_IMPORTS/STD_mutex.hpp>
 
@@ -15,6 +16,8 @@ CDiskInfo& CDiskInfo::getInstance()
 {
 #if defined( CUL_WINDOWS )
     static CDiskInfoWindows s_instance;
+#else
+    static CDiskInfoDummy s_instance;
 #endif // #if defined(CUL_WINDOWS)
 
     return s_instance;

@@ -116,12 +116,12 @@ public:
         return result;
     }
 
-    void set( const Type s, const Type x, const Type y, const Type z )
+    void set( const Type inS, const Type inX, const Type inY, const Type inZ )
     {
-        s = s;
-        x = x;
-        y = y;
-        z = z;
+        s = inS;
+        x = inX;
+        y = inY;
+        z = inZ;
         calculateNorm();
     }
 

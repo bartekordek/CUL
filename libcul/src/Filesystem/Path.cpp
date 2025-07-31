@@ -33,23 +33,27 @@ Path::Path( Path&& path ) noexcept
       m_dir( std::move( path.m_dir ) ),
       m_diskName( path.m_diskName )
 {
+    normalizePath( m_fullPath );
     normalizePaths();
 }
 
 Path::Path( const String& path ) noexcept : m_fullPath( path )
 {
+    normalizePath( m_fullPath );
     preparePaths();
     normalizePaths();
 }
 
 Path::Path( const std::string& path ) noexcept : m_fullPath( path )
 {
+    normalizePath( m_fullPath );
     preparePaths();
     normalizePaths();
 }
 
 Path::Path( const char* r ) noexcept : m_fullPath( r )
 {
+    normalizePath( m_fullPath );
     preparePaths();
 }
 
@@ -325,7 +329,34 @@ void Path::preparePaths()
         m_extension.erase( 0 );
     }
 
-    m_isDir = FSCpp::is_directory( bPath );
+    std::error_code ec;
+    m_isDir = FSCpp::is_directory( bPath, ec );
+
+    const auto errorCodeValue = ec.value();
+    if( errorCodeValue == 0 )
+    {
+        // OK
+    }
+    else if( errorCodeValue > 1 && errorCodeValue < 4 )
+    {
+        // The system cannot find the path specified.
+        const std::string errorMessage = ec.message();
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
+                                                 m_fullPath.cStr(), errorCodeValue );
+    }
+    else if( errorCodeValue == 1920 )
+    {
+        // The file cannot be accessed by the system..
+        const std::string errorMessage = ec.message();
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
+                                                 m_fullPath.cStr(), errorCodeValue );
+    }
+    else
+    {
+        const std::string errorMessage = ec.message();
+        CUL::Assert::check( false, errorMessage.c_str() );
+    }
+
     if( m_isDir )
     {
         m_dir = bPath;
@@ -412,26 +443,7 @@ bool Path::exists() const
     const std::filesystem::path pathAsStdPath = m_fullPath.getChar();
     std::error_code outErrorCode;
     bool result = std::filesystem::is_regular_file( pathAsStdPath, outErrorCode );
-    const std::int32_t errorCodeValue = outErrorCode.value();
-    if( errorCodeValue == 0 )
-    {
-        // Everything is okay!
-    }
-    else if( errorCodeValue == 2 )
-    {
-        // Cannot find file specified.
-        result = false;
-    }
-    else if( errorCodeValue == 3 )
-    {
-        const auto xD = outErrorCode.message().c_str();
-        result = false;  // File does not exist or is accessed.
-    }
-    else
-    {
-        const std::string message = outErrorCode.message();
-        CUL::Assert::check( false, message.c_str() );
-    }
+    FSApi::handleErrorCode( outErrorCode, m_fullPath.cStr() );
 
 #endif
     return result;

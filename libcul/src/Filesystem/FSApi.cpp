@@ -10,6 +10,7 @@
 #include "CUL/STL_IMPORTS/STD_exception.hpp"
 #include "CUL/STL_IMPORTS/STD_filesystem.hpp"
 
+#include <CUL/STL_IMPORTS/STD_chrono.hpp>
 using namespace CUL;
 using namespace FS;
 
@@ -49,20 +50,18 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
     std::vector<Path> result;
 
     const auto dir = directory.getPath().string();
-    std::error_code errorCode;
+    std::error_code ec;
     for( const auto& entry :
-         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, errorCode ) )
+         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, ec ) )
     {
         ZoneScoped;
-        if( errorCode.value() != 0 )
-        {
-            CUL::Assert::check( false, errorCode.message().c_str() );
-        }
 
         const std::filesystem::path entryPath = entry.path();
         const String tempString = entryPath.c_str();
+        handleErrorCode( ec, tempString.cStr() );
 
-        const std::u32string someString = entryPath.u32string();
+        const bool isRegularFile = std::filesystem::is_regular_file( entryPath, ec );
+
 #ifdef _MSC_VER
         const String tempPath = entryPath.wstring();
         Path culPath = tempPath;
@@ -73,6 +72,34 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
         culPath.setIsDir( isDir );
 
         callback( culPath );
+    }
+}
+
+void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
+{
+    const auto errorCodeValue = ec.value();
+    if( errorCodeValue == 0 )
+    {
+        // OK
+    }
+    else if( errorCodeValue > 1 && errorCodeValue < 4 )
+    {
+        // The system cannot find the path specified.
+        const std::string errorMessage = ec.message();
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(), inPath,
+                                                 errorCodeValue );
+    }
+    else if( errorCodeValue == 1920 )
+    {
+        // The file cannot be accessed by the system..
+        const std::string errorMessage = ec.message();
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(), inPath,
+                                                 errorCodeValue );
+    }
+    else
+    {
+        const std::string errorMessage = ec.message();
+        CUL::Assert::check( false, errorMessage.c_str() );
     }
 }
 

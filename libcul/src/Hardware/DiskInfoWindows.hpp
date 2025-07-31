@@ -62,6 +62,7 @@ private:
     void mainLoop() override;
     void debugLoop() override;
     float getDiskUsage( const std::string& inDiskName ) const override;
+    std::vector<std::pair<std::string, float>> getDisksUsage() const override;
 
     void collectData( DiskInfoValue& inOutData );
 

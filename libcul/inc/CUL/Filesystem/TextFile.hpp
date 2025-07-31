@@ -29,6 +29,7 @@ private:
     const char** getContent() const override;
 
     unsigned getLinesCount() const override;
+    FileType getType() const override;
 
     Path m_path;
     String m_values;

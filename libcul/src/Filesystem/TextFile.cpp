@@ -58,6 +58,11 @@ const Path& TextFile::getPath() const
     return m_path;
 }
 
+FileType TextFile::getType() const
+{
+    return FileType::TXT;
+}
+
 TextFile::~TextFile()
 {
 

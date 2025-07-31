@@ -4,6 +4,7 @@
 
 #include "CUL/STL_IMPORTS/STD_array.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include "CUL/STL_IMPORTS/STD_limits.hpp"
 
 
 NAMESPACE_BEGIN( CUL )

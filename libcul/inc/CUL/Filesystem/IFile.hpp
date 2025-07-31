@@ -53,7 +53,8 @@ public:
     bool getIsCacheEnabled() const;
 
     const String& getMD5();
-    const String& getSizeBytes();
+    const String& getSizeBytes() const;
+    bool getIsBigFile() const;
 
     virtual const String& firstLine() const = 0;
     virtual const String& lastLine() const = 0;
@@ -81,8 +82,9 @@ protected:
 private:
     void calculateMD5();
     void calculateSizeBytes();
+    void waitForDiskToBeReady();
     FileList m_fileList;
-    String m_path;
+    FS::Path m_path;
     String m_md5;
 
     Time m_creationTime;
