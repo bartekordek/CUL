@@ -370,8 +370,11 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     else
     {
         const std::string binaryValue = filePathNormalized.cStr();
-        sqlQuery = "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ('" + binaryValue + "', '" + fileSize +
-            "', '" + md5 + "', '" + modTime + "');";
+
+        constexpr std::size_t bufferLength = 1024u;
+        char buffer[bufferLength];
+        snprintf( buffer, bufferLength, "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ( '%s', '%s', '%s', '%s' );", binaryValue.c_str(), fileSize.cStr(), md5.cStr(), modTime.cStr() );
+        sqlQuery = buffer;
     }
 
     const char* queryAsCharPtr = sqlQuery.cStr();

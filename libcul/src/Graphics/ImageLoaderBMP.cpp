@@ -13,7 +13,7 @@ using namespace Graphics;
 
 uint32_t row_stride = 0;
 
-#if _MSC_VER
+#if defined(_MSC_VER)
 #pragma warning( push )
 //#pragma warning( disable: 4251 )
 //#pragma warning( disable: 4820 )
@@ -423,6 +423,8 @@ ImageLoaderBMP::~ImageLoaderBMP()
 
 }
 
+#pragma pack(pop)
+#pragma pack(pop)
 
 #if _MSC_VER
 __pragma( warning( pop ) )

@@ -12,6 +12,7 @@ public:
     void setPoolIntervalMs( std::uint32_t inIntervalMs );
     void start( bool withDebugInfo = false );
     void getInfo();
+    virtual std::vector<std::pair<std::string, float>> getDisksUsage() const = 0;
     virtual float getDiskUsage( const std::string& inDiskName ) const = 0;
 
 protected:

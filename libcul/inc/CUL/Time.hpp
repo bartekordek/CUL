@@ -5,6 +5,7 @@
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 #include "CUL/STL_IMPORTS/STD_chrono.hpp"
+#include <CUL/STL_IMPORTS/STD_memory.hpp>
 
 namespace jed_utils
 {

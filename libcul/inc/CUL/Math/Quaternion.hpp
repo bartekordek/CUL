@@ -116,36 +116,36 @@ public:
         return result;
     }
 
-    void set( const Type s, const Type x, const Type y, const Type z )
+    void set( const Type inS, const Type inX, const Type inY, const Type inZ )
     {
-        s = s;
-        x = x;
-        y = y;
-        z = z;
+        s = inS;
+        x = inX;
+        y = inY;
+        z = inZ;
         calculateNorm();
     }
 
-    void setS( const Type s )
+    void setS( const Type inS )
     {
-        s = s;
+        s = inS;
         calculateNorm();
     }
 
-    void setX( const Type x )
+    void setX( const Type inX )
     {
-        x = x;
+        x = inX;
         calculateNorm();
     }
 
-    void setY( const Type y )
+    void setY( const Type inY )
     {
-        y = y;
+        y = inY;
         calculateNorm();
     }
 
-    void setZ( const Type z )
+    void setZ( const Type inZ )
     {
-        z = z;
+        z = inZ;
         calculateNorm();
     }
 

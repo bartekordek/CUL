@@ -5,6 +5,7 @@
 
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
+#include <CUL/STL_IMPORTS/STD_system_error.hpp>
 
 #undef deleteFile
 
@@ -41,6 +42,7 @@ public:
 
     std::vector<Path> ListAllFiles( const Path& directory );
     void ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback );
+    static void handleErrorCode( const std::error_code& inErrorCode, const char* inPath );
 
     void deleteFile( const Path& path );
 
