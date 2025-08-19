@@ -23,14 +23,14 @@ public:
         std::strcpy( m_value, arg );
     }
 
-    StringStatic( const StringStatic& arg ):
-        m_size( arg.size)
+    StringStatic( const StringStatic& arg )
+        : m_size( arg.m_size )
     {
         Assert::simple( m_size < Capacity, "TOO SMALL BUFFER!" );
         std::strcpy( m_value, arg.m_value );
     }
 
-    StringStatic( StringStatic&& arg ) : m_size( arg.size )
+    StringStatic( StringStatic&& arg ) : m_size( arg.m_size )
     {
         std::strcpy( m_value, arg.m_value );
         arg.m_size = 0u;
