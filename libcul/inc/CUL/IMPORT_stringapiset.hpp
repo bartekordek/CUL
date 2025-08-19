@@ -2,10 +2,7 @@
 #pragma once
 
 #include "CUL/GenericUtils/DisableErros.hpp"
-
-//#include "stringapiset.h"
+CUL_MSVC_SKIP_DEFAULT_WARNING_BEGIN
+// #include "stringapiset.h"
 #include <windows.h>
-
-#ifdef _MSC_VER
-#pragma warning( pop )
-#endif
+CUL_MSVC_SKIP_DEFAULT_WARNING_END

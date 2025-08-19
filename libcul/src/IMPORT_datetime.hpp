@@ -1,10 +1,7 @@
 #pragma once
 
 #include "CUL/GenericUtils/DisableErros.hpp"
-
+CUL_MSVC_SKIP_DEFAULT_WARNING_BEGIN
 #define DATETIME_STATIC
 #include "datetime.h"
-
-#if defined( _MSC_VER )
-#pragma warning( pop )
-#endif
+CUL_MSVC_SKIP_DEFAULT_WARNING_END

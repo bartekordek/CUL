@@ -1,10 +1,7 @@
 #pragma once
 
 #include "CUL/GenericUtils/DisableErros.hpp"
-
+CUL_MSVC_SKIP_DEFAULT_WARNING_BEGIN
 #define STB_IMAGE_IMPLEMENTATION 1
 #include <stb_image.h>
-
-#ifdef _MSC_VER
-#pragma warning( pop )
-#endif
+CUL_MSVC_SKIP_DEFAULT_WARNING_END

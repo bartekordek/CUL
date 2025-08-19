@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CUL/GenericUtils/DisableErros.hpp"
-
+CUL_MSVC_SKIP_DEFAULT_WARNING_BEGIN
 #include "dwrite.h"
-
-#pragma warning( pop )
+CUL_MSVC_SKIP_DEFAULT_WARNING_END

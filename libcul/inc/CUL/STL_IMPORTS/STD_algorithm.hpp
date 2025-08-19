@@ -1,10 +1,7 @@
 #pragma once
 
 #include "CUL/GenericUtils/DisableErros.hpp"
-
+CUL_MSVC_SKIP_DEFAULT_WARNING_BEGIN
 #undef max
 #include <algorithm>
-
-#ifdef _MSC_VER
-#pragma warning( pop )
-#endif
+CUL_MSVC_SKIP_DEFAULT_WARNING_END
