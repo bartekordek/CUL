@@ -14,6 +14,16 @@
     #define CUL_EXPORT
 #endif // _WIN32
 
+#if defined(CUL_WINDOWS)
+    #if defined( __clang__ )
+        #define CUL_WINDOWS_CLANG 1
+    #else
+        #define CUL_WINDOWS_CLANG 0
+    #endif 
+#else
+    #define CUL_WINDOWS_CLANG 0
+#endif
+
 #define CUL_GLOBAL_MEMORY_POOL 0
 #define CUL_USE_TRACY_ALLOC_TRACK 1
 
