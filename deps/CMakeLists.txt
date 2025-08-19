@@ -20,7 +20,7 @@ file(GLOB HASH_LIBRARY_SOURCES "hash-library/*.cpp")
 # bartlomiej.kordek: Remove digest.cpp since this is a application source.
 list(FILTER HASH_LIBRARY_SOURCES EXCLUDE REGEX ".*digest\\.cpp$")
 file(GLOB HASH_LIBRARY_INCLUDES "hash-library/*.h")
-file(GLOB STB_SOURCES "stb/*.h" "stb/*.c" "stb/deprecated/*.h" "stb/deprecated/*.c")
+file(GLOB STB_SOURCES "stb/*.h" "stb/*.c" "stb/deprecated/*.h" )
 file(GLOB TINY_IMAGE_SOURCES "tiny-image/src/*.cpp" "tiny-image/src/*.h" )
 
 set(SOURCES_ALL
