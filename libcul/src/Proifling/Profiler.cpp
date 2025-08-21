@@ -3,7 +3,7 @@
 
 using namespace CUL;
 
-#if defined(CUL_WINDOWS)
+#if defined(CUL_WINDOWS) && !CUL_WINDOWS_CLANG
 
 Profiler::Profiler( const char* eventName )
 {
