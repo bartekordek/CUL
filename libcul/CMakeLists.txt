@@ -21,7 +21,8 @@ include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/stb )
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tiny-image/src )
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public )
 
-if( MSVC )
+if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
+    message(STATUS "WARNING: building msvc version.")
     # warning level 4 and all warnings as errors
     add_compile_options( /Wall )
     #add_compile_options( /WX ) # error on warning.
@@ -36,11 +37,16 @@ if( MSVC )
         include_directories( SYSTEM ${RapidJSON_INCLUDE_DIRS} )
     endif( RapidJSON_FOUND )
 else()
-    # lots of warnings and all warnings as errors
-    add_compile_options( -Wall -Wextra -pedantic -Werror -Wno-unused-parameter )
-    # -Wno-sized-deallocation
-    add_compile_options( -Wno-unused-variable )
-    add_definitions( -Wfatal-errors )
+    if(CMAKE_CXX_SIMULATE_ID MATCHES "MSVC")
+        message(STATUS "WARNING: building clang-cl version.")
+    else()
+        message(STATUS "WARNING: building regular version.")
+        # lots of warnings and all warnings as errors
+        add_compile_options( -Wall -Wextra -Werror -Wno-unused-parameter )
+        # -Wno-sized-deallocation
+        add_compile_options( -Wno-unused-variable )
+        add_definitions( -Wfatal-errors )
+    endif()
 endif()
 
 find_package( glm REQUIRED )
