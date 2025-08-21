@@ -112,7 +112,7 @@
                 "..",
                 "-B Build-Windows-CLang",
                 "-T",
-                "Clang",
+                "ClangCL",
                 "-A",
                 "x64"
             ],
