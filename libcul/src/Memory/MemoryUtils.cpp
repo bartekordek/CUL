@@ -133,7 +133,7 @@ void operator delete[]( void* p, std::size_t /* targetSize */ ) throw()
         std::free( p );
     }
 }
-#elif TRACY_ENABLE && defined(CUL_STATIC)
+#elif defined(TRACY_ENABLE) && defined(CUL_STATIC)
 constexpr std::size_t g_callstackDepth = 8u;
 void* operator new( std::size_t count )
 {

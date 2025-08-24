@@ -9,11 +9,17 @@ set(CMAKE_CXX_STANDARD 20)
 set(EXEC_DYNAMIC ${PROJECT_NAME}_dynamic)
 set(EXEC_STATIC ${PROJECT_NAME}_static)
 
+message( "[cul test] Compiler: ${CMAKE_CXX_COMPILER_ID}" )
+message( "[cul test] Simulate: ${CMAKE_CXX_SIMULATE_ID}" )
+
 if (MSVC)
     add_compile_options()
     add_compile_options( /MP )
 else()
-    add_compile_options(-Wall -Wextra -pedantic)
+    if(CMAKE_CXX_SIMULATE_ID MATCHES "MSVC")
+    else()
+        add_compile_options(-Wall -Wextra -pedantic)
+    endif()
 endif()
 
 include_directories(src)

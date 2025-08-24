@@ -337,9 +337,30 @@ void Path::preparePaths()
     {
         // OK
     }
-    else if( errorCodeValue > 1 && errorCodeValue < 4 )
+    else if( errorCodeValue == 1 )
     {
         // The system cannot find the path specified.
+        const std::string errorMessage = ec.message();
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
+                                                 m_fullPath.cStr(), errorCodeValue );
+    }
+    else if( errorCodeValue == 2 )
+    {
+        // The system cannot find the file specified.
+        const std::string errorMessage = ec.message();
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
+                                                 m_fullPath.cStr(), errorCodeValue );
+    }
+    else if( errorCodeValue == 3 )
+    {
+        // The system cannot find the path specified.
+        const std::string errorMessage = ec.message();
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
+                                                 m_fullPath.cStr(), errorCodeValue );
+    }
+    else if( errorCodeValue == 123 )
+    {
+        // The filename, directory name, or volume label syntax is incorrect, propably containing unkown character in path.
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
                                                  m_fullPath.cStr(), errorCodeValue );

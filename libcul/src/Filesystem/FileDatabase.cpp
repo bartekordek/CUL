@@ -38,9 +38,14 @@ void EscapeCharacters(String& inOutString)
     inOutString.replace( "\\", "\\\\" );
 }
 
-bool FileDatabase::FileInfo::operator==( const FileInfo& second ) const
+bool FileInfo::operator==( const FileInfo& second ) const
 {
     return ( Size == second.Size ) && ( MD5 == second.MD5 );
+}
+
+bool FileInfo::operator<( const FileInfo& second ) const
+{
+    return FilePath < second.FilePath;
 }
 
 FileDatabase::FileDatabase()
@@ -66,6 +71,63 @@ struct ListAndApi
 float FileDatabase::getPercentage() const
 {
     return 100.f * m_current / ( 1.f * m_rowCount );
+}
+
+/*
+SELECT A.*
+FROM FILES A
+INNER JOIN (SELECT SIZE, MD5
+            FROM FILES
+            GROUP BY SIZE, MD5
+            HAVING COUNT(*) > 1) B
+ON A.SIZE = B.SIZE AND A.MD5 = B.MD5 ORDER BY SIZE*/
+
+void FileDatabase::getListOfPossibleDuplicates( SortedStructuredListOfFiles& inOutPossibleDuplicates )
+{
+    ZoneScoped;
+
+    const char* querry =
+        "SELECT A.*FROM FILES A\n"
+        "INNER JOIN (SELECT SIZE, MD5\n"
+        "FROM FILES\n"
+        "GROUP BY SIZE, MD5\n"
+        "HAVING COUNT(*) > 1) B\n"
+        "ON A.SIZE = B.SIZE AND A.MD5 = B.MD5 ORDER BY SIZE;";
+
+
+    auto callback = []( void* voidPtr, int, char** argv, char** )
+    {
+        auto resulPtr = reinterpret_cast<SortedStructuredListOfFiles*>( voidPtr );
+
+        CUL::String filePath( argv[0] );
+        const CUL::String size = argv[1];
+        const CUL::String md5 = argv[2];
+        const CUL::String lastMod = argv[3];
+        FileInfo fi;
+        fi.FilePath = filePath;
+        CUL::String pathCopy = fi.FilePath.getPath();
+        if( pathCopy.empty() == false )
+        {
+            pathCopy.singleQuoteRestore();
+            fi.FilePath = pathCopy;
+        }
+
+        fi.MD5 = md5;
+        fi.ModTime.fromString( lastMod );
+        fi.Size = size;
+
+        resulPtr->addFile( fi );
+
+        return 0;
+    };
+
+    char* zErrMsg = nullptr;
+    int rc = sqlite3_exec( m_db, querry, callback, &inOutPossibleDuplicates, &zErrMsg );
+
+    if( rc != SQLITE_OK )
+    {
+        CUL::Assert::check( false, "DB ERROR: %s", zErrMsg );
+    }
 }
 
 void FileDatabase::getListOfSizes( std::vector<uint64_t>& out ) const
@@ -126,7 +188,7 @@ void FileDatabase::getFiles( uint64_t size, const CUL::String& md5, std::vector<
         const CUL::String size = argv[1];
         const CUL::String md5 = argv[2];
         const CUL::String lastMod = argv[3];
-        auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
+        auto resulPtr = reinterpret_cast<std::vector<FileInfo>*>( voidPtr );
         FileInfo fi;
         fi.FilePath = filePath;
         CUL::String pathCopy = fi.FilePath.getPath();
@@ -162,7 +224,7 @@ void FileDatabase::getFiles( uint64_t size, std::vector<FileInfo>& out ) const
         const CUL::String size = argv[1];
         const CUL::String md5 = argv[2];
         const CUL::String lastMod = argv[3];
-        auto resulPtr = reinterpret_cast<std::vector<FileDatabase::FileInfo>*>( voidPtr );
+        auto resulPtr = reinterpret_cast<std::vector<FileInfo>*>( voidPtr );
         FileInfo fi;
         filePath.singleQuoteRestore();
         fi.FilePath = filePath;
@@ -394,11 +456,11 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
     }
 }
 
-FileDatabase::FileInfo FileDatabase::getFileInfo( const String& path ) const
+FileInfo FileDatabase::getFileInfo( const String& path ) const
 {
     ZoneScoped;
     waitForInit();
-    FileDatabase::FileInfo result;
+    FileInfo result;
     String pathInBinary = path;
     pathInBinary.sanitize();
     const std::string binaryForm = pathInBinary.cStr();
@@ -412,7 +474,7 @@ WHERE PATH='" +
     const char* queryAsCharPtr = sqlQuery.cStr();
     auto callback = [] ( void* fileInfoPtr, int argc, char** argv, char** info ){
         CUL::String path( argv[0] );
-        auto fileInfoFromPtr = reinterpret_cast<FileDatabase::FileInfo*>( fileInfoPtr );
+        auto fileInfoFromPtr = reinterpret_cast<FileInfo*>( fileInfoPtr );
         fileInfoFromPtr->Found = true;
         fileInfoFromPtr->MD5 = argv[2];
         fileInfoFromPtr->Size = argv[1];
@@ -536,6 +598,93 @@ String FileDatabase::deSanitize( const String& inString )
     return normalized;
 }
 
+SortedStructuredListOfFiles::SortedStructuredListOfFiles()
+{
+}
+
+SortedStructuredListOfFiles::SortedStructuredListOfFiles( const SortedStructuredListOfFiles& arg ) : m_groupsBySize( arg.m_groupsBySize )
+{
+}
+
+SortedStructuredListOfFiles::SortedStructuredListOfFiles( SortedStructuredListOfFiles&& arg )
+    : m_groupsBySize( std::move( arg.m_groupsBySize ) )
+{
+}
+
+SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( const SortedStructuredListOfFiles& arg )
+{
+    if( this != &arg )
+    {
+        m_groupsBySize = arg.m_groupsBySize;
+    }
+    return *this;
+}
+
+SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( SortedStructuredListOfFiles&& arg )
+{
+    if( this != &arg )
+    {
+        m_groupsBySize = std::move( arg.m_groupsBySize );
+    }
+    return *this;
+}
+
+void SortedStructuredListOfFiles::addFile( const FileInfo& arg )
+{
+    const std::uint64_t fileSize = arg.Size.toUint64();
+    auto it = m_groupsBySize.find( fileSize );
+    if( it == m_groupsBySize.end() )
+    {
+        MD5List list;
+        list.Files[arg.MD5].insert( arg );
+        m_groupsBySize[fileSize] = list;
+    }
+    else
+    {
+        MD5List& md5List = it->second;
+        auto md5it = md5List.Files.find(arg.MD5);
+        if( md5it == md5List.Files.end() )
+        {
+            std::set<FileInfo> fileList;
+            fileList.insert( arg );
+            md5List.Files[arg.MD5] = fileList;
+        }
+        else
+        {
+            std::set<FileInfo>& fileSet = md5it->second;
+            fileSet.insert( arg );
+        }
+    }
+}
+
+std::vector<std::int32_t> SortedStructuredListOfFiles::getPossibleSizes( EOrderType inOrderType ) const
+{
+    std::vector<std::int32_t> result;
+
+    for( const auto& [size, _] : m_groupsBySize )
+    {
+        result.push_back( size );
+    }
+
+    if( inOrderType == EOrderType::Desc )
+    {
+        std::reverse( result.begin(), result.end() );
+    }
+
+    return result;
+}
+
+MD5List SortedStructuredListOfFiles::getMd5List( std::uint64_t inSize ) const
+{
+    MD5List result = m_groupsBySize[inSize];
+
+    return result;
+}
+
+SortedStructuredListOfFiles::~SortedStructuredListOfFiles()
+{
+}
+
 
 #if defined( DEBUG_THIS_FILE )
     #if defined(CUL_COMPILER_MSVC)
@@ -550,3 +699,4 @@ String FileDatabase::deSanitize( const String& inString )
 #ifdef _MSC_VER
 #pragma warning( pop )
 #endif
+

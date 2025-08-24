@@ -60,8 +60,6 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
         const String tempString = entryPath.c_str();
         handleErrorCode( ec, tempString.cStr() );
 
-        const bool isRegularFile = std::filesystem::is_regular_file( entryPath, ec );
-
 #ifdef _MSC_VER
         const String tempPath = entryPath.wstring();
         Path culPath = tempPath;
@@ -150,7 +148,6 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
     const std::time_t time = std::chrono::system_clock::to_time_t( systemTime );
     if( time == -1 )
     {
-        auto dupa = 0;
     }
     else
     {
