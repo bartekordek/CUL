@@ -107,8 +107,6 @@ set( PNG_TESTS OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/libpng )
 find_package( PNG REQUIRED )
 
-set(TRACY_CALLSTACK ON CACHE BOOL "[tracy ]Enable callstack." FORCE)
-set(TRACY_ON_DEMAND ON CACHE BOOL "[tracy ]Enable on demand." FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/tracy )
 
 add_subdirectory( libcul )
