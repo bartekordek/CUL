@@ -86,7 +86,7 @@ String Line::getSerializationContent( CounterType tabsSize, const bool ) const
     String result;
     result = result + tabs + "    \"name\":\"Line\",\n";
     result = result + tabs + "    \"p1\": " + convertPoint( data[0] ) + ",\n";
-    result = result + tabs + "    \"p2\": " + convertPoint( data[3] ) + "\n";
+    result = result + tabs + "    \"p2\": " + convertPoint( data[1] ) + "\n";
 
     return result;
 }
