@@ -8,8 +8,6 @@
 
 #undef max
 
-
-
 namespace CUL
 {
 CDiskInfo& CDiskInfo::getInstance()
@@ -18,7 +16,7 @@ CDiskInfo& CDiskInfo::getInstance()
     static CDiskInfoWindows s_instance;
 #else
     static CDiskInfoDummy s_instance;
-#endif // #if defined(CUL_WINDOWS)
+#endif  // #if defined(CUL_WINDOWS)
 
     return s_instance;
 }
