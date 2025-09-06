@@ -1,5 +1,6 @@
 #include "CUL/Math/Rotation.hpp"
 #include "CUL/Math/Math.hpp"
+#include "CUL/Math/Constants.hpp"
 
 using namespace CUL;
 using namespace MATH;
@@ -14,7 +15,7 @@ Rotation::Rotation( const glm::quat& q )
     // pitch (y-axis rotation)
     float sinp = 2.f * ( q.w * q.y - q.z * q.x );
     if( std::abs( sinp ) >= 1.f )
-        Pitch = std::copysign( (float)CUL::MATH::UTIL::Constants::PI / 2.f, sinp ); // use 90 degrees if out of range
+        Pitch = std::copysign( CUL::Math::PI_F / 2.f, sinp ); // use 90 degrees if out of range
     else
         Pitch = std::asin( sinp );
 

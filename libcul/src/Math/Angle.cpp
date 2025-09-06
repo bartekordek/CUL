@@ -1,5 +1,6 @@
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Math/Math.hpp"
+#include "CUL/Math/Constants.hpp"
 
 using namespace CUL;
 using namespace MATH;
@@ -408,22 +409,22 @@ float Angle::getDeg() const
 
 double CUL::MATH::radian2degree( double radian )
 {
-    return radian * 180.0 / CUL::MATH::UTIL::Constants::PI;
+    return radian * 180.0 / CUL::Math::PI_D;
 }
 
 double CUL::MATH::degree2radian( double degree )
 {
-    return degree * CUL::MATH::UTIL::Constants::PI / 180.0;
+    return degree * CUL::Math::PI_D / 180.0;
 }
 
 float CUL::MATH::radian2degree( const float radian )
 {
-    return radian * 180.0f / static_cast<float>( CUL::MATH::UTIL::Constants::PI );
+    return radian * 180.0f / CUL::Math::PI_F;
 }
 
 float CUL::MATH::degree2radian( const float degree )
 {
-    return degree * static_cast<float>( CUL::MATH::UTIL::Constants::PI ) / 180.0f;
+    return degree * CUL::Math::PI_F / 180.0f;
 }
 
 Angle::~Angle()
