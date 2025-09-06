@@ -113,3 +113,9 @@ target_include_directories(${PROJECT_NAME_DYNAMIC} PRIVATE src)
 
 target_include_directories(${PROJECT_NAME_STATIC} PUBLIC inc)
 target_include_directories(${PROJECT_NAME_STATIC} PRIVATE src)
+
+file( GLOB PRECOMPILED_HEADERS inc/CUL/STL_IMPORTS/*.hpp )
+message("Adding these files as precompiled headers: ${PRECOMPILED_HEADERS}")
+
+target_precompile_headers(${PROJECT_NAME_DYNAMIC} PUBLIC ${PRECOMPILED_HEADERS})
+target_precompile_headers(${PROJECT_NAME_STATIC} PUBLIC ${PRECOMPILED_HEADERS})
