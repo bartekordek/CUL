@@ -15,7 +15,7 @@ CommandlineParser::CommandlineParser()
 }
 
 #if defined( CUL_WINDOWS )
-void CommandlineParser::passVariables( HINSTANCE /*inInst*/, PSTR cmd )
+void CommandlineParser::passWindowsVariables( HINSTANCE /*inInst*/, PSTR cmd )
 {
     TCHAR szFileName[MAX_PATH];
 
@@ -54,7 +54,7 @@ void CommandlineParser::passVariables( HINSTANCE /*inInst*/, PSTR cmd )
 }
 #endif  // #if defined(CUL_WINDOWS)
 
-void CommandlineParser::passVariables( const std::int32_t argc, const char** argv )
+void CommandlineParser::passVariables( const std::int32_t argc, char** argv )
 {
     const std::size_t argCount = static_cast<std::size_t>( argc );
     for( std::size_t i = 0u; i < argCount; ++i )
