@@ -2,6 +2,7 @@
 
 #include "CUL/Threading/ThreadWrap.hpp"
 #include "CUL/Math/VariableWithAverageValue.hpp"
+#include <CUL/GenericUtils/NonCopyable.hpp>
 
 namespace CUL
 {
