@@ -1,6 +1,7 @@
 #pragma once
 
 #include <CUL/Hardware/DiskInfo.hpp>
+#include <CUL/GenericUtils/NonCopyable.hpp>
 
 namespace CUL
 {
@@ -9,6 +10,8 @@ class CDiskInfoDummy final: public CDiskInfo
 public:
     CDiskInfoDummy();
     ~CDiskInfoDummy();
+
+    CUL_NONCOPYABLE( CDiskInfoDummy )
 
 protected:
 private:
