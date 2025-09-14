@@ -114,8 +114,14 @@ target_include_directories(${PROJECT_NAME_DYNAMIC} PRIVATE src)
 target_include_directories(${PROJECT_NAME_STATIC} PUBLIC inc)
 target_include_directories(${PROJECT_NAME_STATIC} PRIVATE src)
 
-file( GLOB PRECOMPILED_HEADERS inc/CUL/STL_IMPORTS/*.hpp )
-message("Adding these files as precompiled headers: ${PRECOMPILED_HEADERS}")
+file( GLOB PRECOMPILED_HEADERS1 inc/CUL/STL_IMPORTS/*.hpp )
+message("Adding these files as precompiled headers: ${PRECOMPILED_HEADERS1}")
 
-target_precompile_headers(${PROJECT_NAME_DYNAMIC} PUBLIC ${PRECOMPILED_HEADERS})
-target_precompile_headers(${PROJECT_NAME_STATIC} PUBLIC ${PRECOMPILED_HEADERS})
+file( GLOB_RECURSE PRECOMPILED_HEADERS2 inc/*IMPORT*.hpp )
+message("Adding these files as precompiled headers: ${PRECOMPILED_HEADERS2}")
+
+file( GLOB_RECURSE PRECOMPILED_HEADERS_PRIVATE src/*IMPORT*.hpp )
+message("Adding these files as precompiled privte headers: ${PRECOMPILED_HEADERS_PRIVATE}")
+
+target_precompile_headers(${PROJECT_NAME_DYNAMIC} PUBLIC ${PRECOMPILED_HEADERS1} ${PRECOMPILED_HEADERS2} PRIVATE ${PRECOMPILED_HEADERS_PRIVATE})
+target_precompile_headers(${PROJECT_NAME_STATIC} PUBLIC ${PRECOMPILED_HEADERS1} ${PRECOMPILED_HEADERS2} PRIVATE ${PRECOMPILED_HEADERS_PRIVATE})

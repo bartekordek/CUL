@@ -4,9 +4,7 @@
 #include "CUL/STL_IMPORTS/STD_filesystem.hpp"
 #include "CUL/String.hpp"
 
-#ifdef CUL_WINDOWS
 #include "CUL/IMPORT_stringapiset.hpp"
-#endif
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
