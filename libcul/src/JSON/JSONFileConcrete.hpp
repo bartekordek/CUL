@@ -10,21 +10,19 @@ NAMESPACE_BEGIN( JSON )
 using JValue = rapidjson::Value;
 
 #if _MSC_VER
-#pragma warning( push )
-#pragma warning( disable: 4820 )
+    #pragma warning( push )
+    #pragma warning( disable : 4820 )
 #endif
-class JSONFileConcrete final:
-    public IJSONFile
+class JSONFileConcrete final: public IJSONFile
 {
 public:
-    JSONFileConcrete( const String& path, FS::IFile* fileContent, CULInterface* interface );
+    JSONFileConcrete( const String& path, FS::IFile* fileContent, CULInterface* inInterface );
     ~JSONFileConcrete();
 
 protected:
 private:
     void parse();
-    INode* parse(
-        const JValue& parentValue );
+    INode* parse( const JValue& parentValue );
     const FS::Path& getPath() const override;
 
     FS::FileType getType() const override;
@@ -50,14 +48,14 @@ private:
     INode* m_root = nullptr;
     FS::IFile* m_fileContents = nullptr;
 
-private: // Deleted
+private:  // Deleted
     JSONFileConcrete( const JSONFileConcrete& rhv ) = delete;
     JSONFileConcrete& operator=( const JSONFileConcrete& rhv ) = delete;
 
     bool m_keepLineEndingCharacter = false;
 };
 #ifdef _MSC_VER
-#pragma warning( pop )
+    #pragma warning( pop )
 #endif
 
 NAMESPACE_END( JSON )

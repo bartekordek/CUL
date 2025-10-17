@@ -7,7 +7,7 @@
 using namespace CUL::FS;
 using String = const CUL::String;
 
-RegularFile::RegularFile( const String& path, CULInterface* interface ) : IFile( path, interface ), m_path( path )
+RegularFile::RegularFile( const String& path, CULInterface* inInterface ) : IFile( path, inInterface ), m_path( path )
 {
 }
 

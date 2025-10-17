@@ -17,7 +17,7 @@ NAMESPACE_BEGIN( FS )
 class CULLib_API RegularFile final: public IFile
 {
 public:
-    RegularFile( const String& path, CULInterface* interface );
+    RegularFile( const String& path, CULInterface* inInterface );
     const Path& getPath() const override;
     const String& getAsOneString() const override;
     void overwriteContents( const CUL::String& value );

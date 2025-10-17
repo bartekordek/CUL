@@ -9,7 +9,7 @@ class CULLib_API ICSVFile:
     public IFile
 {
 public:
-    ICSVFile( const String& path, CULInterface* interface );
+    ICSVFile( const String& path, CULInterface* inInterface );
 
     virtual ~ICSVFile();
 

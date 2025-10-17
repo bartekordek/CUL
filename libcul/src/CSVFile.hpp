@@ -18,7 +18,7 @@ class CSVFile final:
     public ICSVFile
 {
 public:
-    CSVFile( const String& fPath, CULInterface* interface );
+    CSVFile( const String& fPath, CULInterface* inInterface );
 
     void changePath( const Path& newPath ) override;
 

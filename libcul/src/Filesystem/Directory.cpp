@@ -1,10 +1,10 @@
 #include "CUL/Filesystem/Directory.hpp"
 
+
 using namespace CUL;
 using namespace FS;
 
-Directory::Directory( const String& path, CULInterface* interface ):
-    IFile( path, interface )
+Directory::Directory( const String& path, CULInterface* inInterface ) : IFile( path, inInterface )
 {
 }
 

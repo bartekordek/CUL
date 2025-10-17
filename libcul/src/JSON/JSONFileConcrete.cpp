@@ -5,9 +5,8 @@
 using namespace CUL;
 using namespace JSON;
 
-JSONFileConcrete::JSONFileConcrete( const String& path, FS::IFile* fileContent, CULInterface* interface ):
-    IJSONFile( path, interface ),
-    m_fileContents( fileContent )
+JSONFileConcrete::JSONFileConcrete( const String& path, FS::IFile* fileContent, CULInterface* inInterface )
+    : IJSONFile( path, inInterface ), m_fileContents( fileContent )
 {
 }
 
@@ -100,8 +99,7 @@ void JSONFileConcrete::parse()
     m_root->setName( "root" );
 }
 
-INode* JSONFileConcrete::parse(
-    const JValue& value )
+INode* JSONFileConcrete::parse( const JValue& value )
 {
     if( value.IsObject() )
     {
@@ -122,7 +120,7 @@ INode* JSONFileConcrete::parse(
         ChildrenNodes nodes;
 
         unsigned int i = 0;
-        for( auto& element: value.GetArray() )
+        for( auto& element : value.GetArray() )
         {
             auto child = parse( element );
             child->setName( "ID_" + std::to_string( i++ ) );

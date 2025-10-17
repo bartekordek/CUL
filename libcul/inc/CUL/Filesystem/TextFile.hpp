@@ -9,7 +9,7 @@ NAMESPACE_BEGIN( FS )
 class CULLib_API TextFile final: public IFile
 {
 public:
-    TextFile( const String& fPath, CULInterface* interface );
+    TextFile( const String& fPath, CULInterface* inInterface );
     ~TextFile();
 protected:
 private:

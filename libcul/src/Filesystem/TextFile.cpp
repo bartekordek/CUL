@@ -6,7 +6,7 @@ using namespace CUL;
 using namespace FS;
 
 
-TextFile::TextFile( const String& fPath, CULInterface* interface ) : IFile( fPath, interface )
+TextFile::TextFile( const String& fPath, CULInterface* inInterface ) : IFile( fPath, inInterface )
 {
 
 }

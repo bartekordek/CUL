@@ -29,7 +29,7 @@ using namespace FS;
     #endif
 #endif
 
-IFile::IFile( const String& fPath, CUL::CULInterface* interface ) : p_cullInterface( interface ), m_path( fPath )
+IFile::IFile( const String& fPath, CUL::CULInterface* inInterface ) : p_cullInterface( inInterface ), m_path( fPath )
 {
     p_cullInterface->getFS()->getLastModificationTime( fPath, m_lastModificationTime );
     calculateSizeBytes();
@@ -195,9 +195,12 @@ void IFile::calculateMD5()
         std::vector<unsigned char> vec;
         vec.reserve( fileSizeAsNumber );
         vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );
-
-        SHA256 sha256;
-        m_md5 = sha256( vec.data(), fileSizeAsNumber );
+        if( vec.empty() == false )
+        {
+            SHA256 sha256;
+            m_md5 = sha256( vec.data(), fileSizeAsNumber );
+        }
+        
         file.close();
     }
 }
