@@ -5,7 +5,7 @@
 #include "CUL/GenericUtils/DisableErros.hpp"
 CUL_MSVC_SKIP_DEFAULT_WARNING_BEGIN
 
-#if defined( CUL_WINDOWS ) && !CUL_WINDOWS_CLANG
+#if defined( CUL_WINDOWS ) && !CUL_WINDOWS_CLANG && CUL_PROFILER_PIX
 typedef unsigned int UINT;
 typedef unsigned char BYTE;
 using UINT64 = std::uint64_t;

@@ -5,6 +5,11 @@
 
 NAMESPACE_BEGIN( CUL )
 
+#if defined(CUL_PROFILER_PIX)
+#else
+    #define CUL_PROFILER_PIX 0
+#endif
+
 class Profiler final
 {
 public:
