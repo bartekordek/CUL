@@ -75,6 +75,7 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
 
 void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
 {
+    ZoneScoped;
     const auto errorCodeValue = ec.value();
     if( errorCodeValue == 0 )
     {
@@ -97,12 +98,13 @@ void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
     else
     {
         const std::string errorMessage = ec.message();
-        CUL::Assert::check( false, errorMessage.c_str() );
+        CUL::Assert::check( false, "%s", errorMessage.c_str() );
     }
 }
 
 void FSApi::deleteFile( const Path& path )
 {
+    ZoneScoped;
     std::error_code ec;
     const std::filesystem::path target = path.getPath().getChar();
 
@@ -119,6 +121,7 @@ void FSApi::deleteFile( const Path& path )
 
 bool FSApi::isDirectory( const Path& path )
 {
+    ZoneScoped;
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_directory( path );
 #else
@@ -236,7 +239,7 @@ String FSApi::getFileSize( const Path& path )
             }
             else
             {
-                CUL::Assert::check( false, isRegularFileCheck.message().c_str() );
+                CUL::Assert::check( false, "%s", isRegularFileCheck.message().c_str() );
             }
         }
     }
