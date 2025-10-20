@@ -250,6 +250,7 @@ void IFile::loadBackground( bool keepLineEndingCharacter, bool removeBottomEmpty
 
             m_loaded = true;
         } );
+    m_backgroundLoadThread->run();
 }
 
 void IFile::waitForBackgroundLoad()
