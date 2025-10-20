@@ -28,7 +28,7 @@ using FileList = std::set<GUTILS::DumbPtr<IFile>>;
 class CULLib_API IFile
 {
 public:
-    IFile( const String& fPath, CUL::CULInterface* culInterface );
+    IFile( const String& fPath, CUL::CULInterface* inInterface );
 
     void setPath( const String& fPath );
     virtual void addLine( const String& line );
