@@ -6,8 +6,7 @@
 #include "CUL/Threading/MultiWorkerSystem.hpp"
 #include "CUL/Threading/TaskCallback.hpp"
 #include "CUL/Threading/ThreadUtil.hpp"
-
-#include "CUL/IMPORT_sqlite3.hpp"
+#include "Imports/IMPORT_sqlite3.hpp"
 #include "CUL/IMPORT_tracy.hpp"
 
 #ifdef _MSC_VER
