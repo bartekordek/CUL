@@ -28,6 +28,7 @@ public:
     void createFrom( const float* inData, std::size_t inDataSize );
 
     void createFrom( const std::vector<std::uint32_t>& inData );
+    void createFrom( const std::vector<std::int32_t>& inData );
 
     void setType( ETypes inType );
     ETypes getType() const;
