@@ -375,7 +375,7 @@ void Path::preparePaths()
     else
     {
         const std::string errorMessage = ec.message();
-        CUL::Assert::check( false, errorMessage.c_str() );
+        CUL::Assert::check( false, "%s", errorMessage.c_str() );
     }
 
     if( m_isDir )
