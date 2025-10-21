@@ -4,7 +4,8 @@
 using namespace CUL;
 using namespace FS;
 
-CSVFile::CSVFile( const String& fPath, CULInterface* inInterface ) : ICSVFile( fPath, inInterface ),
+CSVFile::CSVFile( const String& fPath, CULInterface* inInterface ):
+    ICSVFile( fPath, inInterface ),
     m_path( fPath )
 {
 }

@@ -67,6 +67,12 @@ void DataWrapper::createFrom( const std::vector<std::uint32_t>& inData )
     load( static_cast<const void*>( inData.data() ), dataSize, CUL::ETypes::Uint32 );
 }
 
+void DataWrapper::createFrom( const std::vector<std::int32_t>& inData )
+{
+    const std::uint64_t dataSize = sizeof( std::int32_t ) * inData.size();
+    load( static_cast<const void*>( inData.data() ), dataSize, CUL::ETypes::Int32 );
+}
+
 void DataWrapper::setType( ETypes inType )
 {
     m_type = inType;

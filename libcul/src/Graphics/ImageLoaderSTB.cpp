@@ -1,6 +1,6 @@
 #include "Graphics/ImageLoaderSTB.hpp"
 #include "Graphics/ImageConcrete.hpp"
-#include "IMPORT_Stb.hpp"
+#include "Include_Stb.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 
 using namespace CUL;
