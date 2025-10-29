@@ -10,6 +10,7 @@
 NAMESPACE_BEGIN( CUL )
 class CULInterface;
 NAMESPACE_BEGIN( FS )
+class RegularFile;
 
 using IFilePtr = std::shared_ptr<IFile>;
 using ICSVFilePtr = std::shared_ptr<ICSVFile>;
@@ -24,7 +25,7 @@ public:
     Graphics::IImage* createRawImageRawPtr();
 
     IFile* createFileFromPath( const Path& path );
-    IFile* createRegularFileRawPtr( const Path& path );
+    RegularFile* createRegularFileRawPtr( const Path& path );
     ICSVFile* createCSVFileRawPtr( const Path& path );
     JSON::IJSONFile* createJSONFileRawPtr( const Path& path );
     Graphics::IImage* createRawImageRawPtr( const Path& path );

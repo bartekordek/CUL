@@ -82,16 +82,12 @@ public:
 
 protected:
 private:
-
     mutable std::map<std::uint64_t, MD5List> m_groupsBySize;
 };
-
 
 class CULLib_API FileDatabase final
 {
 public:
-
-
     FileDatabase();
     void loadFilesFromDatabase( const Path& dbPath );
     void loadFilesFromDatabase();
@@ -106,6 +102,7 @@ public:
 
     void getListOfSizes( std::vector<uint64_t>& out ) const;
     std::vector<CUL::String> getListOfMd5() const;
+    std::vector<CUL::String> getListOfMd5( std::uint64_t inSize ) const;
     void getFiles( uint64_t size, const CUL::String& md5, std::vector<FileInfo>& out ) const;
     void getFiles( uint64_t size, std::vector<FileInfo>& out ) const;
 
@@ -118,7 +115,7 @@ public:
 protected:
 private:
     void initDb();
-    void waitForInit()const;
+    void waitForInit() const;
     bool m_initialized = false;
     int64_t getFileCount() const;
     static String sanitize( const String& inString );

@@ -26,8 +26,9 @@ public:
 
     CULLib_API static ThreadUtil& getInstance();
 
-    CULLib_API void setThreadName( const ThreadString& name, const std::thread::id* threadId = nullptr );
-    CULLib_API void setThreadStatus( const ThreadString& name, const std::thread::id* threadId = nullptr );
+    CULLib_API void setThreadName( const ThreadString& status, const std::thread::id* inThreadId = nullptr );
+    CULLib_API void setThreadStatus( const ThreadString& status, const std::thread::id* inThreadId = nullptr );
+    //virtual void logVariable( Severity severity, const char* msg... ) = 0;
     CULLib_API ThreadString getThreadName( const std::thread::id* threadId = nullptr ) const;
     CULLib_API ThreadString getThreadStatus( const std::thread::id* threadId = nullptr ) const;
     CULLib_API std::vector<ThreadString> getThreadNames() const;
@@ -37,6 +38,11 @@ public:
     CULLib_API const std::thread::id getThreadId(const std::string& name) const;
     CULLib_API const std::thread::id& getCurrentThreadId() const; 
     CULLib_API ~ThreadUtil();
+
+    ThreadUtil& operator=( const ThreadUtil& rhv ) = delete;
+    ThreadUtil& operator=( ThreadUtil&& rhv ) = delete;
+    ThreadUtil( const ThreadUtil& arg ) = delete;
+    ThreadUtil( ThreadUtil&& arg ) = delete;
 
 protected:
 private:
@@ -54,10 +60,5 @@ private:
 
     std::unordered_set<CThreadUtilObserver*> m_observers;
     std::mutex m_observersMtx;
-
-    ThreadUtil& operator=( const ThreadUtil& rhv ) = delete;
-    ThreadUtil& operator=( ThreadUtil&& rhv ) = delete;
-    ThreadUtil( const ThreadUtil& arg ) = delete;
-    ThreadUtil( ThreadUtil&& arg ) = delete;
 };
 NAMESPACE_END( CUL )

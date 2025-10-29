@@ -6,6 +6,7 @@
 #include "CUL/CULInterface.hpp"
 
 #include "Filesystem/FSUtils.hpp"
+#include "CUL/Filesystem/RegularFile.hpp"
 
 using namespace CUL;
 using namespace FS;

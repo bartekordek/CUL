@@ -5,6 +5,7 @@
 #include "CUL/Threading/ThreadUtilObserver.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/IMPORT_tracy.hpp"
+#include <CUL/STL_IMPORTS/STD_ranges.hpp>
 
 #ifdef _MSC_VER
 #include "ThreadUtilityWindows.hpp"
@@ -118,7 +119,7 @@ ThreadString ThreadUtil::getThreadStatus( const std::thread::id* inThreadId ) co
 
     return "";
 }
-void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id* inThreadId )
+void ThreadUtil::setThreadName( const ThreadString& status, const std::thread::id* inThreadId )
 {
     ZoneScoped;
     const std::thread::id& currentThreadId = getCurrentThreadId();
@@ -134,7 +135,7 @@ void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id*
 
     ThreadMeta meta;
     meta.ID = *threadId;
-    meta.Name = name;
+    meta.Name = status;
 
     if( it != m_threadInfo.end() )
     {
@@ -146,12 +147,12 @@ void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id*
 
     }
 
-    m_threadInfo[name] = meta;
+    m_threadInfo[status] = meta;
 
 #if defined( _MSC_VER )
     if( *threadId == currentThreadId )
     {
-        setCurrentThreadNameWin( name );
+        setCurrentThreadNameWin( status );
     }
 #endif
 }
@@ -167,17 +168,16 @@ void ThreadUtil::setThreadStatus( const ThreadString& status, const std::thread:
     } );
 }
 
-void ThreadUtil::setThreadStatusImpl( const ThreadString& status, const std::thread::id& threadId )
+void ThreadUtil::setThreadStatusImpl( const ThreadString& status, const std::thread::id& inThreadId )
 {
     ZoneScoped;
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
 
-    for( auto& threadPair : m_threadInfo )
+    for( ThreadMeta& meta : m_threadInfo | std::views::values )
     {
-        if( threadPair.second.ID == threadId )
+        if( meta.ID == inThreadId )
         {
-            ThreadMeta& metaCopy = threadPair.second;
-            metaCopy.Status = status;
+            meta.Status = status;
         }
     }
 }

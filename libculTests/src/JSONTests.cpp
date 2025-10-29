@@ -1,5 +1,6 @@
 #include "JSONTests.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/Filesystem/ConfigFile.hpp"
 #include "CUL/JSON/INode.hpp"
 
 using namespace CUL;
@@ -20,6 +21,58 @@ void JSONTests::SetUpTestCase()
 
 void JSONTests::SetUp()
 {
+}
+
+TEST_F( JSONTests, configTestOneFieldRapid )
+{
+    auto file = ConfigFile::createFile( EParserType::Rapidjson );
+    file->loadFile( jsonTestFileName.string() );
+    const ConfigNode* ageValue = file->getValue( { std::string( "age" ) } );
+    GTEST_ASSERT_EQ( std::get<std::int32_t>( ageValue->Value ), 99 );
+}
+
+TEST_F( JSONTests, configTestTwoFieldRapid )
+{
+    auto file = ConfigFile::createFile( EParserType::Rapidjson );
+    file->loadFile( jsonTestFileName.string() );
+    const auto value = file->getValue( { std::string( "objs" ), std::string( "0" ), std::string( "variable" ) } );
+    GTEST_ASSERT_EQ( std::get<std::string>( value->Value ), "value" );
+}
+
+TEST_F( JSONTests, configTestOneFieldJsonxx )
+{
+    auto file = ConfigFile::createFile( EParserType::Jsonxx );
+    file->loadFile( jsonTestFileName.string() );
+    const ConfigNode* ageValue = file->getValue( { std::string( "age" ) } );
+    const double floatVal = std::get<double>( ageValue->Value );
+    const std::int32_t intVal = static_cast<std::int32_t>( floatVal );
+    GTEST_ASSERT_EQ( intVal, 99 );
+}
+
+TEST_F( JSONTests, configTestTwoFieldJsonxx )
+{
+    auto file = ConfigFile::createFile( EParserType::Jsonxx );
+    file->loadFile( jsonTestFileName.string() );
+    const auto value = file->getValue( { std::string( "objs" ), std::string( "0" ), std::string( "variable" ) } );
+    GTEST_ASSERT_EQ( std::get<std::string>( value->Value ), "value" );
+}
+
+#define TEST_WRITE 1
+TEST_F( JSONTests, configJSONWRITETEST )
+{
+    auto file = ConfigFile::createFile( EParserType::Jsonxx );
+    file->loadFile( jsonTestFileName.string() );
+    ConfigNode cn;
+    cn.Value = "msg 4";
+    cn.Type = EVarType::String;
+    file->addOverwriteValue( cn, { std::string( "messages" ) } );
+    file->saveFile( "testwrite.json" );
+
+    auto newFile = ConfigFile::createFile( EParserType::Jsonxx );
+    newFile->loadFile( "testwrite.json" );
+    const auto value = newFile->getValue( { std::string( "messages" ) } );
+    const auto xx = value->Children.at( "3" );
+    auto dd = 0;
 }
 
 TEST_F( JSONTests, objectTypeIsCorrect )

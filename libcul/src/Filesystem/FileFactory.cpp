@@ -48,7 +48,7 @@ IFile* FileFactory::createFileFromPath( const Path& path )
     return createRegularFileRawPtr( path );
 }
 
-IFile* FileFactory::createRegularFileRawPtr( const Path& path )
+FS::RegularFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
     ZoneScoped;
     auto file = new RegularFile( path.getPath(), m_culInterface );

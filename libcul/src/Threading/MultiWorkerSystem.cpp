@@ -5,11 +5,24 @@
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/Threading/TaskCallback.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
+#include "CUL/IMPORT_tracy.hpp"
+
+#if 0 // DEBUG_THIS_FILE
+    #define DEBUG_THIS_FILE 1
+    #if defined(_MSC_VER)
+        #pragma optimize( "", off )
+    #else
+        #pragma clang optimize off
+    #endif
+#endif
 
 using namespace CUL;
 
+constexpr std::uint64_t g_maxQueuedTasks{4096u};
+
 void MultiWorkerSystem::registerTask( ITask* task )
 {
+    ZoneScoped;
     const auto prioType = task->Priority;
     std::lock_guard<std::mutex> locker( m_tasksMtxs[(size_t)prioType] );
     m_tasksArray[(size_t)prioType].push_back( task );
@@ -28,6 +41,7 @@ MultiWorkerSystem::MultiWorkerSystem()
 
 void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
 {
+    ZoneScoped;
     TaskCallback* taskPtr = new TaskCallback();
     taskPtr->Callback = [name]( int8_t ) {
         CUL::ThreadUtil::getInstance().setThreadName( name.cStr() );
@@ -37,13 +51,9 @@ void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
     registerTask( taskPtr );
 }
 
-//void MultiWorkerSystem::fetchWorkerStatus()
-//{
-//
-//}
-
 std::vector<String> MultiWorkerSystem::getWorkersStatuses()
 {
+    ZoneScoped;
     std::lock_guard<std::mutex> locker( m_workersRunMtx );
     std::vector<String> result;
     for( const auto& thread : m_threads )
@@ -53,12 +63,23 @@ std::vector<String> MultiWorkerSystem::getWorkersStatuses()
         result.push_back( status );
     }
     return result;
+}
 
-    //return m_workerStatus;
+std::uint64_t MultiWorkerSystem::getQueuedCount( EPriority inPriority ) const
+{
+    ZoneScoped;
+    std::lock_guard<std::mutex> locker( m_workersRunMtx );
+    return static_cast<std::uint64_t>( m_tasksArray[(size_t)inPriority].size() );
+}
+
+std::uint64_t MultiWorkerSystem::getMaxTasksCount( EPriority inPriority ) const
+{
+    return g_maxQueuedTasks;
 }
 
 void MultiWorkerSystem::addWorker( EPriority priority )
 {
+    ZoneScoped;
     if( m_changeWorkers.valid() )
     {
         return;
@@ -76,6 +97,7 @@ void MultiWorkerSystem::addWorker( EPriority priority )
 }
 void MultiWorkerSystem::removeWorker( EPriority priority )
 {
+    ZoneScoped;
     {
         std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
         ThreadInfo* foundThread{ nullptr };
@@ -114,6 +136,7 @@ void MultiWorkerSystem::removeWorker( EPriority priority )
 
 void MultiWorkerSystem::removeThreadFromWorkers( const std::thread::id& id )
 {
+    ZoneScoped;
     std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
     const auto it = m_threads.find( id );
     if( it != m_threads.end() )
@@ -146,6 +169,7 @@ void MultiWorkerSystem::stopWorkers()
 
 void MultiWorkerSystem::workerMethod( int8_t threadId, EPriority priority )
 {
+    ZoneScoped;
     String currentThreadName = "Worker " + std::to_string( threadId );
     if( priority == EPriority::High )
     {
@@ -250,13 +274,14 @@ int8_t MultiWorkerSystem::getCurrentWorkersCount() const
     return currentCount;
 }
 
-uint8_t MultiWorkerSystem::getTasksLeft( EPriority priority ) const
+std::uint64_t MultiWorkerSystem::getTasksLeft( EPriority priority ) const
 {
-    uint8_t result = 0u;
+    ZoneScoped;
+    std::uint64_t result = 0u;
     {
         std::lock_guard<std::mutex> locker( m_tasksMtxs[(size_t)priority] );
         auto& tasks = m_tasksArray[(size_t)priority];
-        result = static_cast<uint8_t>( tasks.size() );
+        result = static_cast<std::uint64_t>( tasks.size() );
     }
 
     return result;
@@ -299,3 +324,11 @@ ThreadInfo& ThreadInfo::operator=( ThreadInfo&& arg ) noexcept
     }
     return *this;
 }
+
+#if defined( DEBUG_THIS_FILE )
+    #ifdef _MSC_VER
+        #pragma optimize( "", on )
+    #else
+        #pragma clang optimize on
+    #endif
+#endif  // #if defined(DEBUG_THIS_FILE)

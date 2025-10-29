@@ -49,7 +49,7 @@ void RegularFile::overwriteContents( const CUL::String& value )
     }
 
     m_rows = valueCopy.split( '\n' );
-    cacheFile();
+    m_cached = value;
 }
 
 void RegularFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
