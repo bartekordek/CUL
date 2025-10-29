@@ -23,6 +23,9 @@ file(GLOB HASH_LIBRARY_INCLUDES "hash-library/*.h")
 file(GLOB STB_SOURCES "stb/*.h" "stb/*.c" "stb/deprecated/*.h" )
 file(GLOB TINY_IMAGE_SOURCES "tiny-image/src/*.cpp" "tiny-image/src/*.h" )
 
+list(APPEND JSONXX jsonxx/jsonxx.h)
+list(APPEND JSONXX jsonxx/jsonxx.cc)
+
 set(SOURCES_ALL
 ${SQLITE_SOURCES}
 ${SQLITE_HEADERS}
@@ -30,6 +33,7 @@ ${STB_SOURCES}
 ${TINY_IMAGE_SOURCES}
 ${HASH_LIBRARY_INCLUDES}
 ${HASH_LIBRARY_SOURCES}
+${JSONXX}
 )
 
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public )
@@ -42,6 +46,7 @@ set(INCLUDE_PATHS
 ${CMAKE_CURRENT_SOURCE_DIR}/stb
 ${CMAKE_CURRENT_SOURCE_DIR}/tiny-image/src/
 ${CMAKE_CURRENT_SOURCE_DIR}/sqlite-amalgamation-3340000/src
+${CMAKE_CURRENT_SOURCE_DIR}/jsonxx
 )
 
 message( "[Additional deps] INCLUDE_PATHS: ${INCLUDE_PATHS}" )
@@ -69,3 +74,10 @@ if ( MSVC )
 else()
     target_compile_options(${EXEC} PRIVATE "-w")
 endif()
+
+
+#SQLITE_DEFAULT_CACHE_SIZE
+#the default value is -2000, which translates into a maximum of
+#  2048000 (  1.953125 MB) bytes per cache.
+#268435456 (256.000000 MB)
+target_compile_definitions(${EXEC} PUBLIC SQLITE_DEFAULT_CACHE_SIZE=-268435456 SQLITE_THREADSAFE=1)

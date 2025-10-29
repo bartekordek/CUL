@@ -1,10 +1,8 @@
-#cmake -DCMAKE_BUILD_TYPE=Debug
 cmake_minimum_required(VERSION 3.0.0)
 
 set( CMAKE_CXX_STANDARD 23 )
 
 set( PROJECT_NAME_DYNAMIC cul_dynamic )
-set( PROJECT_NAME_STATIC_IMPL cul-static-impl )
 set( PROJECT_NAME_STATIC cul_static )
 
 project(${PROJECT_NAME_DYNAMIC} LANGUAGES CXX)
@@ -85,7 +83,7 @@ endif()
 set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES COMPILE_DEFINITIONS "")
-target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1 )
+target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1)
 
 if (MSVC)
     list(APPEND LIBS msvcmrtd )
