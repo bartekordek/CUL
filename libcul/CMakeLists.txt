@@ -11,6 +11,7 @@ project(${PROJECT_NAME_DYNAMIC} LANGUAGES CXX)
 project(${PROJECT_NAME_STATIC} LANGUAGES CXX)
 
 set( CMAKE_ENABLE_EXPORTS true )
+cmake_policy(SET CMP0069 NEW)
 
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/CPP-DateTime-library/src )
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/hash-library )
@@ -31,6 +32,12 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
     add_compile_options( "/wd4820" )
     add_compile_options( "/wd4710" )
     add_compile_options( "/wd5045" )
+
+    add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Ot>")
+    add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Oi>")
+
+    add_compile_options("$<$<CONFIG:Release>:/Ot>")
+    add_compile_options("$<$<CONFIG:Release>:/Oi>")
 
     find_package( RapidJSON REQUIRED )
     if( RapidJSON_FOUND )
@@ -84,6 +91,16 @@ endif()
 
 set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
 set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY "LINK_LIBRARY_DEPENDENCIES" true )
+
+set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_DEBUG false )
+set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO false )
+set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL true )
+set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE true )
+set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_DEBUG false )
+set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO false )
+set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL true )
+set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE true )
+
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES COMPILE_DEFINITIONS "")
 target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1 )
 
