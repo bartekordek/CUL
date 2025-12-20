@@ -55,6 +55,12 @@ set(HEADERS_PUBLIC
 set(DEPENDENCIES PUBLIC TracyClient)
 
 if (MSVC)
+    add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Ot>")
+    add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Oi>")
+
+    add_compile_options("$<$<CONFIG:Release>:/Ot>")
+    add_compile_options("$<$<CONFIG:Release>:/Oi>")
+
     target_link_libraries( ${EXEC} ${DEPENDENCIES} Ws2_32.Lib )
 else()
     target_link_libraries( ${EXEC} ${DEPENDENCIES} stdc++fs dl)
@@ -69,3 +75,15 @@ if ( MSVC )
 else()
     target_compile_options(${EXEC} PRIVATE "-w")
 endif()
+
+
+#SQLITE_DEFAULT_CACHE_SIZE
+#the default value is -2000, which translates into a maximum of
+#  2048000 (  1.953125 MB) bytes per cache.
+#268435456 (256.000000 MB)
+#  -2000 -> 2048000B/01.95MB
+#  -8192 -> 8388608B/08.00MB
+# -16384 ->       nc/16.00MB
+
+#target_compile_definitions(${EXEC} PUBLIC SQLITE_DEFAULT_CACHE_SIZE=-268435456 SQLITE_THREADSAFE=1)
+target_compile_definitions(${EXEC} PUBLIC SQLITE_DEFAULT_CACHE_SIZE=-16384 SQLITE_THREADSAFE=0)
