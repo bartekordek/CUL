@@ -43,7 +43,7 @@ public:
     void removeWorker( EPriority priority );
     void stopWorkers();
     int8_t getCurrentWorkersCount() const;
-    uint8_t getTasksLeft( EPriority priority ) const;
+    std::uint64_t getTasksLeft( EPriority priority ) const;
 
     uint8_t WorkerSleepBetweenTasksTimeMs = 0u;
     uint8_t WorkerSleepWhenNoTaskTimeMs = 0u;
@@ -52,6 +52,9 @@ public:
     int8_t getCurrentThreadWorkerId() const;
 
     std::vector<String> getWorkersStatuses();
+    std::uint64_t getQueuedCount( EPriority inPriority ) const;
+    std::uint64_t getMaxTasksCount( EPriority inPriority ) const;
+    void setMaxTasksCount( EPriority inPriority, std::uint64_t inCount );
 
     MultiWorkerSystem( const MultiWorkerSystem& ) = delete;
     MultiWorkerSystem( MultiWorkerSystem&& ) = delete;
@@ -71,7 +74,7 @@ private:
 
     bool m_runWorkers = true;
     std::unordered_map<int8_t, bool> m_workersRun;
-    std::mutex m_workersRunMtx;
+    mutable std::mutex m_workersRunMtx;
 
     mutable std::array<std::deque<ITask*>, (size_t)EPriority::COUNT> m_tasksArray;
     mutable std::array<std::mutex, (size_t)EPriority::COUNT> m_tasksMtxs;
