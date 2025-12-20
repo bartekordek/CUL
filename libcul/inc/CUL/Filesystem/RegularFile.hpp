@@ -22,6 +22,7 @@ public:
     const String& getAsOneString() const override;
     void overwriteContents( const CUL::String& value );
     void saveFile() override;
+    void addLine( const String& line ) override;
     ~RegularFile();
 
 protected:
@@ -40,7 +41,6 @@ private:
     unsigned getLinesCount() const override;
     void cacheFile();
     FileType getType() const override;
-    void addLine( const String& line ) override;
     void initializeRowsChar();
 
     Path m_path;

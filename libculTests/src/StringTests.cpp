@@ -22,12 +22,15 @@ void StringTests::TearDownTestCase()
 TEST_F( StringTests, WcharRestore )
 {
 #if TEST_UTF
+    std::u32string tmp( U"ии" );
+    CUL::String t0( L"ии" );
+
     CUL::CULInterface::getInstance()->createInstance();
     CUL::FS::IFile* file = CUL::CULInterface::getInstance()->getFF()->createFileFromPath( dummyFilePath );
     file->load( false, false );
     const char* utfLine = file->getContent()[2];
 
-    CUL::String t1( "Krążek" );
+    CUL::String t1( "ии" );
 
     CUL::String t2 = utfLine;
 
@@ -194,6 +197,45 @@ TEST_F( StringTests, ConversionTest05 )
 
     ASSERT_TRUE( test1 == someString );
 }
+
+TEST_F( StringTests, ConvertToi32 )
+{
+    CUL::String test1( "02" );
+
+    ASSERT_TRUE( test1.toInt() == 2 );
+}
+
+TEST_F( StringTests, ConvertToi64 )
+{
+    CUL::String test1( "03" );
+
+    ASSERT_TRUE( test1.toInt64() == 3 );
+}
+
+TEST_F( StringTests, ConvertToui32 )
+{
+    CUL::String test1( "04" );
+
+    ASSERT_TRUE( test1.toUInt() == 4u );
+}
+
+TEST_F( StringTests, ConvertToui64 )
+{
+    CUL::String test1( "05" );
+
+    ASSERT_TRUE( test1.toUInt() == 5u );
+}
+
+TEST_F( StringTests, ConvertToint2 )
+{
+    CUL::String test1( "06" );
+
+    ASSERT_TRUE( test1.toInt64() == 6 );
+
+    test1 = "08";
+    ASSERT_TRUE( test1.toInt64() == 8 );
+}
+
 
 //
 TEST_F( StringTests, RemoveAllChar )

@@ -33,6 +33,15 @@ public:
     static std::uint8_t hexToValue( std::uint8_t in );
     static std::uint8_t charToValue( std::uint8_t in );
 
+    static bool isNumber( const char* inNumber );
+    static bool isNumber( const char* inNumber, std::size_t inSize );
+
+    static bool isNumber( const wchar_t* inNumber );
+    static bool isNumber( const wchar_t* inNumber, std::size_t inSize );
+
+    static std::int32_t strLen( const char* inString );
+    static std::int32_t strLen( const wchar_t* inString );
+
 protected:
 private:
 };
@@ -46,15 +55,17 @@ public:
 #if CUL_USE_WCHAR
     using UnderlyingType = std::wstring;
     using UnderlyingChar = wchar_t;
-#define NullTerminator L'\0'
-#define LineEnding L'\n'
-#define LineEndingCarriage L'\r\n'
+    #define NullTerminator L'\0'
+    #define LineEnding L'\n'
+    #define LineEndingCarriage L'\r\n'
+    #define ZeroChar L'0'
 #else
     using UnderlyingType = std::string;
     using UnderlyingChar = char;
-#define NullTerminator '\0'
-#define LineEnding '\n'
-#define LineEndingCarriage '\r\n'
+    #define NullTerminator '\0'
+    #define LineEnding '\n'
+    #define LineEndingCarriage '\r\n'
+    #define ZeroChar '0'
 #endif
     static constexpr Length UnderlyingCharSize = sizeof( UnderlyingChar );
 
@@ -249,9 +260,6 @@ public:
     static std::int32_t cmp( const wchar_t* s1, const wchar_t* s2 );
     static bool equals( const wchar_t* s1, const wchar_t* s2, std::size_t length );
 
-    static std::int32_t strLen( const char* inString );
-    static std::int32_t strLen( const wchar_t* inString );
-
     static void toLower( char* inOut );
     static void toLower( char* inOut, std::int32_t size );
 
@@ -292,6 +300,7 @@ private:
     void setSize( Length newSize );
     void verify();
     void tryFitIntoSSO();
+    void removePrecedingZero();
 
     void grow( Length targetSize, bool keepValue );
     void releaseBuffer();

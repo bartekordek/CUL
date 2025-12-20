@@ -6,11 +6,14 @@
 #include "CUL/STL_IMPORTS/STD_set.hpp"
 #include "CUL/STL_IMPORTS/STD_chrono.hpp"
 #include <CUL/STL_IMPORTS/STD_memory.hpp>
+#include <CUL/STL_IMPORTS/STD_future.hpp>
+
 
 namespace jed_utils
 {
 class datetime;
 }
+
 
 NAMESPACE_BEGIN( CUL )
 
@@ -75,6 +78,8 @@ public:
     TimeType getSecond() const;
     void setSecond( TimeType inSecond );
 
+    void fromEpoch( std::uint64_t inSinceEpoch );
+
     bool operator==( const Time& ) const;
     bool operator<( const Time& ) const;
     bool operator>( const Time& ) const;
@@ -88,15 +93,23 @@ public:
 
     BasicTime operator-( const Time& arg ) const;
 
+    bool almostTheSame( const Time& arg, std::int32_t differenceInSeconds) const;
+
     ~Time();
 
 protected:
 private:
-    void updateString();
+    void updateString() const;
+    void waitForDateTime() const;
+
+
     float m_ns{ 0.f };
     std::unique_ptr<jed_utils::datetime> m_dateTime;
-    CUL::String m_asString;
+    mutable CUL::String m_asString;
     std::uint64_t m_asEpoch;
+
+    bool m_initialized{ true };
+    std::future<void> m_initializedFuture;
 };
 
 NAMESPACE_END( CUL )

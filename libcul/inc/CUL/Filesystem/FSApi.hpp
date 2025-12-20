@@ -6,6 +6,7 @@
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include <CUL/STL_IMPORTS/STD_system_error.hpp>
+#include "CUL/STL_IMPORTS/STD_filesystem.hpp"
 
 #undef deleteFile
 
@@ -15,7 +16,6 @@ class Time;
 NAMESPACE_BEGIN( FS )
 class FileFactory;
 class IFile;
-
 
 class CULLib_API FSApi final
 {
@@ -50,6 +50,7 @@ public:
 
 protected:
 private:
+    void iterateThrought( const std::filesystem::directory_entry& de, std::function<void( const Path& path )> callback );
     CULInterface* m_culInterface = nullptr;
     FS::FileFactory* m_fileFactory = nullptr;
 };

@@ -29,7 +29,7 @@ private:
     virtual void debugLoop() = 0;
 
     bool m_run{ false };
-    std::uint32_t m_poolIntervalMs{ 200u };
+    std::uint32_t m_poolIntervalMs{ 20u };
     ThreadWrapper m_mainThread;
     ThreadWrapper m_debugInfoThread;
     MATH::VariableWithAverageValue m_percentageAverage;

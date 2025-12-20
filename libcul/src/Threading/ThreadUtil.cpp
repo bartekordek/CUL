@@ -4,10 +4,12 @@
 #include "CUL/Threading/TaskCallback.hpp"
 #include "CUL/Threading/ThreadUtilObserver.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "CUL/IMPORT_tracy.hpp"
+#include "CUL/Proifling/Profiler.hpp"
+#include <CUL/STL_IMPORTS/STD_ranges.hpp>
+#include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
 
 #ifdef _MSC_VER
-#include "ThreadUtilityWindows.hpp"
+    #include "ThreadUtilityWindows.hpp"
 #endif
 
 using namespace CUL;
@@ -27,7 +29,8 @@ ThreadUtil::ThreadUtil()
 
 std::vector<ThreadString> ThreadUtil::getThreadNames() const
 {
-    ZoneScoped;
+    ProfilerScope( "ThreadUtil::getThreadNames" );
+
     std::vector<ThreadString> result;
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
@@ -51,13 +54,13 @@ void ThreadUtil::sleepFor( uint16_t ms )
 
 void ThreadUtil::registerObserver( CThreadUtilObserver* observer )
 {
-    std::lock_guard<std::mutex> locker(m_observersMtx);
+    std::lock_guard<std::mutex> locker( m_observersMtx );
     m_observers.insert( observer );
 }
 
 const std::thread::id ThreadUtil::getThreadId( const ThreadString& name ) const
 {
-    ZoneScoped;
+    ProfilerScope( "ThreadUtil::getThreadId" );
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
     const auto it = m_threadInfo.find( name );
@@ -83,7 +86,7 @@ CULLib_API const std::thread::id& ThreadUtil::getCurrentThreadId() const
 
 ThreadString ThreadUtil::getThreadName( const std::thread::id* inThreadId ) const
 {
-    ZoneScoped;
+    ProfilerScope( "ThreadUtil::getThreadName" );
 
     const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &getCurrentThreadId() };
 
@@ -102,7 +105,7 @@ ThreadString ThreadUtil::getThreadName( const std::thread::id* inThreadId ) cons
 
 ThreadString ThreadUtil::getThreadStatus( const std::thread::id* inThreadId ) const
 {
-    ZoneScoped;
+    ProfilerScope( "ThreadUtil::getThreadStatus" );
 
     const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &getCurrentThreadId() };
 
@@ -118,9 +121,10 @@ ThreadString ThreadUtil::getThreadStatus( const std::thread::id* inThreadId ) co
 
     return "";
 }
-void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id* inThreadId )
+void ThreadUtil::setThreadName( const ThreadString& status, const std::thread::id* inThreadId )
 {
-    ZoneScoped;
+    ProfilerScope( "ThreadUtil::getThreadStatus" );
+
     const std::thread::id& currentThreadId = getCurrentThreadId();
     const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &currentThreadId };
 
@@ -134,7 +138,7 @@ void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id*
 
     ThreadMeta meta;
     meta.ID = *threadId;
-    meta.Name = name;
+    meta.Name = status;
 
     if( it != m_threadInfo.end() )
     {
@@ -143,57 +147,90 @@ void ThreadUtil::setThreadName( const ThreadString& name, const std::thread::id*
     }
     else
     {
-
     }
 
-    m_threadInfo[name] = meta;
+    m_threadInfo[status] = meta;
 
 #if defined( _MSC_VER )
     if( *threadId == currentThreadId )
     {
-        setCurrentThreadNameWin( name );
+        setCurrentThreadNameWin( status );
     }
 #endif
 }
 
+constexpr std::size_t g_maxBufferSize{ 4096u };
+
+void ThreadUtil::setThreadStatusArgs( const std::thread::id* inThreadId, const char* msg... )
+{
+    ProfilerScope( "ThreadUtil::setThreadStatusArgs_ti" );
+
+    va_list args;
+    va_start( args, msg );
+    char buffer[g_maxBufferSize];
+    vsprintf( buffer, msg, args );
+    va_end( args );
+
+    setThreadStatus( buffer, inThreadId );
+}
+
+void ThreadUtil::setThreadStatusArgs( const char* msg... )
+{
+    ProfilerScope( "ThreadUtil::setThreadStatusArgs" );
+    const std::thread::id* threadId = &getCurrentThreadId();
+
+    va_list args;
+    va_start( args, msg );
+    char buffer[g_maxBufferSize];
+    vsprintf( buffer, msg, args );
+    va_end( args );
+
+    setThreadStatus( buffer, threadId );
+}
+
 void ThreadUtil::setThreadStatus( const ThreadString& status, const std::thread::id* inThreadId )
 {
-    ZoneScoped;
+    ProfilerScope( "ThreadUtil::setThreadStatus" );
+
     const std::thread::id* threadId{ inThreadId ? inThreadId : &getCurrentThreadId() };
 
     std::lock_guard<std::mutex> locker( m_tasksMtx );
-    m_tasks.push_front( [this, status, threadId]() {
+    m_tasks.push_front(
+        [this, status, threadId]()
+        {
             setThreadStatusImpl( status, *threadId );
-    } );
+        } );
 }
 
-void ThreadUtil::setThreadStatusImpl( const ThreadString& status, const std::thread::id& threadId )
+void ThreadUtil::setThreadStatusImpl( const ThreadString& status, const std::thread::id& inThreadId )
 {
-    ZoneScoped;
+    ProfilerScope( "ThreadUtil::setThreadStatusImpl" );
+
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
 
-    for( auto& threadPair : m_threadInfo )
+    for( ThreadMeta& meta : m_threadInfo | std::views::values )
     {
-        if( threadPair.second.ID == threadId )
+        if( meta.ID == inThreadId )
         {
-            ThreadMeta& metaCopy = threadPair.second;
-            metaCopy.Status = status;
+            meta.Status = status;
         }
     }
 }
 
 void ThreadUtil::threadInfoWorker()
 {
-    setThreadName("ThreadUtil::threadInfoWorker");
+    setThreadName( "ThreadUtil::threadInfoWorker" );
     while( m_runThreadWorker )
     {
-        ZoneScoped;
+        ProfilerScope( "ThreadUtil::threadInfoWorker::while" );
+
         std::this_thread::sleep_for( std::chrono::microseconds( 2 ) );
 
         std::lock_guard<std::mutex> locker( m_tasksMtx );
         while( m_tasks.empty() == false )
         {
-            ZoneScoped;
+            ProfilerScope( "ThreadUtil::threadInfoWorker::while::while" );
+
             std::function<void( void )> task = m_tasks.back();
             task();
             m_tasks.pop_back();
@@ -208,12 +245,12 @@ void ThreadUtil::notifyObservers()
         std::lock_guard<std::mutex> locker( m_threadInfoMtx );
         for( const auto& ti : m_threadInfo )
         {
-            data.push_back(ti.second);
+            data.push_back( ti.second );
         }
     }
 
     std::lock_guard<std::mutex> locker( m_observersMtx );
-    for( const auto& observer: m_observers )
+    for( const auto& observer : m_observers )
     {
         observer->onThreadsStateUpdated( data );
     }

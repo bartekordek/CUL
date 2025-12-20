@@ -1,6 +1,5 @@
 #include "CUL/Memory/MemoryUtils.hpp"
 #include "CUL/Memory/MemoryTracker.hpp"
-#include "CUL/IMPORT_tracy.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -133,8 +132,8 @@ void operator delete[]( void* p, std::size_t /* targetSize */ ) throw()
         std::free( p );
     }
 }
-#elif defined(TRACY_ENABLE) && defined(CUL_STATIC)
-constexpr std::size_t g_callstackDepth = 8u;
+#elif defined( TRACY_ENABLE ) && defined( CUL_STATIC ) && defined( TRACY_CALLSTACK )
+constexpr std::size_t g_callstackDepth = 16u;
 void* operator new( std::size_t count )
 {
     auto ptr = malloc( count );

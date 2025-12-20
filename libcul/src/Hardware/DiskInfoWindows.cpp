@@ -22,10 +22,10 @@ CDiskInfoWindows::CDiskInfoWindows()
 
 void CDiskInfoWindows::findDiskMappings()
 {
-    constexpr static std::size_t bufferLength = 11u;
+    constexpr static std::size_t bufferLength = 8u;
     char buffer[bufferLength];
 
-    constexpr float TimeCoverageMs = 8.f * 1000.f;
+    constexpr float TimeCoverageMs = 4.f * 1000.f;
     const float howManySamples = TimeCoverageMs / getPoolIntervalMs();
 
     for (char currentDiskName = 'A'; currentDiskName <= 'Z'; ++currentDiskName)
@@ -44,6 +44,7 @@ void CDiskInfoWindows::findDiskMappings()
             di.BytesPerSecondRead.setCapacity( static_cast<std::size_t>( howManySamples ) );
             di.BytesPerSecondWrite.setCapacity( static_cast<std::size_t>( howManySamples ) );
 #endif // CALCULATE_FROM_IDLE
+            di.PercentageUsed.setCapacity( howManySamples );
 
             m_diskHandles[di.Name] = di;
         }

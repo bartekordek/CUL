@@ -5,8 +5,7 @@
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "Graphics/ImageConcrete.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-
-#include "CUL/IMPORT_tracy.hpp"
+#include "CUL/Proifling/Profiler.hpp"
 
 using namespace CUL;
 
@@ -15,17 +14,15 @@ using FileFactory = FS::FileFactory;
 using ICSVFile = FS::ICSVFile;
 using IJSONFile = JSON::IJSONFile;
 
-FileFactory::FileFactory( CULInterface* culInterface ):
-    m_culInterface( culInterface )
+FileFactory::FileFactory( CULInterface* culInterface ): m_culInterface( culInterface )
 {
-
 }
 
 IFile* FileFactory::createFileFromPath( const Path& path )
 {
     CUL::String ext = path.getExtension();
     ext.toLower();
-    if( ext.equals( ".csv" ) || ext.equals(  "csv" ) )
+    if( ext.equals( ".csv" ) || ext.equals( "csv" ) )
     {
         return createJSONFileRawPtr( path );
     }
@@ -35,11 +32,8 @@ IFile* FileFactory::createFileFromPath( const Path& path )
         return createJSONFileRawPtr( path );
     }
 
-    if(
-        ext.equals( "bmp" ) || ext.equals( ".bmp" ) || 
-        ext.equals( "jpg" ) || ext.equals( ".jpg" ) || 
-        ext.equals( "jpeg" ) || ext.equals( ".jpeg" ) || 
-        ext.equals( "png" ) || ext.equals( ".png" ) )
+    if( ext.equals( "bmp" ) || ext.equals( ".bmp" ) || ext.equals( "jpg" ) || ext.equals( ".jpg" ) || ext.equals( "jpeg" ) ||
+        ext.equals( ".jpeg" ) || ext.equals( "png" ) || ext.equals( ".png" ) )
     {
         CUL::Assert::simple( false, "Not implemented." );
         return nullptr;
@@ -50,7 +44,8 @@ IFile* FileFactory::createFileFromPath( const Path& path )
 
 IFile* FileFactory::createRegularFileRawPtr( const Path& path )
 {
-    ZoneScoped;
+    ProfilerScope( "FileFactory::createRegularFileRawPtr" );
+
     auto file = new RegularFile( path.getPath(), m_culInterface );
     return file;
 }

@@ -4,28 +4,27 @@
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/CULInterface.hpp"
-
-#include "CUL/IMPORT_tracy.hpp"
+#include "CUL/Proifling/Profiler.hpp"
 
 #include "CUL/STL_IMPORTS/STD_exception.hpp"
-#include "CUL/STL_IMPORTS/STD_filesystem.hpp"
+
 
 #include <CUL/STL_IMPORTS/STD_chrono.hpp>
 using namespace CUL;
 using namespace FS;
 
-FSApi::FSApi( CULInterface* cul, FS::FileFactory* ff ) :
-    m_culInterface( cul ),
-    m_fileFactory( ff )
+FSApi::FSApi( CULInterface* cul, FS::FileFactory* ff ): m_culInterface( cul ), m_fileFactory( ff )
 {
 }
 
 std::vector<Path> FSApi::ListAllFiles( const Path& directory )
 {
-    ZoneScoped;
+    ProfilerScope( "FSApi::ListAllFiles" );
+
     std::vector<Path> result;
 
-    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(), std::filesystem::directory_options::skip_permission_denied ) )
+    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(),
+                                                                            std::filesystem::directory_options::skip_permission_denied ) )
     {
         const std::filesystem::path entryPath = entry.path();
 
@@ -46,36 +45,71 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory )
 
 void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback )
 {
-    ZoneScoped;
-    std::vector<Path> result;
+    ProfilerScope( "FSApi::ListAllFiles" );
 
     const auto dir = directory.getPath().string();
+    const auto directoryOptions = std::filesystem::directory_options::skip_permission_denied;
     std::error_code ec;
-    for( const auto& entry :
-         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, ec ) )
+    const std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator( dir, directoryOptions, ec );
+    for( const std::filesystem::directory_entry& it : dirIt )
     {
-        ZoneScoped;
+        iterateThrought( it, callback );
+    }
 
-        const std::filesystem::path entryPath = entry.path();
-        const String tempString = entryPath.c_str();
-        handleErrorCode( ec, tempString.cStr() );
+//    for( const auto& entry :
+//         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, ec ) )
+//    {
+//        ProfilerScope( "FSApi::ListAllFiles it" );
+//
+//        const std::filesystem::path entryPath = entry.path();
+//        const String tempString = entryPath.c_str();
+//        handleErrorCode( ec, tempString.cStr() );
+//
+//#ifdef _MSC_VER
+//        const String tempPath = entryPath.wstring();
+//        Path culPath = tempPath;
+//#else
+//        Path culPath = entryPath.string();
+//#endif
+//        bool isDir = isDirectory( culPath );
+//        culPath.setIsDir( isDir );
+//
+//        callback( culPath );
+//    }
+}
+
+void FSApi::iterateThrought( const std::filesystem::directory_entry& de, std::function<void( const Path& path )> callback )
+{
+    ProfilerScope( "FSApi::iterateThrought" );
+
+    const std::filesystem::path entryPath = de.path();
+    const String tempString = entryPath.c_str();
 
 #ifdef _MSC_VER
-        const String tempPath = entryPath.wstring();
-        Path culPath = tempPath;
+    const String tempPath = entryPath.wstring();
+    Path culPath = tempPath;
 #else
-        Path culPath = entryPath.string();
+    Path culPath = entryPath.string();
 #endif
-        bool isDir = isDirectory( culPath );
-        culPath.setIsDir( isDir );
 
+    std::error_code ec;
+    if( de.is_regular_file( ec ) )
+    {
+        culPath.setIsDir( false );
         callback( culPath );
     }
+    else
+    {
+        ListAllFiles( culPath, callback );
+    }
+
+    handleErrorCode( ec, culPath.getPath().cStr() );
 }
 
 void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
 {
-    ZoneScoped;
+    ProfilerScope( "FSApi::handleErrorCode ec inPath" );
+
     const auto errorCodeValue = ec.value();
     if( errorCodeValue == 0 )
     {
@@ -104,7 +138,8 @@ void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
 
 void FSApi::deleteFile( const Path& path )
 {
-    ZoneScoped;
+    ProfilerScope( "FSApi::deleteFile" );
+
     std::error_code ec;
     const std::filesystem::path target = path.getPath().getChar();
 
@@ -121,7 +156,7 @@ void FSApi::deleteFile( const Path& path )
 
 bool FSApi::isDirectory( const Path& path )
 {
-    ZoneScoped;
+    ProfilerScope( "FSApi::isDirectory" );
 #ifdef FILESYSTEM_IS_EXPERIMENTAL
     return std::experimental::filesystem::is_directory( path );
 #else
@@ -136,9 +171,18 @@ void FSApi::getCreationTime( const Path&, Time& )
     throw std::logic_error( "Method not implemented" );
 }
 
+std::string getTimeh( const std::chrono::sys_time<std::chrono::system_clock::duration>& duration )
+{
+    const time_t convertedTimeT = std::chrono::system_clock::to_time_t( duration );
+    char buffer[256];
+    std::strftime( buffer, 256, "%Y/%m/%d %H:%M:%S", std::localtime( &convertedTimeT ) );
+
+    return std::string( buffer );
+}
+
 void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 {
-    ZoneScoped;
+    ProfilerScope( "FSApi::getLastModificationTime" );
     if( false == m_culInterface->getFS()->fileExist( inPath ) )
     {
         return;
@@ -146,16 +190,46 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 
     std::filesystem::path p = inPath.getPath().getChar();
     std::filesystem::file_time_type ftime = std::filesystem::last_write_time( p );
+    const std::chrono::sys_time<std::chrono::system_clock::duration> systemTime =
+        std::chrono::clock_cast<std::chrono::system_clock>( ftime );
+    const time_t convertedTimeT = std::chrono::system_clock::to_time_t( systemTime );
 
-    const auto systemTime = std::chrono::clock_cast<std::chrono::system_clock>( ftime );
-    const std::time_t time = std::chrono::system_clock::to_time_t( systemTime );
-    if( time == -1 )
+    constexpr std::size_t bufferSize{ 128u };
+    char buffer[bufferSize];
+
+    if( convertedTimeT == -1 )
     {
+        snprintf( buffer, bufferSize, "1970/1/1 0:0:0" );
     }
     else
     {
-        outTime.setTimeSec( time );
+        std::strftime( buffer, bufferSize, "%Y/%m/%d %H:%M:%S", std::localtime( &convertedTimeT ) );
     }
+
+    String st = buffer;
+    const std::vector<String> parts = st.split( " " );
+    const String date = parts[0];
+    const String time = parts[1];
+
+    const std::vector<String> dateSplit = date.split( "/" );
+
+    const std::int32_t year = dateSplit[0].toInt64();
+    outTime.setYear( year );
+
+    const std::int32_t month = dateSplit[1].toInt64();
+    outTime.setMonth( month );
+
+    const std::int32_t day = dateSplit[2].toInt64();
+    outTime.setDay( day );
+
+    const std::vector<String> timeSplit = time.split( ":" );
+    const std::int32_t hour = timeSplit[0].toInt64();
+    outTime.setHour( hour );
+
+    const std::int32_t minute = timeSplit[1].toInt64();
+    outTime.setMinute( minute );
+    const std::int32_t second = timeSplit[2].toInt64();
+    outTime.setSecond( second );
 }
 
 bool FSApi::fileExist( const Path& path )
@@ -172,7 +246,7 @@ String FSApi::getCurrentDir()
 
 IFile* FSApi::getDirectory( const Path& directory )
 {
-    ZoneScoped;
+    ProfilerScope( "FSApi::getDirectory" );
     Directory* result = new Directory( directory, m_culInterface );
     const auto inPath = directory.getPath().getChar();
     std::filesystem::path directoryBf( inPath );
@@ -180,7 +254,7 @@ IFile* FSApi::getDirectory( const Path& directory )
     DI end;
     for( DI it( directoryBf ); it != end; ++it )
     {
-        ZoneScoped;
+        ProfilerScope( "FSApi::getDirectory::it" );
         const auto& pathIt = it->path();
         const auto filePath = pathIt.string();
         if( isRegularFile( filePath ) )
@@ -200,6 +274,7 @@ IFile* FSApi::getDirectory( const Path& directory )
 
 bool FSApi::isRegularFile( const String& path )
 {
+    ProfilerScope( "FSApi::isRegularFile" );
     std::error_code existsErrorCode;
     const std::filesystem::path filePath = path.getChar();
     const bool result = std::filesystem::is_regular_file( filePath, existsErrorCode );
@@ -207,13 +282,15 @@ bool FSApi::isRegularFile( const String& path )
     {
         const std::string errorCodeMessageStr = existsErrorCode.message();
         const auto pathString = filePath.string();
-        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "FSApi::isRegularFile: [%s] %s", pathString.c_str(), errorCodeMessageStr.c_str() );
+        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "FSApi::isRegularFile: [%s] %s", pathString.c_str(),
+                                                 errorCodeMessageStr.c_str() );
     }
     return result;
 }
 
 String FSApi::getFileSize( const Path& path )
 {
+    ProfilerScope( "FSApi::getFileSize" );
     std::error_code ec;
 
 #ifdef _MSC_VER

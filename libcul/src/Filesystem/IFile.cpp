@@ -31,6 +31,13 @@ using namespace FS;
 
 IFile::IFile( const String& fPath, CUL::CULInterface* inInterface ) : p_cullInterface( inInterface ), m_path( fPath )
 {
+    if(
+        m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/Forerunner [2]/Forerunner 4 - Prekursorka.rtf" ) ||
+        m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/biografia.txt" ) )
+    {
+        auto x = 0;
+    }
+
     p_cullInterface->getFS()->getLastModificationTime( fPath, m_lastModificationTime );
     calculateSizeBytes();
 }
@@ -103,6 +110,12 @@ void IFile::getCreationTime( Time& outTime )
 
 void IFile::getLastModificationTime( Time& outTime )
 {
+    if( m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/Forerunner [2]/Forerunner 4 - Prekursorka.rtf" ) ||
+        m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/biografia.txt" ) )
+    {
+        auto x = 0;
+    }
+
     if( m_lastModificationTime.getUs() > 0u )
     {
         outTime = m_lastModificationTime;
@@ -139,13 +152,15 @@ void IFile::calculateMD5()
 {
     const std::uint64_t currentFileSizeBytes = getSizeBytes().toUint64();
 
+    const char* pathChar = getPath().getPath().cStr();
+    CUL::ThreadUtil::getInstance().setThreadStatusArgs( "[IFile::calculateMD5] File: %s wait for disk...", pathChar );
+    waitForDiskToBeReady();
+    CUL::ThreadUtil::getInstance().setThreadStatusArgs( "[IFile::calculateMD5] File: %s wait for disk... done.", pathChar );
+
     if( getIsBigFile() )
     {
         LOG::ILogger::getInstance().log( "[IFile::calculateMD5] Big file: " + getPath().getPath() );
-        const char* pathChar = getPath().getPath().cStr();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[IFile::calculateMD5] Big file: %s wait for disk...", pathChar );
-        waitForDiskToBeReady();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[IFile::calculateMD5] Big file: %s wait for disk... done.", pathChar );
+
         std::ifstream file( m_path.getPath().getString(), std::ios::binary );
         file.unsetf( std::ios::skipws );
 
@@ -212,16 +227,16 @@ void IFile::waitForDiskToBeReady()
     bool diskReady{ false };
     do
     {
-        CUL::ITimer::sleepMiliSeconds( 8000u );
+        CUL::ITimer::sleepMiliSeconds( 200u );
         const float diskUsage = CUL::CDiskInfo::getInstance().getDiskUsage( diskName.string() );
-        diskReady = diskUsage <= 40.f;
+        diskReady = diskUsage <= 70.f;
     } while( diskReady == false );
 }
 
 bool IFile::getIsBigFile() const
 {
     constexpr std::uint64_t OneMBinBytes = 1024 * 1024;
-    constexpr std::uint64_t bigFileMinimumBytes = 32 * OneMBinBytes;
+    constexpr std::uint64_t bigFileMinimumBytes = 16 * OneMBinBytes;
     const std::uint64_t currentFileSizeBytes = getSizeBytes().toUint64();
     return currentFileSizeBytes > bigFileMinimumBytes;
 }

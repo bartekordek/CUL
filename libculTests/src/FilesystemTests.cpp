@@ -84,8 +84,8 @@ TEST_F( FilesystemTests, TimeModified )
     std::string filePath = "../media/Dummy.txt";
     CUL::Time modificationTime;
     m_culInterface->getFS()->getLastModificationTime( filePath, modificationTime );
-    auto us = modificationTime.getUs();
-    ASSERT_GT( us, 0 );
+    auto modTime = modificationTime.toString();
+    ASSERT_EQ( modTime.empty(), false );
 }
 
 TEST_F( FilesystemTests, FileNotExist )

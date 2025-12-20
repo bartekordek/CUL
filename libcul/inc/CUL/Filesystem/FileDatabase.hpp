@@ -3,10 +3,13 @@
 #include "CUL/GenericUtils/DelegateTemplate.hpp"
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/Threading/Worker.hpp"
+#include "CUL/Threading/ThreadWrap.hpp"
 #include "CUL/Time.hpp"
 
+#include "CUL/STL_IMPORTS/STD_atomic.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_list.hpp"
+#include "CUL/STL_IMPORTS/STD_optional.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_future.hpp"
 #include <CUL/STL_IMPORTS/STD_map.hpp>
@@ -16,6 +19,9 @@ struct sqlite3;
 struct ListAndApi;
 
 NAMESPACE_BEGIN( CUL )
+
+class TaskCallback;
+
 NAMESPACE_BEGIN( FS )
 
 using MD5Value = String;
@@ -63,6 +69,12 @@ enum class EOrderType : std::uint8_t
     Desc
 };
 
+enum class ELockType : std::uint8_t
+{
+    Locked,
+    Unlocked
+};
+
 class SortedStructuredListOfFiles
 {
 public:
@@ -82,16 +94,20 @@ public:
 
 protected:
 private:
-
     mutable std::map<std::uint64_t, MD5List> m_groupsBySize;
 };
 
+struct CacheUsage
+{
+    float Percentage{ 0.f };
+    std::uint64_t Curr{ 0u };
+    std::uint64_t Max{ 0u };
+    float MBUsed{ 0.f };
+};
 
 class CULLib_API FileDatabase final
 {
 public:
-
-
     FileDatabase();
     void loadFilesFromDatabase( const Path& dbPath );
     void loadFilesFromDatabase();
@@ -101,15 +117,17 @@ public:
     void removeFileFromDB( const CUL::String& path );
     void removeFilesFromDb( const std::vector<CUL::String>& paths );
 
-    FileInfo getFileInfo( const CUL::String& path ) const;
+    std::optional<FileInfo> getFileInfo( const CUL::String& path ) const;
     float getPercentage() const;
 
     void getListOfSizes( std::vector<uint64_t>& out ) const;
     std::vector<CUL::String> getListOfMd5() const;
+    std::vector<CUL::String> getListOfMd5( std::uint64_t inSize ) const;
     void getFiles( uint64_t size, const CUL::String& md5, std::vector<FileInfo>& out ) const;
     void getFiles( uint64_t size, std::vector<FileInfo>& out ) const;
 
     void getFilesMatching( const CUL::String& fileSize, const CUL::String& md5, std::list<CUL::String>& out ) const;
+    CacheUsage getCacheUsage() const;
 
     void getListOfPossibleDuplicates( SortedStructuredListOfFiles& inOutPossibleDuplicates );
 
@@ -118,11 +136,24 @@ public:
 protected:
 private:
     void initDb();
-    void waitForInit()const;
+    void waitForInit() const;
     bool m_initialized = false;
     int64_t getFileCount() const;
+    void updateCache();
+    void getFilesFromDB( uint64_t size, const CUL::String& md5, std::vector<FileInfo>& out ) const;
+    void getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) const;
+
+    void getListOfSizesFromDb( std::vector<uint64_t>& out ) const;
+    std::optional<FileInfo> getFromCache( const String& inFilePath ) const;
+    bool removeFromCache( const String& inFilePath );
+    void addFileImpl( ELockType inLockType, MD5Value md5, const CUL::String& filePath, const CUL::String& fileSize, const CUL::String& modTime );
+    void removeFileFromDB_Impl( const CUL::String& path );
+    void addToCache( const FileInfo& inFile );
+    std::optional<FileInfo> getFileInfo_Impl( ELockType inLockType, const CUL::String& path ) const;
+
     static String sanitize( const String& inString );
     static String deSanitize( const String& inString );
+    bool getIsFull() const;
 
     sqlite3* m_db = nullptr;
     Path m_databasePath = "FilesList.db";
@@ -134,6 +165,18 @@ private:
     std::future<bool> m_deleteRemnantsDone;
     ListAndApi* m_fetchList = nullptr;
     std::mutex m_fetchListMtx;
+
+    std::list<FileInfo> m_cachedFiles;
+    std::size_t m_cachedFilesMax{ 0u };
+    mutable std::mutex m_cachedFilesMtx;
+
+    CUL::ThreadWrapper m_cachedFileInserting;
+    bool m_update{ true };
+    void updateFunction();
+
+    std::atomic<std::uint32_t> m_tasksCounter;
+
+    CUL::TaskCallback* m_updateCache{ nullptr };
 
 private:
     FileDatabase( const FileDatabase& rhv ) = delete;
