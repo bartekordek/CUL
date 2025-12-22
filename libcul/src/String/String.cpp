@@ -1305,7 +1305,7 @@ bool StringUtil::isNumber( const char* inNumber, std::size_t inSize )
 {
     for( std::size_t i = 0u; i < inSize; ++i )
     {
-        if( std::isdigit( inNumber[i] ) )
+        if( std::isdigit( inNumber[i] ) == 0 )
         {
             return false;
         }
