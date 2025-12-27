@@ -11,7 +11,7 @@ std::vector<std::pair<std::string, float>> CDiskInfoDummy::getDisksUsage() const
     return std::vector<std::pair<std::string, float>>();
 }
 
-float CDiskInfoDummy::getDiskUsage( const std::string& inDiskName ) const
+float CDiskInfoDummy::getDiskUsage( const std::string& /*inDiskName*/ ) const
 {
     return 0.0f;
 }
