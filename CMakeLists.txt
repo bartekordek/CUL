@@ -72,6 +72,9 @@ add_subdirectory( ${CUL_DEPS_PATH}/boost/winapi )
 set(PATH_TO_APPLICATION_ICON ${CUL_DEPS_PATH}/CPP-DateTime-library/product.ico CACHE STRING "necessary value" FORCE)
 # BUILD_SHARED_LIBS
 set(BUILD_SHARED_LIBS FALSE CACHE BOOL "necessary value" FORCE)
+# Disable unnecessary targets
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/CPP-DateTime-library )
 
 set(OPTION_BUILD_TESTS OFF CACHE BOOL "Disable testing" FORCE)
@@ -82,9 +85,13 @@ set(OPTION_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 # TODO!
 #add_subdirectory( ${CUL_DEPS_PATH}/cppcheck )
 
+set(GLM_TEST_ENABLE OFF CACHE BOOL "" FORCE)
+set(GLM_ENABLE_EXPERIMENTAL OFF CACHE BOOL "" FORCE) # optional
 add_subdirectory( ${CUL_DEPS_PATH}/glm )
 
-set( gtest_force_shared_crt ON CACHE BOOL "" FORCE )
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(gtest_build_samples OFF CACHE BOOL "" FORCE)
+set(gtest_build_tests OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/googletest )
 add_subdirectory( ${CUL_DEPS_PATH}/nativefiledialog-extended )
 
@@ -96,6 +103,10 @@ if (MSVC)
     set(SPDLOG_WCHAR_SUPPORT ON CACHE BOOL "" FORCE)
     set(SPDLOG_WCHAR_FILENAMES ON CACHE BOOL "" FORCE)
 endif()
+set(SPDLOG_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(SPDLOG_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(SPDLOG_BUILD_BENCH OFF CACHE BOOL "" FORCE)
+set(SPDLOG_INSTALL OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
 
 set(BUILD_EXAMPLE OFF CACHE BOOL "DISABLE EXAMPLE" FORCE)
