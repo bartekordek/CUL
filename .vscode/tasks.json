@@ -54,7 +54,37 @@
                 "cmake",
                 "-S",
                 ".",
-                "-B Build-Windows"
+                "-B Build-Linux",
+                "-DENABLE_TRACY=0"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[LINUX][CMAKE][CREATE DIR]"
+        },
+        {
+            "label": "[LINUX][CMAKE][CREATE][NoTracy]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "cmake",
+                "-S",
+                ".",
+                "-B Build-Linux",
+                "-DTRACY_ENABLE=0",
+                "-DCMAKE_BUILD_TYPE=Debug"
             ],
             "group": {
                 "kind": "build",
@@ -156,6 +186,32 @@
             "problemMatcher": [
                 "$msCompile"
             ]
+        },
+        {
+            "label": "[LINUX][DEBUG][BUILLD][libculTests_static][NoTracy]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build-Linux",
+                "--config",
+                "DEBUG",
+                "-j16",
+                "--target",
+                "libculTests_static"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "dependsOn": "[LINUX][CMAKE][CREATE][NoTracy]"
         },
         {
             "label": "[LINUX][DEBUG][BUILLD][libculTests_static]",
