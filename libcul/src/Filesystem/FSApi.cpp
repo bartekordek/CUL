@@ -206,7 +206,7 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
         std::strftime( buffer, bufferSize, "%Y/%m/%d %H:%M:%S", std::localtime( &convertedTimeT ) );
     }
 
-    String st = buffer;
+    const String st = buffer;
     const std::vector<String> parts = st.split( " " );
     const String date = parts[0];
     const String time = parts[1];
@@ -216,11 +216,13 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
     const std::int32_t year = dateSplit[0].toInt64();
     outTime.setYear( year );
 
-    const std::int32_t month = dateSplit[1].toInt64();
-    outTime.setMonth( month );
-
+    // Firstly, set the day, because if we have for example February, and previously
+    // day was set to 31, it will throw an exception.
     const std::int32_t day = dateSplit[2].toInt64();
     outTime.setDay( day );
+
+    const std::int32_t month = dateSplit[1].toInt64();
+    outTime.setMonth( month );
 
     const std::vector<String> timeSplit = time.split( ":" );
     const std::int32_t hour = timeSplit[0].toInt64();
