@@ -31,6 +31,7 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
     add_compile_options( "/wd4266" )
     add_compile_options( "/wd4820" )
     add_compile_options( "/wd4710" )
+    add_compile_options( "/wd4774" )
     add_compile_options( "/wd5045" )
 
     add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Ot>")
