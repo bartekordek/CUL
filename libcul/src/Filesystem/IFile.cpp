@@ -31,13 +31,6 @@ using namespace FS;
 
 IFile::IFile( const String& fPath, CUL::CULInterface* inInterface ) : p_cullInterface( inInterface ), m_path( fPath )
 {
-    if(
-        m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/Forerunner [2]/Forerunner 4 - Prekursorka.rtf" ) ||
-        m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/biografia.txt" ) )
-    {
-        auto x = 0;
-    }
-
     p_cullInterface->getFS()->getLastModificationTime( fPath, m_lastModificationTime );
     calculateSizeBytes();
 }
@@ -110,12 +103,6 @@ void IFile::getCreationTime( Time& outTime )
 
 void IFile::getLastModificationTime( Time& outTime )
 {
-    if( m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/Forerunner [2]/Forerunner 4 - Prekursorka.rtf" ) ||
-        m_path.getPath().equals( "D:/Books/Fantasy Sci fi/Andre Norton/biografia.txt" ) )
-    {
-        auto x = 0;
-    }
-
     if( m_lastModificationTime.getUs() > 0u )
     {
         outTime = m_lastModificationTime;
