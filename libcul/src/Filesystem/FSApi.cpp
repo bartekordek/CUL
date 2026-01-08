@@ -7,9 +7,8 @@
 #include "CUL/Proifling/Profiler.hpp"
 
 #include "CUL/STL_IMPORTS/STD_exception.hpp"
-
-
 #include <CUL/STL_IMPORTS/STD_chrono.hpp>
+
 using namespace CUL;
 using namespace FS;
 
@@ -55,27 +54,6 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
     {
         iterateThrought( it, callback );
     }
-
-//    for( const auto& entry :
-//         std::filesystem::recursive_directory_iterator( dir, std::filesystem::directory_options::skip_permission_denied, ec ) )
-//    {
-//        ProfilerScope( "FSApi::ListAllFiles it" );
-//
-//        const std::filesystem::path entryPath = entry.path();
-//        const String tempString = entryPath.c_str();
-//        handleErrorCode( ec, tempString.cStr() );
-//
-//#ifdef _MSC_VER
-//        const String tempPath = entryPath.wstring();
-//        Path culPath = tempPath;
-//#else
-//        Path culPath = entryPath.string();
-//#endif
-//        bool isDir = isDirectory( culPath );
-//        culPath.setIsDir( isDir );
-//
-//        callback( culPath );
-//    }
 }
 
 void FSApi::iterateThrought( const std::filesystem::directory_entry& de, std::function<void( const Path& path )> callback )
@@ -175,7 +153,14 @@ std::string getTimeh( const std::chrono::sys_time<std::chrono::system_clock::dur
 {
     const time_t convertedTimeT = std::chrono::system_clock::to_time_t( duration );
     char buffer[256];
+
+#if defined( CUL_WINDOWS )
+    tm timeValue;
+    localtime_s( &timeValue, &convertedTimeT );
+    std::strftime( buffer, 256, "%Y/%m/%d %H:%M:%S", &timeValue );
+#else
     std::strftime( buffer, 256, "%Y/%m/%d %H:%M:%S", std::localtime( &convertedTimeT ) );
+#endif
 
     return std::string( buffer );
 }
@@ -203,7 +188,13 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
     }
     else
     {
+#if defined( CUL_WINDOWS )
+        tm timeValue;
+        localtime_s( &timeValue, &convertedTimeT );
+        std::strftime( buffer, bufferSize, "%Y/%m/%d %H:%M:%S", &timeValue );
+#else
         std::strftime( buffer, bufferSize, "%Y/%m/%d %H:%M:%S", std::localtime( &convertedTimeT ) );
+#endif
     }
 
     const String st = buffer;
