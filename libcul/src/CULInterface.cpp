@@ -4,6 +4,7 @@
 #include "CUL/Threading/ThreadUtil.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
+#include "CUL/Filesystem/Path.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "GenericUtils/IConfigFileConcrete.hpp"
 #include "CUL/GenericUtils/ConsoleUtilities.hpp"
@@ -80,6 +81,15 @@ void CULInterface::initialize()
     m_args.reset( new GUTILS::ConsoleUtilities() );
 
     m_threadUtils = &ThreadUtil::getInstance();
+
+
+    constexpr std::size_t sizeOfStdString{ sizeof( std::string ) };
+    constexpr std::size_t sizeOfString{ sizeof( String ) };
+    constexpr std::size_t sizeOfFSPath{ sizeof( FS::Path ) };
+
+    m_logger->logVariable( LOG::Severity::Warn, "Size of std::string: %d B", sizeOfStdString );
+    m_logger->logVariable( LOG::Severity::Warn, "Size of String:      %d B", sizeOfString );
+    m_logger->logVariable( LOG::Severity::Warn, "Size of FS::Path:    %d B", sizeOfFSPath );
 }
 
 GUTILS::IConfigFile* CULInterface::getConfig() const

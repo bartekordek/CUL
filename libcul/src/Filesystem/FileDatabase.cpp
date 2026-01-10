@@ -150,17 +150,17 @@ void FileDatabase::getListOfPossibleDuplicates( SortedStructuredListOfFiles& inO
     {
         auto resulPtr = reinterpret_cast<SortedStructuredListOfFiles*>( voidPtr );
 
-        CUL::String filePath( argv[0] );
-        const CUL::String size = argv[1];
-        const CUL::String md5 = argv[2];
-        const CUL::String lastMod = argv[3];
+        Str filePath( argv[0] );
+        const std::string size = argv[1];
+        const std::string md5 = argv[2];
+        const std::string lastMod = argv[3];
         FileInfo fi;
         fi.FilePath = filePath;
-        CUL::String pathCopy = fi.FilePath.getPath();
+        CUL::String pathCopy = fi.FilePath.getValue();
         if( pathCopy.empty() == false )
         {
             pathCopy.singleQuoteRestore();
-            fi.FilePath = pathCopy;
+            fi.FilePath = pathCopy.string();
         }
 
         fi.MD5 = md5;
@@ -237,7 +237,7 @@ std::vector<CUL::String> FileDatabase::getListOfMd5() const
     ProfilerScope( "FileDatabase::getListOfMd5 void" );
     std::vector<CUL::String> result;
 #if USE_CACHE
-    std::set<CUL::String> md5s;
+    std::set<MD5Value> md5s;
     {
         std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
         for( const FileInfo& fi : m_cachedFiles )
@@ -246,9 +246,9 @@ std::vector<CUL::String> FileDatabase::getListOfMd5() const
         }
     }
     {
-        for( const CUL::String& md5 : md5s )
+        for( const MD5Value& md5 : md5s )
         {
-            result.push_back( md5 );
+            result.push_back( md5.getValue() );
         }
     }
 
@@ -279,7 +279,7 @@ std::vector<CUL::String> FileDatabase::getListOfMd5( std::uint64_t inSize ) cons
     ProfilerScope( "FileDatabase::getListOfMd5 inSize" );
     std::vector<CUL::String> result;
 #if USE_CACHE
-    std::set<CUL::String> md5s;
+    std::set<MD5Value> md5s;
     {
         std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
         for( const FileInfo& fi : m_cachedFiles )
@@ -291,9 +291,9 @@ std::vector<CUL::String> FileDatabase::getListOfMd5( std::uint64_t inSize ) cons
         }
     }
     {
-        for( const CUL::String& md5 : md5s )
+        for( const MD5Value& md5 : md5s )
         {
-            result.push_back( md5 );
+            result.push_back( md5.getValue() );
         }
     }
 #else   // #if USE_CACHE
@@ -344,7 +344,7 @@ void FileDatabase::getFiles( uint64_t inSize, const CUL::String& md5, std::vecto
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
     for( const FileInfo& fi : m_cachedFiles )
     {
-        if( ( fi.Size.toUint64() == inSize ) && ( fi.MD5 == md5 ) )
+        if( ( fi.Size.toUint64() == inSize ) && ( fi.MD5.equals( md5 ) ) )
         {
             out.push_back( fi );
         }
@@ -361,18 +361,18 @@ void FileDatabase::getFilesFromDB( uint64_t size, const CUL::String& md5, std::v
                                  "\" AND MD5=\"" + md5 + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
-        CUL::String filePath( argv[0] );
-        const CUL::String size = argv[1];
-        const CUL::String md5 = argv[2];
+        std::string filePath( argv[0] );
+        const std::string size = argv[1];
+        const std::string md5 = argv[2];
         const CUL::String lastMod = argv[3];
         auto resulPtr = reinterpret_cast<std::vector<FileInfo>*>( voidPtr );
         FileInfo fi;
         fi.FilePath = filePath;
-        CUL::String pathCopy = fi.FilePath.getPath();
+        CUL::String pathCopy = fi.FilePath.getValue();
         if( pathCopy.empty() == false )
         {
             pathCopy.singleQuoteRestore();
-            fi.FilePath = pathCopy;
+            fi.FilePath = pathCopy.string();
         }
 
         fi.MD5 = md5;
@@ -418,17 +418,14 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
         CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\";";
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
-        CUL::String filePath( argv[0] );
-        const CUL::String size = argv[1];
-        const CUL::String md5 = argv[2];
-        const CUL::String lastMod = argv[3];
-        auto resulPtr = reinterpret_cast<std::vector<FileInfo>*>( voidPtr );
         FileInfo fi;
+        String filePath( argv[0] );
+        fi.Size = argv[1];
+        fi.MD5 = argv[2];
+        fi.ModTime.fromString( argv[3]);
+        auto resulPtr = reinterpret_cast<std::vector<FileInfo>*>( voidPtr );
         filePath.singleQuoteRestore();
-        fi.FilePath = filePath;
-        fi.MD5 = md5;
-        fi.ModTime.fromString( lastMod );
-        fi.Size = size;
+        fi.FilePath = filePath.string();
         resulPtr->push_back( fi );
 
         return 0;
@@ -446,7 +443,7 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
 void FileDatabase::loadFilesFromDatabase()
 {
     ProfilerScope( "FileDatabase::loadFilesFromDatabase" );
-    ;
+
     ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::initDb();" );
     initDb();
 
@@ -491,7 +488,7 @@ CacheUsage FileDatabase::getCacheUsage() const
         result.Max = static_cast<decltype( result.Max )>( m_cachedFilesMax );
     }
 
-    constexpr static std::size_t sizeOfOne = sizeof( CacheUsage );
+    constexpr static std::size_t sizeOfOne = sizeof( FileInfo );
     result.MBUsed = result.Curr * sizeOfOne;  // How many Bytes.
     result.MBUsed /= 1024.f;                  // How many KiloBytes.
     result.MBUsed /= 1024.f;                  // How many MegaBytes.
@@ -535,7 +532,7 @@ std::optional<FileInfo> FileDatabase::getFromCache( const String& inFilePath ) c
     const auto it = std::find_if( m_cachedFiles.begin(), m_cachedFiles.end(),
                                   [&inFilePath]( const FileInfo& curr )
                                   {
-                                      return curr.FilePath.getPath() == inFilePath;
+                                      return curr.FilePath.equals( inFilePath );
                                   } );
 
     if( it != m_cachedFiles.end() )
@@ -552,7 +549,7 @@ bool FileDatabase::removeFromCache( const String& inFilePath )
     const std::list<FileInfo>::iterator it = std::find_if( m_cachedFiles.begin(), m_cachedFiles.end(),
                                                            [&inFilePath]( const FileInfo& curr )
                                                            {
-                                                               return curr.FilePath.getPath() == inFilePath;
+                                                               return curr.FilePath.equals( inFilePath );
                                                            } );
 
     if( it != m_cachedFiles.end() )
@@ -694,8 +691,8 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
                                            {
                                                FileInfo fi;
                                                fi.MD5 = md5;
-                                               fi.FilePath = filePath;
-                                               fi.Size = fileSize;
+                                               fi.FilePath = filePath.getString();
+                                               fi.Size = fileSize.getString();
                                                fi.ModTime.fromString( modTime );
                                                fi.Found = true;
 
@@ -722,34 +719,25 @@ void FileDatabase::addFileImpl( ELockType inLockType, MD5Value md5, const CUL::S
     };
 
     String sqlQuery = "";
+
+    constexpr std::size_t bufferLength = 1024u;
+    char buffer[bufferLength];
     if( foundFile )
     {
         const std::string binaryForm = filePathNormalized.cStr();
-        sqlQuery = "UPDATE FILES SET SIZE='" + fileSize + "', MD5='" + md5 + "', LAST_MODIFICATION='" + modTime + "' WHERE PATH='" +
-                   binaryForm + "'";
-
-        // CUL::LOG::ILogger::getInstance()->log( "Found updated file: " + filePath );
-        // CUL::LOG::ILogger::getInstance()->log( "New/Old diff: ");
-
-        // CUL::LOG::ILogger::getInstance()->log( "[OLD] MD5: " + foundFile.MD5 );
-        // CUL::LOG::ILogger::getInstance()->log( "[NEW] MD5: " + md5 );
-
-        // CUL::LOG::ILogger::getInstance()->log( "[OLD] SIZE: " + foundFile.Size );
-        // CUL::LOG::ILogger::getInstance()->log( "[NEW] SIZE: " + fileSize );
-
-        // CUL::LOG::ILogger::getInstance()->log( "[OLD] modTime: " + foundFile.ModTime );
-        // CUL::LOG::ILogger::getInstance()->log( "[NEW] modTime: " + modTime );
+        snprintf( buffer, bufferLength, "UPDATE FILES SET SIZE='%s', MD5='%s', LAST_MODIFICATION='%s' WHERE PATH='%s'",
+            fileSize.cStr(),
+                  md5.getSTDString().c_str(), modTime.cStr(), binaryForm.c_str() );
     }
     else
     {
         const std::string binaryValue = filePathNormalized.cStr();
 
-        constexpr std::size_t bufferLength = 1024u;
-        char buffer[bufferLength];
+
         snprintf( buffer, bufferLength, "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ( '%s', '%s', '%s', '%s' );",
-                  binaryValue.c_str(), fileSize.cStr(), md5.cStr(), modTime.cStr() );
-        sqlQuery = buffer;
+                  binaryValue.c_str(), fileSize.cStr(), md5.getSTDString().c_str(), modTime.cStr() );
     }
+    sqlQuery = buffer;
 
     std::int32_t rc{ 0 };
 
@@ -833,7 +821,7 @@ WHERE PATH='" +
 
     if( result )
     {
-        result->FilePath = pathInBinary;
+        result->FilePath = pathInBinary.getString();
     }
 
     constexpr bool PrintInfo = false;

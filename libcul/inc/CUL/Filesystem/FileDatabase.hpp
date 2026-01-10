@@ -24,14 +24,16 @@ class TaskCallback;
 
 NAMESPACE_BEGIN( FS )
 
-using MD5Value = String;
+using Str = STDStringWrapper;
+using MD5Value = Str;
+
 
 struct FileInfo
 {
     bool Found = false;
     MD5Value MD5;
-    String Size;
-    Path FilePath;
+    Str Size;
+    Str FilePath;
     Time ModTime;
 
     bool operator==( const FileInfo& second ) const;
