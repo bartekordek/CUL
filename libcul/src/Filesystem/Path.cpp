@@ -156,6 +156,12 @@ Path Path::operator+( const char* rhv )
     return result;
 }
 
+void Path::createFrom( const STDStringWrapper& inArg )
+{
+    m_fullPath = inArg.getValue();
+    preparePaths();
+}
+
 const String& Path::getPath() const
 {
     return m_fullPath;

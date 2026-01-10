@@ -36,6 +36,8 @@ public:
     Path operator+( const String& rhv );
     Path operator+( const char* rhv );
 
+    void createFrom( const STDStringWrapper& inArg );
+
     const String& getPath() const;
     const String& getExtension() const;
     const String& getBaseName() const;
