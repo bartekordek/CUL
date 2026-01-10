@@ -211,13 +211,23 @@ void IFile::waitForDiskToBeReady()
 {
     const String diskName = m_path.getDiskName();
 
-    bool diskReady{ false };
+    constexpr float usageThreshold{ 60.f };
+    float diskUsage = CUL::CDiskInfo::getInstance().getDiskUsage( diskName.string() );
+
+    if( diskUsage <= usageThreshold )
+    {
+        return;
+    }
+
     do
     {
-        CUL::ITimer::sleepMiliSeconds( 200u );
+        CUL::ITimer::sleepMiliSeconds( 1000u );
         const float diskUsage = CUL::CDiskInfo::getInstance().getDiskUsage( diskName.string() );
-        diskReady = diskUsage <= 70.f;
-    } while( diskReady == false );
+        if( diskUsage <= usageThreshold )
+        {
+            return;
+        }
+    } while( true );
 }
 
 bool IFile::getIsBigFile() const
