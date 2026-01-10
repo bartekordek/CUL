@@ -42,6 +42,9 @@ public:
     static std::int32_t strLen( const char* inString );
     static std::int32_t strLen( const wchar_t* inString );
 
+    static std::uint64_t strToUint64( const std::wstring& inString );
+    static std::uint64_t strToUint64( const std::string& inString );
+
 protected:
 private:
 };
@@ -346,5 +349,38 @@ bool CULLib_API operator==( unsigned int arg1, const String& arg2 );
 bool CULLib_API operator==( float arg1, const String& arg2 );
 
 bool CULLib_API operator==( double arg1, const String& arg2 );
+
+class CULLib_API STDStringWrapper
+{
+public:
+    STDStringWrapper();
+    STDStringWrapper( const STDStringWrapper& inArg );
+    STDStringWrapper( STDStringWrapper&& inArg ) noexcept;
+
+    STDStringWrapper( const std::string& inArg );
+    STDStringWrapper( const std::wstring& inArg );
+
+    STDStringWrapper& operator=( const STDStringWrapper& inArg );
+    STDStringWrapper& operator=( STDStringWrapper&& inArg ) noexcept;
+    STDStringWrapper& operator=( const std::string& inArg );
+    STDStringWrapper& operator=( const std::wstring& inArg );
+
+    const String::UnderlyingType& getValue() const;
+    std::uint64_t toUint64() const;
+
+    bool operator==( const STDStringWrapper& inArg ) const;
+    bool operator<( const STDStringWrapper& inArg ) const;
+    bool equals( const String& inArg ) const;
+    bool empty() const;
+
+    std::string getSTDString() const;
+    std::wstring getSTDWstring() const;
+
+    ~STDStringWrapper();
+
+protected:
+private:
+    String::UnderlyingType m_value;
+};
 
 NAMESPACE_END( CUL )

@@ -1909,9 +1909,19 @@ Length String::charToWideString( Length codePage, wchar_t& out, char in )
 
 Length String::charToWideString( std::wstring& out, const std::string& in )
 {
+#if defined( CUL_WINDOWS )
+    const std::size_t bufferSize = in.size() * 2u;
+    std::vector<wchar_t> buffer;
+    buffer.resize( bufferSize );
+
+    const auto resultSize = charToWideString( CP_ACP, buffer.data(), bufferSize, in.c_str(), in.size() );
+    out = buffer.data();
+    return static_cast<Length>( resultSize );
+#else   // #if defined(CUL_WINDOWS)
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     out = converterX.from_bytes( in );
     return static_cast<Length>( out.size() );
+#endif  // #if defined(CUL_WINDOWS)
 }
 
 void String::copyString( char* target, const char* source )
@@ -2783,4 +2793,169 @@ std::int32_t StringUtil::strLen( const char* inString )
 std::int32_t StringUtil::strLen( const wchar_t* inString )
 {
     return static_cast<std::int32_t>( std::wcslen( inString ) );
+}
+
+std::uint64_t StringUtil::strToUint64( const std::wstring& inString )
+{
+    std::string out;
+    String::wideStringToChar( out, inString );
+    return strToUint64( out );
+}
+
+std::uint64_t StringUtil::strToUint64( const std::string& inString )
+{
+    std::uint64_t result;
+    std::istringstream iss( inString );
+    iss >> result;
+    return result;
+}
+
+STDStringWrapper::STDStringWrapper()
+{
+}
+
+STDStringWrapper::STDStringWrapper( const STDStringWrapper& inArg ): m_value( inArg.m_value )
+{
+}
+
+STDStringWrapper::STDStringWrapper( STDStringWrapper&& inArg ) noexcept: m_value( std::move( inArg.m_value ) )
+{
+}
+
+#if CUL_USE_WCHAR
+STDStringWrapper::STDStringWrapper( const std::string& inArg )
+{
+    String::charToWideString( m_value, inArg );
+}
+
+STDStringWrapper::STDStringWrapper( const std::wstring& inArg ): m_value( inArg )
+{
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const STDStringWrapper& inArg )
+{
+    if( this != &inArg )
+    {
+        m_value = inArg.m_value;
+    }
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( STDStringWrapper&& inArg ) noexcept
+{
+    if( this != &inArg )
+    {
+        m_value = std::move( inArg.m_value );
+    }
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const std::string& inArg )
+{
+    String::charToWideString( m_value, inArg );
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const std::wstring& inArg )
+{
+    m_value = inArg;
+    return *this;
+}
+
+std::string STDStringWrapper::getSTDString() const
+{
+    std::string result;
+    String::wideStringToChar( result, m_value );
+    return result;
+}
+
+std::wstring STDStringWrapper::getSTDWstring() const
+{
+    return m_value;
+}
+#else   // CUL_USE_WCHAR
+STDStringWrapper::STDStringWrapper( const std::string& inArg ): m_value( inArg )
+{
+}
+
+STDStringWrapper::STDStringWrapper( const std::wstring& inArg )
+{
+    String::wideStringToChar( m_value, inArg );
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const STDStringWrapper& inArg )
+{
+    if( this != &inArg )
+    {
+        m_value = inArg.m_value;
+    }
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( STDStringWrapper&& inArg ) noexcept
+{
+    if( this != &inArg )
+    {
+        m_value = std::move( inArg.m_value );
+    }
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const std::string& inArg )
+{
+    m_value = inArg;
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const std::wstring& inArg )
+{
+    String::wideStringToChar( m_value, inArg );
+    return *this;
+}
+
+std::string STDStringWrapper::getSTDString() const
+{
+    return m_value;
+}
+
+std::wstring STDStringWrapper::getSTDWstring() const
+{
+    std::wstring result;
+    String::charToWideString( result, m_value );
+    return result;
+}
+#endif  // CUL_USE_WCHAR
+
+bool STDStringWrapper::equals( const String& inArg ) const
+{
+    return inArg.getString() == m_value;
+}
+
+bool STDStringWrapper::empty() const
+{
+    return m_value.empty();
+}
+
+const String::UnderlyingType& STDStringWrapper::getValue() const
+{
+    return m_value;
+}
+
+std::uint64_t STDStringWrapper::toUint64() const
+{
+    return StringUtil::strToUint64( m_value );
+}
+
+bool STDStringWrapper::operator==( const STDStringWrapper& inArg ) const
+{
+    return m_value == inArg.m_value;
+}
+
+bool STDStringWrapper::operator<( const STDStringWrapper& inArg ) const
+{
+    return m_value < inArg.m_value;
+}
+
+STDStringWrapper::~STDStringWrapper()
+{
 }
