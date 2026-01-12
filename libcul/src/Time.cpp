@@ -21,7 +21,7 @@ inline std::tm localtime_xp( std::time_t* timer )
     return bt;
 }
 
-Time::Time() : m_dateTime( std::make_unique<jed_utils::datetime>() )
+Time::Time(): m_dateTime( std::make_unique<jed_utils::datetime>() )
 {
 }
 
@@ -33,7 +33,7 @@ Time::Time( std::int32_t inYear, std::int32_t inMonth, std::int32_t inDay, std::
     m_initialized = true;
 }
 
-Time::Time( const Time& rhv ) : m_ns( rhv.m_ns ), m_dateTime( std::make_unique<jed_utils::datetime>() ), m_asString( rhv.m_asString )
+Time::Time( const Time& rhv ): m_ns( rhv.m_ns ), m_dateTime( std::make_unique<jed_utils::datetime>() ), m_asString( rhv.m_asString )
 {
     *m_dateTime = *rhv.m_dateTime;
     m_initialized = true;
@@ -293,7 +293,6 @@ void Time::fromString( const String& inString )
                                           *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
                                           m_initialized = true;
                                       } );
-    
 }
 
 void Time::setTimeNs( std::int64_t ns )
@@ -327,19 +326,19 @@ void Time::fromEpoch( std::uint64_t inSinceEpoch )
     ProfilerScope( "Time::fromEpoch" );
     m_asEpoch = inSinceEpoch;
 
-    //const auto tm = localtime_xp( m_asEpoch );
+    // const auto tm = localtime_xp( m_asEpoch );
 
-    //const auto year = static_cast<TimeType>( 1900 + tm.tm_year );
-    //const auto month = static_cast<TimeType>( ( tm.tm_mon + 1 ) );
-    //const auto day = static_cast<TimeType>( tm.tm_mday );
-    //const auto hour = static_cast<TimeType>( tm.tm_hour );
-    //const auto minute = static_cast<TimeType>( tm.tm_min );
-    //const auto seconds = static_cast<TimeType>( tm.tm_sec );
+    // const auto year = static_cast<TimeType>( 1900 + tm.tm_year );
+    // const auto month = static_cast<TimeType>( ( tm.tm_mon + 1 ) );
+    // const auto day = static_cast<TimeType>( tm.tm_mday );
+    // const auto hour = static_cast<TimeType>( tm.tm_hour );
+    // const auto minute = static_cast<TimeType>( tm.tm_min );
+    // const auto seconds = static_cast<TimeType>( tm.tm_sec );
 
     //*m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
-    //m_ns = timeConverted * 1000000000;
-    //m_initialized = true;
-    //updateString();
+    // m_ns = timeConverted * 1000000000;
+    // m_initialized = true;
+    // updateString();
 }
 
 void Time::updateString() const
@@ -390,12 +389,12 @@ bool Time::almostTheSame( const Time& arg, std::int32_t differenceInSeconds ) co
         return false;
     }
 
-    return std::abs( m_dateTime->get_second() - arg.m_dateTime->get_second() < differenceInSeconds );
+    return std::abs( m_dateTime->get_second() - arg.m_dateTime->get_second() ) < differenceInSeconds;
 }
 
 std::uint64_t Time::dateTimeToEpoch( const BasicTime& /*inBt*/ )
 {
-    return std::uint64_t(0);
+    return std::uint64_t( 0 );
 }
 
 Time::~Time()
