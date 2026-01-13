@@ -37,7 +37,7 @@ CULLib_API float Utils::floatModulo( float inValue, float moduloVal )
     return inValue - mul;
 }
 
-CULLib_API double Utils::floatModulo( double inValue, double moduloVal )
+double Utils::floatModulo( double inValue, double moduloVal )
 {
     if( inValue <= moduloVal )
     {
@@ -48,4 +48,9 @@ CULLib_API double Utils::floatModulo( double inValue, double moduloVal )
     const double mul = count * moduloVal;
 
     return inValue - mul;
+}
+
+bool Utils::floatIsZero( float inValue )
+{
+    return std::abs( inValue ) <= std::numeric_limits<float>::epsilon();
 }
