@@ -294,7 +294,7 @@ String::UnderlyingChar& String::operator[]( Length inPos )
 
 bool String::operator==( const String& arg ) const
 {
-    return cmp( m_value, arg.m_value ) == 0;
+    return StringUtil::cmp( m_value, arg.m_value ) == 0;
 }
 
 bool String::operator!=( const String& arg ) const
@@ -332,7 +332,7 @@ bool String::operator==( const char* arg ) const
         return true;
     }
 
-    return cmp( m_temp, arg ) == 0;
+    return StringUtil::cmp( m_temp, arg ) == 0;
 #else   // #if CUL_USE_WCHAR
     return cmp( m_value, arg ) == 0;
 #endif  // #if CUL_USE_WCHAR
@@ -396,12 +396,12 @@ bool String::operator==( double arg ) const
 
 bool String::operator<( const String& arg ) const
 {
-    return cmp( m_value, arg.m_value ) < 0;
+    return StringUtil::cmp( m_value, arg.m_value ) < 0;
 }
 
 bool String::operator>( const String& arg ) const
 {
-    return cmp( m_value, arg.m_value ) > 0;
+    return StringUtil::cmp( m_value, arg.m_value ) > 0;
 }
 
 bool String::operator()( const String& v1, const String& v2 ) const
@@ -429,7 +429,7 @@ void String::append( const char* inChar, Length charLength )
 #if CUL_USE_WCHAR
     const Length maxWcharLength = 2 * charLength;
     UnderlyingChar* out = new UnderlyingChar[static_cast<std::size_t>( maxWcharLength )];
-    const Length newLength = charToWideString( CP_ACP, out, maxWcharLength, inChar, charLength );
+    const Length newLength = StringUtil::charToWideString( CP_ACP, out, maxWcharLength, inChar, charLength );
     append( out, newLength - 1 );
 #else   // #if CUL_USE_WCHAR
     const Length targetSize = m_size + charLength + 1;
@@ -544,7 +544,7 @@ std::int32_t String::find( char arg, Length startPosIn ) const
     const std::size_t startPos = static_cast<std::size_t>( startPosIn );
 #if CUL_USE_WCHAR
     UnderlyingChar argConverted;
-    charToWideString( CP_ACP, argConverted, arg );
+    StringUtil::charToWideString( CP_ACP, argConverted, arg );
 
     const auto currentSize = static_cast<std::size_t>( m_size );
     for( std::size_t i = startPos; i < currentSize; ++i )
@@ -685,7 +685,7 @@ std::int32_t String::find( const wchar_t* arg, Length startPos, Length inArgSize
             break;
         }
 
-        if( equals( current, input, argSizeU ) )
+        if( StringUtil::equals( current, input, argSizeU ) )
         {
             return i;
         }
@@ -703,7 +703,7 @@ String String::substr( Length pos, Length len ) const
 
     String strResult;
     strResult.grow( len, false );
-    copyString( strResult.m_value, strResult.m_capacity, m_value + pos, len );
+    StringUtil::copyString( strResult.m_value, strResult.m_capacity, m_value + pos, len );
     strResult.m_value[len] = NullTerminator;
     strResult.setSize( len );
     strResult.removePrecedingZero();
@@ -740,7 +740,7 @@ bool String::contains( const char* inputString ) const
     const Length inputLen = StringUtil::strLen( inputString );
     const Length wcharLen = inputLen * 2;
     wchar_t* temp = new wchar_t[static_cast<std::size_t>( wcharLen )];
-    charToWideString( CP_ACP, temp, wcharLen, inputString, inputLen );
+    StringUtil::charToWideString( CP_ACP, temp, wcharLen, inputString, inputLen );
 
     const bool result = find( temp ) != -1;
     delete[] temp;
@@ -767,59 +767,14 @@ void String::replace( const String& inWhat, const String& inFor )
         return;
     }
 
-    std::int32_t index = find( inWhat );
-    if( index == -1 )
+    const std::size_t newCapacity = StringUtil::replaceCalculateRequiredSize( m_value, inWhat.m_value, inFor.m_value, true );
+
+    if( newCapacity > m_capacity )
     {
-        return;
+        grow( newCapacity, true );
     }
 
-    std::int32_t diff = inFor.m_size - inWhat.m_size;
-    if( diff > 0 )
-    {
-        grow( m_size + diff, true );
-
-        const Length newSize = m_size + diff;
-        m_value[newSize] = L'\0';
-        const Length copyEnd = index + inWhat.size();
-        for( Length i = newSize - 1; i >= copyEnd; --i )
-        {
-            m_value[i] = m_value[i - diff];
-        }
-
-        const Length offset = inFor.size();
-        const Length end = index + offset;
-        for( Length i = index; i < end; ++i )
-        {
-            m_value[i] = inFor.m_value[i - index];
-        }
-        setSize( newSize );
-    }
-    else if( diff < 0 )
-    {
-        const Length newLength = m_size + diff;
-        const Length newStart = index + inFor.size();
-        const Length offset = -diff;
-        for( Length i = newStart; i < m_size; ++i )
-        {
-            m_value[i] = i + offset < m_size ? m_value[i + offset] : L'\0';
-        }
-
-        const std::size_t forSize = static_cast<std::size_t>( inFor.m_size );
-        for( std::size_t i = 0u; i < forSize; ++i )
-        {
-            m_value[i + index] = inFor.m_value[i];
-        }
-
-        setSize( newLength );
-    }
-    else
-    {
-        for( std::int32_t i = 0; i < inFor.m_size; ++i )
-        {
-            m_value[index + i] = inFor.m_value[i];
-        }
-    }
-    deleteTemp();
+    StringUtil::replace( m_value, m_size, inWhat.m_value, inFor.m_value, true );
 }
 
 void String::replace( const char inWhat, const char inFor, bool allOccurences )
@@ -832,10 +787,10 @@ void String::replace( const char inWhat, const char inFor, bool allOccurences )
 
 #if CUL_USE_WCHAR
     wchar_t inConverted;
-    charToWideString( CP_ACP, inConverted, inWhat );
+    StringUtil::charToWideString( CP_ACP, inConverted, inWhat );
 
     wchar_t forConverted;
-    charToWideString( CP_ACP, forConverted, inFor );
+    StringUtil::charToWideString( CP_ACP, forConverted, inFor );
 
     for( std::size_t i = 0; i < currentLength; ++i )
     {
@@ -939,7 +894,7 @@ void String::removeAll( const char inWhat )
 {
 #if CUL_USE_WCHAR
     UnderlyingChar what;
-    charToWideString( 0, what, inWhat );
+    StringUtil::charToWideString( 0, what, inWhat );
 #else   // CUL_USE_WCHAR
     UnderlyingChar what = inWhat;
 #endif  // CUL_USE_WCHAR
@@ -998,9 +953,9 @@ bool String::doesBeginWith( const std::string& end ) const
 #if CUL_USE_WCHAR
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     const std::wstring stringCpy = converterX.from_bytes( end );
-    return equals( &m_value[0], stringCpy.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[0], stringCpy.c_str(), endLen_t );
 #else   // #if CUL_USE_WCHAR
-    return equals( &m_value[0], end.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[0], end.c_str(), endLen_t );
 #endif  // #if CUL_USE_WCHAR
 }
 
@@ -1020,12 +975,12 @@ bool String::doesBeginWith( const std::wstring& end ) const
     }
 
 #if CUL_USE_WCHAR
-    return equals( &m_value[0], end.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[0], end.c_str(), endLen_t );
 #else   // #if CUL_USE_WCHAR
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     const std::string stringCpy = converterX.to_bytes( end );
 
-    return equals( &m_value[0], stringCpy.c_str(), stringCpy.size() );
+    return StringUtil::equals( &m_value[0], stringCpy.c_str(), stringCpy.size() );
 #endif  // #if CUL_USE_WCHAR
 }
 
@@ -1049,9 +1004,9 @@ bool String::doesEndWith( const std::string& end ) const
 #if CUL_USE_WCHAR
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     const std::wstring stringCpy = converterX.from_bytes( end );
-    return equals( &m_value[endPos], stringCpy.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[endPos], stringCpy.c_str(), endLen_t );
 #else   // #if CUL_USE_WCHAR
-    return equals( &m_value[endPos], end.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[endPos], end.c_str(), endLen_t );
 #endif  // #if CUL_USE_WCHAR
 }
 
@@ -1072,12 +1027,12 @@ bool String::doesEndWith( const std::wstring& end ) const
 
     const std::size_t endPos = m_size - endLen_t;
 #if CUL_USE_WCHAR
-    return equals( &m_value[endPos], end.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[endPos], end.c_str(), endLen_t );
 #else   // #if CUL_USE_WCHAR
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     const std::string stringCpy = converterX.to_bytes( end );
 
-    return equals( &m_value[endPos], stringCpy.c_str(), stringCpy.size() );
+    return StringUtil::equals( &m_value[endPos], stringCpy.c_str(), stringCpy.size() );
 #endif  // #if CUL_USE_WCHAR
 }
 
@@ -1140,11 +1095,11 @@ void String::fetchTemp() const
     // TODO: check when it should be released, possible leak.
     const Length charLength = m_size != 0 ? 2 * m_size : 2;
     m_temp = new char[static_cast<std::size_t>( charLength )];
-    wideStringToChar( m_temp, charLength, m_value, m_size );
+    StringUtil::wideStringToChar( m_temp, charLength, m_value, m_size );
 #else   // #if CUL_USE_WCHAR
     const std::size_t wcharBufferSize = 2u * m_size;
     m_temp = new wchar_t[wcharBufferSize];
-    charToWideString( 0, m_temp, wcharBufferSize, m_value, m_size );
+    StringUtil::charToWideString( 0, m_temp, wcharBufferSize, m_value, m_size );
 #endif  // #if CUL_USE_WCHAR
 }
 
@@ -1208,7 +1163,7 @@ ThreeState String::toBool() const
         return ThreeState::True;
     }
 
-    if( cmp( m_value, L"false" ) )
+    if( StringUtil::cmp( m_value, L"false" ) )
     {
         return ThreeState::False;
     }
@@ -1218,7 +1173,7 @@ ThreeState String::toBool() const
         return ThreeState::True;
     }
 
-    if( cmp( m_value, "false" ) )
+    if( StringUtil::cmp( m_value, "false" ) )
     {
         return ThreeState::False;
     }
@@ -1542,7 +1497,7 @@ void String::deserialize()
 void String::deserializeWchar( std::wstring& out )
 {
     std::string temp;
-    wideStringToChar( temp, m_value + 1u );
+    StringUtil::wideStringToChar( temp, m_value + 1u );
 #else
 void String::deserializeWchar( std::string& out )
 {
@@ -1617,7 +1572,7 @@ void String::deserializeChar( std::string& out )
 {
 #if CUL_USE_WCHAR
     std::string temp;
-    wideStringToChar( temp, m_value + 1u );
+    StringUtil::wideStringToChar( temp, m_value + 1u );
 #else   // #if CUL_USE_WCHAR
     std::string temp( m_value + 1u );
 #endif  // #if CUL_USE_WCHAR
@@ -1687,7 +1642,7 @@ void String::tryFitIntoSSO()
         return;
     }
 
-    copyString( &m_staticValue[0], SSO_Size, m_dynamicValue, m_size );
+    StringUtil::copyString( &m_staticValue[0], SSO_Size, m_dynamicValue, m_size );
     delete m_dynamicValue;
     m_dynamicValue = nullptr;
     m_value = &m_staticValue[0];
@@ -1777,12 +1732,12 @@ bool String::getIsSerialized() const
     return m_serialized;
 }
 
-Length String::wideStringToChar( char* out, Length outSize, const wchar_t* in )
+Length StringUtil::wideStringToChar( char* out, Length outSize, const wchar_t* in )
 {
     return wideStringToChar( out, outSize, in, StringUtil::strLen( in ) );
 }
 
-Length String::wideStringToChar( char* out, Length outSize, const wchar_t* inChar, Length inSize )
+Length StringUtil::wideStringToChar( char* out, Length outSize, const wchar_t* inChar, Length inSize )
 {
 #if CUL_USE_WCHAR
     UINT codePage = CP_ACP;
@@ -1804,7 +1759,7 @@ Length String::wideStringToChar( char* out, Length outSize, const wchar_t* inCha
 #endif  // #if CUL_USE_WCHAR
 }
 
-Length String::wideStringToChar( char& inOut, wchar_t inChar )
+Length StringUtil::wideStringToChar( char& inOut, wchar_t inChar )
 {
 #if CUL_USE_WCHAR
     UINT codePage = CP_ACP;
@@ -1825,19 +1780,19 @@ Length String::wideStringToChar( char& inOut, wchar_t inChar )
 #endif  // #if CUL_USE_WCHAR
 }
 
-Length String::wideStringToChar( std::string& out, const std::wstring& inChar )
+Length StringUtil::wideStringToChar( std::string& out, const std::wstring& inChar )
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     out = converterX.to_bytes( inChar );
     return static_cast<Length>( out.size() );
 }
 
-Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in )
+Length StringUtil::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in )
 {
     return charToWideString( codePage, out, outSize, in, static_cast<Length>( std::strlen( in ) ) );
 }
 
-Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize )
+Length StringUtil::charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize )
 {
     CUL::Assert::simple( outSize >= inSize, "NOT ENOUGH PLACE FOR STRING" );
 
@@ -1891,7 +1846,7 @@ Length String::charToWideString( Length codePage, wchar_t* out, Length outSize, 
 #endif  // #if defined(CUL_WINDOWS)
 }
 
-Length String::charToWideString( Length codePage, wchar_t& out, char in )
+Length StringUtil::charToWideString( Length codePage, wchar_t& out, char in )
 {
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -1907,7 +1862,7 @@ Length String::charToWideString( Length codePage, wchar_t& out, char in )
     return -1;
 }
 
-Length String::charToWideString( std::wstring& out, const std::string& in )
+Length StringUtil::charToWideString( std::wstring& out, const std::string& in )
 {
 #if defined( CUL_WINDOWS )
     const std::size_t bufferSize = in.size() * 2u;
@@ -1924,39 +1879,39 @@ Length String::charToWideString( std::wstring& out, const std::string& in )
 #endif  // #if defined(CUL_WINDOWS)
 }
 
-void String::copyString( char* target, const char* source )
+void StringUtil::copyString( char* target, const char* source )
 {
     copyString( target, StringUtil::strLen( target ), source, StringUtil::strLen( source ) );
 }
 
-void String::copyString( char* target, Length targetSize, const char* source, Length sourceSize )
+void StringUtil::copyString( char* target, Length targetSize, const char* source, Length sourceSize )
 {
     CUL::Assert::simple( targetSize >= sourceSize, "TARGET TOO SMALL!" );
     std::strncpy( target, source, static_cast<std::size_t>( sourceSize + 1 ) );
 }
 
-void String::copyString( wchar_t* target, const wchar_t* source )
+void StringUtil::copyString( wchar_t* target, const wchar_t* source )
 {
     copyString( target, StringUtil::strLen( target ), source, StringUtil::strLen( source ) );
 }
 
-void String::copyString( wchar_t* target, Length targetSize, const wchar_t* source, Length sourceSizeS )
+void StringUtil::copyString( wchar_t* target, Length targetSize, const wchar_t* source, Length sourceSizeS )
 {
     CUL::Assert::simple( targetSize >= sourceSizeS, "TARGET TOO SMALL!" );
     const std::size_t sourceSize = static_cast<std::size_t>( sourceSizeS );
     for( std::size_t i = 0; i < sourceSize; ++i )
     {
-        const UnderlyingChar sourceChar = source[i];
+        const String::UnderlyingChar sourceChar = source[i];
         target[i] = sourceChar;
     }
 }
 
-std::int32_t String::cmp( const char* s1, const char* s2 )
+std::int32_t StringUtil::cmp( const char* s1, const char* s2 )
 {
     return std::strcmp( s1, s2 );
 }
 
-bool String::equals( const char* s1, const char* s2, std::size_t length )
+bool StringUtil::equals( const char* s1, const char* s2, std::size_t length )
 {
     for( std::size_t i = 0u; i < length; ++i )
     {
@@ -1969,12 +1924,12 @@ bool String::equals( const char* s1, const char* s2, std::size_t length )
     return true;
 }
 
-std::int32_t String::cmp( const wchar_t* s1, const wchar_t* s2 )
+std::int32_t StringUtil::cmp( const wchar_t* s1, const wchar_t* s2 )
 {
     return std::wcscmp( s1, s2 );
 }
 
-bool String::equals( const wchar_t* s1, const wchar_t* s2, std::size_t length )
+bool StringUtil::equals( const wchar_t* s1, const wchar_t* s2, std::size_t length )
 {
     for( std::size_t i = 0u; i < length; ++i )
     {
@@ -1985,6 +1940,16 @@ bool String::equals( const wchar_t* s1, const wchar_t* s2, std::size_t length )
     }
 
     return true;
+}
+
+const char* StringUtil::strStr( const char* left, const char* right )
+{
+    return std::strstr( left, right );
+}
+
+const wchar_t* StringUtil::strStr( const wchar_t* left, const wchar_t* right )
+{
+    return std::wcsstr( left, right );
 }
 
 void String::toLower( char* inOut )
@@ -2078,7 +2043,7 @@ void String::createFrom( const String& arg )
         {
             m_value = &m_staticValue[0];
         }
-        copyString( m_value, copySize, arg.m_value, copySize );
+        StringUtil::copyString( m_value, copySize, arg.m_value, copySize );
     }
 }
 
@@ -2101,7 +2066,7 @@ void String::createFromMove( String& arg )
         m_value = &m_staticValue[0];
         if( m_size > 0 )
         {
-            copyString( m_value, m_size, arg.m_value, m_size );
+            StringUtil::copyString( m_value, m_size, arg.m_value, m_size );
             terminate();
         }
     }
@@ -2117,7 +2082,7 @@ void String::createFrom( bool arg )
     m_value = &m_staticValue[0];
     setSize( arg ? 4 : 5 );
 #if CUL_USE_WCHAR
-    copyString( m_value, m_capacity, arg ? L"true" : L"false", m_size );
+    StringUtil::copyString( m_value, m_capacity, arg ? L"true" : L"false", m_size );
 #else   // #if CUL_USE_WCHAR
     std::strcpy( m_value, arg ? "true" : "false" );
 #endif  // #if CUL_USE_WCHAR
@@ -2137,7 +2102,7 @@ void String::createFrom( const char* arg )
     }
     else
     {
-        charToWideString( CP_ACP, m_value, m_capacity, arg );
+        StringUtil::charToWideString( CP_ACP, m_value, m_capacity, arg );
         const std::int32_t size = StringUtil::strLen( m_value );
         setSize( size );
     }
@@ -2179,7 +2144,7 @@ void String::createFrom( const std::string& arg )
     }
     else
     {
-        charToWideString( CP_ACP, m_value, m_capacity, arg.c_str(), argLen );
+        StringUtil::charToWideString( CP_ACP, m_value, m_capacity, arg.c_str(), argLen );
     }
 #else   // #if CUL_USE_WCHAR
     const Length argLen = static_cast<Length>( arg.size() );
@@ -2202,7 +2167,7 @@ void String::createFrom( const std::wstring& arg )
 #if CUL_USE_WCHAR
     const Length argLen = static_cast<Length>( arg.size() );
     grow( argLen, false );
-    copyString( m_value, m_capacity, arg.c_str(), argLen );
+    StringUtil::copyString( m_value, m_capacity, arg.c_str(), argLen );
     setSize( argLen );
 #else
     std::string out;
@@ -2234,7 +2199,7 @@ void String::createFrom( const wchar_t* arg )
     }
 
 #if CUL_USE_WCHAR
-    copyString( m_value, m_capacity, arg, newLength );
+    StringUtil::copyString( m_value, m_capacity, arg, newLength );
 #else
 
     wideStringToChar( m_value, m_capacity, arg, newLength );
@@ -2323,7 +2288,7 @@ void String::grow( Length targetSize, bool keepValue )
 
     if( keepValue && m_size > 0 )
     {
-        copyString( newArray, m_capacity, m_value, m_size + 1 );
+        StringUtil::copyString( newArray, m_capacity, m_value, m_size + 1 );
     }
 
     if( oldCapacity != SSO_Size )
@@ -2440,7 +2405,7 @@ bool String::startsWith( const char* inStr, std::size_t* outInStrLen ) const
 {
 #if CUL_USE_WCHAR
     std::wstring sample;
-    charToWideString( sample, inStr );
+    StringUtil::charToWideString( sample, inStr );
 #else   // #if CUL_USE_WCHAR
     const std::string sample = inStr;
 #endif  // #if CUL_USE_WCHAR
@@ -2704,7 +2669,7 @@ Length String::count( char inChar ) const
     Length result{ 0 };
 #if CUL_USE_WCHAR
     wchar_t toBeFound;
-    charToWideString( CP_ACP, toBeFound, inChar );
+    StringUtil::charToWideString( CP_ACP, toBeFound, inChar );
 #else
     char toBeFound = inChar;
 #endif
@@ -2798,7 +2763,7 @@ std::int32_t StringUtil::strLen( const wchar_t* inString )
 std::uint64_t StringUtil::strToUint64( const std::wstring& inString )
 {
     std::string out;
-    String::wideStringToChar( out, inString );
+    StringUtil::wideStringToChar( out, inString );
     return strToUint64( out );
 }
 
@@ -2810,8 +2775,210 @@ std::uint64_t StringUtil::strToUint64( const std::string& inString )
     return result;
 }
 
+std::size_t StringUtil::replaceCalculateRequiredSize( const char* source, const char* inWhat, const char* inFor, bool allOccurences )
+{
+    if( !source || !inWhat || !inFor )
+    {
+        return 0;
+    }
+
+    const std::size_t sourceLen = std::strlen( source );
+    const std::size_t lenWhat = std::strlen( inWhat );
+    const std::size_t lenFor = std::strlen( inFor );
+
+    if( lenWhat == 0 )
+    {
+        return sourceLen + 1;
+    }
+
+    std::size_t count = 0;
+    const char* pos = source;
+
+    while( ( pos = std::strstr( pos, inWhat ) ) != nullptr )
+    {
+        ++count;
+        pos += lenWhat;
+
+        if( !allOccurences )
+            break;
+    }
+
+    // +1 for null terminator
+    return sourceLen + count * ( lenFor - lenWhat ) + 1;
+}
+
+std::size_t StringUtil::replaceCalculateRequiredSize( const wchar_t* source, const wchar_t* inWhat, const wchar_t* inFor,
+                                                          bool allOccurences )
+{
+    if( !source || !inWhat || !inFor )
+    {
+        return 0;
+    }
+
+    const std::size_t sourceLen = strLen( source );
+    const std::size_t lenWhat = strLen( inWhat );
+    const std::size_t lenFor = strLen( inFor );
+
+    if( lenWhat == 0 )
+    {
+        return sourceLen + 1;
+    }
+
+    std::size_t count = 0;
+    const wchar_t* pos = source;
+
+    while( ( pos = std::wcsstr( pos, inWhat ) ) != nullptr )
+    {
+        ++count;
+        pos += lenWhat;
+
+        if( !allOccurences )
+            break;
+    }
+
+    // +1 for null terminator
+    return sourceLen + count * ( lenFor - lenWhat ) + 1;
+}
+
+bool StringUtil::replace( char* inSource, const char inWhat, const char inFor, bool allOccurences )
+{
+    const std::size_t sourceSize = strLen( inSource );
+
+    for( std::size_t i = 0; i < sourceSize; ++i )
+    {
+        if( inSource[i] == inWhat )
+        {
+            inSource[i] = inFor;
+            if( allOccurences == false )
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool StringUtil::replace( wchar_t* inSource, const wchar_t inWhat, const wchar_t inFor, bool allOccurences )
+{
+    const std::size_t sourceSize = strLen( inSource );
+
+    for( std::size_t i = 0; i < sourceSize; ++i )
+    {
+        if( inSource[i] == inWhat )
+        {
+            inSource[i] = inFor;
+            if( allOccurences == false )
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool StringUtil::replace( char* inSource, std::size_t inSourceSize, const char* inWhat, const char* inFor, bool allOccurences )
+{
+    if( !inSource || !inWhat || !inFor )
+    {
+        return false;
+    }
+
+    const std::size_t lenWhat = std::strlen( inWhat );
+    const std::size_t lenFor = std::strlen( inFor );
+
+    if( lenWhat == 0 )
+    {
+        return false;
+    }
+
+    char* pos = inSource;
+
+    while( ( pos = std::strstr( pos, inWhat ) ) != nullptr )
+    {
+        const std::size_t currentLen = std::strlen( inSource );
+
+        // Calculate new length after replacement
+        const std::size_t newLen = currentLen - lenWhat + lenFor;
+
+        // Check buffer overflow
+        if( newLen + 1 > inSourceSize )
+        {
+            return false;
+        }
+
+        // Move the tail if lengths differ
+        if( lenFor != lenWhat )
+        {
+            std::memmove( pos + lenFor, pos + lenWhat, currentLen - ( pos - inSource ) - lenWhat + 1 );
+        }
+
+        // Copy replacement text
+        std::memcpy( pos, inFor, lenFor );
+
+        if( !allOccurences )
+            break;
+
+        pos += lenFor;  // continue after replaced text
+    }
+
+    return true;
+}
+
+bool StringUtil::replace( wchar_t* inSource, std::size_t inSourceSize, const wchar_t* inWhat, const wchar_t* inFor, bool allOccurences )
+{
+    if( !inSource || !inWhat || !inFor )
+    {
+        return false;
+    }
+
+    const std::size_t lenWhat = strLen( inWhat );
+    const std::size_t lenFor = strLen( inFor );
+
+    if( lenWhat == 0 )
+    {
+        return false;
+    }
+
+    wchar_t* pos = inSource;
+
+    while( ( pos = std::wcsstr( pos, inWhat ) ) != nullptr )
+    {
+        const std::size_t currentLen = strLen( inSource );
+
+        // Calculate new length after replacement
+        const std::size_t newLen = currentLen - lenWhat + lenFor;
+
+        // Check buffer overflow
+        if( newLen + 1 > inSourceSize )
+        {
+            return false;
+        }
+
+        // Move the tail if lengths differ
+        if( lenFor != lenWhat )
+        {
+            std::memmove( pos + lenFor, pos + lenWhat, currentLen - ( pos - inSource ) - lenWhat + 1 );
+        }
+
+        // Copy replacement text
+        std::memcpy( pos, inFor, lenFor );
+
+        if( !allOccurences )
+            break;
+
+        pos += lenFor;  // continue after replaced text
+    }
+
+    return true;
+}
+
 STDStringWrapper::STDStringWrapper()
 {
+}
+
+void STDStringWrapper::createFrom( const String& inStr )
+{
+    m_value = inStr.getString();
 }
 
 STDStringWrapper::STDStringWrapper( const STDStringWrapper& inArg ): m_value( inArg.m_value )
@@ -2822,10 +2989,30 @@ STDStringWrapper::STDStringWrapper( STDStringWrapper&& inArg ) noexcept: m_value
 {
 }
 
+bool STDStringWrapper::contains( const STDStringWrapper& inArg ) const
+{
+    return StringUtil::strStr( m_value.c_str(), inArg.m_value.c_str() );
+}
+
+String::UnderlyingChar STDStringWrapper::operator[]( Length inPos ) const
+{
+    return m_value[inPos];
+}
+
+String::UnderlyingChar& STDStringWrapper::operator[]( Length inPos )
+{
+    return m_value[inPos];
+}
+
+void STDStringWrapper::erase(Length inPos)
+{
+
+}
+
 #if CUL_USE_WCHAR
 STDStringWrapper::STDStringWrapper( const std::string& inArg )
 {
-    String::charToWideString( m_value, inArg );
+    StringUtil::charToWideString( m_value, inArg );
 }
 
 STDStringWrapper::STDStringWrapper( const std::wstring& inArg ): m_value( inArg )
@@ -2852,7 +3039,13 @@ STDStringWrapper& STDStringWrapper::operator=( STDStringWrapper&& inArg ) noexce
 
 STDStringWrapper& STDStringWrapper::operator=( const std::string& inArg )
 {
-    String::charToWideString( m_value, inArg );
+    StringUtil::charToWideString( m_value, inArg );
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const char* inArg )
+{
+    StringUtil::charToWideString( m_value, inArg );
     return *this;
 }
 
@@ -2862,16 +3055,47 @@ STDStringWrapper& STDStringWrapper::operator=( const std::wstring& inArg )
     return *this;
 }
 
+STDStringWrapper& STDStringWrapper::operator=( const String& inArg )
+{
+    m_value = inArg.getString();
+    return *this;
+}
+
 std::string STDStringWrapper::getSTDString() const
 {
     std::string result;
-    String::wideStringToChar( result, m_value );
+    StringUtil::wideStringToChar( result, m_value );
     return result;
 }
 
 std::wstring STDStringWrapper::getSTDWstring() const
 {
     return m_value;
+}
+
+bool STDStringWrapper::equals( const char* inArg ) const
+{
+    std::wstring converted;
+    const std::string argStr = inArg;
+
+    StringUtil::charToWideString( converted, argStr );
+    return converted == m_value;
+}
+
+bool STDStringWrapper::equals( const wchar_t* inArg ) const
+{
+    return m_value == inArg;
+}
+
+void STDStringWrapper::append( const std::string& inArg )
+{
+    std::wstring converted;
+    StringUtil::charToWideString( m_value, inArg );
+}
+
+void STDStringWrapper::append( const std::wstring& inArg )
+{
+    m_value += inArg;
 }
 #else   // CUL_USE_WCHAR
 STDStringWrapper::STDStringWrapper( const std::string& inArg ): m_value( inArg )
@@ -2924,11 +3148,44 @@ std::wstring STDStringWrapper::getSTDWstring() const
     String::charToWideString( result, m_value );
     return result;
 }
+
+bool STDStringWrapper::equals( const char* inArg ) const
+{
+    return m_value == inArg;
+}
+
+bool STDStringWrapper::equals( const wchar_t* inArg ) const
+{
+    std::string argStr;
+    StringUtil::wideStringToChar( argStr, inArg );
+}
+
+void STDStringWrapper::append( const std::string& inArg )
+{
+    m_value += inArg;
+}
+
+void STDStringWrapper::append( const std::wstring& inArg )
+{
+    std::string argStr;
+    StringUtil::wideStringToChar( argStr, inArg );
+    m_value += argStr;
+}
 #endif  // CUL_USE_WCHAR
 
 bool STDStringWrapper::equals( const String& inArg ) const
 {
-    return inArg.getString() == m_value;
+    return inArg.equals( m_value );
+}
+
+void STDStringWrapper::append( const STDStringWrapper& inArg )
+{
+    m_value += inArg.m_value;
+}
+
+void STDStringWrapper::append( const String& inArg )
+{
+    m_value += inArg.getString();
 }
 
 bool STDStringWrapper::empty() const

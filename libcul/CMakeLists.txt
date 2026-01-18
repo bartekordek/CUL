@@ -22,6 +22,8 @@ include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/stb )
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tiny-image/src )
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public )
 
+set_option(CUL_PROFILER_PIX "Enable profiling" OFF)
+
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
     message(STATUS "WARNING: building msvc version.")
     # warning level 4 and all warnings as errors

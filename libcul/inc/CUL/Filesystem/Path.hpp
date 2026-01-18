@@ -3,8 +3,8 @@
 #include "CUL/Filesystem/FS.hpp"
 
 #if _MSC_VER
-#pragma warning( push )
-#pragma warning( disable : 4251)
+    #pragma warning( push )
+    #pragma warning( disable : 4251 )
 #endif
 NAMESPACE_BEGIN( CUL )
 
@@ -38,21 +38,21 @@ public:
 
     void createFrom( const STDStringWrapper& inArg );
 
-    const String& getPath() const;
-    const String& getExtension() const;
-    const String& getBaseName() const;
-    const String& getDir() const;
+    const STDStringWrapper& getPath() const;
+    const STDStringWrapper& getExtension() const;
+    const STDStringWrapper& getBaseName() const;
+    const STDStringWrapper& getDir() const;
 
     uint64_t getFileSize() const;
     void setFileSize( uint64_t inFileSize );
 
-    const String& getMd5() const;
+    const STDStringWrapper& getMd5() const;
     void setMd5( const String& inMD5 );
 
-    void getLastModificationTime(Time& timeOut) const;
+    void getLastModificationTime( Time& timeOut ) const;
     void setModTime( const String& inModTime );
 
-    void setIsDir(bool isDir);
+    void setIsDir( bool isDir );
     bool getIsDir() const;
 
     bool operator==( const Path& rhv ) const;
@@ -60,12 +60,12 @@ public:
     bool operator<( const Path& rhv ) const;
     bool operator>( const Path& rhv ) const;
 
-    operator const String() const;
+    operator const STDStringWrapper() const;
 
     bool exists() const;
     bool getIsEmpty() const;
     bool isRootOf( const Path& inPath ) const;
-    const String& getDiskName() const;
+    const STDStringWrapper& getDiskName() const;
 
     virtual ~Path();
 
@@ -73,29 +73,29 @@ protected:
 private:
     void preparePaths();
     void normalizePaths();
-    void normalizePath( String& path );
+    void normalizePath( STDStringWrapper& path );
 
     bool m_isDir = false;
     mutable bool m_sizeCalculated = false;
 
-    String m_fullPath;
-    String m_extension;
-    String m_baseName;
-    String m_dir;
-    String m_diskName;
+    STDStringWrapper m_fullPath;
+    STDStringWrapper m_extension;
+    STDStringWrapper m_baseName;
+    STDStringWrapper m_dir;
+    STDStringWrapper m_diskName;
 
-    mutable String m_modTime;
+    mutable STDStringWrapper m_modTime;
 
     mutable uint64_t m_fileSize = 0u;
-    mutable String m_md5;
+    mutable STDStringWrapper m_md5;
 
-    #if defined( CUL_WINDOWS )
+#if defined( CUL_WINDOWS )
     static constexpr String::UnderlyingChar DefaultDirSeparator{ L'\\' };
     static constexpr String::UnderlyingChar ExtensionSeparator{ L'.' };
-    #else // #if defined(CUL_WINDOWS)
+#else   // #if defined(CUL_WINDOWS)
     static constexpr String::UnderlyingChar DefaultDirSeparator{ '/' };
     static constexpr String::UnderlyingChar ExtensionSeparator{ '.' };
-    #endif // #if defined(CUL_WINDOWS)
+#endif  // #if defined(CUL_WINDOWS)
 };
 
 const Path CULLib_API operator+( const Path& lval, const Path& rval );
@@ -103,5 +103,5 @@ NAMESPACE_END( FS )
 NAMESPACE_END( CUL )
 
 #if _MSC_VER
-#pragma warning( pop )
+    #pragma warning( pop )
 #endif

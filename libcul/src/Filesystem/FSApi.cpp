@@ -61,7 +61,6 @@ void FSApi::iterateThrought( const std::filesystem::directory_entry& de, std::fu
     ProfilerScope( "FSApi::iterateThrought" );
 
     const std::filesystem::path entryPath = de.path();
-    const String tempString = entryPath.c_str();
 
 #ifdef _MSC_VER
     const String tempPath = entryPath.wstring();

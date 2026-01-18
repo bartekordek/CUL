@@ -37,8 +37,10 @@ Path::Path( Path&& path ) noexcept
     normalizePaths();
 }
 
-Path::Path( const String& path ) noexcept : m_fullPath( path )
+Path::Path( const String& inPath ) noexcept
 {
+    m_fullPath.createFrom( inPath );
+
     normalizePath( m_fullPath );
     preparePaths();
     normalizePaths();
@@ -84,7 +86,7 @@ Path& Path::operator=( Path&& path ) noexcept
 
 Path& Path::operator=( const String& path )
 {
-    if( m_fullPath != path )
+    if( !m_fullPath.equals( path ) )
     {
         m_fullPath = path;
         preparePaths();
@@ -94,10 +96,9 @@ Path& Path::operator=( const String& path )
 
 Path& Path::operator=( const char* r )
 {
-    String right = r;
-    if( m_fullPath != right )
+    if( !m_fullPath.equals( r ) )
     {
-        m_fullPath = right;
+        m_fullPath = r;
         preparePaths();
     }
     return *this;
@@ -105,10 +106,9 @@ Path& Path::operator=( const char* r )
 
 Path& Path::operator=( const std::string& rhv )
 {
-    String right = rhv;
-    if( m_fullPath != right )
+    if( !m_fullPath.equals( rhv ) )
     {
-        m_fullPath = right;
+        m_fullPath = rhv;
         preparePaths();
     }
     return *this;
@@ -116,21 +116,21 @@ Path& Path::operator=( const std::string& rhv )
 
 Path& Path::operator+=( const Path& rhv )
 {
-    m_fullPath += rhv.m_fullPath;
+    m_fullPath.append( rhv.m_fullPath );
     preparePaths();
     return *this;
 }
 
 Path& Path::operator+=( const String& rhv )
 {
-    m_fullPath = m_fullPath + rhv;
+    m_fullPath.append( rhv );
     preparePaths();
     return *this;
 }
 
 Path& Path::operator+=( const std::string& rhv )
 {
-    m_fullPath = m_fullPath + rhv;
+    m_fullPath.append( rhv );
     preparePaths();
     return *this;
 }
@@ -162,22 +162,22 @@ void Path::createFrom( const STDStringWrapper& inArg )
     preparePaths();
 }
 
-const String& Path::getPath() const
+const STDStringWrapper& Path::getPath() const
 {
     return m_fullPath;
 }
 
-const String& Path::getExtension() const
+const STDStringWrapper& Path::getExtension() const
 {
     return m_extension;
 }
 
-const String& Path::getBaseName() const
+const STDStringWrapper& Path::getBaseName() const
 {
     return m_baseName;
 }
 
-const String& Path::getDir() const
+const STDStringWrapper& Path::getDir() const
 {
     return m_dir;
 }
@@ -187,7 +187,7 @@ bool Path::isRootOf( const Path& inPath ) const
     return inPath.m_dir.contains( m_dir );
 }
 
-const String& Path::getDiskName() const
+const STDStringWrapper& Path::getDiskName() const
 {
     return m_diskName;
 }
@@ -196,11 +196,7 @@ uint64_t Path::getFileSize() const
 {
     auto calculateSize = [this]()
     {
-#ifdef _MSC_VER
-        FsPath file( m_fullPath.wstring() );
-#else
-        FsPath file( m_fullPath.cStr() );
-#endif
+        const FsPath file( m_fullPath.getValue() );
 #if defined( _MSC_VER ) && _MSC_VER < 1920
         m_fileSize = std::experimental::filesystem::file_size( file );
 #else
@@ -214,7 +210,7 @@ uint64_t Path::getFileSize() const
         Time lastModTime;
         getLastModificationTime( lastModTime );
         auto lastModTimeString = lastModTime.toString();
-        if( lastModTimeString != m_modTime )
+        if( !m_modTime.equals( lastModTimeString ) )
         {
             calculateSize();
         }
@@ -232,7 +228,7 @@ void Path::setFileSize( uint64_t inFileSize )
     m_fileSize = inFileSize;
 }
 
-const String& Path::getMd5() const
+const STDStringWrapper& Path::getMd5() const
 {
     auto calculateMd5 = [this]()
     {
@@ -240,7 +236,7 @@ const String& Path::getMd5() const
 
         auto m_culInterface = CUL::CULInterface::getInstance();
 
-        file.reset( m_culInterface->getFF()->createRegularFileRawPtr( m_fullPath ) );
+        file.reset( m_culInterface->getFF()->createRegularFileRawPtr( *this ) );
         m_md5 = file->getMD5();
     };
 
@@ -253,7 +249,7 @@ const String& Path::getMd5() const
         Time lastModTime;
         getLastModificationTime( lastModTime );
         const String lastModTimeString = lastModTime.toString();
-        if( lastModTimeString != m_modTime )
+        if( !m_modTime.equals( lastModTimeString ) )
         {
             calculateMd5();
             m_modTime = lastModTimeString;
@@ -274,7 +270,7 @@ void Path::getLastModificationTime( Time& timeOut ) const
 
     auto m_culInterface = CUL::CULInterface::getInstance();
 
-    file.reset( m_culInterface->getFF()->createRegularFileRawPtr( m_fullPath ) );
+    file.reset( m_culInterface->getFF()->createRegularFileRawPtr( *this ) );
     file->getLastModificationTime( timeOut );
 }
 
@@ -310,10 +306,10 @@ bool Path::operator<( const Path& rhv ) const
 
 bool Path::operator>( const Path& rhv ) const
 {
-    return m_fullPath > rhv.m_fullPath;
+    return m_fullPath.getValue() > rhv.m_fullPath.getValue();
 }
 
-Path::operator const String() const
+Path::operator const STDStringWrapper() const
 {
     return m_fullPath;
 }
@@ -325,8 +321,8 @@ void Path::preparePaths()
         return;
     }
 
+    const FsPath bPath( m_fullPath.getValue() );
 #if CUL_USE_WCHAR
-    FsPath bPath( m_fullPath.wstring() );
     m_baseName = bPath.stem();
     m_extension = bPath.extension();
     const auto dot = m_extension[0];
@@ -393,7 +389,6 @@ void Path::preparePaths()
         m_dir = bPath.parent_path();
     }
 #else
-    FsPath bPath( m_fullPath.string() );
     auto bPathAsString = bPath.string();
 
     auto stem = bPath.stem();
@@ -448,7 +443,7 @@ void Path::normalizePaths()
     normalizePath( m_dir );
 }
 
-void Path::normalizePath( String& path )
+void Path::normalizePath( STDStringWrapper& path )
 {
     if( path.empty() )
     {

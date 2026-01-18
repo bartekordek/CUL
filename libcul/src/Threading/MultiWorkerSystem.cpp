@@ -39,8 +39,8 @@ void MultiWorkerSystem::registerTask( ITask* task )
 
 MultiWorkerSystem::MultiWorkerSystem()
 {
-    g_maxQueuedTasks[static_cast<std::size_t>(EPriority::Low)] = 4096u;
-    g_maxQueuedTasks[static_cast<std::size_t>( EPriority::Medium )] = std::pow(2u, 16u);
+    g_maxQueuedTasks[static_cast<std::size_t>( EPriority::Low )] = 4096u;
+    g_maxQueuedTasks[static_cast<std::size_t>( EPriority::Medium )] = std::pow( 2u, 14u );
     g_maxQueuedTasks[static_cast<std::size_t>( EPriority::High )] = 4096u;
 
     m_sleepMapping[EPriority::High] = 0;

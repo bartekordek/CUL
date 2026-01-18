@@ -45,6 +45,37 @@ public:
     static std::uint64_t strToUint64( const std::wstring& inString );
     static std::uint64_t strToUint64( const std::string& inString );
 
+    static std::size_t replaceCalculateRequiredSize( const char* source, const char* inWhat, const char* inFor, bool allOccurences );
+    static std::size_t replaceCalculateRequiredSize( const wchar_t* source, const wchar_t* inWhat, const wchar_t* inFor,
+                                                     bool allOccurences );
+    static bool replace( char* inSource, const char inWhat, const char inFor, bool allOccurences );
+    static bool replace( wchar_t* inSource, const wchar_t inWhat, const wchar_t inFor, bool allOccurences );
+    static bool replace( char* inSource, std::size_t inSourceSize, const char* inWhat, const char* inFor, bool allOccurences );
+    static bool replace( wchar_t* inSource, std::size_t inSourceSize, const wchar_t* inWhat, const wchar_t* inFor, bool allOccurences );
+
+    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in );
+    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize );
+    static Length wideStringToChar( char& out, wchar_t in );
+    static Length wideStringToChar( std::string& out, const std::wstring& in );
+
+    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in );
+    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize );
+    static Length charToWideString( Length codePage, wchar_t& out, char in );
+    static Length charToWideString( std::wstring& out, const std::string& in );
+
+    static void copyString( char* target, const char* source );
+    static void copyString( char* target, Length targetSize, const char* source, Length sourceSize );
+    static void copyString( wchar_t* target, const wchar_t* source );
+    static void copyString( wchar_t* target, Length targetSize, const wchar_t* source, Length sourceSize );
+
+    static std::int32_t cmp( const char* s1, const char* s2 );
+    static bool equals( const char* s1, const char* s2, std::size_t length );
+    static std::int32_t cmp( const wchar_t* s1, const wchar_t* s2 );
+    static bool equals( const wchar_t* s1, const wchar_t* s2, std::size_t length );
+
+    static const char* strStr( const char* left, const char* right );
+    static const wchar_t* strStr( const wchar_t* left, const wchar_t* right );
+
 protected:
 private:
 };
@@ -240,28 +271,7 @@ public:
     const std::vector<String> split( const char delimiter ) const;
     const std::vector<String> split( const wchar_t delimiter ) const;
 
-
     bool getIsSerialized() const;
-
-    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in );
-    static Length wideStringToChar( char* out, Length outSize, const wchar_t* in, Length inSize );
-    static Length wideStringToChar( char& out, wchar_t in );
-    static Length wideStringToChar( std::string& out, const std::wstring& in );
-
-    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in );
-    static Length charToWideString( Length codePage, wchar_t* out, Length outSize, const char* in, Length inSize );
-    static Length charToWideString( Length codePage, wchar_t& out, char in );
-    static Length charToWideString( std::wstring& out, const std::string& in );
-
-    static void copyString( char* target, const char* source );
-    static void copyString( char* target, Length targetSize, const char* source, Length sourceSize );
-    static void copyString( wchar_t* target, const wchar_t* source );
-    static void copyString( wchar_t* target, Length targetSize, const wchar_t* source, Length sourceSize );
-
-    static std::int32_t cmp( const char* s1, const char* s2 );
-    static bool equals( const char* s1, const char* s2, std::size_t length );
-    static std::int32_t cmp( const wchar_t* s1, const wchar_t* s2 );
-    static bool equals( const wchar_t* s1, const wchar_t* s2, std::size_t length );
 
     static void toLower( char* inOut );
     static void toLower( char* inOut, std::int32_t size );
@@ -362,8 +372,11 @@ public:
 
     STDStringWrapper& operator=( const STDStringWrapper& inArg );
     STDStringWrapper& operator=( STDStringWrapper&& inArg ) noexcept;
+    STDStringWrapper& operator=( const char* inArg );
     STDStringWrapper& operator=( const std::string& inArg );
+    STDStringWrapper& operator=( const wchar_t* inArg );
     STDStringWrapper& operator=( const std::wstring& inArg );
+    STDStringWrapper& operator=( const String& inArg );
 
     const String::UnderlyingType& getValue() const;
     std::uint64_t toUint64() const;
@@ -371,10 +384,27 @@ public:
     bool operator==( const STDStringWrapper& inArg ) const;
     bool operator<( const STDStringWrapper& inArg ) const;
     bool equals( const String& inArg ) const;
+    bool equals( const char* inArg ) const;
+    bool equals( const wchar_t* inArg ) const;
+    void append( const STDStringWrapper& inArg );
+    void append( const String& inArg );
+    void append( const std::string& inArg );
+    void append( const std::wstring& inArg );
     bool empty() const;
+    bool contains( const STDStringWrapper& inArg ) const;
+
+    String::UnderlyingChar operator[]( Length inPos ) const;
+    String::UnderlyingChar& operator[]( Length inPos );
+
+    void replace( const char inWhat, const char inFor, bool allOccurences );
+    void replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences );
+
+    void erase( Length inPos );
 
     std::string getSTDString() const;
     std::wstring getSTDWstring() const;
+
+    void createFrom( const String& inStr );
 
     ~STDStringWrapper();
 
