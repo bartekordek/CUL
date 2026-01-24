@@ -1,14 +1,16 @@
 #include "CUL/Filesystem/RegularFile.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
+#include "CUL/String/StringUtil.hpp"
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 
 using namespace CUL::FS;
-using String = const CUL::String;
+using StringWr = const CUL::StringWr;
 
-RegularFile::RegularFile( const String& path, CULInterface* inInterface ) : IFile( path, inInterface ), m_path( path )
+RegularFile::RegularFile( const StringWr& path, CULInterface* inInterface ): IFile( path, inInterface )
 {
+    m_path.createFrom( path );
 }
 
 void RegularFile::changePath( const Path& newPath )
@@ -34,19 +36,15 @@ void RegularFile::reload()
     load( m_keepLineEndingCharacter, m_removeBottomEmptyLines );
 }
 
-void RegularFile::overwriteContents( const CUL::String& value )
+void RegularFile::overwriteContents( const CUL::StringWr& value )
 {
-    CUL::String valueCopy = value;
+    CUL::StringWr valueCopy = value;
 
     m_rows.clear();
     m_rowsAsChars.clear();
     m_cached.clear();
 
-    const bool hasCarriage = valueCopy.find( '\r' ) != -1;
-    if( hasCarriage )
-    {
-        valueCopy.removeAll( '\r' );
-    }
+    valueCopy.removeAll( '\r' );
 
     m_rows = valueCopy.split( '\n' );
     cacheFile();
@@ -54,13 +52,14 @@ void RegularFile::overwriteContents( const CUL::String& value )
 
 void RegularFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
 {
-    CUL::Assert::check( exists(), "Cannot open the file: %s", m_path.getPath().cStr() );
+    const auto stdString = m_path.getPath().getSTDString();
+    CUL::Assert::check( exists(), "Cannot open the file: %s", stdString.c_str() );
 
     m_rows.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     m_removeBottomEmptyLines = removeBottomEmptyLines;
     std::ifstream infile;
-    infile.open( m_path.getPath().cStr(), std::ios_base::in );
+    infile.open( stdString.c_str(), std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
     {
@@ -81,10 +80,10 @@ void RegularFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLine
     if( m_removeBottomEmptyLines )
     {
         const std::int32_t rowsCount = static_cast<std::int32_t>( m_rows.size() );
-        for(std::int32_t i = rowsCount - 1; i >= 0; --i)
+        for( std::int32_t i = rowsCount - 1; i >= 0; --i )
         {
-            String& row = m_rows[static_cast<std::size_t>( i )];
-            if( row == "\n" || row.empty() || row == "\r\n" )
+            StringWr& row = m_rows[static_cast<std::size_t>( i )];
+            if( row.equals( "\n" ) || row.empty() || row.equals( "\r\n" ) )
             {
                 m_rows.erase( m_rows.begin() + i );
             }
@@ -104,17 +103,17 @@ void RegularFile::unload()
     m_cached = "";
 }
 
-const String& RegularFile::firstLine() const
+const StringWr& RegularFile::firstLine() const
 {
     return m_rows.front();
 }
 
-const String& RegularFile::lastLine() const
+const StringWr& RegularFile::lastLine() const
 {
     return m_rows.back();
 }
 
-const String& RegularFile::getAsOneString() const
+const StringWr& RegularFile::getAsOneString() const
 {
     return m_cached;
 }
@@ -129,12 +128,11 @@ void RegularFile::cacheFile()
     m_cached = "";
     for( const auto& line : m_rows )
     {
-        m_cached.append( line );
-        if( line.find( '\n' ) == -1 && line.find( "\r\n" ) == -1 )
+        m_cached.append( line.getValue() );
+        if( !line.contains( '\n' ) && line.find( "\r\n" ) == -1 )
         {
             m_cached.append( '\n' );
         }
-
     }
 
     initializeRowsChar();
@@ -145,24 +143,25 @@ FileType RegularFile::getType() const
     return FileType::TXT;
 }
 
-void RegularFile::loadFromString( const String& contents, bool keepLineEndingCharacter /*= false */ )
+void RegularFile::loadFromString( const StringWr& contents, bool keepLineEndingCharacter /*= false */ )
 {
     m_cached = contents;
     m_keepLineEndingCharacter = keepLineEndingCharacter;
-    const std::vector<String> lines = m_cached.split( "\n" );
+    const std::vector<StringWr> lines = m_cached.split( '\n' );
     for( const auto& line : lines )
     {
         m_rows.emplace_back( line );
-        m_rowsAsChars.push_back( m_rows.back().cStr() );
+        const char* duplicated = StringUtil::strdup( m_rows.back().getUtfChar() );
+        m_rowsAsChars.push_back( duplicated );
     }
 }
 
-void RegularFile::loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter /*= false */ )
+void RegularFile::loadFromStringNoEmptyLines( const StringWr& contents, bool keepLineEndingCharacter /*= false */ )
 {
     m_cached.clear();
     m_keepLineEndingCharacter = keepLineEndingCharacter;
-    std::vector<String> lines = contents.split( "\n" );
-    for( String& line : lines )
+    std::vector<StringWr> lines = contents.split( '\n' );
+    for( StringWr& line : lines )
     {
         if( line.empty() )
         {
@@ -171,7 +170,7 @@ void RegularFile::loadFromStringNoEmptyLines( const String& contents, bool keepL
 
         if( keepLineEndingCharacter )
         {
-            line += String( "\n" );
+            line += StringWr( "\n" );
         }
 
         m_rows.emplace_back( line );
@@ -185,11 +184,12 @@ void RegularFile::initializeRowsChar()
 {
     for( const auto& line : m_rows )
     {
-        m_rowsAsChars.push_back( line.cStr() );
+        const std::string str = line.getSTDString();
+        m_rowsAsChars.push_back( str.c_str() );
     }
 }
 
-void RegularFile::addLine( const String& line )
+void RegularFile::addLine( const StringWr& line )
 {
     m_rows.push_back( line );
     cacheFile();
@@ -197,19 +197,18 @@ void RegularFile::addLine( const String& line )
 
 void RegularFile::saveFile()
 {
-    auto pathString = m_path.getPath().getString();
-    std::ofstream file( pathString );
+    std::ofstream file( m_path.getPath().getUtfChar() );
     const size_t rowsCount = m_rows.size();
     for( size_t i = 0; i < rowsCount; ++i )
     {
-        const String& line = m_rows[i];
+        const StringWr& line = m_rows[i];
         if( line.empty() )
         {
             file << '\n';
         }
         else
         {
-            file << line.cStr() << "\n";
+            file << line.getUtfChar() << "\n";
         }
     }
     file.close();

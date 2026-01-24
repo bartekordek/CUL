@@ -6,7 +6,7 @@ using namespace CUL;
 using namespace FS;
 
 
-TextFile::TextFile( const String& fPath, CULInterface* inInterface ) : IFile( fPath, inInterface )
+TextFile::TextFile( const StringWr& fPath, CULInterface* inInterface ) : IFile( fPath, inInterface )
 {
 
 }
@@ -23,17 +23,17 @@ void TextFile::unload()
 {
 }
 
-const String& TextFile::firstLine() const
+const StringWr& TextFile::firstLine() const
 {
     return m_values;
 }
 
-const String& TextFile::lastLine() const
+const StringWr& TextFile::lastLine() const
 {
     return m_values;
 }
 
-const String& TextFile::getAsOneString() const
+const StringWr& TextFile::getAsOneString() const
 {
     return m_values;
 }

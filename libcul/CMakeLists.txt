@@ -22,7 +22,7 @@ include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/stb )
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tiny-image/src )
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public )
 
-set_option(CUL_PROFILER_PIX "Enable profiling" OFF)
+set_option(CUL_PROFILER_PIX "Enable profiling" 0)
 
 if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
     message(STATUS "WARNING: building msvc version.")
@@ -34,6 +34,7 @@ if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
     add_compile_options( "/wd4820" )
     add_compile_options( "/wd4710" )
     add_compile_options( "/wd4774" )
+    add_compile_options( "/wd4996" ) # 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. 
     add_compile_options( "/wd5045" )
 
     add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Ot>")

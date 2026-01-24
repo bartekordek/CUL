@@ -23,7 +23,7 @@ IImage* ImageLoaderData::loadImage( DataType* data, unsigned width, unsigned hei
 
 void ImageLoaderData::deleteImage( const FS::Path& path )
 {
-    auto it = m_fileList.find( path.getPath() );
+    auto it = m_fileList.find( path.getPath().getSTDString() );
     if( it != m_fileList.end() )
     {
         m_fileList.erase( it );
@@ -34,7 +34,7 @@ IImage* ImageLoaderData::findImage( const FS::Path& path )
 {
     IImage* result = nullptr;
 
-    auto it = m_fileList.find( path.getPath() );
+    auto it = m_fileList.find( path.getPath().getSTDString() );
     if( it != m_fileList.end() )
     {
         result = it->second.get();

@@ -8,36 +8,36 @@ ISerializable::ISerializable()
 {
 }
 
-String ISerializable::serialize( CounterType tabsSize, const bool separator ) const
+StringWr ISerializable::serialize( CounterType tabsSize, const bool separator ) const
 {
-    String tabs = getTab( tabsSize );
-    String result = tabs;
+    StringWr tabs = getTab( tabsSize );
+    StringWr result = tabs;
     result.append( "{\n" );
-    const String serialized = getSerializationContent( tabsSize + 1, separator );
-    result.append( serialized );
+    const StringWr serialized = getSerializationContent( tabsSize + 1, separator );
+    result.append( serialized.getValue() );
 
     if( separator )
     {
-        result.append( tabs );
+        result.append( tabs.getValue() );
         result.append( "},\n" );
     }
     else
     {
-        result.append( tabs );
+        result.append( tabs.getValue() );
         result.append( "}\n" );
     }
 
     return result;
 }
 
-String ISerializable::getTab( CounterType tabSize )
+StringWr ISerializable::getTab( CounterType tabSize )
 {
-    String tabs;
+    StringWr tabs;
 
     const CounterType spacesToAdd = s_spacesInTab * tabSize;
     for( CounterType i = 1; i <= spacesToAdd; ++i )
     {
-        tabs += String( " " );
+        tabs += StringWr( " " );
     }
 
     return tabs;

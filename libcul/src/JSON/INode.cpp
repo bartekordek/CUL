@@ -234,13 +234,11 @@ void INode::setName( const String& name )
     m_name = name;
 }
 
-bool INode::operator==(
-    const INode& rhv
-    ) const
+bool INode::operator==( const INode& rhv ) const
 {
     if( this != &rhv )
     {
-        if( m_name != rhv.m_name )
+        if( !m_name.equals( rhv.m_name.getString() ) )
         {
             return false;
         }
@@ -250,7 +248,7 @@ bool INode::operator==(
 
 bool INode::operator==( const String& rhv ) const
 {
-    if( m_name == rhv )
+    if( m_name.equals( rhv.getString() ) )
     {
         return true;
     }
@@ -336,19 +334,6 @@ bool operator==( INode* lhv, const String& rhv )
     return lhv->operator==( rhv );
 }
 
-//struct isChild
-//{
-//    String m_value;
-//    isChild( const String& val ): m_value( val )
-//    {
-//    }
-//
-//    bool operator()( const NodePtr& nodePtr ) const
-//    {
-//        return nodePtr->operator==( m_value );
-//    }
-//};
-
 bool INode::getBool() const
 {
     return m_bool;
@@ -383,10 +368,11 @@ INode* INode::findChild( const String& name )
 {
     if( ElementType::ARRAY == m_type )
     {
-        auto it = std::find_if( m_array.begin(), m_array.end(), [name]( INode* node )
-        {
-            return node->getName() == name;
-        } );
+        auto it = std::find_if( m_array.begin(), m_array.end(),
+                                [name]( INode* node )
+                                {
+                                    return node->getName().equals( name.getString() );
+                                } );
         if( it != m_array.end() )
         {
             return *it;

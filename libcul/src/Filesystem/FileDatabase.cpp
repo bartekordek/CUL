@@ -9,6 +9,7 @@
 
 #include "Imports/IMPORT_sqlite3.hpp"
 #include "CUL/Proifling/Profiler.hpp"
+#include "CUL/String/StringUtil.hpp"
 #include "CUL/STL_IMPORTS/STD_inttypes.hpp"
 
 #ifdef _MSC_VER
@@ -225,7 +226,7 @@ void FileDatabase::getListOfSizesFromDb( std::vector<uint64_t>& out ) const
 
     if( ( rc != SQLITE_OK ) && ( rc != SQLITE_MISUSE ) )
     {
-        if( String::cmp( zErrMsg, "no such table" ) != 0 )  // new database.
+        if( StringUtil::cmp( zErrMsg, "no such table" ) != 0 )  // new database.
         {
             Assert::check( false, "DB ERROR: %s", zErrMsg );
         }
@@ -344,7 +345,7 @@ void FileDatabase::getFiles( uint64_t inSize, const CUL::String& md5, std::vecto
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
     for( const FileInfo& fi : m_cachedFiles )
     {
-        if( ( fi.Size.toUint64() == inSize ) && ( fi.MD5.equals( md5 ) ) )
+        if( ( fi.Size.toUint64() == inSize ) && ( fi.MD5.equals( md5.getString() ) ) )
         {
             out.push_back( fi );
         }
@@ -384,7 +385,7 @@ void FileDatabase::getFilesFromDB( uint64_t size, const CUL::String& md5, std::v
     };
 
     char* zErrMsg = nullptr;
-    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.cStr(), callback, &out, &zErrMsg );
+    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
@@ -432,7 +433,7 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
     };
 
     char* zErrMsg = nullptr;
-    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.cStr(), callback, &out, &zErrMsg );
+    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
@@ -532,7 +533,7 @@ std::optional<FileInfo> FileDatabase::getFromCache( const String& inFilePath ) c
     const auto it = std::find_if( m_cachedFiles.begin(), m_cachedFiles.end(),
                                   [&inFilePath]( const FileInfo& curr )
                                   {
-                                      return curr.FilePath.equals( inFilePath );
+                                      return curr.FilePath.equals( inFilePath.getString() );
                                   } );
 
     if( it != m_cachedFiles.end() )
@@ -549,7 +550,7 @@ bool FileDatabase::removeFromCache( const String& inFilePath )
     const std::list<FileInfo>::iterator it = std::find_if( m_cachedFiles.begin(), m_cachedFiles.end(),
                                                            [&inFilePath]( const FileInfo& curr )
                                                            {
-                                                               return curr.FilePath.equals( inFilePath );
+                                                               return curr.FilePath.equals( inFilePath.getString() );
                                                            } );
 
     if( it != m_cachedFiles.end() )
@@ -598,7 +599,7 @@ void FileDatabase::initDb()
 
     ProfilerScope( "FileDatabase::initDb" );
     ThreadUtil::getInstance().setThreadStatus( "Initi db..." );
-    int rc = sqlite3_open( m_databasePath.getPath().cStr(), &m_db );
+    int rc = sqlite3_open( m_databasePath.getPath().getUtfChar(), &m_db );
 
     constexpr std::size_t bufferLength = 4096u;
     char sqlQueryBuffor[bufferLength];
@@ -724,18 +725,17 @@ void FileDatabase::addFileImpl( ELockType inLockType, MD5Value md5, const CUL::S
     char buffer[bufferLength];
     if( foundFile )
     {
-        const std::string binaryForm = filePathNormalized.cStr();
+        const std::string binaryForm = filePathNormalized.getUtfChar();
         snprintf( buffer, bufferLength, "UPDATE FILES SET SIZE='%s', MD5='%s', LAST_MODIFICATION='%s' WHERE PATH='%s'",
-            fileSize.cStr(),
-                  md5.getSTDString().c_str(), modTime.cStr(), binaryForm.c_str() );
+                  fileSize.getUtfChar(), md5.getSTDString().c_str(), modTime.getUtfChar(), binaryForm.c_str() );
     }
     else
     {
-        const std::string binaryValue = filePathNormalized.cStr();
+        const std::string binaryValue = filePathNormalized.getUtfChar();
 
 
         snprintf( buffer, bufferLength, "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ( '%s', '%s', '%s', '%s' );",
-                  binaryValue.c_str(), fileSize.cStr(), md5.getSTDString().c_str(), modTime.cStr() );
+                  binaryValue.c_str(), fileSize.getUtfChar(), md5.getSTDString().c_str(), modTime.getUtfChar() );
     }
     sqlQuery = buffer;
 
@@ -743,11 +743,11 @@ void FileDatabase::addFileImpl( ELockType inLockType, MD5Value md5, const CUL::S
 
     if( inLockType == ELockType::Locked )
     {
-        rc = SQLiteQuery( m_db, sqlQuery.cStr(), callback, nullptr, &zErrMsg );
+        rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, nullptr, &zErrMsg );
     }
     else
     {
-        rc = SQLiteQueryImpl( m_db, sqlQuery.cStr(), callback, nullptr, &zErrMsg );
+        rc = SQLiteQueryImpl( m_db, sqlQuery.getUtfChar(), callback, nullptr, &zErrMsg );
     }
 
     if( rc != SQLITE_OK )
@@ -785,7 +785,7 @@ std::optional<FileInfo> FileDatabase::getFileInfo_Impl( ELockType inLockType, co
     waitForInit();
     String pathInBinary = path;
     pathInBinary.sanitize();
-    const std::string binaryForm = pathInBinary.cStr();
+    const std::string binaryForm = pathInBinary.getUtfChar();
     String sqlQuery =
         "SELECT * \
 FROM FILES \
@@ -812,11 +812,11 @@ WHERE PATH='" +
     std::int32_t rc{ 0 };
     if( inLockType == ELockType::Locked )
     {
-        rc = SQLiteQuery( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+        rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &result, &zErrMsg );
     }
     else
     {
-        rc = SQLiteQueryImpl( m_db, sqlQuery.cStr(), callback, &result, &zErrMsg );
+        rc = SQLiteQueryImpl( m_db, sqlQuery.getUtfChar(), callback, &result, &zErrMsg );
     }
 
     if( result )
@@ -827,8 +827,8 @@ WHERE PATH='" +
     constexpr bool PrintInfo = false;
     if( PrintInfo && !result )
     {
-        LOG::ILogger::getInstance().log( "[FileDatabase::getFileInfo] Could not find: " + path );
-        LOG::ILogger::getInstance().log( "[FileDatabase::getFileInfo] Used SQL command: " + sqlQuery );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[FileDatabase::getFileInfo] Could not find: %s", path.getUtfChar() );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[FileDatabase::getFileInfo] Used SQL command: %s", sqlQuery.getUtfChar() );
     }
 
     if( rc != SQLITE_OK )
@@ -870,12 +870,12 @@ void FileDatabase::removeFileFromDB_Impl( const CUL::String& pathRaw )
 
     constexpr std::size_t bufferSize{ 512 };
     static char buffer[bufferSize];
-    snprintf( buffer, bufferSize, "FileDatabase::removeFileFromDB pathRaw: %s", pathRaw.cStr() );
+    snprintf( buffer, bufferSize, "FileDatabase::removeFileFromDB pathRaw: %s", pathRaw.getUtfChar() );
     ThreadUtil::getInstance().setThreadStatus( buffer );
     String path = pathRaw;
     path.sanitize();
 
-    const std::string binaryForm = path.cStr();
+    const std::string binaryForm = path.getUtfChar();
     std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + binaryForm + "';";
 
     char* zErrMsg = nullptr;
@@ -919,7 +919,7 @@ void FileDatabase::removeFilesFromDb( const std::vector<CUL::String>& paths )
         return 0;
     };
 
-    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.cStr(), callback, nullptr, &zErrMsg );
+    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, nullptr, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {

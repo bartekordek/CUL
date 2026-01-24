@@ -9,7 +9,7 @@ NAMESPACE_BEGIN( FS )
 class CULLib_API TextFile final: public IFile
 {
 public:
-    TextFile( const String& fPath, CULInterface* inInterface );
+    TextFile( const StringWr& fPath, CULInterface* inInterface );
     ~TextFile();
 protected:
 private:
@@ -21,23 +21,23 @@ private:
     void reload() override;
     void unload() override;
 
-    const String& firstLine() const override;
-    const String& lastLine() const override;
+    const StringWr& firstLine() const override;
+    const StringWr& lastLine() const override;
 
 
-    const String& getAsOneString() const override;
+    const StringWr& getAsOneString() const override;
     const char** getContent() const override;
 
     unsigned getLinesCount() const override;
     FileType getType() const override;
 
     Path m_path;
-    String m_values;
+    StringWr m_values;
 
 
     TextFile( const TextFile& file ) = delete;
     TextFile( TextFile&& file ) = delete;
-    TextFile& operator=( const String& rPath ) = delete;
+    TextFile& operator=( const StringWr& rPath ) = delete;
     TextFile& operator=( const TextFile& file ) = delete;
     TextFile& operator=( TextFile&& file ) = delete;
 };

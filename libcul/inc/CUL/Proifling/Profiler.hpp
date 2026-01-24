@@ -3,6 +3,10 @@
 #include "CUL/CUL.hpp"
 #include "CUL/UselessMacros.hpp"
 
+#if !defined( CUL_PROFILER_PIX )
+    #define CUL_PROFILER_PIX 0
+#endif // #if !defined( CUL_PROFILER_PIX )
+
 #if CUL_PROFILER_PIX
 namespace CUL
 {

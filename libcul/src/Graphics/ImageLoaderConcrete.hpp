@@ -23,9 +23,9 @@ public:
 protected:
 
 private:
-    IImageLoader* getLoader( const String& fileExt );
+    IImageLoader* getLoader( const STDStringWrapper& fileExt );
 
-    std::map<String, std::unique_ptr<IImageLoader>> m_loaders;
+    std::map<STDStringWrapper, std::unique_ptr<IImageLoader>> m_loaders;
 
 // Deleted
     ImageLoaderConcrete( const ImageLoaderConcrete& arg ) = delete;

@@ -28,10 +28,10 @@ using FileList = std::set<GUTILS::DumbPtr<IFile>>;
 class CULLib_API IFile
 {
 public:
-    IFile( const String& fPath, CUL::CULInterface* inInterface );
+    IFile( const StringWr& fPath, CUL::CULInterface* inInterface );
 
-    void setPath( const String& fPath );
-    virtual void addLine( const String& line );
+    void setPath( const StringWr& fPath );
+    virtual void addLine( const StringWr& line );
     virtual void saveFile();
 
     virtual const Path& getPath() const = 0;
@@ -41,8 +41,8 @@ public:
     virtual void reload() = 0;
     virtual void load( bool keepLineEndingCharacter, bool removeBottomEmptyLines );
     virtual void loadBackground( bool keepLineEndingCharacter, bool removeBottomEmptyLines, std::function<void( void )> finishCallback );
-    virtual void loadFromString( const String& contents, bool keepLineEndingCharacter = false );
-    virtual void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false );
+    virtual void loadFromString( const StringWr& contents, bool keepLineEndingCharacter = false );
+    virtual void loadFromStringNoEmptyLines( const StringWr& contents, bool keepLineEndingCharacter = false );
     virtual void unload() = 0;
     virtual bool getIsLoaded() const;
 
@@ -52,14 +52,14 @@ public:
     void toggleCache( bool enabled );
     bool getIsCacheEnabled() const;
 
-    const String& getMD5();
-    const String& getSizeBytes() const;
+    const StringWr& getMD5();
+    const StringWr& getSizeBytes() const;
     bool getIsBigFile() const;
 
-    virtual const String& firstLine() const = 0;
-    virtual const String& lastLine() const = 0;
+    virtual const StringWr& firstLine() const = 0;
+    virtual const StringWr& lastLine() const = 0;
 
-    virtual const String& getAsOneString() const = 0;
+    virtual const StringWr& getAsOneString() const = 0;
     virtual const char** getContent() const = 0;
 
     virtual unsigned getLinesCount() const = 0;
@@ -85,12 +85,12 @@ private:
     void waitForDiskToBeReady();
     FileList m_fileList;
     FS::Path m_path;
-    String m_md5;
+    StringWr m_md5;
 
     Time m_creationTime;
     Time m_lastModificationTime;
 
-    String m_sizeBytes;
+    StringWr m_sizeBytes;
     bool m_cacheEnabled{ true };
 
     void waitForBackgroundLoad();
@@ -101,7 +101,7 @@ private:  // Deleted:
     IFile() = delete;
     IFile( const IFile& file ) = delete;
     IFile( IFile&& file ) = delete;
-    IFile& operator=( const String& rPath ) = delete;
+    IFile& operator=( const StringWr& rPath ) = delete;
     IFile& operator=( const IFile& file ) = delete;
     IFile& operator=( IFile&& file ) = delete;
 };

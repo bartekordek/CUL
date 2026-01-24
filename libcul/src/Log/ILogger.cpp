@@ -5,15 +5,20 @@ using ILogger = CUL::LOG::ILogger;
 
 ILogger* ILogger::s_instancePtr = nullptr;
 
+ILogger& ILogger::getInstance()
+{
+    static LoggerSimpleStandardOutput s_instance;
+    return s_instance;
+}
+
 ILogger::ILogger()
 {
     s_instancePtr = this;
 }
 
-ILogger& ILogger::getInstance()
+void ILogger::logInfo( const char* msg... )
 {
-    static LoggerSimpleStandardOutput s_instance;
-    return s_instance;
+    logVariable( CUL::LOG::Severity::Info, msg );
 }
 
 ILogger::~ILogger()

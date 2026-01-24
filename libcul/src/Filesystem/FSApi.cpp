@@ -22,20 +22,14 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory )
 
     std::vector<Path> result;
 
-    for( const auto& entry : std::filesystem::recursive_directory_iterator( directory.getPath().string(),
-                                                                            std::filesystem::directory_options::skip_permission_denied ) )
+    const std::filesystem::path dirAsPath = directory.getPath().getValue();
+    for( const auto& entry :
+         std::filesystem::recursive_directory_iterator( dirAsPath, std::filesystem::directory_options::skip_permission_denied ) )
     {
         const std::filesystem::path entryPath = entry.path();
-
-#ifdef _MSC_VER
-        String temp = entryPath.wstring();
-        Path culPath = temp;
-#else
-        Path culPath = entryPath.string();
-#endif
-        bool isDir = isDirectory( culPath );
-        culPath.setIsDir( isDir );
-
+        std::error_code ec;
+        Path culPath;
+        culPath.createFrom( StringWr( entryPath.c_str() ) );
         result.push_back( culPath );
     }
 
@@ -46,7 +40,7 @@ void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path&
 {
     ProfilerScope( "FSApi::ListAllFiles" );
 
-    const auto dir = directory.getPath().string();
+    const auto dir = directory.getPath().getValue();
     const auto directoryOptions = std::filesystem::directory_options::skip_permission_denied;
     std::error_code ec;
     const std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator( dir, directoryOptions, ec );
@@ -80,7 +74,7 @@ void FSApi::iterateThrought( const std::filesystem::directory_entry& de, std::fu
         ListAllFiles( culPath, callback );
     }
 
-    handleErrorCode( ec, culPath.getPath().cStr() );
+    handleErrorCode( ec, culPath.getPath().getUtfChar() );
 }
 
 void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
@@ -118,7 +112,7 @@ void FSApi::deleteFile( const Path& path )
     ProfilerScope( "FSApi::deleteFile" );
 
     std::error_code ec;
-    const std::filesystem::path target = path.getPath().getChar();
+    const std::filesystem::path target = path.getPath().getValue();
 
     std::filesystem::remove( target, ec );
 
@@ -134,13 +128,9 @@ void FSApi::deleteFile( const Path& path )
 bool FSApi::isDirectory( const Path& path )
 {
     ProfilerScope( "FSApi::isDirectory" );
-#ifdef FILESYSTEM_IS_EXPERIMENTAL
-    return std::experimental::filesystem::is_directory( path );
-#else
     std::error_code ec;
-    bool result = std::filesystem::is_directory( path.getPath().getChar(), ec );
+    bool result = std::filesystem::is_directory( path.getPath().getValue(), ec );
     return result;
-#endif
 }
 
 void FSApi::getCreationTime( const Path&, Time& )
@@ -172,7 +162,7 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
         return;
     }
 
-    std::filesystem::path p = inPath.getPath().getChar();
+    std::filesystem::path p = inPath.getPath().getValue();
     std::filesystem::file_time_type ftime = std::filesystem::last_write_time( p );
     const std::chrono::sys_time<std::chrono::system_clock::duration> systemTime =
         std::chrono::clock_cast<std::chrono::system_clock>( ftime );
@@ -226,7 +216,7 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 
 bool FSApi::fileExist( const Path& path )
 {
-    return isRegularFile( path );
+    return isRegularFile( path.getPath().getValue() );
 }
 
 String FSApi::getCurrentDir()
@@ -240,7 +230,7 @@ IFile* FSApi::getDirectory( const Path& directory )
 {
     ProfilerScope( "FSApi::getDirectory" );
     Directory* result = new Directory( directory, m_culInterface );
-    const auto inPath = directory.getPath().getChar();
+    const auto inPath = directory.getPath().getValue();
     std::filesystem::path directoryBf( inPath );
     using DI = std::filesystem::directory_iterator;
     DI end;
@@ -286,7 +276,7 @@ String FSApi::getFileSize( const Path& path )
     std::error_code ec;
 
 #ifdef _MSC_VER
-    const std::filesystem::path filePath = path.getPath().wstring();
+    const std::filesystem::path filePath = path.getPath().getValue();
     uintmax_t size = std::filesystem::file_size( filePath, ec );
 
     if( ec.value() != 0 )
@@ -313,7 +303,7 @@ String FSApi::getFileSize( const Path& path )
         }
     }
 #else
-    uintmax_t size = std::filesystem::file_size( path.getPath().string(), ec );
+    uintmax_t size = std::filesystem::file_size( path.getPath().getValue().c_str(), ec );
 #endif
 
     const auto string = std::to_string( size );

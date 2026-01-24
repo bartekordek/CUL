@@ -66,11 +66,6 @@ VariableWithAverageValue& VariableWithAverageValue::operator=( VariableWithAvera
 
 void VariableWithAverageValue::add( float value )
 {
-    if( std::isnan( value ) )
-    {
-        auto x = 0;
-    }
-
     m_samples.push_back( value );
     m_lastVal = value;
     if( m_samples.size() > m_sampleCapacity )

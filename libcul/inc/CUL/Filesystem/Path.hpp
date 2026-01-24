@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/Filesystem/FS.hpp"
+#include "CUL/String/StringWrapper.hpp"
 
 #if _MSC_VER
     #pragma warning( push )
@@ -21,6 +22,7 @@ public:
     Path( const String& path ) noexcept;
     Path( const std::string& path ) noexcept;
     Path( const char* r ) noexcept;
+    Path( const StringWr& inArg );
 
     Path& operator=( const Path& path );
     Path& operator=( Path&& path ) noexcept;
@@ -28,6 +30,8 @@ public:
     Path& operator=( const String& r );
     Path& operator=( const char* r );
     Path& operator=( const std::string& rhv );
+    Path& operator=( const StringWr& inArg );
+
     Path& operator+=( const Path& rhv );
     Path& operator+=( const String& rhv );
     Path& operator+=( const std::string& rhv );

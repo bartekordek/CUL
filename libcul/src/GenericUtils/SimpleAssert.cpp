@@ -16,7 +16,7 @@ bool generateStackTrace = true;
 
 void Assert::simple( bool val, const String& msg, LOG::ILogger* loggerIn )
 {
-    simple( val, msg.cStr(), loggerIn );
+    simple( val, msg.getUtfChar(), loggerIn );
 }
 
 void Assert::check( bool value, const char* msg... )

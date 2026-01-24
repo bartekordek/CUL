@@ -46,14 +46,20 @@ Path::Path( const String& inPath ) noexcept
     normalizePaths();
 }
 
-Path::Path( const std::string& path ) noexcept : m_fullPath( path )
+Path::Path( const std::string& path ) noexcept: m_fullPath( path )
 {
     normalizePath( m_fullPath );
     preparePaths();
     normalizePaths();
 }
 
-Path::Path( const char* r ) noexcept : m_fullPath( r )
+Path::Path( const char* r ) noexcept: m_fullPath( r )
+{
+    normalizePath( m_fullPath );
+    preparePaths();
+}
+
+Path::Path( const StringWr& inArg ): m_fullPath( inArg )
 {
     normalizePath( m_fullPath );
     preparePaths();
@@ -86,9 +92,9 @@ Path& Path::operator=( Path&& path ) noexcept
 
 Path& Path::operator=( const String& path )
 {
-    if( !m_fullPath.equals( path ) )
+    if( !m_fullPath.equals( path.getString().c_str() ) )
     {
-        m_fullPath = path;
+        m_fullPath = path.getString();
         preparePaths();
     }
     return *this;
@@ -116,14 +122,14 @@ Path& Path::operator=( const std::string& rhv )
 
 Path& Path::operator+=( const Path& rhv )
 {
-    m_fullPath.append( rhv.m_fullPath );
+    m_fullPath.append( rhv.m_fullPath.getValue() );
     preparePaths();
     return *this;
 }
 
 Path& Path::operator+=( const String& rhv )
 {
-    m_fullPath.append( rhv );
+    m_fullPath.append( rhv.getString() );
     preparePaths();
     return *this;
 }
@@ -210,7 +216,7 @@ uint64_t Path::getFileSize() const
         Time lastModTime;
         getLastModificationTime( lastModTime );
         auto lastModTimeString = lastModTime.toString();
-        if( !m_modTime.equals( lastModTimeString ) )
+        if( !m_modTime.equals( lastModTimeString.getString() ) )
         {
             calculateSize();
         }
@@ -249,10 +255,10 @@ const STDStringWrapper& Path::getMd5() const
         Time lastModTime;
         getLastModificationTime( lastModTime );
         const String lastModTimeString = lastModTime.toString();
-        if( !m_modTime.equals( lastModTimeString ) )
+        if( !m_modTime.equals( lastModTimeString.getString() ) )
         {
             calculateMd5();
-            m_modTime = lastModTimeString;
+            m_modTime = lastModTimeString.getString();
         }
     }
 
@@ -261,7 +267,7 @@ const STDStringWrapper& Path::getMd5() const
 
 void Path::setMd5( const String& inMD5 )
 {
-    m_md5 = inMD5;
+    m_md5 = inMD5.getString();
 }
 
 void Path::getLastModificationTime( Time& timeOut ) const
@@ -276,7 +282,7 @@ void Path::getLastModificationTime( Time& timeOut ) const
 
 void Path::setModTime( const String& inModTime )
 {
-    m_modTime = inModTime;
+    m_modTime = inModTime.getString();
 }
 
 void Path::setIsDir( bool isDir )
@@ -328,12 +334,13 @@ void Path::preparePaths()
     const auto dot = m_extension[0];
     if( dot == L'.' )
     {
-        m_extension.erase( 0 );
+        m_extension.erase( 0, 1 );
     }
 
     std::error_code ec;
     m_isDir = FSCpp::is_directory( bPath, ec );
 
+    const std::string fullPathStdString = m_fullPath.getSTDString();
     const auto errorCodeValue = ec.value();
     if( errorCodeValue == 0 )
     {
@@ -344,35 +351,35 @@ void Path::preparePaths()
         // The system cannot find the path specified.
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 m_fullPath.cStr(), errorCodeValue );
+                                                 fullPathStdString.c_str(), errorCodeValue );
     }
     else if( errorCodeValue == 2 )
     {
         // The system cannot find the file specified.
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 m_fullPath.cStr(), errorCodeValue );
+                                                 fullPathStdString.c_str(), errorCodeValue );
     }
     else if( errorCodeValue == 3 )
     {
         // The system cannot find the path specified.
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 m_fullPath.cStr(), errorCodeValue );
+                                                 fullPathStdString.c_str(), errorCodeValue );
     }
     else if( errorCodeValue == 123 )
     {
         // The filename, directory name, or volume label syntax is incorrect, propably containing unkown character in path.
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 m_fullPath.cStr(), errorCodeValue );
+                                                 fullPathStdString.c_str(), errorCodeValue );
     }
     else if( errorCodeValue == 1920 )
     {
         // The file cannot be accessed by the system..
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 m_fullPath.cStr(), errorCodeValue );
+                                                 fullPathStdString.c_str(), errorCodeValue );
     }
     else
     {
@@ -398,7 +405,7 @@ void Path::preparePaths()
     const auto dot = m_extension[0];
     if( dot == '.' )
     {
-        m_extension.erase( 0 );
+        m_extension.erase( 0, 1 );
     }
 
     auto parentPath = bPath.parent_path();
@@ -459,15 +466,10 @@ void Path::normalizePath( STDStringWrapper& path )
 
 bool Path::exists() const
 {
-#if defined( _MSC_VER ) && _MSC_VER < 1920
-    const bool result = std::experimental::filesystem::is_regular_file( m_fullPath.cStr() );
-#else
-    const std::filesystem::path pathAsStdPath = m_fullPath.getChar();
+    const std::filesystem::path pathAsStdPath = m_fullPath.getValue();
     std::error_code outErrorCode;
     bool result = std::filesystem::is_regular_file( pathAsStdPath, outErrorCode );
-    FSApi::handleErrorCode( outErrorCode, m_fullPath.cStr() );
-
-#endif
+    FSApi::handleErrorCode( outErrorCode, m_fullPath.getSTDString().c_str() );
     return result;
 }
 

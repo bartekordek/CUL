@@ -25,6 +25,7 @@ public:
     void log( const char* text, const Severity severity = Severity::Info ) override;
     void log( const wchar_t* text, const Severity severity = Severity::Info ) override;
 
+    // TODO: Create wchar_t/std::wstring methods.
     void logVariable( Severity severity, const char* msg... ) override;
 
 protected:

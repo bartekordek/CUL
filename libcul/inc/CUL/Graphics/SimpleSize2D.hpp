@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/String.hpp"
+#include "CUL/String/StringWrapper.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
@@ -10,10 +10,10 @@ struct SimpleSize2D
 {
     Type width = static_cast<Type>( 0 );
     Type height = static_cast<Type>( 0 );
-    const String toString() const
+
+    const StringWr toString() const
     {
-        String result = "( width: " + String( (unsigned)width ) + ", height: " + String( (unsigned)height ) + ")";
-        return result;
+        return StringWr::createFromPrintf( "(w: %d, h: %d)", (std::int32_t)width, (std::int32_t)height );
     }
 };
 

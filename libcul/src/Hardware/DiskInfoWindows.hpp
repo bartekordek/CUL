@@ -4,7 +4,7 @@
 
 #if defined( CUL_WINDOWS )
 #include <CUL/Math/VariableWithAverageValue.hpp>
-#include <CUL/String.hpp>
+#include <CUL/String/String.hpp>
 #include <CUL/STL_IMPORTS/STD_unordered_map.hpp>
 #include <CUL/STL_IMPORTS/STD_mutex.hpp>
 #include <CUL/STL_IMPORTS/STD_cstdint.hpp>

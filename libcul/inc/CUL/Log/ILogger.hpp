@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( LOG )
@@ -25,6 +25,7 @@ public:
     virtual void log( const char* text, const Severity severity = Severity::Info ) = 0;
     virtual void log( const wchar_t* text, const Severity severity = Severity::Info ) = 0;
     virtual void logVariable( Severity severity, const char* msg... ) = 0;
+    virtual void logInfo( const char* msg... );
     static ILogger& getInstance();
 
 protected:

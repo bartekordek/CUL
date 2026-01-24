@@ -73,7 +73,7 @@ char** CUL::GUTILS::ArgumentsPairConcrete::getArgsVal()
     {
         return nullptr;
     }
-    m_valBegining = const_cast<char*>( m_argumentsPtrs.begin()->cStr() );
+    m_valBegining = const_cast<char*>( m_argumentsPtrs.begin()->getUtfChar() );
     m_valBeginingTable = &m_valBegining;
     return m_valBeginingTable;
 }
@@ -110,7 +110,7 @@ const String& ArgumentsPairConcrete::getFlagValue(
     auto id = std::find_if( m_values.begin(), m_values.end(),
         [flagName]( const NameValue& val )
     {
-        if( val.name == flagName )
+        if( val.name.equals( flagName.getString() ) )
         {
             return true;
         }

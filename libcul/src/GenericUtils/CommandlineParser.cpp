@@ -34,11 +34,11 @@ void CommandlineParser::passWindowsVariables( HINSTANCE /*inInst*/, PSTR cmd )
     const std::size_t argsCount = splitedStr.size();
     for( std::size_t i = 0u; i < argsCount; ++i )
     {
-        const char* argument = splitedStr[i].cStr();
+        const char* argument = splitedStr[i].getUtfChar();
         const String argStr = argument;
 
         Argument arg;
-        arg.Name = argStr;
+        arg.Name = argStr.getString();
         arg.Name.removeFromStart( "--" );
         arg.Index = static_cast<decltype( arg.Index )>( i );
         if( i + 1 < argsCount )
@@ -46,10 +46,10 @@ void CommandlineParser::passWindowsVariables( HINSTANCE /*inInst*/, PSTR cmd )
             const String argValue = splitedStr[i + 1];
             if( argValue.startsWith( "--" ) == false )
             {
-                arg.Value = argValue;
+                arg.Value = argValue.getString();
             }
         }
-        m_values[arg.Name.string()] = arg;
+        m_values[arg.Name.getSTDString()] = arg;
     }
 }
 #endif  // #if defined(CUL_WINDOWS)
@@ -67,12 +67,13 @@ void CommandlineParser::passVariables( const std::int32_t argc, char** argv )
             Argument arg;
             arg.Index = 0;
             arg.Name = "ExecPath";
-            arg.Value = argStr;
+            arg.Value = argStr.getString();
             m_values["ExecPath"] = arg;
 
             FS::Path execPath = argStr;
             arg.Name = "ExecutableName";
-            arg.Value = execPath.getBaseName() + "." + execPath.getExtension();
+            arg.Value.createFromPrintf( "%s.%s", execPath.getBaseName().getSTDString().c_str(),
+                                        execPath.getExtension().getSTDString().c_str() );
             m_values["ExecutableName"] = arg;
 
             arg.Name = "Directory";
@@ -82,7 +83,7 @@ void CommandlineParser::passVariables( const std::int32_t argc, char** argv )
         else
         {
             Argument arg;
-            arg.Name = argStr;
+            arg.Name = argStr.getString();
             arg.Name.removeFromStart( "--" );
             arg.Index = static_cast<decltype( arg.Index )>( i );
             if( i + 1 < argCount )
@@ -90,22 +91,22 @@ void CommandlineParser::passVariables( const std::int32_t argc, char** argv )
                 const String argValue = argv[i + 1];
                 if( argValue.startsWith( "--" ) == false )
                 {
-                    arg.Value = argValue;
+                    arg.Value = argValue.getString();
                 }
             }
-            m_values[arg.Name.string()] = arg;
+            m_values[arg.Name.getSTDString()] = arg;
         }
     }
 }
 
-const String CommandlineParser::getArgument( std::size_t /*inArg*/ ) const
+const STDStringWrapper CommandlineParser::getArgument( std::size_t /*inArg*/ ) const
 {
     return {};
 }
 
-const String& CommandlineParser::getExecutablePath() const
+const STDStringWrapper& CommandlineParser::getExecutablePath() const
 {
-    static String appPath;
+    static STDStringWrapper appPath;
 
     const auto it = m_values.find( "ExecPath" );
     if( it != m_values.end() )
@@ -116,9 +117,9 @@ const String& CommandlineParser::getExecutablePath() const
     return appPath;
 }
 
-const String& CommandlineParser::getAppName() const
+const STDStringWrapper& CommandlineParser::getAppName() const
 {
-    static String appName;
+    static STDStringWrapper appName;
 
     const auto it = m_values.find( "ExecutableName" );
     if( it != m_values.end() )
@@ -129,7 +130,7 @@ const String& CommandlineParser::getAppName() const
     return appName;
 }
 
-const String CommandlineParser::getFlagValue( const String& /*inFlagName*/ ) const
+const STDStringWrapper CommandlineParser::getFlagValue( const STDStringWrapper& /*inFlagName*/ ) const
 {
     return {};
 }

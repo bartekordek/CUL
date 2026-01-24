@@ -1,29 +1,24 @@
 #pragma once
 
 #include "CUL/ISerializable.hpp"
+#include "CUL/GenericUtils/SimpleAssert.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
 template <typename Type>
-class CULLib_API Pos2D:
-    public ISerializable
+class CULLib_API Pos2D: public ISerializable
 {
 public:
     Pos2D()
     {
     }
 
-    Pos2D( const Pos2D& val ):
-        ISerializable(),
-        m_x( val.m_x ),
-        m_y( val.m_y )
+    Pos2D( const Pos2D& val ): ISerializable(), m_x( val.m_x ), m_y( val.m_y )
     {
     }
 
-    Pos2D( const Type x, const Type y ):
-        m_x( x ),
-        m_y( y )
+    Pos2D( const Type x, const Type y ): m_x( x ), m_y( y )
     {
     }
 
@@ -74,16 +69,10 @@ public:
         m_y = y;
     }
 
-    String getSerializationContent( CounterType tabsSize, const bool = false ) const override
+    StringWr getSerializationContent( CounterType tabsSize, const bool = false ) const override
     {
-        String tabs = getTab( tabsSize );
-
-        String result;
-        result = result + tabs + "    \"x\": " + String( m_x ) + ",\n";
-        result = result + tabs + "    \"y\": " + String( m_y ) + "\n";
-
-
-        return result;
+        Assert::simple( false, "Unimplemented." );
+        return StringWr();
     }
 
     virtual ~Pos2D()

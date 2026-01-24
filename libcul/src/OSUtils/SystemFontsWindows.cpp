@@ -39,7 +39,7 @@ void SystemFontsWindows::updateFontFilesList()
         for( const auto& file : files )
         {
             const FS::Path& path = file->getPath();
-            if( path.getExtension() == ".ttf" )
+            if( path.getExtension().equals( ".ttf" ) )
             {
                 m_fontFilesList.insert( path );
             }

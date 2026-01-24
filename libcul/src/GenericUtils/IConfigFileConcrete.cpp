@@ -17,9 +17,9 @@ IConfigFileConcrete::IConfigFileConcrete( const FS::Path& path, CULInterface* cu
     m_path( path )
 {
     auto currentDir = culInterface->getFS()->getCurrentDir();
-    culInterface->getLogger()->log( "Current dir: " + currentDir );
+    culInterface->getLogger()->logVariable( LOG::Severity::Info, "Current dir: %s", currentDir.getUtfChar() );
     Assert::check(nullptr != culInterface, "CUL Is not initialized!");
-    Assert::check(path.exists(), "%s does not exist!", path.getPath().cStr());
+    Assert::check(path.exists(), "%s does not exist!", path.getPath().getUtfChar());
     loadPath();
     m_file = culInterface->getFF()->createFileFromPath( path );
 }
@@ -53,7 +53,7 @@ void IConfigFileConcrete::reload()
 
 void IConfigFileConcrete::loadPath()
 {
-    std::ifstream fileStream( m_path.getPath().cStr() );
+    std::ifstream fileStream( m_path.getPath().getUtfChar() );
     std::string line;
     char delim = ' ';
     while( std::getline( fileStream, line ) )

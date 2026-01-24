@@ -205,7 +205,7 @@ float Time::getUs() const
 
 bool Time::operator==( const Time& arg ) const
 {
-    return m_asString == arg.toString();
+    return m_asString.equals( arg.cStr() );
 }
 
 bool Time::operator<( const Time& arg ) const
@@ -238,14 +238,14 @@ const CUL::String& Time::toString() const
 
 const char* Time::cStr() const
 {
-    return m_asString.cStr();
+    return m_asString.getUtfChar();
 }
 
 void removePrecedingZero( String& inOutVal )
 {
-    while( ( inOutVal.empty() == false ) && ( inOutVal.doesBeginWith( "0" ) ) && ( inOutVal.size() > 1u ) )
+    while( ( inOutVal.empty() == false ) && ( inOutVal.startsWith( "0" ) ) && ( inOutVal.size() > 1 ) )
     {
-        inOutVal.erase( 0u );
+        inOutVal.erase( 0, 1 );
     }
 }
 
@@ -293,7 +293,7 @@ void Time::fromString( const String& inString )
                                           *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
                                           m_initialized = true;
                                       } );
-    
+
 }
 
 void Time::setTimeNs( std::int64_t ns )
@@ -390,7 +390,7 @@ bool Time::almostTheSame( const Time& arg, std::int32_t differenceInSeconds ) co
         return false;
     }
 
-    return std::abs( m_dateTime->get_second() - arg.m_dateTime->get_second() < differenceInSeconds );
+    return std::abs( m_dateTime->get_second() - arg.m_dateTime->get_second() ) < differenceInSeconds;
 }
 
 std::uint64_t Time::dateTimeToEpoch( const BasicTime& /*inBt*/ )

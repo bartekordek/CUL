@@ -82,27 +82,9 @@ public:
         return m_values;
     }
 
-    String getSerializationContent( CounterType tabsSize, const bool = false ) const override
+    StringWr getSerializationContent( CounterType tabsSize, const bool = false ) const override
     {
-        String tabs = getTab( tabsSize );
-        static CUL::MATH::Angle::Type angleType = CUL::MATH::Angle::Type::RADIAN;
-        String result;
-        result = result + tabs + "\"pos\":\n";
-        result = result + tabs + "{\n";
-        result = result + tabs + "    \"x\": " + String( m_values[0] ) + ",\n";
-        result = result + tabs + "    \"y\": " + String( m_values[1] ) + ",\n";
-        result = result + tabs + "    \"z\": " + String( m_values[2] ) + "\n";
-        result = result + tabs + "},\n";
-        result = result + tabs + "\"rotation\":\n";
-        result = result + tabs + "{\n";
-        result = result + tabs +
-                 "    \"yaw\": " + String( m_rotationTraingles[(size_t)RotationType::YAW].getAngle().getValueF( angleType ) ) + ",\n";
-        result = result + tabs +
-                 "    \"pitch\": " + String( m_rotationTraingles[(size_t)RotationType::PITCH].getAngle().getValueF( angleType ) ) + ",\n";
-        result = result + tabs +
-                 "    \"roll\": " + String( m_rotationTraingles[(size_t)RotationType::ROLL].getAngle().getValueF( angleType ) ) + "\n";
-        result = result + tabs + "}\n";
-        return result;
+        return StringWr();
     }
 
     virtual ~Vector3D() = default;

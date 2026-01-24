@@ -3,7 +3,7 @@
 using namespace CUL;
 using namespace JSON;
 
-IJSONFile::IJSONFile( const String& path, CULInterface* inInterface ) : FS::IFile( path, inInterface )
+IJSONFile::IJSONFile( const StringWr& path, CULInterface* inInterface ) : FS::IFile( path, inInterface )
 {
 }
 

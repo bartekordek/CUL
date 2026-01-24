@@ -2,7 +2,7 @@
 
 #include "CUL/UselessMacros.hpp"
 #include "CUL/STL_IMPORTS/STD_filesystem.hpp"
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 
 #include "CUL/IMPORT_stringapiset.hpp"
 
