@@ -353,6 +353,36 @@ bool STDStringWrapper::startsWith( const wchar_t* inArg ) const
     return StringUtil::startsWith( m_value.c_str(), inArg );
 }
 
+void STDStringWrapper::replace( const std::string& inWhat, const std::string& inFor )
+{
+    const std::wstring inWhatS = StringUtil::toWideString( inWhat );
+    const std::wstring inForS = StringUtil::toWideString( inFor );
+    replace( inWhatS, inForS );
+}
+
+void STDStringWrapper::replace( const std::wstring& inWhat, const std::wstring& inFor )
+{
+    if( inWhat.empty() )
+    {
+        return;
+    }
+
+    std::size_t pos = 0;
+
+    while( true )
+    {
+        pos = m_value.find( inWhat, pos );
+
+        if( pos == std::wstring::npos )
+        {
+            break;
+        }
+
+        m_value.replace( pos, inWhat.length(), inFor );
+        pos += inFor.length();
+    }
+}
+
 STDStringWrapper::~STDStringWrapper()
 {
 }

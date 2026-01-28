@@ -114,6 +114,10 @@ public:
     CULLib_API void fromFloat( float inValue );
     CULLib_API std::int64_t toInt64() const override;
 
+    // Replace
+    void replace( const std::string& inWhat, const std::string& inFor );
+    void replace( const std::wstring& inWhat, const std::wstring& inFor );
+
     CULLib_API ~STDStringWrapper();
 
 protected:
