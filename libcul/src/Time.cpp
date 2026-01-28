@@ -226,7 +226,7 @@ Time* Time::copy() const
     return result;
 }
 
-const CUL::String& Time::toString() const
+const CUL::StringWr& Time::toString() const
 {
     if( m_asString.empty() )
     {
@@ -241,7 +241,7 @@ const char* Time::cStr() const
     return m_asString.getUtfChar();
 }
 
-void removePrecedingZero( String& inOutVal )
+void removePrecedingZero( StringWr& inOutVal )
 {
     while( ( inOutVal.empty() == false ) && ( inOutVal.startsWith( "0" ) ) && ( inOutVal.size() > 1 ) )
     {
@@ -249,7 +249,7 @@ void removePrecedingZero( String& inOutVal )
     }
 }
 
-void Time::fromString( const String& inString )
+void Time::fromString( const StringWr& inString )
 {
     ProfilerScope( "Time::fromString" );
     if( inString.empty() )
@@ -263,9 +263,9 @@ void Time::fromString( const String& inString )
                                       {
                                           ProfilerScope( "Time::fromString::datetime_load" );
 
-                                          std::vector<String> dateTimeSeparated = m_asString.split( " " );
+                                          std::vector<StringWr> dateTimeSeparated = m_asString.split( " " );
 
-                                          std::vector<String> dateSeparted = dateTimeSeparated[0].split( "-" );
+                                          std::vector<StringWr> dateSeparted = dateTimeSeparated[0].split( "-" );
 
                                           if( dateSeparted.size() < 3u )
                                           {
@@ -281,7 +281,7 @@ void Time::fromString( const String& inString )
                                           const auto month = dateSeparted[1].toInt64();
                                           const auto day = dateSeparted[2].toInt64();
 
-                                          std::vector<String> timeSeparated = dateTimeSeparated[01].split( ":" );
+                                          std::vector<StringWr> timeSeparated = dateTimeSeparated[01].split( ":" );
                                           for( auto& currString : timeSeparated )
                                           {
                                               removePrecedingZero( currString );

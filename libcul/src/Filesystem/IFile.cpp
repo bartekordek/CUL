@@ -16,14 +16,14 @@
 using namespace CUL;
 using namespace FS;
 
-#if 0 // DEBUG_THIS_FILE, set 0->1 to debug
+#if 0  // DEBUG_THIS_FILE, set 0->1 to debug
     #define DEBUG_THIS_FILE 1
 
-    #if defined(CUL_COMPILER_MSVC)
+    #if defined( CUL_COMPILER_MSVC )
         #pragma optimize( "", off )
-    #elif defined(CUL_COMPILER_CLANG)
+    #elif defined( CUL_COMPILER_CLANG )
         #pragma clang optimize off
-    #elif defined(CUL_COMPILER_GCC)
+    #elif defined( CUL_COMPILER_GCC )
         #pragma GCC push_options
         #pragma GCC optimize( "O0" )
     #endif
@@ -136,6 +136,27 @@ const StringWr& IFile::getMD5()
     return m_md5;
 }
 
+const char* IFile::getUtfChar() const
+{
+    const char* name = __func__;
+    Assert::check( false, "NOT IMPLEMENTED: %s", name );
+    return nullptr;
+}
+
+std::string IFile::getLineUtf( std::int32_t inLineNum ) const
+{
+    const char* name = __func__;
+    Assert::check( false, "NOT IMPLEMENTED: %s", name );
+    return std::string();
+}
+
+std::wstring IFile::getLineW( std::int32_t inLineNum ) const
+{
+    const char* name = __func__;
+    Assert::check( false, "NOT IMPLEMENTED: %s", name );
+    return std::wstring();
+}
+
 void IFile::calculateMD5()
 {
     const std::uint64_t currentFileSizeBytes = getSizeBytes().toUint64();
@@ -203,7 +224,7 @@ void IFile::calculateMD5()
             SHA256 sha256;
             m_md5 = sha256( vec.data(), fileSizeAsNumber );
         }
-        
+
         file.close();
     }
 }
@@ -286,11 +307,11 @@ IFile::~IFile()
 }
 
 #if defined( DEBUG_THIS_FILE )
-    #if defined(CUL_COMPILER_MSVC)
+    #if defined( CUL_COMPILER_MSVC )
         #pragma optimize( "", on )
-    #elif defined( CUL_COMPILER_CLANG)
+    #elif defined( CUL_COMPILER_CLANG )
         #pragma clang optimize on
-    #elif defined( CUL_COMPILER_GCC)
+    #elif defined( CUL_COMPILER_GCC )
         #pragma GCC pop_options
     #endif
 #endif  // #if defined(DEBUG_THIS_FILE)

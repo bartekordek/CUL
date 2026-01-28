@@ -70,28 +70,6 @@ void String::append( wchar_t inChar )
     deleteTemp();
 }
 
-
-void String::erase( std::int32_t offset, std::int32_t len )
-{
-    if( offset + len > m_size )
-    {
-        return;
-    }
-
-    const std::int32_t stop = offset + len;
-    for( std::int32_t i = offset; i < m_size; ++i )
-    {
-        if( ( i >= offset ) && ( i < stop ) )
-        {
-            m_value[i] = m_value[i + offset];
-        }
-        else
-        {
-            m_value[i] = NullTerminator;
-        }
-    }
-}
-
 bool String::startsWith( const char* inStr, std::size_t* /*outInStrLen*/ ) const
 {
     std::wstring inStrWchar;

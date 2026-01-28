@@ -36,6 +36,16 @@ STDStringWrapper::STDStringWrapper( const wchar_t inArg )
     StringUtil::wideStringToChar( m_value, inWord );
 }
 
+void STDStringWrapper::replace( const char inWhat, const char inFor, bool allOccurences )
+{
+    StringUtil::replace( m_value.data(), inWhat, inFor, allOccurences );
+}
+
+void STDStringWrapper::replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences )
+{
+    StringUtil::replace( m_value.data(), StringUtil::toChar( inWhat ), StringUtil::toChar( inFor ), allOccurences );
+}
+
 STDStringWrapper& STDStringWrapper::operator=( const char* inArg )
 {
     m_value = inArg;
@@ -285,6 +295,17 @@ void STDStringWrapper::removeAll( const char inStr )
 const char* STDStringWrapper::getUtfChar() const
 {
     return m_value.c_str();
+}
+
+bool STDStringWrapper::startsWith( const char* inArg ) const
+{
+    return StringUtil::startsWith( m_value.c_str(), inArg );
+}
+
+bool STDStringWrapper::startsWith( const wchar_t* inArg ) const
+{
+    const std::string stringArg = StringUtil::toSTDstring( std::wstring( inArg ) );
+    return StringUtil::startsWith( m_value.c_str(), stringArg.c_str() );
 }
 
 STDStringWrapper::~STDStringWrapper()

@@ -202,6 +202,10 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
     outTime.setDay( day );
 
     const std::int32_t month = dateSplit[1].toInt64();
+    if( month == 0 )
+    {
+        auto x = 0;
+    }
     outTime.setMonth( month );
 
     const std::vector<String> timeSplit = time.split( ":" );

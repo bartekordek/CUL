@@ -1,7 +1,7 @@
 #include "CUL/String/StringWrapper.hpp"
 
 #if CUL_USE_WCHAR
-#include "CUL/String/StringUtil.hpp"
+    #include "CUL/String/StringUtil.hpp"
 namespace CUL
 {
 
@@ -75,29 +75,6 @@ STDStringWrapper& STDStringWrapper::operator=( const std::wstring& inArg )
 {
     m_value = inArg;
     return *this;
-}
-
-STDStringWrapper STDStringWrapper::operator+=( const STDStringWrapper& inArg )
-{
-    this->m_value += inArg.m_value;
-    return *this;
-}
-
-STDStringWrapper STDStringWrapper::operator+( const STDStringWrapper& inArg ) const
-{
-    STDStringWrapper result( *this );
-    result.m_value += inArg.m_value;
-    return result;
-}
-
-STDStringWrapper STDStringWrapper::operator+( const char* inArg ) const
-{
-    return CULLib_API STDStringWrapper();
-}
-
-STDStringWrapper STDStringWrapper::operator+( const wchar_t* inArg ) const
-{
-    return CULLib_API STDStringWrapper();
 }
 
 std::string STDStringWrapper::getSTDString() const
@@ -253,7 +230,7 @@ void STDStringWrapper::removeAll( const wchar_t inStr )
     std::int32_t charPos = StringUtil::find( m_value, word );
     while( !m_value.empty() && ( charPos != -1 ) )
     {
-        m_value.erase((std::size_t)charPos, 1u);
+        m_value.erase( (std::size_t)charPos, 1u );
         charPos = StringUtil::find( m_value, word );
     }
 }
@@ -327,11 +304,11 @@ const char* STDStringWrapper::getUtfChar() const
     const auto size = m_value.size();
     if( !m_utf )
     {
-        m_utf = new char[size];
+        m_utf = new char[size + 1u];
     }
 
-    StringUtil::wideStringToChar( m_utf, size, m_value.c_str(), size );
-    
+    StringUtil::wideStringToChar( m_utf, (std::int32_t)size, m_value.c_str(), (std::int32_t)size );
+
     return m_utf;
 }
 
@@ -363,6 +340,17 @@ bool STDStringWrapper::contains( const wchar_t* inArg ) const
 bool STDStringWrapper::contains( const std::wstring& inArg ) const
 {
     return find( inArg ) != -1;
+}
+
+bool STDStringWrapper::startsWith( const char* inArg ) const
+{
+    const std::wstring wstringArg = StringUtil::toWideString( inArg );
+    return StringUtil::startsWith( m_value.c_str(), wstringArg.c_str() );
+}
+
+bool STDStringWrapper::startsWith( const wchar_t* inArg ) const
+{
+    return StringUtil::startsWith( m_value.c_str(), inArg );
 }
 
 STDStringWrapper::~STDStringWrapper()

@@ -25,7 +25,7 @@ public:
     virtual void log( const char* text, const Severity severity = Severity::Info ) = 0;
     virtual void log( const wchar_t* text, const Severity severity = Severity::Info ) = 0;
     virtual void logVariable( Severity severity, const char* msg... ) = 0;
-    virtual void logInfo( const char* msg... );
+    virtual void logInfo( const char* msg... ) = 0;
     static ILogger& getInstance();
 
 protected:

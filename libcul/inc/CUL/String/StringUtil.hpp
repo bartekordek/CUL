@@ -9,11 +9,11 @@
 
 namespace CUL
 {
- #if CUL_USE_WCHAR
- constexpr decltype( std::wstring::npos ) StringUtilNpos{ std::wstring::npos };
- #else   // #if CUL_USE_WCHAR
- constexpr decltype( std::string::npos ) StringUtilNpos{ std::string::npos };
- #endif  // #if CUL_USE_WCHAR
+#if CUL_USE_WCHAR
+constexpr decltype( std::wstring::npos ) StringUtilNpos{ std::wstring::npos };
+#else   // #if CUL_USE_WCHAR
+constexpr decltype( std::string::npos ) StringUtilNpos{ std::string::npos };
+#endif  // #if CUL_USE_WCHAR
 
 class CULLib_API StringUtil
 {
@@ -57,7 +57,7 @@ public:
     static std::int32_t charToWideString( std::int32_t codePage, wchar_t& out, char in );
     static std::int32_t charToWideString( std::wstring& out, const std::string& in );
 
-    static char toChar( wchar_t inChar);
+    static char toChar( wchar_t inChar );
     static std::string toSTDstring( const std::wstring& inArg );
     static wchar_t toWideChar( char inChar );
     static std::wstring toWideString( const std::string& inArg );
@@ -68,8 +68,10 @@ public:
     static void copyString( wchar_t* target, std::int32_t targetSize, const wchar_t* source, std::int32_t sourceSize );
 
     static std::int32_t cmp( const char* s1, const char* s2 );
+    static bool equals( const char* s1, const char* s2 );
     static bool equals( const char* s1, const char* s2, std::size_t length );
     static std::int32_t cmp( const wchar_t* s1, const wchar_t* s2 );
+    static bool equals( const wchar_t* s1, const wchar_t* s2 );
     static bool equals( const wchar_t* s1, const wchar_t* s2, std::size_t length );
 
     static const char* strStr( const char* left, const char* right );
@@ -92,11 +94,6 @@ public:
 
     static void toUpper( wchar_t* inOut );
     static void toUpper( wchar_t* inOut, std::int32_t size );
-
-    static std::optional<float> toFloat( const char* inArg );
-    static std::optional<float> toFloat( const wchar_t* inArg );
-    static std::optional<float> toFloat( const std::string& inArg );
-    static std::optional<float> toFloat( const std::wstring& inArg );
 
     static void removeAll( char* inOut, char toRemove );
     static void removeAll( char* inOut, wchar_t toRemove );
@@ -127,7 +124,21 @@ public:
 
     static char* strdup( const char* source );
 
+    // Conversion
+    static std::optional<float> toFloat( const char* inArg );
+    static std::optional<float> toFloat( const wchar_t* inArg );
+    static std::optional<float> toFloat( const std::string& inArg );
+    static std::optional<float> toFloat( const std::wstring& inArg );
+
+    static bool isFloat( const char* inArg );
+    static bool isFloat( const wchar_t* inArg );
+    static bool isFloat( const std::string& inArg );
+    static bool isFloat( const std::wstring& inArg );
+
+    static void fromFloat( std::string& inOutStr, float inValue );
+    static void fromFloat( std::wstring& inOutStr, float inValue );
+
 protected:
 private:
 };
-}
+}  // namespace CUL

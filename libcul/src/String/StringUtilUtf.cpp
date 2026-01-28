@@ -132,7 +132,9 @@ std::int32_t StringUtil::wideStringToChar( std::string& out, const std::wstring&
 {
     out.clear();
     if( inChar.empty() )
+    {
         return 0;
+    }
 
     iconv_t cd = iconv_open( "UTF-8", "WCHAR_T" );
     if( cd == (iconv_t)-1 )

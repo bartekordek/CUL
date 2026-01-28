@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/String/String.hpp"
+#include "CUL/String/StringWrapper.hpp"
 
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
@@ -85,9 +85,9 @@ public:
     bool operator>( const Time& ) const;
 
     Time* copy() const;
-    const String& toString() const;
+    const StringWr& toString() const;
     const char* cStr() const;
-    void fromString( const String& inString );
+    void fromString( const StringWr& inString );
 
     static std::uint64_t dateTimeToEpoch( const BasicTime& inBt );
 
@@ -105,7 +105,7 @@ private:
 
     float m_ns{ 0.f };
     std::unique_ptr<jed_utils::datetime> m_dateTime;
-    mutable CUL::String m_asString;
+    mutable StringWr m_asString;
     std::uint64_t m_asEpoch;
 
     bool m_initialized{ true };

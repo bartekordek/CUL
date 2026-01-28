@@ -16,11 +16,6 @@ ILogger::ILogger()
     s_instancePtr = this;
 }
 
-void ILogger::logInfo( const char* msg... )
-{
-    logVariable( CUL::LOG::Severity::Info, msg );
-}
-
 ILogger::~ILogger()
 {
 }

@@ -46,7 +46,7 @@ public:
     virtual void unload() = 0;
     virtual bool getIsLoaded() const;
 
-    void getCreationTime(Time& outTime);
+    void getCreationTime( Time& outTime );
     void getLastModificationTime( Time& outTime );
 
     void toggleCache( bool enabled );
@@ -61,6 +61,9 @@ public:
 
     virtual const StringWr& getAsOneString() const = 0;
     virtual const char** getContent() const = 0;
+    virtual const char* getUtfChar() const;
+    virtual std::string getLineUtf( std::int32_t inLineNum ) const;
+    virtual std::wstring getLineW( std::int32_t inLineNum ) const;
 
     virtual unsigned getLinesCount() const = 0;
 

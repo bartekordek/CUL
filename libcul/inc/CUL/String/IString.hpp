@@ -7,6 +7,7 @@
 
 namespace CUL
 {
+
 class CULLib_API IString
 {
 public:
@@ -70,6 +71,15 @@ public:
     virtual const char* getUtfChar() const = 0;
 
     bool operator==( const char* inArg ) const;
+
+    // Compare
+    virtual bool startsWith( const char* inArg ) const;
+    virtual bool startsWith( const wchar_t* inArg ) const;
+
+    // Conversion
+    virtual bool isFloat() const;
+    virtual float toFloat() const;
+    virtual std::int64_t toInt64() const;
 
     virtual ~IString() = default;
 

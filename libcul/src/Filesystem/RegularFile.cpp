@@ -2,8 +2,9 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/String/StringUtil.hpp"
 
-#include "CUL/STL_IMPORTS/STD_iostream.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
+#include "CUL/STL_IMPORTS/STD_iostream.hpp"
 
 using namespace CUL::FS;
 using StringWr = const CUL::StringWr;
@@ -41,7 +42,7 @@ void RegularFile::overwriteContents( const CUL::StringWr& value )
     CUL::StringWr valueCopy = value;
 
     m_rows.clear();
-    m_rowsAsChars.clear();
+    m_asOne.clear();
     m_cached.clear();
 
     valueCopy.removeAll( '\r' );
@@ -145,15 +146,15 @@ FileType RegularFile::getType() const
 
 void RegularFile::loadFromString( const StringWr& contents, bool keepLineEndingCharacter /*= false */ )
 {
+    m_asOne.clear();
     m_cached = contents;
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     const std::vector<StringWr> lines = m_cached.split( '\n' );
     for( const auto& line : lines )
     {
         m_rows.emplace_back( line );
-        const char* duplicated = StringUtil::strdup( m_rows.back().getUtfChar() );
-        m_rowsAsChars.push_back( duplicated );
     }
+    initializeRowsChar();
 }
 
 void RegularFile::loadFromStringNoEmptyLines( const StringWr& contents, bool keepLineEndingCharacter /*= false */ )
@@ -182,10 +183,19 @@ void RegularFile::loadFromStringNoEmptyLines( const StringWr& contents, bool kee
 
 void RegularFile::initializeRowsChar()
 {
+    std::size_t charsUsed{ 0u };
+
     for( const auto& line : m_rows )
     {
-        const std::string str = line.getSTDString();
-        m_rowsAsChars.push_back( str.c_str() );
+        charsUsed += line.size();
+    }
+
+    const std::size_t bufferSize{ charsUsed + 1u };
+    m_asOne.clear();
+    m_asOne.reserve( bufferSize );
+    for( const auto& line : m_rows )
+    {
+        m_asOne.append( line.getSTDString() );
     }
 }
 
@@ -221,7 +231,31 @@ unsigned RegularFile::getLinesCount() const
 
 const char** RegularFile::getContent() const
 {
-    return const_cast<const char**>( &m_rowsAsChars[0] );
+    return nullptr;
+}
+
+const char* RegularFile::getUtfChar() const
+{
+    return m_asOne.c_str();
+}
+
+// Getters
+std::string RegularFile::getLineUtf( std::int32_t inLineNum ) const
+{
+    if( (std::size_t)inLineNum < m_rows.size() )
+    {
+        return m_rows[inLineNum].getSTDString();
+    }
+    return "";
+}
+
+std::wstring RegularFile::getLineW( std::int32_t inLineNum ) const
+{
+    if( (std::size_t)inLineNum < m_rows.size() )
+    {
+        return m_rows[inLineNum].getSTDWstring();
+    }
+    return L"";
 }
 
 RegularFile::~RegularFile()

@@ -77,6 +77,16 @@ Path& Path::operator=( const Path& path )
     return *this;
 }
 
+Path& Path::operator=( const STDStringWrapper& path )
+{
+    if( this->m_fullPath != path )
+    {
+        m_fullPath = path;
+        preparePaths();
+    }
+    return *this;
+}
+
 Path& Path::operator=( Path&& path ) noexcept
 {
     if( this != &path )
@@ -216,7 +226,7 @@ uint64_t Path::getFileSize() const
         Time lastModTime;
         getLastModificationTime( lastModTime );
         auto lastModTimeString = lastModTime.toString();
-        if( !m_modTime.equals( lastModTimeString.getString() ) )
+        if( !m_modTime.equals( lastModTimeString ) )
         {
             calculateSize();
         }
@@ -254,7 +264,7 @@ const STDStringWrapper& Path::getMd5() const
     {
         Time lastModTime;
         getLastModificationTime( lastModTime );
-        const String lastModTimeString = lastModTime.toString();
+        const String lastModTimeString = lastModTime.toString().getValue();
         if( !m_modTime.equals( lastModTimeString.getString() ) )
         {
             calculateMd5();

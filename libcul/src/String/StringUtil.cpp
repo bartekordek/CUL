@@ -1,9 +1,15 @@
 #include "CUL/String/StringUtil.hpp"
+
+#include "CUL/GenericUtils/SimpleAssert.hpp"
+
+#include "CUL/STL_IMPORTS/STD_charconv.hpp"
+#include "CUL/STL_IMPORTS/STD_cmath.hpp"
 #include "CUL/STL_IMPORTS/STD_codecvt.hpp"
-#include "CUL/STL_IMPORTS/STD_cwchar.hpp"
-#include "CUL/STL_IMPORTS/STD_wctype.hpp"
-#include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_cstring.hpp"
+#include "CUL/STL_IMPORTS/STD_cwchar.hpp"
+#include "CUL/STL_IMPORTS/STD_exception.hpp"
+#include "CUL/STL_IMPORTS/STD_string.hpp"
+#include "CUL/STL_IMPORTS/STD_wctype.hpp"
 
 namespace CUL
 {
@@ -14,9 +20,19 @@ void StringUtil::toLower( char* inOut )
 
 void StringUtil::toLower( char* inOut, std::int32_t size )
 {
-    for( std::int32_t i = 0; i < size; ++i )
+    if( !inOut || size <= 0 )
     {
-        inOut[i] = static_cast<char>( std::tolower( inOut[i] ) );
+        return;
+    }
+
+    for( std::int32_t i = 0; i < size && inOut[i] != '\0'; ++i )
+    {
+        char c = inOut[i];
+
+        if( c >= 'A' && c <= 'Z' )
+        {
+            inOut[i] = static_cast<char>( c + ( 'a' - 'A' ) );
+        }
     }
 }
 
@@ -71,6 +87,24 @@ void StringUtil::removeFromStart( char* inOutSource, const char* inStr )
     std::memmove( inOutSource, inOutSource + lenStr,
                   strLen( inOutSource + lenStr ) + 1  // include '\0'
     );
+}
+
+char* StringUtil::strdup( const char* source )
+{
+    if( !source )
+    {
+        return nullptr;
+    }
+
+    const std::size_t len = strlen( source ) + 1;
+    char* copy = (char*)malloc( len );
+    if( !copy )
+    {
+        return nullptr;
+    }
+
+    std::strcpy( copy, source );
+    return copy;
 }
 
 void StringUtil::removeFromStart( wchar_t* inOutSource, const wchar_t* inStr )
@@ -308,11 +342,6 @@ std::int32_t StringUtil::find( const char* source, const wchar_t* word )
 
     const wchar_t* pos = std::wcsstr( wsource.c_str(), word );
     if( !pos )
-
-        std::optional<float> StringUtil::toFloat( const char* inArg )
-        {
-            return std::optional<float>();
-        }
     {
         return -1;
     }
@@ -411,15 +440,307 @@ void StringUtil::toUpper( wchar_t* inOut, std::int32_t size )
 }
 std::optional<float> StringUtil::toFloat( const char* inArg )
 {
+    if( !isFloat( inArg ) )
+    {
+        return std::nullopt;
+    }
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+
+    char* end = nullptr;
+    double v = std::strtod( inArg, &end );
+    return static_cast<float>( v );
+
+#else
+
+    size_t len = std::strlen( inArg );
+
+    float value{};
+    auto [ptr, ec] = std::from_chars( inArg, inArg + len, value );
+
+    if( ec != std::errc{} )
+    {
+        return std::nullopt;
+    }
+
+    return value;
+
+#endif
 }
-std::optional<float> StringUtil::toFloat( const wchar_t* inArg )
+
+bool StringUtil::equals( const char* s1, const char* s2, std::size_t length )
 {
+    for( std::size_t i = 0u; i < length; ++i )
+    {
+        if( s1[i] != s2[i] )
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool StringUtil::equals( const wchar_t* s1, const wchar_t* s2, std::size_t length )
+{
+    for( std::size_t i = 0u; i < length; ++i )
+    {
+        if( s1[i] != s2[i] )
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 std::optional<float> StringUtil::toFloat( const std::string& inArg )
 {
+    return toFloat( inArg.c_str() );
 }
+
 std::optional<float> StringUtil::toFloat( const std::wstring& inArg )
 {
+    return toFloat( inArg.c_str() );
 }
+
+std::optional<float> StringUtil::toFloat( const wchar_t* inArg )
+{
+    if( !isFloat( inArg ) )
+    {
+        return std::nullopt;
+    }
+
+    wchar_t* end = nullptr;
+    double value = std::wcstod( inArg, &end );
+
+    return static_cast<float>( value );
 }
+
+bool StringUtil::isFloat( const char* s )
+{
+    if( s == nullptr )
+    {
+        return false;
+    }
+
+    if( *s == '\0' )
+    {
+        return false;
+    }
+
+#if defined( __GNUC__ ) && !defined( __clang__ )
+
+    char* end = nullptr;
+    std::strtod( s, &end );
+
+    if( end == s )
+    {
+        return false;
+    }
+
+    if( *end != '\0' )
+    {
+        return false;
+    }
+
+    return true;
+
+#else
+
+    size_t len = std::strlen( s );
+
+    double value;
+    auto [ptr, ec] = std::from_chars( s, s + len, value );
+
+    if( ec != std::errc{} )
+    {
+        return false;
+    }
+
+    if( ptr != s + len )
+    {
+        return false;
+    }
+
+    return true;
+
+#endif
+}
+
+bool StringUtil::isFloat( const wchar_t* s )
+{
+    if( s == nullptr )
+    {
+        return false;
+    }
+
+    wchar_t* end = nullptr;
+    std::wcstod( s, &end );
+
+    if( end == s )
+    {
+        return false;
+    }
+
+    if( *end != L'\0' )
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool StringUtil::isFloat( const std::string& s )
+{
+    return isFloat( s.c_str() );
+}
+
+bool StringUtil::isFloat( const std::wstring& s )
+{
+    return isFloat( s.c_str() );
+}
+
+void StringUtil::fromFloat( std::string& inOutStr, float inValue )
+{
+    // Handle special values explicitly
+    if( std::isnan( inValue ) )
+    {
+        inOutStr = "nan";
+        return;
+    }
+
+    if( std::isinf( inValue ) )
+    {
+        if( inValue > 0.0f )
+        {
+            inOutStr = "inf";
+        }
+        else
+        {
+            inOutStr = "-inf";
+        }
+        return;
+    }
+
+#if defined( __GNUC__ ) && !defined( __clang__ )
+    // GCC has no float to_chars � use snprintf (locale independent for C locale)
+    char buffer[64];
+    int len = std::snprintf( buffer, sizeof( buffer ), "%.9g", inValue );
+
+    if( len < 0 )
+    {
+        inOutStr.clear();
+        return;
+    }
+
+    inOutStr.assign( buffer, static_cast<std::size_t>( len ) );
+
+#else
+    // MSVC + Clang: fast, exact, no allocations
+    char buffer[64];
+    auto [ptr, ec] = std::to_chars( buffer, buffer + sizeof( buffer ), inValue, std::chars_format::general );
+
+    if( ec != std::errc{} )
+    {
+        inOutStr.clear();
+        return;
+    }
+
+    inOutStr.assign( buffer, ptr );
+
+#endif
+}
+
+void StringUtil::fromFloat( std::wstring& inOutStr, float v )
+{
+    std::string utf8;
+    fromFloat( utf8, v );
+    charToWideString( inOutStr, utf8 );
+}
+
+bool StringUtil::startsWith( const char* inSource, const char* inArg )
+{
+    if( !inSource || !inArg )
+    {
+        return false;
+    }
+
+    const std::size_t lenArg = std::strlen( inArg );
+
+    if( lenArg == 0 )
+    {
+        return true;  // empty string is always a prefix
+    }
+
+    return std::strncmp( inSource, inArg, lenArg ) == 0;
+}
+
+void StringUtil::copyString( char* target, const char* source )
+{
+    copyString( target, StringUtil::strLen( target ), source, StringUtil::strLen( source ) );
+}
+
+void StringUtil::copyString( char* target, std::int32_t targetSize, const char* source, std::int32_t sourceSize )
+{
+    Assert::simple( targetSize >= sourceSize, "TARGET TOO SMALL!" );
+    std::strncpy( target, source, static_cast<std::size_t>( sourceSize + 1 ) );
+}
+
+void StringUtil::copyString( wchar_t* target, const wchar_t* source )
+{
+    copyString( target, StringUtil::strLen( target ), source, StringUtil::strLen( source ) );
+}
+
+void StringUtil::copyString( wchar_t* target, std::int32_t targetSize, const wchar_t* source, std::int32_t sourceSizeS )
+{
+    if( !(targetSize >= sourceSizeS) )
+    {
+        auto x = 0;
+    }
+
+    Assert::simple( targetSize >= sourceSizeS, "TARGET TOO SMALL!" );
+    const std::size_t sourceSize = static_cast<std::size_t>( sourceSizeS );
+    for( std::size_t i = 0; i < sourceSize; ++i )
+    {
+        const IString::UnderlyingChar sourceChar = source[i];
+        target[i] = sourceChar;
+    }
+}
+
+bool StringUtil::startsWith( const wchar_t* inSource, const wchar_t* inArg )
+{
+    if( !inSource || !inArg )
+    {
+        return false;
+    }
+
+    const std::size_t lenArg = std::wcslen( inArg );
+
+    if( lenArg == 0 )
+    {
+        return true;  // empty string is always a prefix
+    }
+
+    return std::wcsncmp( inSource, inArg, lenArg ) == 0;
+}
+
+std::int32_t StringUtil::cmp( const char* s1, const char* s2 )
+{
+    return std::strcmp( s1, s2 );
+}
+
+bool StringUtil::equals( const char* s1, const char* s2 )
+{
+    return cmp( s1, s2 ) == 0;
+}
+
+std::int32_t StringUtil::cmp( const wchar_t* s1, const wchar_t* s2 )
+{
+    return std::wcscmp( s1, s2 );
+}
+
+bool StringUtil::equals( const wchar_t* s1, const wchar_t* s2 )
+{
+    return cmp( s1, s2 ) == 0;
+}
+}  // namespace CUL

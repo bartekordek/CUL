@@ -477,6 +477,47 @@ void String::removeAll( const char inWhat )
 #endif  // CUL_USE_WCHAR
 }
 
+void StringUtil::removeAll( char* inOut, char toRemove )
+{
+    if( !inOut )
+    {
+        return;
+    }
+
+    char* read = inOut;
+    char* write = inOut;
+
+    while( *read )
+    {
+        if( *read != toRemove )
+        {
+            *write++ = *read;
+        }
+        ++read;
+    }
+
+    *write = '\0';
+}
+
+void StringUtil::removeAll( char* inOut, wchar_t toRemove )
+{
+    char toRemoveUtfchar;
+    StringUtil::wideStringToChar( toRemoveUtfchar, toRemove );
+    removeAll( inOut, toRemoveUtfchar );
+}
+
+void StringUtil::removeAll( wchar_t* inOut, char toRemove )
+{
+    std::string inOutAsStr;
+    wideStringToChar( inOutAsStr, inOut );
+    removeAll( inOutAsStr.data(), toRemove );
+
+    std::wstring output;
+    // output.resize( inOutAsStr.size() * 2 );
+    charToWideString( output, inOutAsStr );
+    StringUtil::copyString( inOut, output.c_str() );
+}
+
 void String::removeAll( const wchar_t inWhat )
 {
     StringUtil::removeAll( m_value, inWhat );
@@ -502,9 +543,9 @@ bool String::doesEndWith( const std::string& end ) const
 #if CUL_USE_WCHAR
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     const std::wstring stringCpy = converterX.from_bytes( end );
-    return StringUtil::equals( &m_value[endPos], stringCpy.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[endPos], stringCpy.c_str() );
 #else   // #if CUL_USE_WCHAR
-    return StringUtil::equals( &m_value[endPos], end.c_str(), endLen_t );
+    return StringUtil::equals( &m_value[endPos], end.c_str() );
 #endif  // #if CUL_USE_WCHAR
 }
 
@@ -530,7 +571,7 @@ bool String::doesEndWith( const std::wstring& end ) const
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
     const std::string stringCpy = converterX.to_bytes( end );
 
-    return StringUtil::equals( &m_value[endPos], stringCpy.c_str(), stringCpy.size() );
+    return StringUtil::equals( &m_value[endPos], stringCpy.c_str() );
 #endif  // #if CUL_USE_WCHAR
 }
 
@@ -638,7 +679,7 @@ int String::toInt()
 
 int64_t String::toInt64() const
 {
-    return std::stoll( m_value, nullptr, 0 );
+    return std::stoll( m_value, nullptr, 10 );
 }
 
 uint64_t String::toUint64() const
@@ -1298,7 +1339,7 @@ void String::createFrom( const char* arg )
     }
     else
     {
-        StringUtil::copyString( m_value, arg );
+        StringUtil::copyString( m_value, m_capacity, arg, newLength );
         setSize( newLength );
     }
 #endif  // #if CUL_USE_WCHAR
@@ -1339,7 +1380,7 @@ void String::createFrom( const std::string& arg )
     else
     {
         grow( argLen + 1, false );
-        StringUtil::copyString( m_value, arg.c_str() );
+        StringUtil::copyString( m_value, m_capacity, arg.c_str(), arg.size() );
     }
 #endif  // #if CUL_USE_WCHAR
     setSize( argLen );
@@ -2025,4 +2066,25 @@ bool StringUtil::replace( wchar_t* inSource, std::size_t inSourceSize, const wch
     }
 
     return true;
+}
+
+void String::erase( std::int32_t offset, std::int32_t len )
+{
+    if( offset + len > m_size )
+    {
+        return;
+    }
+
+    const std::int32_t stop = offset + len;
+    for( std::int32_t i = offset; i < m_size; ++i )
+    {
+        if( ( i >= offset ) && ( i < stop ) )
+        {
+            m_value[i] = m_value[i + offset];
+        }
+        else
+        {
+            m_value[i] = NullTerminator;
+        }
+    }
 }

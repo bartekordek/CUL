@@ -377,7 +377,7 @@ void FileDatabase::getFilesFromDB( uint64_t size, const CUL::String& md5, std::v
         }
 
         fi.MD5 = md5;
-        fi.ModTime.fromString( lastMod );
+        fi.ModTime.fromString( lastMod.getString() );
         fi.Size = size;
         resulPtr->push_back( fi );
 
@@ -415,8 +415,7 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
 {
     ProfilerScope( "FileDatabase::getFiles" );
 
-    const CUL::String sqlQuery =
-        CUL::String( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"" ) + CUL::String( size ) + "\";";
+    const CUL::StringWr sqlQuery = StringWr::createFromPrintf( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\";", size ); 
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
         FileInfo fi;
@@ -694,7 +693,7 @@ void FileDatabase::addFile( MD5Value md5, const CUL::String& filePath, const CUL
                                                fi.MD5 = md5;
                                                fi.FilePath = filePath.getString();
                                                fi.Size = fileSize.getString();
-                                               fi.ModTime.fromString( modTime );
+                                               fi.ModTime.fromString( modTime.getString() );
                                                fi.Found = true;
 
                                                addToCache( fi );

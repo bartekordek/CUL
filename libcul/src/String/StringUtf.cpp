@@ -58,6 +58,34 @@ bool String::equals( const std::wstring& arg ) const
     return StringUtil::cmp( m_value, argStr.c_str() ) == 0;
 }
 
+void String::append( const std::wstring& inArg )
+{
+    append( inArg.c_str() );
+}
+
+std::int32_t String::find( const wchar_t inArg ) const
+{
+    const std::wstring wcharWord( 1u, inArg );
+    return StringUtil::find( m_value, wcharWord.c_str() );
+}
+
+std::int32_t String::find( const wchar_t* inArg ) const
+{
+    const std::string stdString = StringUtil::toSTDstring( inArg );
+    return StringUtil::find( m_value, stdString.c_str() );
+}
+
+std::int32_t String::find( const std::string& inArg ) const
+{
+    return StringUtil::find( m_value, inArg );
+}
+
+std::int32_t String::find( const std::wstring& inArg ) const
+{
+    const std::string word = StringUtil::toSTDstring( inArg );
+    return StringUtil::find( m_value, word );
+}
+
 std::int32_t String::find( const char* arg ) const
 {
     if( arg == nullptr )
@@ -67,7 +95,7 @@ std::int32_t String::find( const char* arg ) const
     return StringUtil::find( m_value, arg );
 }
 
-std::int32_t String::find( char arg ) const
+std::int32_t String::find( const char arg ) const
 {
     const char word[2] = { arg, '\0' };
     return StringUtil::find( m_value, word );

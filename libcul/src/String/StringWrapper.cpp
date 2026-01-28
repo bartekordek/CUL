@@ -11,7 +11,7 @@ STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg... )
     va_start( args, msg );
     constexpr std::size_t bufferSize{ 1024u };
     char buffer[bufferSize];
-    snprintf( buffer, bufferSize, msg, args );
+    vsnprintf( buffer, bufferSize, msg, args );
     va_end( args );
 
     STDStringWrapper result( buffer );
@@ -21,6 +21,39 @@ STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg... )
 
 STDStringWrapper::STDStringWrapper()
 {
+}
+
+// Conversion
+bool STDStringWrapper::isFloat() const
+{
+    return StringUtil::isFloat( m_value );
+}
+
+float STDStringWrapper::toFloat() const
+{
+    const std::optional<float> result = StringUtil::toFloat( m_value );
+
+    if( result )
+    {
+        return *result;
+    }
+    return 0.f;
+}
+
+std::int64_t STDStringWrapper::toInt64() const
+{
+    const std::optional<std::int64_t> result = StringUtil::strToUint64( m_value );
+
+    if( result )
+    {
+        return *result;
+    }
+    return 0;
+}
+
+void STDStringWrapper::fromFloat( float inValue )
+{
+    StringUtil::fromFloat( m_value, inValue );
 }
 
 void STDStringWrapper::createFrom( const String& inStr )
@@ -34,6 +67,35 @@ STDStringWrapper::STDStringWrapper( const STDStringWrapper& inArg ): m_value( in
 
 STDStringWrapper::STDStringWrapper( STDStringWrapper&& inArg ) noexcept: m_value( std::move( inArg.m_value ) )
 {
+}
+
+STDStringWrapper STDStringWrapper::operator+( const STDStringWrapper& inArg ) const
+{
+    STDStringWrapper result( *this );
+    result.m_value += inArg.m_value;
+    return result;
+}
+
+STDStringWrapper STDStringWrapper::operator+( const char* inArg ) const
+{
+    STDStringWrapper result( *this );
+    result += inArg;
+
+    return result;
+}
+
+STDStringWrapper STDStringWrapper::operator+( const wchar_t* inArg ) const
+{
+    STDStringWrapper result( *this );
+    result += inArg;
+
+    return result;
+}
+
+STDStringWrapper STDStringWrapper::operator+=( const STDStringWrapper& inArg )
+{
+    this->m_value += inArg.m_value;
+    return *this;
 }
 
 bool STDStringWrapper::equals( const STDStringWrapper& inArg ) const
@@ -73,7 +135,7 @@ void STDStringWrapper::clear()
 
 STDStringWrapper STDStringWrapper::getLower() const
 {
-    STDStringWrapper result(*this);
+    STDStringWrapper result( *this );
     result.toLower();
     return result;
 }
@@ -124,4 +186,4 @@ bool STDStringWrapper::operator<( const STDStringWrapper& inArg ) const
 {
     return m_value < inArg.m_value;
 }
-}
+}  // namespace CUL

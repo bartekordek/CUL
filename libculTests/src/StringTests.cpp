@@ -43,7 +43,7 @@ TEST_F( StringTests, SanitizeDeSanitize )
     CUL::CULInterface::getInstance()->createInstance();
     CUL::FS::IFile* file = CUL::CULInterface::getInstance()->getFF()->createFileFromPath( dummyFilePath );
     file->load( false, false );
-    const char* utfLine = file->getContent()[4];
+    const std::string utfLine = file->getLineUtf( 4 );
 
     CUL::String loadedString = utfLine;
     loadedString.singleQuoteEscape();

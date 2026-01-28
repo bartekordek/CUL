@@ -30,7 +30,7 @@ void Assert::check( bool value, const char* msg... )
     va_start( args, msg );
     constexpr std::size_t bufferSize{ 512 };
     char buffer[bufferSize];
-    snprintf( buffer, bufferSize, msg, args );
+    vsnprintf( buffer, bufferSize, msg, args );
 
     va_end( args );
 

@@ -10,8 +10,8 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
 
 #ifdef _MSC_VER
-#pragma warning( push )
-#pragma warning( disable : 4820 )
+    #pragma warning( push )
+    #pragma warning( disable : 4820 )
 #endif
 
 class CULLib_API RegularFile final: public IFile
@@ -23,6 +23,11 @@ public:
     void overwriteContents( const CUL::StringWr& value );
     void saveFile() override;
     void addLine( const StringWr& line ) override;
+
+    // Getters
+    std::string getLineUtf( std::int32_t inLineNum ) const override;
+    std::wstring getLineW( std::int32_t inLineNum ) const override;
+
     ~RegularFile();
 
 protected:
@@ -38,6 +43,7 @@ private:
     const StringWr& firstLine() const override;
     const StringWr& lastLine() const override;
     const char** getContent() const override;
+    const char* getUtfChar() const override;
     unsigned getLinesCount() const override;
     void cacheFile();
     FileType getType() const override;
@@ -45,7 +51,7 @@ private:
 
     Path m_path;
     std::vector<StringWr> m_rows;
-    std::vector<const char*> m_rowsAsChars;
+    std::string m_asOne;
     StringWr m_cached;
 
 private:  // Deleted:
@@ -57,7 +63,7 @@ private:  // Deleted:
 };
 
 #ifdef _MSC_VER
-#pragma warning( pop )
+    #pragma warning( pop )
 #endif
 
 NAMESPACE_END( FS )

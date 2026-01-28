@@ -42,7 +42,7 @@ public:
     CULLib_API void append( const char* inChar ) override;
     CULLib_API void append( const wchar_t* inChar ) override;
 
-    CULLib_API const UnderlyingChar* getCharVal() const override; 
+    CULLib_API const UnderlyingChar* getCharVal() const override;
     CULLib_API std::uint64_t toUint64() const;
 
     CULLib_API bool operator==( const STDStringWrapper& inArg ) const;
@@ -104,6 +104,16 @@ public:
     CULLib_API void removeAll( const char inWhat ) override;
     CULLib_API void removeAll( const wchar_t inWhat ) override;
 
+    // Compare
+    bool startsWith( const char* inArg ) const override;
+    bool startsWith( const wchar_t* inArg ) const override;
+
+    // Conversion
+    CULLib_API bool isFloat() const override;
+    CULLib_API float toFloat() const override;
+    CULLib_API void fromFloat( float inValue );
+    CULLib_API std::int64_t toInt64() const override;
+
     CULLib_API ~STDStringWrapper();
 
 protected:
@@ -111,8 +121,8 @@ private:
     IString::UnderlyingType m_value;
 #if CUL_USE_WCHAR
     mutable char* m_utf{ nullptr };
-#endif // #if CUL_USE_WCHAR
+#endif  // #if CUL_USE_WCHAR
 };
 
 using StringWr = STDStringWrapper;
-}
+}  // namespace CUL
