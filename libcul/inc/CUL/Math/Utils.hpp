@@ -15,6 +15,7 @@ public:
     static bool equals( double val1, double val2, double epsilon );
     static float floatModulo( float inValue, float moduloVal ); 
     static double floatModulo( double inValue, double moduloVal ); 
+    static bool floatIsZero( float inValue );
 
 protected:
 private:
