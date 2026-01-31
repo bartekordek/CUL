@@ -75,9 +75,9 @@ void Quad::updateData()
     dataAsVoid = const_cast<void*>( convertedToVoid );
 }
 
-String Quad::getSerializationContent( CounterType tabsSize, const bool ) const
+StringWr Quad::getSerializationContent( CounterType tabsSize, const bool ) const
 {
-    String tabs = getTab( tabsSize );
+    StringWr tabs = getTab( tabsSize );
 
     auto convertPoint = []( const PointType& value )
     {
@@ -85,12 +85,11 @@ String Quad::getSerializationContent( CounterType tabsSize, const bool ) const
                String( " }" );
     };
 
-    String result;
-    result = result + tabs + "    \"name\":\"Quad\",\n";
-    result = result + tabs + "    \"p1\": " + convertPoint( data[0] ) + ",\n";
-    result = result + tabs + "    \"p2\": " + convertPoint( data[1] ) + ",\n";
-    result = result + tabs + "    \"p3\": " + convertPoint( data[2] ) + ",\n";
-    result = result + tabs + "    \"p4\": " + convertPoint( data[3] ) + "\n";
+    const StringWr result = StringWr::createFromPrintf( "Name: Quad\np1: %s\n, p2: %s\n, p3: %s\n, p4: %s",
+        convertPoint( data[0] ).getUtfChar(),
+        convertPoint( data[1] ).getUtfChar(),
+        convertPoint( data[2] ).getUtfChar(),
+        convertPoint( data[3] ).getUtfChar() );
 
     return result;
 }

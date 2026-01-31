@@ -18,11 +18,11 @@ NAMESPACE_BEGIN( MATH )
 
 using ST = TriangleRectangularSimple2D;
 #if _MSC_VER
-#pragma warning( push )
-#pragma warning( disable : 4514 )
-#pragma warning( disable : 4625 )
-#pragma warning( disable : 4710 )
-#pragma warning( disable : 4820 )
+    #pragma warning( push )
+    #pragma warning( disable : 4514 )
+    #pragma warning( disable : 4625 )
+    #pragma warning( disable : 4710 )
+    #pragma warning( disable : 4820 )
 #endif
 template <typename Type>
 class Vector3D: public Epsilon<Type>, public ISerializable, public GUTILS::IOnChange
@@ -48,7 +48,7 @@ public:
         setAxisValue( AxisCarthesian::Z, zVal );
     }
 
-    Vector3D( const Vector3D<Type>& v2 ) : ISerializable(), GUTILS::IOnChange()
+    Vector3D( const Vector3D<Type>& v2 ): ISerializable(), GUTILS::IOnChange()
     {
         copyFromOtherVector( v2 );
     }
@@ -82,27 +82,9 @@ public:
         return m_values;
     }
 
-    String getSerializationContent( CounterType tabsSize, const bool = false ) const override
+    StringWr getSerializationContent( CounterType /*tabsSize*/, const bool = false ) const override
     {
-        String tabs = getTab( tabsSize );
-        static CUL::MATH::Angle::Type angleType = CUL::MATH::Angle::Type::RADIAN;
-        String result;
-        result = result + tabs + "\"pos\":\n";
-        result = result + tabs + "{\n";
-        result = result + tabs + "    \"x\": " + String( m_values[0] ) + ",\n";
-        result = result + tabs + "    \"y\": " + String( m_values[1] ) + ",\n";
-        result = result + tabs + "    \"z\": " + String( m_values[2] ) + "\n";
-        result = result + tabs + "},\n";
-        result = result + tabs + "\"rotation\":\n";
-        result = result + tabs + "{\n";
-        result = result + tabs +
-                 "    \"yaw\": " + String( m_rotationTraingles[(size_t)RotationType::YAW].getAngle().getValueF( angleType ) ) + ",\n";
-        result = result + tabs +
-                 "    \"pitch\": " + String( m_rotationTraingles[(size_t)RotationType::PITCH].getAngle().getValueF( angleType ) ) + ",\n";
-        result = result + tabs +
-                 "    \"roll\": " + String( m_rotationTraingles[(size_t)RotationType::ROLL].getAngle().getValueF( angleType ) ) + "\n";
-        result = result + tabs + "}\n";
-        return result;
+        return StringWr();
     }
 
     virtual ~Vector3D() = default;
@@ -255,8 +237,8 @@ public:
     // But for now, I let this as TODO, since i don't know
     // How to fix this.
     // TODO
-#pragma warning( push )
-#pragma warning( disable : 5045 )
+    #pragma warning( push )
+    #pragma warning( disable : 5045 )
 #endif
     Vector3D<Type>& operator*=( const Type& t )
     {
@@ -267,7 +249,7 @@ public:
         return *this;
     }
 #ifdef _MSC_VER
-#pragma warning( pop )
+    #pragma warning( pop )
 #endif
 
     Vector3D<Type> operator+( const Vector3D<Type>& right )
@@ -461,7 +443,7 @@ private:
 };
 
 #ifdef _MSC_VER
-#pragma warning( pop )
+    #pragma warning( pop )
 #endif
 
 using Vector3Dd = Vector3D<double>;
@@ -470,12 +452,12 @@ using Vector3Du = Vector3D<unsigned>;
 using Vector3Df = Vector3D<float>;
 
 #ifdef _MSC_VER
-// Yes, I know that is a Spectre mitigation.
-// But for now, I let this as TODO, since i don't know
-// How to fix this.
-// TODO
-#pragma warning( push )
-#pragma warning( disable : 5045 )
+    // Yes, I know that is a Spectre mitigation.
+    // But for now, I let this as TODO, since i don't know
+    // How to fix this.
+    // TODO
+    #pragma warning( push )
+    #pragma warning( disable : 5045 )
 #endif
 template <typename Type>
 const Type max( const std::vector<Vector3D<Type>>& values, const Axis axis )
@@ -507,7 +489,7 @@ const Type min( const std::vector<Vector3D<Type>>& values, const Axis axis )
     return result;
 }
 #ifdef _MSC_VER
-#pragma warning( pop )
+    #pragma warning( pop )
 #endif
 
 template <typename Type>

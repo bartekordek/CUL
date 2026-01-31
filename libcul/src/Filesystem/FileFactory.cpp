@@ -20,7 +20,7 @@ FileFactory::FileFactory( CULInterface* culInterface ): m_culInterface( culInter
 
 IFile* FileFactory::createFileFromPath( const Path& path )
 {
-    CUL::String ext = path.getExtension();
+    CUL::StringWr ext = path.getExtension();
     ext.toLower();
     if( ext.equals( ".csv" ) || ext.equals( "csv" ) )
     {

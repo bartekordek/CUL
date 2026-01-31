@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/String.hpp"
+#include "CUL/String/StringWrapper.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -11,15 +11,15 @@ class CULLib_API ISerializable
 public:
     ISerializable();
 
-    String serialize( CounterType tabsSize, const bool separator = false ) const;
+    StringWr serialize( CounterType tabsSize, const bool separator = false ) const;
 
     virtual ~ISerializable();
 protected:
 
-    static String getTab( CounterType tabsSize );
+    static StringWr getTab( CounterType tabsSize );
 
 private:
-    virtual String getSerializationContent( CounterType tabsSize, const bool separator = false ) const = 0;
+    virtual StringWr getSerializationContent( CounterType tabsSize, const bool separator = false ) const = 0;
 
     static CounterType s_spacesInTab;
 

@@ -22,7 +22,7 @@ public:
 protected:
 
 private:
-    using FileList = std::map<String, std::unique_ptr<IImage>>;
+    using FileList = std::map<STDStringWrapper, std::unique_ptr<IImage>>;
     FileList m_fileList;
 
 private: // Deleted

@@ -205,7 +205,7 @@ float Time::getUs() const
 
 bool Time::operator==( const Time& arg ) const
 {
-    return m_asString == arg.toString();
+    return m_asString.equals( arg.cStr() );
 }
 
 bool Time::operator<( const Time& arg ) const
@@ -226,7 +226,7 @@ Time* Time::copy() const
     return result;
 }
 
-const CUL::String& Time::toString() const
+const CUL::StringWr& Time::toString() const
 {
     if( m_asString.empty() )
     {
@@ -238,18 +238,18 @@ const CUL::String& Time::toString() const
 
 const char* Time::cStr() const
 {
-    return m_asString.cStr();
+    return m_asString.getUtfChar();
 }
 
-void removePrecedingZero( String& inOutVal )
+void removePrecedingZero( StringWr& inOutVal )
 {
-    while( ( inOutVal.empty() == false ) && ( inOutVal.doesBeginWith( "0" ) ) && ( inOutVal.size() > 1u ) )
+    while( ( inOutVal.empty() == false ) && ( inOutVal.startsWith( "0" ) ) && ( inOutVal.size() > 1 ) )
     {
-        inOutVal.erase( 0u );
+        inOutVal.erase( 0, 1 );
     }
 }
 
-void Time::fromString( const String& inString )
+void Time::fromString( const StringWr& inString )
 {
     ProfilerScope( "Time::fromString" );
     if( inString.empty() )
@@ -263,9 +263,9 @@ void Time::fromString( const String& inString )
                                       {
                                           ProfilerScope( "Time::fromString::datetime_load" );
 
-                                          std::vector<String> dateTimeSeparated = m_asString.split( " " );
+                                          std::vector<StringWr> dateTimeSeparated = m_asString.split( " " );
 
-                                          std::vector<String> dateSeparted = dateTimeSeparated[0].split( "-" );
+                                          std::vector<StringWr> dateSeparted = dateTimeSeparated[0].split( "-" );
 
                                           if( dateSeparted.size() < 3u )
                                           {
@@ -281,7 +281,7 @@ void Time::fromString( const String& inString )
                                           const auto month = dateSeparted[1].toInt64();
                                           const auto day = dateSeparted[2].toInt64();
 
-                                          std::vector<String> timeSeparated = dateTimeSeparated[01].split( ":" );
+                                          std::vector<StringWr> timeSeparated = dateTimeSeparated[01].split( ":" );
                                           for( auto& currString : timeSeparated )
                                           {
                                               removePrecedingZero( currString );
@@ -325,20 +325,6 @@ void Time::fromEpoch( std::uint64_t inSinceEpoch )
 {
     ProfilerScope( "Time::fromEpoch" );
     m_asEpoch = inSinceEpoch;
-
-    // const auto tm = localtime_xp( m_asEpoch );
-
-    // const auto year = static_cast<TimeType>( 1900 + tm.tm_year );
-    // const auto month = static_cast<TimeType>( ( tm.tm_mon + 1 ) );
-    // const auto day = static_cast<TimeType>( tm.tm_mday );
-    // const auto hour = static_cast<TimeType>( tm.tm_hour );
-    // const auto minute = static_cast<TimeType>( tm.tm_min );
-    // const auto seconds = static_cast<TimeType>( tm.tm_sec );
-
-    //*m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
-    // m_ns = timeConverted * 1000000000;
-    // m_initialized = true;
-    // updateString();
 }
 
 void Time::updateString() const

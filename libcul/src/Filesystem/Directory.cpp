@@ -4,7 +4,7 @@
 using namespace CUL;
 using namespace FS;
 
-Directory::Directory( const String& path, CULInterface* inInterface ) : IFile( path, inInterface )
+Directory::Directory( const StringWr& path, CULInterface* inInterface ) : IFile( path, inInterface )
 {
 }
 
@@ -33,17 +33,17 @@ void Directory::unload()
 {
 }
 
-const String& Directory::firstLine() const
+const StringWr& Directory::firstLine() const
 {
     return m_value;
 }
 
-const String& Directory::lastLine() const
+const StringWr& Directory::lastLine() const
 {
     return m_value;
 }
 
-const String& Directory::getAsOneString() const
+const StringWr& Directory::getAsOneString() const
 {
     return m_value;
 }

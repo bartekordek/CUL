@@ -16,7 +16,7 @@ using JValue = rapidjson::Value;
 class JSONFileConcrete final: public IJSONFile
 {
 public:
-    JSONFileConcrete( const String& path, FS::IFile* fileContent, CULInterface* inInterface );
+    JSONFileConcrete( const StringWr& path, FS::IFile* fileContent, CULInterface* inInterface );
     ~JSONFileConcrete();
 
 protected:
@@ -34,10 +34,10 @@ private:
     void load( bool keepLineEndingCharacter, bool removeBottomEmptyLines ) override;
     void unload() override;
 
-    const String& firstLine() const override;
-    const String& lastLine() const override;
+    const StringWr& firstLine() const override;
+    const StringWr& lastLine() const override;
 
-    const String& getAsOneString() const override;
+    const StringWr& getAsOneString() const override;
     const char** getContent() const override;
 
     unsigned getLinesCount() const override;

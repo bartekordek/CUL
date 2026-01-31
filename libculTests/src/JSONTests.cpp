@@ -92,8 +92,7 @@ TEST_F( JSONTests, addObject )
     child->setName( childName );
 
     object.setValue( child );
-
-    GTEST_ASSERT_EQ( childName == object.getObject()->getName(), true );
+    ASSERT_TRUE( childName.equals( object.getObject()->getName().getString() ) );
 }
 
 #if _MSC_VER
@@ -145,7 +144,7 @@ TEST_F( JSONTests, getRootElement )
     jsonFilePtr->load( true, false );
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
-    GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
+    GTEST_ASSERT_EQ( rootElement->getName().equals( "root" ), true );
 }
 
 TEST_F( JSONTests, findProperty )
@@ -166,7 +165,7 @@ TEST_F( JSONTests, arraySize )
     jsonFilePtr->load( true, false );
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
-    GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
+    GTEST_ASSERT_EQ( rootElement->getName().equals( "root" ), true );
 
     auto messages = rootElement->findChild( "messages" );
     GTEST_ASSERT_EQ( nullptr == messages, false );
@@ -181,7 +180,7 @@ TEST_F( JSONTests, arrayCorrectness )
     jsonFilePtr->load( true, false );
     auto rootElement = jsonFilePtr->getRoot();
     GTEST_ASSERT_EQ( CUL::JSON::ElementType::ARRAY == rootElement->getType(), true );
-    GTEST_ASSERT_EQ( CUL::String( "root" ) == rootElement->getName(), true );
+    GTEST_ASSERT_EQ( rootElement->getName().equals( "root" ), true );
 
     auto messages = rootElement->findChild( "messages" );
     GTEST_ASSERT_EQ( nullptr == messages, false );

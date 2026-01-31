@@ -10,43 +10,49 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )
 
 #ifdef _MSC_VER
-#pragma warning( push )
-#pragma warning( disable : 4820 )
+    #pragma warning( push )
+    #pragma warning( disable : 4820 )
 #endif
 
 class CULLib_API RegularFile final: public IFile
 {
 public:
-    RegularFile( const String& path, CULInterface* inInterface );
+    RegularFile( const StringWr& path, CULInterface* inInterface );
     const Path& getPath() const override;
-    const String& getAsOneString() const override;
-    void overwriteContents( const CUL::String& value );
+    const StringWr& getAsOneString() const override;
+    void overwriteContents( const CUL::StringWr& value );
     void saveFile() override;
-    void addLine( const String& line ) override;
+    void addLine( const StringWr& line ) override;
+
+    // Getters
+    std::string getLineUtf( std::int32_t inLineNum ) const override;
+    std::wstring getLineW( std::int32_t inLineNum ) const override;
+
     ~RegularFile();
 
 protected:
 private:
-    void loadFromString( const String& contents, bool keepLineEndingCharacter = false ) override;
-    void loadFromStringNoEmptyLines( const String& contents, bool keepLineEndingCharacter = false ) override;
+    void loadFromString( const StringWr& contents, bool keepLineEndingCharacter = false ) override;
+    void loadFromStringNoEmptyLines( const StringWr& contents, bool keepLineEndingCharacter = false ) override;
     void changePath( const Path& newPath ) override;
 
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
     void load( bool keepLineEndingCharacter, bool removeBottomEmptyLines ) override;
     void unload() override;
-    const String& firstLine() const override;
-    const String& lastLine() const override;
+    const StringWr& firstLine() const override;
+    const StringWr& lastLine() const override;
     const char** getContent() const override;
+    const char* getUtfChar() const override;
     unsigned getLinesCount() const override;
     void cacheFile();
     FileType getType() const override;
     void initializeRowsChar();
 
     Path m_path;
-    std::vector<String> m_rows;
-    std::vector<const char*> m_rowsAsChars;
-    String m_cached;
+    std::vector<StringWr> m_rows;
+    std::string m_asOne;
+    StringWr m_cached;
 
 private:  // Deleted:
     RegularFile( const RegularFile& file ) = delete;
@@ -57,7 +63,7 @@ private:  // Deleted:
 };
 
 #ifdef _MSC_VER
-#pragma warning( pop )
+    #pragma warning( pop )
 #endif
 
 NAMESPACE_END( FS )

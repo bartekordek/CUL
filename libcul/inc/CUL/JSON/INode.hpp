@@ -2,7 +2,7 @@
 
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 //#include "CUL/JSON/DataValue.hpp"
 
 NAMESPACE_BEGIN( CUL )

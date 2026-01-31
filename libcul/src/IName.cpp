@@ -6,7 +6,7 @@ IName::IName()
 {
 }
 
-IName::IName( const String& name ):
+IName::IName( const StringWr& name ):
     m_name( name )
 {
 }
@@ -30,7 +30,7 @@ IName& IName::operator=( IName&& rhv ) noexcept
     return *this;
 }
 
-const String& IName::getName() const
+const StringWr& IName::getName() const
 {
     return m_name;
 }
@@ -44,13 +44,13 @@ IName& IName::operator=( const IName& rhv )
     return *this;
 }
 
-void IName::setName( const String& name )
+void IName::setName( const StringWr& name )
 {
     m_name = name;
     onNameChange( m_name );
 }
 
-void IName::onNameChange( const String& )
+void IName::onNameChange( const StringWr& )
 {
 }
 

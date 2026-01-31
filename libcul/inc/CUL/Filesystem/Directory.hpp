@@ -11,16 +11,16 @@ class CULLib_API Directory final:
     public IFile
 {
 public:
-    Directory( const String& path, CULInterface* interfaceIn );
+    Directory( const StringWr& path, CULInterface* interfaceIn );
 
     const Path& getPath() const override;
     void changePath( const Path& newPath ) override;
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
     void unload() override;
-    const String& firstLine() const override;
-    const String& lastLine() const override;
-    const String& getAsOneString() const override;
+    const StringWr& firstLine() const override;
+    const StringWr& lastLine() const override;
+    const StringWr& getAsOneString() const override;
     const char** getContent() const override;
     unsigned int getLinesCount() const override;
     FileType getType() const override;
@@ -29,7 +29,7 @@ public:
 protected:
 private:
     Path m_path;
-    String m_value;
+    StringWr m_value;
 
     // Deleted
     Directory( const Directory& directory ) = delete;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )

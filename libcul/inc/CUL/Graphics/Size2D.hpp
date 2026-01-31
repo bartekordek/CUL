@@ -77,15 +77,10 @@ public:
         return m_width / m_height;
     }
 
-    String getSerializationContent( CounterType tabsSize, const bool = false ) const override
+    StringWr getSerializationContent( CounterType tabsSize, const bool = false ) const override
     {
-        String tabs = getTab( tabsSize );
-
-        String result;
-        result = result + tabs + "    \"width\": " + String( m_width ) + ",\n";
-        result = result + tabs + "    \"height\": " + String( m_height ) + "\n";
-
-        return result;
+        Assert::simple( false, "Unimplemented." );
+        return StringWr();
     }
 
     virtual ~Size2D()

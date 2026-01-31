@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 #include "CUL/Threading/Priority.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 

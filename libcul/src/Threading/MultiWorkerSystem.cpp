@@ -39,8 +39,8 @@ void MultiWorkerSystem::registerTask( ITask* task )
 
 MultiWorkerSystem::MultiWorkerSystem()
 {
-    g_maxQueuedTasks[static_cast<std::size_t>(EPriority::Low)] = 4096u;
-    g_maxQueuedTasks[static_cast<std::size_t>( EPriority::Medium )] = std::pow(2u, 16u);
+    g_maxQueuedTasks[static_cast<std::size_t>( EPriority::Low )] = 4096u;
+    g_maxQueuedTasks[static_cast<std::size_t>( EPriority::Medium )] = std::pow( 2u, 14u );
     g_maxQueuedTasks[static_cast<std::size_t>( EPriority::High )] = 4096u;
 
     m_sleepMapping[EPriority::High] = 0;
@@ -61,7 +61,7 @@ void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
     TaskCallback* taskPtr = new TaskCallback();
     taskPtr->Callback = [name]( int8_t )
     {
-        CUL::ThreadUtil::getInstance().setThreadName( name.cStr() );
+        CUL::ThreadUtil::getInstance().setThreadName( name.getUtfChar() );
     };
     taskPtr->OnlyForWorkerOfId = id;
     taskPtr->Type = ITask::EType::DeleteAfterExecute;
@@ -200,7 +200,7 @@ void MultiWorkerSystem::workerMethod( int8_t threadId, EPriority priority )
     sprintf( pathStr, "Worker %d [%s]", threadId, workerName );
     const String currentThreadName = pathStr;
 
-    CUL::ThreadUtil::getInstance().setThreadName( currentThreadName.cStr() );
+    CUL::ThreadUtil::getInstance().setThreadName( currentThreadName.getUtfChar() );
 
     {
         std::lock_guard<std::mutex> locker( m_workersRunMtx );

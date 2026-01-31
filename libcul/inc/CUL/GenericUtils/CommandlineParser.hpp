@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/String.hpp"
+#include "CUL/String/StringWrapper.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
@@ -11,8 +11,8 @@ namespace CUL
 {
 struct Argument
 {
-    String Name;
-    String Value;
+    STDStringWrapper Name;
+    STDStringWrapper Value;
     std::int32_t Index{0};
 };
 
@@ -22,10 +22,10 @@ public:
     CULLib_API static CommandlineParser& getInstance();
 
     CULLib_API void passVariables( const std::int32_t argc, char** argv );
-    CULLib_API const String getArgument( std::size_t inArg ) const;
-    CULLib_API const String getFlagValue( const String& inFlagName ) const;
-    CULLib_API const String& getExecutablePath() const;
-    CULLib_API const String& getAppName() const;
+    CULLib_API const STDStringWrapper getArgument( std::size_t inArg ) const;
+    CULLib_API const STDStringWrapper getFlagValue( const STDStringWrapper& inFlagName ) const;
+    CULLib_API const STDStringWrapper& getExecutablePath() const;
+    CULLib_API const STDStringWrapper& getAppName() const;
 #if defined( CUL_WINDOWS )
     CULLib_API void passWindowsVariables( HINSTANCE inInst, PSTR cmd );
 #endif // #if defined(CUL_WINDOWS)

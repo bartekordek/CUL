@@ -23,7 +23,7 @@ void CSVFileTests::SetUp()
 TEST_F( CSVFileTests, Load )
 {
     std::unique_ptr<CSVFilePtr> filePtr( m_culInterface->getFF()->createCSVFileRawPtr( "../media/test.csv" ) );
-    filePtr->setDelimeter( "," );
+    filePtr->setDelimeter( ',' );
     filePtr->load( true, false );
     GTEST_ASSERT_GT( filePtr->getRowsCount(), 0 );
 }

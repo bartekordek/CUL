@@ -69,21 +69,16 @@ std::vector<float> Line::toVectorOfFloat() const
     return result;
 }
 
-String Line::getSerializationContent( CounterType tabsSize, const bool ) const
+StringWr Line::getSerializationContent( CounterType tabsSize, const bool ) const
 {
-    String tabs = getTab( tabsSize );
+    StringWr tabs = getTab( tabsSize );
 
-    auto convertPoint = []( const PointType& value ){
-        return String( "{ " ) +
-            String( value[0] ) +
-            String( ", " ) +
-            String( value[1] ) +
-            String( ", " ) +
-            String( value[2] ) +
-            String( " }" );
+    auto convertPoint = []( const PointType& value )
+    {
+        return StringWr::createFromPrintf( "{ %f, %f, %f }", value[0], value[1], value[2] );
     };
 
-    String result;
+    StringWr result;
     result = result + tabs + "    \"name\":\"Line\",\n";
     result = result + tabs + "    \"p1\": " + convertPoint( data[0] ) + ",\n";
     result = result + tabs + "    \"p2\": " + convertPoint( data[1] ) + "\n";

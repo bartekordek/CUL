@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/GenericUtils/Singleton.hpp"
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 #include "CUL/Threading/Priority.hpp"
 #include "CUL/Threading/ThreadUtilObserver.hpp"
 

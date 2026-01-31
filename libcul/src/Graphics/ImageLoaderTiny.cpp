@@ -15,8 +15,8 @@ IImage* TinyImageLoader::loadImage( const FS::Path& path, bool )
 {
     int width = 0, height = 0;
     auto type = TinyImgColorType::TINYIMG_RGB;
-    DataType* rawData = tinyimg_load(
-        path.getPath().cStr(),
+    const std::string pathStr = path.getPath().getSTDString();
+    DataType* rawData = tinyimg_load( pathStr.c_str(),
         &width, &height,
         type );
 

@@ -19,7 +19,7 @@ void TrackFree( void* inAddr )
 {
     MemoryTracker::getInstance().logFree( inAddr );
 }
-#endif // #if defined( CUL_STATIC )
+#endif  // #if defined( CUL_STATIC )
 
 NAMESPACE_END( CUL )
 
@@ -133,7 +133,8 @@ void operator delete[]( void* p, std::size_t /* targetSize */ ) throw()
     }
 }
 #elif defined( TRACY_ENABLE ) && defined( CUL_STATIC ) && defined( TRACY_CALLSTACK )
-constexpr std::size_t g_callstackDepth = 16u;
+    #include "CUL/IMPORT_tracy.hpp"
+constexpr std::size_t g_callstackDepth = 32u;
 void* operator new( std::size_t count )
 {
     auto ptr = malloc( count );

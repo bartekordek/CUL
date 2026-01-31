@@ -2,14 +2,14 @@
 
 #if defined( CUL_STATIC )
 
-#include "CUL/CUL.hpp"
-#include "CUL/StringStatic.hpp"
+    #include "CUL/CUL.hpp"
+    #include "CUL/String/StringStatic.hpp"
 
-#include "CUL/STL_IMPORTS/STD_array.hpp"
-#include "CUL/STL_IMPORTS/STD_cstdint.hpp"
-#include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
-#include "CUL/STL_IMPORTS/STD_memory_resource.hpp"
-#include "CUL/STL_IMPORTS/STD_thread.hpp"
+    #include "CUL/STL_IMPORTS/STD_array.hpp"
+    #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+    #include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
+    #include "CUL/STL_IMPORTS/STD_memory_resource.hpp"
+    #include "CUL/STL_IMPORTS/STD_thread.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -44,6 +44,7 @@ public:
     CULLib_API void dumpActiveAllocations() const;
     CULLib_API bool waitForAllCallStacksToBeDecoded() const;
     CULLib_API std::int32_t getActiveAllocations() const;
+
 private:
     CULLib_API MemoryTracker();
     void getStackHere( StackLinesArray& outStackLines, std::size_t skipFirstLinesCount = 0 );
@@ -59,12 +60,12 @@ private:
 
     bool m_enableTracking{ false };
     mutable std::mutex m_dataMtx;
-    static constexpr std::uint64_t PoolSize = 2u * 1024u * 1024u;// 2MB
+    static constexpr std::uint64_t PoolSize = 2u * 1024u * 1024u;  // 2MB
     std::array<std::byte, PoolSize> m_bufferBlocks;
     std::pmr::monotonic_buffer_resource m_buffer_src{ m_bufferBlocks.data(), PoolSize };
     std::pmr::unordered_map<void*, AllocationInfo> m_allocations{ &m_buffer_src };
 };
 
-NAMESPACE_END(CUL)
+NAMESPACE_END( CUL )
 
 #endif  // #if defined( CUL_STATIC )

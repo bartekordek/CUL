@@ -2,7 +2,7 @@
 
 #include "CUL/CUL.hpp"
 #include "CUL/UselessMacros.hpp"
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Network )

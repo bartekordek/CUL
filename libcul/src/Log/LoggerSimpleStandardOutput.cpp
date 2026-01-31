@@ -57,6 +57,16 @@ void LoggerSimpleStandardOutput::init()
 #endif
 }
 
+void LoggerSimpleStandardOutput::logInfo( const char* msg... )
+{
+    va_list args;
+    va_start( args, msg );
+    std::lock_guard<std::mutex> locker( m_variableMutex );
+    vsnprintf( m_variableBuffer, s_bufferSize, msg, args );
+    log( m_variableBuffer, Severity::Info );
+    va_end( args );
+}
+
 void LoggerSimpleStandardOutput::logVariable( Severity severity, const char* msg... )
 {
     va_list args;

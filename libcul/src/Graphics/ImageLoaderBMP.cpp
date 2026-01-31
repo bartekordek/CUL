@@ -79,29 +79,27 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
 {
     printFileSize( path );
 
-    auto result =  new ImageConcrete();
+    auto result = new ImageConcrete();
 
     ImageInfo imageInfo;
     imageInfo.path = path;
 
-    std::ifstream inp{ path.getPath().cStr(), std::ios_base::binary };
+    const std::string pathStr = path.getPath().getSTDString();
+    std::ifstream inp{ pathStr.c_str(), std::ios_base::binary };
 
     BMPFileHeader fileHeader;
 
-    inp.read((char*)&fileHeader, sizeof(fileHeader));
+    inp.read( (char*)&fileHeader, sizeof( fileHeader ) );
 
     if( fileHeader.file_type != 0x4D42 )
     {
-        CUL::Assert::check(false, "Error! Unrecognized file format, file: %s", path.getPath().cStr());
+        CUL::Assert::check( false, "Error! Unrecognized file format, file: %s", pathStr.c_str() );
     }
 
     BMPInfoHeader infoHeader;
-    inp.read( (char*) &infoHeader, sizeof( infoHeader ) );
+    inp.read( (char*)&infoHeader, sizeof( infoHeader ) );
 
-    imageInfo.size = {
-        infoHeader.width,
-        infoHeader.height
-    };
+    imageInfo.size = { infoHeader.width, infoHeader.height };
 
     imageInfo.depth = infoHeader.bit_count;
     imageInfo.pitch = 4 * infoHeader.width;
@@ -114,14 +112,13 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
         // Check if the file has bit mask color information
         if( infoHeader.size >= ( sizeof( BMPInfoHeader ) + sizeof( BMPColorHeader ) ) )
         {
-            inp.read( (char*) &bmpColorHeader, sizeof( bmpColorHeader ) );
+            inp.read( (char*)&bmpColorHeader, sizeof( bmpColorHeader ) );
             // Check if the pixel data is stored as BGRA and if the color space type is sRGB
             checkColorHeader( bmpColorHeader );
-
         }
         else
         {
-            CUL::Assert::check(false, "Warning! The file [%s] does not seem to contain bit mask information\n", path.getPath().cStr());
+            CUL::Assert::check( false, "Warning! The file [%s] does not seem to contain bit mask information\n", pathStr.c_str() );
         }
     }
 
@@ -129,13 +126,13 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
     // Some editors will put extra info in the image file, we only save the headers and the data.
     if( infoHeader.bit_count == 32 )
     {
-        infoHeader.size = sizeof(BMPInfoHeader) + sizeof(BMPColorHeader);
-        fileHeader.offset_data = sizeof(BMPFileHeader) + sizeof(BMPInfoHeader) + sizeof(BMPColorHeader);
+        infoHeader.size = sizeof( BMPInfoHeader ) + sizeof( BMPColorHeader );
+        fileHeader.offset_data = sizeof( BMPFileHeader ) + sizeof( BMPInfoHeader ) + sizeof( BMPColorHeader );
     }
     else
     {
-        infoHeader.size = sizeof(BMPInfoHeader);
-        fileHeader.offset_data = sizeof(BMPFileHeader) + sizeof(BMPInfoHeader);
+        infoHeader.size = sizeof( BMPInfoHeader );
+        fileHeader.offset_data = sizeof( BMPFileHeader ) + sizeof( BMPInfoHeader );
     }
     fileHeader.file_size = fileHeader.offset_data;
 
@@ -145,7 +142,7 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
     }
 
     // Jump to the pixel data location
-    inp.seekg(fileHeader.offset_data, inp.beg);
+    inp.seekg( fileHeader.offset_data, inp.beg );
 
     // Adjust the header fields for output.
     // Some editors will put extra info in the image file, we only save the headers and the data.
@@ -168,13 +165,12 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
 
     const auto imageDataSize = infoHeader.size_image;
     auto* data = new char[imageDataSize];
-    auto* imageData = new DataType[ imageDataSize ];
+    auto* imageData = new DataType[imageDataSize];
 
     // Here we check if we need to take into account row padding
     if( infoHeader.width % 4 == 0 )
     {
-        inp.read( (char*) data,
-                  std::streamsize( imageDataSize ) );
+        inp.read( (char*)data, std::streamsize( imageDataSize ) );
 
         for( auto i = 0u; i < imageDataSize; ++i )
         {
@@ -194,8 +190,8 @@ IImage* ImageLoaderBMP::loadImage2( const FS::Path& path, bool )
         const int infoHeaderHeight = infoHeader.height;
         for( int y = 0; y < infoHeaderHeight; ++y )
         {
-            inp.read( (char*) ( data + row_stride * y ), row_stride );
-            inp.read( (char*) padding_row.data(), ( std::streamsize ) padding_row.size() );
+            inp.read( (char*)( data + row_stride * y ), row_stride );
+            inp.read( (char*)padding_row.data(), (std::streamsize)padding_row.size() );
         }
         fileHeader.file_size += static_cast<uint32_t>( imageDataSize ) + infoHeader.height * static_cast<uint32_t>( padding_row.size() );
     }
@@ -223,7 +219,9 @@ IImage* loadImage2( const FS::Path& path, bool )
     auto result = new ImageConcrete();
     ImageInfo imageInfo;
     imageInfo.path = path;
-    std::ifstream inp{ path.getPath().cStr(), std::ios_base::binary };
+
+    const std::string pathStr = path.getPath().getSTDString();
+    std::ifstream inp{ pathStr.c_str(), std::ios_base::binary };
     if( inp )//458 rezygnuje z uslugi
     {
         std::cout << "uint16_t size = " << sizeof( uint16_t ) << "\n";
@@ -260,7 +258,7 @@ IImage* loadImage2( const FS::Path& path, bool )
             }
             else
             {
-                std::cerr << "Error! The file \"" << path.getPath().cStr() << "\" does not seem to contain bit mask information\n";
+                std::cerr << "Error! The file \"" << pathStr << "\" does not seem to contain bit mask information\n";
                 throw std::runtime_error( "Error! Unrecognized file format." );
             }
         }

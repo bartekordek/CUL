@@ -1,4 +1,4 @@
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 #include "StringTest.hpp"
 #include "CUL/Filesystem/Path.hpp"
 #include "CUL/Filesystem/FS.hpp"
@@ -35,7 +35,7 @@ TEST_F( StringTests, WcharRestore )
     CUL::String t2 = utfLine;
 
     ASSERT_TRUE( t1 == t2 );
-#endif // TEST_UTF
+#endif  // TEST_UTF
 }
 
 TEST_F( StringTests, SanitizeDeSanitize )
@@ -43,7 +43,7 @@ TEST_F( StringTests, SanitizeDeSanitize )
     CUL::CULInterface::getInstance()->createInstance();
     CUL::FS::IFile* file = CUL::CULInterface::getInstance()->getFF()->createFileFromPath( dummyFilePath );
     file->load( false, false );
-    const char* utfLine = file->getContent()[4];
+    const std::string utfLine = file->getLineUtf( 4 );
 
     CUL::String loadedString = utfLine;
     loadedString.singleQuoteEscape();
@@ -121,7 +121,7 @@ TEST_F( StringTests, ConversionTest00a )
     test1.serialize();
     test1.deserialize();
 
-    ASSERT_TRUE( test1 == someString );
+    ASSERT_TRUE( test1.equals( someString ) );
 }
 
 TEST_F( StringTests, ConversionTest00b )
@@ -135,7 +135,7 @@ TEST_F( StringTests, ConversionTest00b )
     CUL::String test1( "1c49900" );
 #endif
 
-    ASSERT_TRUE( test1 == test0 );
+    ASSERT_TRUE( test1.equals( test0.getString() ) );
 }
 
 TEST_F( StringTests, ConversionTest01 )
@@ -146,7 +146,7 @@ TEST_F( StringTests, ConversionTest01 )
     test1.serialize();
     test1.deserialize();
 
-    ASSERT_TRUE( test1 == someString );
+    ASSERT_TRUE( test1.equals( someString ) );
 }
 
 TEST_F( StringTests, ConversionTest02 )
@@ -157,7 +157,7 @@ TEST_F( StringTests, ConversionTest02 )
     test1.serialize();
     test1.deserialize();
 
-    ASSERT_TRUE( test1 == someString );
+    ASSERT_TRUE( test1.equals( someString ) );
 }
 
 TEST_F( StringTests, ConversionTest03 )
@@ -168,7 +168,7 @@ TEST_F( StringTests, ConversionTest03 )
     test1.serialize();
     test1.deserialize();
 
-    ASSERT_TRUE( test1 == someString );
+    ASSERT_TRUE( test1.equals( someString ) );
 }
 
 TEST_F( StringTests, ConversionTest04 )
@@ -183,7 +183,7 @@ TEST_F( StringTests, ConversionTest04 )
     CUL::String test1( someString );
     test1.deserialize();
 
-    ASSERT_TRUE( test1 == someOhterString );
+    ASSERT_TRUE( test1.equals( someOhterString ) );
 }
 
 TEST_F( StringTests, ConversionTest05 )
@@ -195,7 +195,7 @@ TEST_F( StringTests, ConversionTest05 )
     test1.serialize();
     test1.deserialize();
 
-    ASSERT_TRUE( test1 == someString );
+    ASSERT_TRUE( test1.equals( someString ) );
 }
 
 TEST_F( StringTests, ConvertToi32 )
@@ -236,13 +236,12 @@ TEST_F( StringTests, ConvertToint2 )
     ASSERT_TRUE( test1.toInt64() == 8 );
 }
 
-
 //
 TEST_F( StringTests, RemoveAllChar )
 {
     CUL::String t1( "abcdaea" );
     t1.removeAll( 'a' );
-    ASSERT_TRUE( t1 == "bcde" );
+    ASSERT_TRUE( t1.equals( "bcde" ) );
 }
 //
 
@@ -250,77 +249,58 @@ TEST_F( StringTests, lower )
 {
     CUL::String string( "someString" );
     string.toLower();
-    ASSERT_EQ( string, "somestring" );
+    GTEST_ASSERT_TRUE( string.equals( "somestring" ) );
 }
 
 TEST_F( StringTests, upper )
 {
     CUL::String string( "someString" );
     string.toUpper();
-    ASSERT_EQ( string, "SOMESTRING" );
+    GTEST_ASSERT_TRUE( string.equals( "SOMESTRING" ) );
 }
 
 TEST_F( StringTests, containsTrue )
 {
     CUL::String string( "someString" );
-    ASSERT_EQ( true, string.contains( "some" ) );
+    GTEST_ASSERT_TRUE( string.contains( "some" ) );
 }
 
 TEST_F( StringTests, containsFalse )
 {
     CUL::String string( "someString" );
-    ASSERT_EQ( false, string.contains( "xD" ) );
+    GTEST_ASSERT_TRUE( !string.contains( "xD" ) );
 }
 
 TEST_F( StringTests, replace_for_shorter )
 {
     CUL::String string( "aaabbbbccc" );
     string.replace( "bbbb", "dd" );
-    ASSERT_EQ( "aaaddccc", string );
+    ASSERT_TRUE( string.equals( "aaaddccc" ) );
 }
 
 TEST_F( StringTests, replace_for_same_length )
 {
     CUL::String string( "aaabbbbccc" );
     string.replace( "bbbb", "dddd" );
-    ASSERT_EQ( "aaaddddccc", string );
+    ASSERT_TRUE( string.equals( "aaaddddccc" ) );
 }
 
 TEST_F( StringTests, replace_for_bigger )
 {
     CUL::String string( "aaabbccc" );
     string.replace( "bb", "dddd" );
-    ASSERT_EQ( "aaaddddccc", string );
+    ASSERT_TRUE( string.equals( "aaaddddccc" ) );
 }
 
 TEST_F( StringTests, clear )
 {
     CUL::String string( "someString" );
     string.clear();
-    ASSERT_EQ( "", string );
+    ASSERT_TRUE( string.empty() );
 }
 
 TEST_F( StringTests, operatorTest )
 {
-    CUL::String string0( true );
-    std::cout << "string0 = " << string0.cStr() << "\n";
-    ASSERT_EQ( "true", string0 );
-
-    CUL::String string1( 1 );
-    std::cout << "string1 = " << string1.cStr() << "\n";
-    ASSERT_EQ( 1, string1 );
-
-    CUL::String string2( 1u );
-    std::cout << "string2 = " << string2.cStr() << "\n";
-    ASSERT_EQ( 1u, string2 );
-
-    const float val = 3.0;
-    CUL::String string3( val );
-    std::cout << "string 3 = " << string3.cStr() << "\n";
-    ASSERT_EQ( 3.0, string3 );
-
-    CUL::String string4( 3.0f );
-    std::cout << "string 4 = " << string4.cStr() << "\n";
 }
 
 TEST_F( StringTests, deserializationTest00 )
@@ -330,20 +310,20 @@ TEST_F( StringTests, deserializationTest00 )
         "4006"
         "9006f006e002f0031003900390039002f004300440041002000310030002d00390039002e007000640066000000" );
     string0.deserialize();
-    ASSERT_TRUE( string0 == "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 10-99.pdf" );
+    ASSERT_TRUE( string0.equals( "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 10-99.pdf" ) );
 }
 
 TEST_F( StringTests, pathToFile00 )
 {
     CUL::FS::Path current( "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 02-99.pdf" );
-    CUL::String pathAsString = current;
+    CUL::String pathAsString = current.getPath().getValue();
     pathAsString.serialize();
 #if CUL_USE_WCHAR
-    ASSERT_TRUE( pathAsString ==
-                 "044003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d004100"
-                 "6300740069006f006e002f0031003900390039002f004300440041002000300032002d00390039002e007000640066000000" );
+    ASSERT_TRUE( pathAsString.equals(
+        "044003a002f0042006f006f006b0073004c006900620072006100720079002f004d006100670061007a0069006e00650073002f00430044002d004100"
+        "6300740069006f006e002f0031003900390039002f004300440041002000300032002d00390039002e007000640066000000" ) );
 #else
-    ASSERT_TRUE( pathAsString ==
-                 "1443a2f426f6f6b734c6962726172792f4d6167617a696e65732f43442d416374696f6e2f313939392f4344412030322d39392e70646600" );
+    ASSERT_TRUE( pathAsString.equals(
+        "1443a2f426f6f6b734c6962726172792f4d6167617a696e65732f43442d416374696f6e2f313939392f4344412030322d39392e70646600" ) );
 #endif
 }

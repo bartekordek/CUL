@@ -5,7 +5,7 @@
 using namespace CUL;
 using namespace JSON;
 
-JSONFileConcrete::JSONFileConcrete( const String& path, FS::IFile* fileContent, CULInterface* inInterface )
+JSONFileConcrete::JSONFileConcrete( const StringWr& path, FS::IFile* fileContent, CULInterface* inInterface )
     : IJSONFile( path, inInterface ), m_fileContents( fileContent )
 {
 }
@@ -54,17 +54,17 @@ void JSONFileConcrete::unload()
     m_root = nullptr;
 }
 
-const String& JSONFileConcrete::firstLine() const
+const StringWr& JSONFileConcrete::firstLine() const
 {
     return m_fileContents->firstLine();
 }
 
-const String& JSONFileConcrete::lastLine() const
+const StringWr& JSONFileConcrete::lastLine() const
 {
     return m_fileContents->lastLine();
 }
 
-const String& JSONFileConcrete::getAsOneString() const
+const StringWr& JSONFileConcrete::getAsOneString() const
 {
     return m_fileContents->getAsOneString();
 }
@@ -86,8 +86,9 @@ INode* JSONFileConcrete::getRoot() const
 
 void JSONFileConcrete::parse()
 {
-    auto documentContents = m_fileContents->getAsOneString().cStr();
-    m_document.Parse( documentContents );
+    const auto v = m_fileContents->getAsOneString().getSTDString();
+    //auto documentContents = m_fileContents->getAsOneString().getUtfChar();
+    m_document.Parse( v.c_str() );
     const auto errorCode = m_document.GetParseError();
     if( rapidjson::ParseErrorCode::kParseErrorNone != errorCode )
     {

@@ -4,7 +4,7 @@
 using namespace CUL;
 using namespace FS;
 
-CSVFile::CSVFile( const String& fPath, CULInterface* inInterface ):
+CSVFile::CSVFile( const StringWr& fPath, CULInterface* inInterface ):
     ICSVFile( fPath, inInterface ),
     m_path( fPath )
 {
@@ -32,12 +32,12 @@ unsigned CSVFile::getColsCount() const
     return m_columnsCount;
 }
 
-const String& CSVFile::getVal( unsigned row, unsigned col ) const
+const StringWr& CSVFile::getVal( unsigned row, unsigned col ) const
 {
     return m_rows[row][col];
 }
 
-void CSVFile::setVal( const String& val, unsigned row, unsigned col )
+void CSVFile::setVal( const StringWr& val, unsigned row, unsigned col )
 {
     m_rows[row][col] = val;
 }
@@ -47,7 +47,7 @@ FileType CSVFile::getType() const
     return FileType::TXT;
 }
 
-void CSVFile::setDelimeter( const String& delimeter )
+void CSVFile::setDelimeter( const StringWr& delimeter )
 {
     m_delimeter = delimeter;
 }
@@ -75,16 +75,11 @@ void CSVFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     m_removeBottomEmptyLines = removeBottomEmptyLines;
     std::ifstream infile;
-    infile.open( m_path.getPath().getChar(),
-        std::ios_base::in );
+    infile.open( m_path.getPath().getSTDString().c_str(), std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
     {
-        if(
-            false == line.empty() &&
-            (
-            line.back() == ( '\r' ) ||
-            line.back() == ( '\n' ) ) )
+        if( false == line.empty() && ( line.back() == ( '\r' ) || line.back() == ( '\n' ) ) )
         {
             line.pop_back();
         }
@@ -95,9 +90,9 @@ void CSVFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
     cacheFile();
 }
 
-void CSVFile::parseLine( const String& line )
+void CSVFile::parseLine( const StringWr& line )
 {
-    std::vector<String> splitLine;
+    std::vector<StringWr> splitLine;
 
     if( m_delimeter.size() == 1 )
     {
@@ -110,13 +105,13 @@ void CSVFile::parseLine( const String& line )
 
     if( m_cellsContainQuotationMarks == false )
     {
-        for( String& cell : splitLine )
+        for( StringWr& cell : splitLine )
         {
-            const Length cellLength = cell.size();
+            const std::int32_t cellLength = cell.size();
             if( cell[0] == '\"' && cell[cellLength - 1] == '\"' )
             {
-                cell.erase( cellLength - 1 );
-                cell.erase( 0 );
+                cell.erase( cellLength - 1, 1 );
+                cell.erase( 0, 1 );
             }
         }
     }
@@ -131,12 +126,12 @@ void CSVFile::unload()
     m_rows.clear();
 }
 
-const String& CSVFile::firstLine() const
+const StringWr& CSVFile::firstLine() const
 {
     return m_rows.front()[0];
 }
 
-const String& CSVFile::lastLine() const
+const StringWr& CSVFile::lastLine() const
 {
     return m_rows.back()[m_rows.size() - 1];
 }
@@ -146,7 +141,7 @@ const Path& CSVFile::getPath() const
     return m_path;
 }
 
-const String& CSVFile::getAsOneString() const
+const StringWr& CSVFile::getAsOneString() const
 {
     return m_cached;
 }
@@ -154,21 +149,21 @@ const String& CSVFile::getAsOneString() const
 void CSVFile::cacheFile()
 {
     m_cached = "";
-    for(const auto& row : m_rows)
+    for( const auto& row : m_rows )
     {
-        String line;
+        StringWr line;
 
         const std::size_t length = row.size();
-        for(std::size_t i = 0; i < length; ++i)
+        for( std::size_t i = 0; i < length; ++i )
         {
-            line.append(row[i]);
-            if(i != length - 1)
+            line.append( row[i].getValue() );
+            if( i != length - 1 )
             {
-                line.append(m_delimeter);
+                line.append( m_delimeter.getValue() );
             }
         }
-        m_cached.append(line);
-        m_cached.append('\n');
+        m_cached.append( line.getValue() );
+        m_cached.append( '\n' );
     }
 }
 

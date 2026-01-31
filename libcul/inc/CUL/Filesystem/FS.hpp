@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/String.hpp"
+#include "CUL/String/String.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( FS )

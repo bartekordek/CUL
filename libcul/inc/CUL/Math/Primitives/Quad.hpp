@@ -39,7 +39,7 @@ protected:
 private:
     void initializeData();
     void updateData();
-    String getSerializationContent( CounterType tabsSize, const bool = false ) const override;
+    StringWr getSerializationContent( CounterType tabsSize, const bool = false ) const override;
 
 
 // Deleted:

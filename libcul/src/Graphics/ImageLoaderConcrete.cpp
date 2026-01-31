@@ -9,26 +9,26 @@ NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( Graphics )
 
 #if defined(CUL_WINDOWS)
-static String g_png{ L"png" };
-static String g_bmp{ L"bmp" };
-static String g_data{ L"data" };
+static STDStringWrapper g_png{ L"png" };
+static STDStringWrapper g_bmp{ L"bmp" };
+static STDStringWrapper g_data{ L"data" };
 #else // #if defined(CUL_WINDOWS)
-static String g_png{ "png" };
-static String g_bmp{ "bmp" };
-static String g_data{ "data" };
+static STDStringWrapper g_png{ "png" };
+static STDStringWrapper g_bmp{ "bmp" };
+static STDStringWrapper g_data{ "data" };
 #endif // #if defined(CUL_WINDOWS)
 
-ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config, CULInterface* culInterface ) : IImageLoader( culInterface )
+ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config, CULInterface* culInterface ): IImageLoader( culInterface )
 {
     if( config )
     {
         const auto& bmpLoader = config->getValue( "BMP_LOADER" );
-        if( bmpLoader == "TinyImageLoader" )
+        if( bmpLoader.equals( "TinyImageLoader" ) )
         {
             std::unique_ptr<TinyImageLoader> bmp( new TinyImageLoader( culInterface ) );
             m_loaders[g_bmp] = std::move( bmp );
         }
-        else if( bmpLoader == "STBIImageLoader" )
+        else if( bmpLoader.equals( "STBIImageLoader" ) )
         {
             std::unique_ptr<STBIImageLoader> bmp( new STBIImageLoader( culInterface ) );
             m_loaders[g_bmp] = std::move( bmp );
@@ -40,7 +40,7 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config, CULInterf
         }
 
         const auto& pngLoader = config->getValue( "PNG_LOADER" );
-        if( pngLoader == "TinyImageLoader" )
+        if( pngLoader.equals( "TinyImageLoader" ) )
         {
             std::unique_ptr<TinyImageLoader> png( new TinyImageLoader( culInterface ) );
             m_loaders[g_png] = std::move( png );
@@ -67,7 +67,7 @@ ImageLoaderConcrete::ImageLoaderConcrete( GUTILS::IConfigFile* config, CULInterf
 IImage* ImageLoaderConcrete::loadImage( const FS::Path& path, bool rgba )
 {
     const auto extension = path.getExtension();
-    const auto loader = getLoader(extension);
+    const auto loader = getLoader( extension );
 
     return loader->loadImage( path, rgba );
 }
@@ -87,7 +87,7 @@ IImage* ImageLoaderConcrete::findImage( const FS::Path& path )
     return getLoader( path )->findImage( path );
 }
 
-IImageLoader* ImageLoaderConcrete::getLoader( const String& fileExt )
+IImageLoader* ImageLoaderConcrete::getLoader( const STDStringWrapper& fileExt )
 {
     auto ext = fileExt;
     ext.toLower();

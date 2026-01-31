@@ -37,7 +37,7 @@
             },
             "includePath": [
                 "/usr/include",
-                "/usr/include/c++/9/bits",
+                "/usr/include/c++/14/bits",
                 "${workspaceFolder}/deps/boost/array/include",
                 "${workspaceFolder}/deps/boost/assert/include",
                 "${workspaceFolder}/deps/boost/stacktrace/include",
@@ -50,12 +50,36 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE",
-                "CUL_GLOBAL_MEMORY_POOL"
+                "_UNICODE"
             ],
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "${default}"
+        },
+        {
+            "name": "Linux_Static",
+            "includePath": [
+                "/usr/include",
+                "/usr/include/c++/14/bits",
+                "${workspaceFolder}/deps/boost/array/include",
+                "${workspaceFolder}/deps/boost/assert/include",
+                "${workspaceFolder}/deps/boost/stacktrace/include",
+                "${workspaceFolder}/libculTests",
+                "${workspaceFolder}/libcul/inc",
+                "${workspaceFolder}/libcul/src/",
+                "${workspaceFolder}/libcul/src/JSON",
+                "${workspaceFolder}/deps/rapidjson/include/"
+            ],
+            "defines": [
+                "_DEBUG",
+                "_UNICODE",
+                "CUL_STATIC",
+                "UNICODE"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++20",
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4

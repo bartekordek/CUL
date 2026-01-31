@@ -21,7 +21,7 @@ void setCurrentThreadNameWin( const CUL::String& name )
     DWORD dwID = GetCurrentThreadId();
     THREADNAME_INFO info;
     info.dwType = 0x1000;
-    info.szName = name.cStr();
+    info.szName = name.getUtfChar();
     info.dwThreadID = dwID;
     info.dwFlags = 0;
 

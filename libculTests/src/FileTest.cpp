@@ -10,8 +10,7 @@ CUL::FS::FSApi* FileTest::m_fsApi = nullptr;
 
 void FileTest::SetUp()
 {
-    m_culInterface->getLogger()->log( "FileTest::SetUp()" );
-    m_culInterface->getLogger()->log( "Current dir: " + m_fsApi->getCurrentDir() );
+    m_culInterface->getLogger()->logVariable( CUL::LOG::Severity::Info, "FileTest::SetUp(), %s", m_fsApi->getCurrentDir().getUtfChar() );
 }
 
 FileTest::FileTest()
@@ -43,23 +42,21 @@ TEST_F( FileTest, basicFileLoadFirstLine )
     std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
     file->load( false, false );
     auto firstLine = file->firstLine();
-    auto asCstring = firstLine.cStr();
-    GTEST_ASSERT_EQ( CUL::String( "Line1" ), asCstring );
+    GTEST_ASSERT_TRUE( firstLine.equals( "Line1" ) );
 }
 
 TEST_F( FileTest, basicFileLoadlastLine )
 {
     std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
     file->load( false, false );
-    GTEST_ASSERT_EQ( CUL::String( "LastLine" ), file->lastLine().cStr() );
+    GTEST_ASSERT_TRUE( file->lastLine().equals( "LastLine" ) );
 }
 
 TEST_F( FileTest, loadCachedFileRegular )
 {
     std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
     file->load( false, false );
-    auto text = file->getAsOneString().cStr();
-    GTEST_ASSERT_NE( CUL::String( "" ), text );
+    GTEST_ASSERT_TRUE( !file->getAsOneString().empty() );
 }
 
 TEST_F( FileTest, loadRawImage )
