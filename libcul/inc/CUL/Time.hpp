@@ -60,6 +60,8 @@ public:
     float getH() const;
     float getUs() const;
 
+    void setDate( TimeType inYear, TimeType inMonth, TimeType inDay );
+
     TimeType getYear() const;
     void setYear( TimeType inYear );
 

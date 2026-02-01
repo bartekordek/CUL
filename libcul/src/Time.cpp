@@ -72,6 +72,18 @@ Time& Time::operator=( Time&& rhv )
     return *this;
 }
 
+void Time::setDate( TimeType inYear, TimeType inMonth, TimeType inDay )
+{
+    waitForDateTime();
+    *m_dateTime = jed_utils::datetime(
+        inYear,
+        inMonth,
+        inDay,
+        m_dateTime->get_hour(),
+        m_dateTime->get_minute(),
+        m_dateTime->get_second() );
+}
+
 void Time::setYear( TimeType inYear )
 {
     waitForDateTime();
