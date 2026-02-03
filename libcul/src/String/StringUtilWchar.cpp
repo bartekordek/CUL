@@ -9,13 +9,6 @@
 
 namespace CUL
 {
-std::int32_t StringUtil::wideStringToChar( std::string& out, const std::wstring& inChar )
-{
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converterX;
-    out = converterX.to_bytes( inChar );
-    return static_cast<std::int32_t>( out.size() );
-}
-
 std::int32_t StringUtil::charToWideString( std::int32_t codePage, wchar_t* out, std::int32_t outSize, const char* in )
 {
     return charToWideString( codePage, out, outSize, in, static_cast<std::int32_t>( std::strlen( in ) ) );
@@ -37,8 +30,86 @@ std::int32_t StringUtil::charToWideString( std::int32_t codePage, wchar_t& out, 
     return -1;
 }
 
+std::int32_t StringUtil::wideStringToChar( std::string& out, const std::wstring& inChar )
+{
+    out.clear();
+
+    if( inChar.empty() )
+    {
+        return 0;
+    }
+
+    // Get required buffer size (in bytes)
+    const std::int32_t requiredSize = ::WideCharToMultiByte( CP_UTF8,  // convert to UTF-8
+                                              0, inChar.data(), static_cast<int>( inChar.size() ), nullptr, 0, nullptr, nullptr );
+
+    if( requiredSize <= 0 )
+    {
+        return 0;
+    }
+
+    out.resize( static_cast<size_t>( requiredSize ) );
+
+    const std::int32_t written =
+        ::WideCharToMultiByte( CP_UTF8, 0, inChar.data(), static_cast<int>( inChar.size() ), out.data(), requiredSize, nullptr, nullptr );
+
+    if( written <= 0 )
+    {
+        out.clear();
+        return 0;
+    }
+
+    return static_cast<std::int32_t>( out.size() );
+}
+
+std::u8string StringUtil::convertToU8( const std::wstring& input )
+{
+    if( input.empty() )
+    {
+        return {};
+    }
+
+    int requiredSize = ::WideCharToMultiByte( CP_UTF8, 0, input.data(), static_cast<int>( input.size() ), nullptr, 0, nullptr, nullptr );
+
+    if( requiredSize <= 0 )
+    {
+        return {};
+    }
+
+    std::u8string output;
+    output.resize( static_cast<size_t>( requiredSize ) );
+
+    ::WideCharToMultiByte(
+        CP_UTF8,
+        0,
+        input.data(),
+        static_cast<int>( input.size() ),
+        reinterpret_cast<char*>( output.data() ),
+        requiredSize,
+        nullptr,
+        nullptr );
+
+    return output;
+}
+
+std::int32_t StringUtil::wideStringToChar( char* out, std::int32_t /*outSize*/, const wchar_t* inChar, std::int32_t inSize )
+{
+    UINT codePage = CP_ACP;
+    DWORD dwFlags = WC_COMPOSITECHECK;
+    const int sizeNeeded = WideCharToMultiByte( codePage, dwFlags, inChar, inSize + 1, NULL, 0, NULL, NULL );
+
+    const auto convertedLength = WideCharToMultiByte( codePage, dwFlags, inChar, inSize + 1, out, sizeNeeded, NULL, NULL );
+
+    return convertedLength;
+}
+
 std::int32_t StringUtil::charToWideString( std::wstring& out, const std::string& in )
 {
+    if( in.empty() )
+    {
+        return 0;
+    }
+
     const std::size_t bufferSize = in.size() * 2u;
     std::vector<wchar_t> buffer;
     buffer.resize( bufferSize );
@@ -143,17 +214,6 @@ wchar_t StringUtil::toWideChar( char inChar )
     charToWideString( resultStr, inputChar );
 
     return resultStr[0];
-}
-
-std::int32_t StringUtil::wideStringToChar( char* out, std::int32_t /*outSize*/, const wchar_t* inChar, std::int32_t inSize )
-{
-    UINT codePage = CP_ACP;
-    DWORD dwFlags = WC_COMPOSITECHECK;
-    const int sizeNeeded = WideCharToMultiByte( codePage, dwFlags, inChar, inSize + 1, NULL, 0, NULL, NULL );
-
-    const auto convertedLength = WideCharToMultiByte( codePage, dwFlags, inChar, inSize + 1, out, sizeNeeded, NULL, NULL );
-
-    return convertedLength;
 }
 
 std::int32_t StringUtil::wideStringToChar( char& inOut, wchar_t inChar )

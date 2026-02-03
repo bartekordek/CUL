@@ -51,6 +51,7 @@ public:
     static std::int32_t wideStringToChar( char* out, std::int32_t outSize, const wchar_t* in, std::int32_t inSize );
     static std::int32_t wideStringToChar( char& out, wchar_t in );
     static std::int32_t wideStringToChar( std::string& out, const std::wstring& in );
+    static std::u8string convertToU8( const std::wstring& inString );
 
     static std::int32_t charToWideString( std::int32_t codePage, wchar_t* out, std::int32_t outSize, const char* in );
     static std::int32_t charToWideString( std::int32_t codePage, wchar_t* out, std::int32_t outSize, const char* in, std::int32_t inSize );

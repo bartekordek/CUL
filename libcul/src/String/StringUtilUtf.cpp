@@ -167,6 +167,20 @@ std::int32_t StringUtil::wideStringToChar( std::string& out, const std::wstring&
     return static_cast<std::int32_t>( written );
 }
 
+std::u8string StringUtil::convertToU8( const std::wstring& input )
+{
+    if( input.empty() )
+    {
+        return {};
+    }
+
+    std::wstring_convert<std::codecvt_utf8<wchar_t> > converter;
+
+    std::string utf8 = converter.to_bytes( input );
+
+    return std::u8string( reinterpret_cast<const char8_t*>( utf8.data() ), reinterpret_cast<const char8_t*>( utf8.data() + utf8.size() ) );
+}
+
 std::int32_t StringUtil::wideStringToChar( char* out, std::int32_t outSize, const wchar_t* inChar, std::int32_t inSize )
 {
     std::size_t result = 0u;
