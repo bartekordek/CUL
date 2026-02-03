@@ -46,4 +46,10 @@ std::int64_t IString::toInt64() const
 
     return 0;
 }
+std::u8string IString::toU8String() const
+{
+    const char* name = __func__;
+    Assert::check( false, "NOT IMPLEMENTED: %s", name );
+    return std::u8string();
+}
 }

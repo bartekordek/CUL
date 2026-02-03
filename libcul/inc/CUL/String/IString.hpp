@@ -80,6 +80,7 @@ public:
     virtual bool isFloat() const;
     virtual float toFloat() const;
     virtual std::int64_t toInt64() const;
+    virtual std::u8string toU8String() const;
 
     virtual ~IString() = default;
 
