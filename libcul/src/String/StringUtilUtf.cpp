@@ -174,11 +174,51 @@ std::u8string StringUtil::convertToU8( const std::wstring& input )
         return {};
     }
 
-    std::wstring_convert<std::codecvt_utf8<wchar_t> > converter;
+    iconv_t cd = iconv_open( "UTF-8", "WCHAR_T" );
+    if( cd == reinterpret_cast<iconv_t>( -1 ) )
+    {
+        return {};
+    }
 
-    std::string utf8 = converter.to_bytes( input );
+    const char* inBuf = reinterpret_cast<const char*>( input.data() );
+    size_t inBytesLeft = input.size() * sizeof( wchar_t );
 
-    return std::u8string( reinterpret_cast<const char8_t*>( utf8.data() ), reinterpret_cast<const char8_t*>( utf8.data() + utf8.size() ) );
+    // Worst-case UTF-8 expansion: 4 bytes per wchar
+    size_t outBytesLeft = input.size() * 4;
+
+    std::string out;
+    out.resize( outBytesLeft );
+
+    char* outBuf = out.data();
+
+    while( inBytesLeft > 0 )
+    {
+        size_t result = iconv( cd, const_cast<char**>( &inBuf ), &inBytesLeft, &outBuf, &outBytesLeft );
+
+        if( result == static_cast<size_t>( -1 ) )
+        {
+            if( errno == E2BIG )
+            {
+                // grow output buffer
+                size_t used = out.size() - outBytesLeft;
+                out.resize( out.size() * 2 );
+                outBuf = out.data() + used;
+                outBytesLeft = out.size() - used;
+                continue;
+            }
+
+            // invalid sequence
+            iconv_close( cd );
+            return {};
+        }
+    }
+
+    iconv_close( cd );
+
+    size_t bytesWritten = out.size() - outBytesLeft;
+    out.resize( bytesWritten );
+
+    return std::u8string( reinterpret_cast<const char8_t*>( out.data() ), reinterpret_cast<const char8_t*>( out.data() + out.size() ) );
 }
 
 std::int32_t StringUtil::wideStringToChar( char* out, std::int32_t outSize, const wchar_t* inChar, std::int32_t inSize )
