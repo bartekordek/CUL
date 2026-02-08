@@ -33,16 +33,16 @@ Time::Time( std::int32_t inYear, std::int32_t inMonth, std::int32_t inDay, std::
     m_initialized = true;
 }
 
-Time::Time( const Time& rhv ): m_ns( rhv.m_ns ), m_dateTime( std::make_unique<jed_utils::datetime>() ), m_asString( rhv.m_asString )
+Time::Time( const Time& rhv ): m_ns( rhv.m_ns ), m_dateTime(), m_asString( rhv.m_asString )
 {
+    m_dateTime = std::make_unique<jed_utils::datetime>();
+
+    rhv.waitForDateTime();
     *m_dateTime = *rhv.m_dateTime;
     m_initialized = true;
 }
 
-Time::Time( Time&& rhv ):
-    m_ns( rhv.m_ns ),
-    m_dateTime( std::move( m_dateTime ) ),
-    m_asString( std::move( rhv.m_asString ) )
+Time::Time( Time&& rhv ): m_ns( rhv.m_ns ), m_dateTime( std::move( rhv.m_dateTime ) ), m_asString( std::move( rhv.m_asString ) )
 {
     m_initialized = true;
 }
@@ -75,24 +75,14 @@ Time& Time::operator=( Time&& rhv )
 void Time::setDate( TimeType inYear, TimeType inMonth, TimeType inDay )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime(
-        inYear,
-        inMonth,
-        inDay,
-        m_dateTime->get_hour(),
-        m_dateTime->get_minute(),
-        m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( inYear, inMonth, inDay, m_dateTime->get_hour(), m_dateTime->get_minute(), m_dateTime->get_second() );
 }
 
 void Time::setYear( TimeType inYear )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime(
-        inYear, m_dateTime->get_month(),
-        m_dateTime->get_day(),
-        m_dateTime->get_hour(),
-        m_dateTime->get_minute(),
-        m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( inYear, m_dateTime->get_month(), m_dateTime->get_day(), m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(), m_dateTime->get_second() );
     updateString();
     m_initialized = true;
 }
