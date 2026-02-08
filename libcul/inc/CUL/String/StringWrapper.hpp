@@ -113,6 +113,7 @@ public:
     CULLib_API float toFloat() const override;
     CULLib_API void fromFloat( float inValue );
     CULLib_API std::int64_t toInt64() const override;
+    CULLib_API std::u8string toU8String() const;
 
     // Replace
     void replace( const std::string& inWhat, const std::string& inFor );

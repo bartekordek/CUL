@@ -338,6 +338,12 @@ void STDStringWrapper::replace( const std::string& inWhat, const std::string& in
     }
 }
 
+std::u8string STDStringWrapper::toU8String() const
+{
+    return std::u8string( reinterpret_cast<const char8_t*>( m_value.data() ),
+                          reinterpret_cast<const char8_t*>( m_value.data() + m_value.size() ) );
+}
+
 STDStringWrapper::~STDStringWrapper()
 {
 }

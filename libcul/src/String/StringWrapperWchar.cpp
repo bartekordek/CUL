@@ -309,7 +309,7 @@ const char* STDStringWrapper::getUtfChar() const
 
     StringUtil::wideStringToChar( m_utf, (std::int32_t)size, m_value.c_str(), (std::int32_t)size );
 
-    return m_utf;
+    return reinterpret_cast<const char*>( m_utf );
 }
 
 bool STDStringWrapper::contains( const char inArg ) const
@@ -381,6 +381,12 @@ void STDStringWrapper::replace( const std::wstring& inWhat, const std::wstring& 
         m_value.replace( pos, inWhat.length(), inFor );
         pos += inFor.length();
     }
+}
+
+std::u8string STDStringWrapper::toU8String() const
+{
+    std::u8string result = StringUtil::convertToU8( m_value );
+    return result;
 }
 
 STDStringWrapper::~STDStringWrapper()
