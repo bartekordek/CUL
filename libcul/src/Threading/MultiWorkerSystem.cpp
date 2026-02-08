@@ -54,7 +54,7 @@ MultiWorkerSystem::MultiWorkerSystem()
     addWorker( EPriority::Low );
 }
 
-void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
+void MultiWorkerSystem::setWorkerThreadName( int8_t id, const StringWr& name )
 {
     ProfilerScope( "MultiWorkerSystem::setWorkerThreadName" );
 
@@ -68,12 +68,12 @@ void MultiWorkerSystem::setWorkerThreadName( int8_t id, const String& name )
     registerTask( taskPtr );
 }
 
-std::vector<String> MultiWorkerSystem::getWorkersStatuses()
+std::vector<StringWr> MultiWorkerSystem::getWorkersStatuses()
 {
     ProfilerScope( "MultiWorkerSystem::getWorkersStatuses" );
 
     std::lock_guard<std::mutex> locker( m_workersRunMtx );
-    std::vector<String> result;
+    std::vector<StringWr> result;
     for( const auto& thread : m_threads )
     {
         const auto id = thread.second->Thread.get_id();
@@ -198,7 +198,7 @@ void MultiWorkerSystem::workerMethod( int8_t threadId, EPriority priority )
 
     char pathStr[512];
     sprintf( pathStr, "Worker %d [%s]", threadId, workerName );
-    const String currentThreadName = pathStr;
+    const StringWr currentThreadName = pathStr;
 
     CUL::ThreadUtil::getInstance().setThreadName( currentThreadName.getUtfChar() );
 
@@ -262,7 +262,7 @@ void MultiWorkerSystem::workerMethod( int8_t threadId, EPriority priority )
 
 void MultiWorkerSystem::onThreadsStateUpdated( const std::vector<ThreadMeta>& ti )
 {
-    std::vector<String> data;
+    std::vector<StringWr> data;
 
     for( const auto& info : ti )
     {
@@ -272,7 +272,7 @@ void MultiWorkerSystem::onThreadsStateUpdated( const std::vector<ThreadMeta>& ti
     // updateWorkerStatus( data );
 }
 //
-// void MultiWorkerSystem::updateWorkerStatus( const std::vector<String>& in )
+// void MultiWorkerSystem::updateWorkerStatus( const std::vector<StringWr>& in )
 //{
 //    std::lock_guard<std::mutex> locker( m_workersRunMtx );
 //    m_workerStatus = in;

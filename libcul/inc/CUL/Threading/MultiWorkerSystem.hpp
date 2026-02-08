@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CUL/GenericUtils/Singleton.hpp"
-#include "CUL/String/String.hpp"
+#include "CUL/String/StringWrapper.hpp"
 #include "CUL/Threading/Priority.hpp"
 #include "CUL/Threading/ThreadUtilObserver.hpp"
 
@@ -21,7 +21,7 @@ struct ThreadInfo final
 {
     ThreadInfo() = default;
     ThreadInfo( const ThreadInfo& ) = delete;
-    ThreadInfo( ThreadInfo&& ) noexcept ;
+    ThreadInfo( ThreadInfo&& ) noexcept;
 
     ThreadInfo& operator=( const ThreadInfo& ti ) = delete;
     ThreadInfo& operator=( ThreadInfo&& ti ) noexcept;
@@ -47,11 +47,11 @@ public:
 
     uint8_t WorkerSleepBetweenTasksTimeMs = 0u;
     uint8_t WorkerSleepWhenNoTaskTimeMs = 0u;
-    void setWorkerThreadName( int8_t id, const String& name );
+    void setWorkerThreadName( int8_t id, const StringWr& name );
 
     int8_t getCurrentThreadWorkerId() const;
 
-    std::vector<String> getWorkersStatuses();
+    std::vector<StringWr> getWorkersStatuses();
     std::uint64_t getQueuedCount( EPriority inPriority ) const;
     std::uint64_t getMaxTasksCount( EPriority inPriority ) const;
     void setMaxTasksCount( EPriority inPriority, std::uint64_t inCount );
@@ -81,13 +81,12 @@ private:
 
     std::unordered_map<EPriority, int> m_sleepMapping;
 
-
-    //void updateWorkerStatus( const std::vector<String>& in );
-    //void fetchWorkerStatus();
-    //std::vector<String> m_workerStatus;
-    //std::mutex m_workerStatusMtx;
+    // void updateWorkerStatus( const std::vector<StringWr>& in );
+    // void fetchWorkerStatus();
+    // std::vector<StringWr> m_workerStatus;
+    // std::mutex m_workerStatusMtx;
 
     std::future<void> m_changeWorkers;
 };
 
-NAMESPACE_END(CUL)
+NAMESPACE_END( CUL )
