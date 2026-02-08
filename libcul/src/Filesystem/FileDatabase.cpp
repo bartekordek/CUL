@@ -190,9 +190,9 @@ void FileDatabase::getListOfSizes( std::vector<uint64_t>& out ) const
     std::set<uint64_t> sizes;
     {
         std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
-        for( const FileInfo& fi : m_cachedFiles )
+        for( const auto& fi : m_cachedFiles )
         {
-            sizes.insert( fi.Size.toUint64() );
+            sizes.insert( fi.first );
         }
     }
     {
@@ -240,9 +240,12 @@ std::vector<StringWr> FileDatabase::getListOfMd5() const
     std::set<MD5Value> md5s;
     {
         std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
-        for( const FileInfo& fi : m_cachedFiles )
+        for( const auto& fi : m_cachedFiles )
         {
-            md5s.insert( fi.MD5 );
+            for( const auto& md5 : fi.second )
+            {
+                md5s.insert( md5.first );
+            }
         }
     }
     {
@@ -282,11 +285,12 @@ std::vector<StringWr> FileDatabase::getListOfMd5( std::uint64_t inSize ) const
     std::set<MD5Value> md5s;
     {
         std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
-        for( const FileInfo& fi : m_cachedFiles )
+        const auto it = m_cachedFiles.find( inSize );
+        if( it != m_cachedFiles.end() )
         {
-            if( fi.Size.toUint64() == inSize )
+            for( const auto& md5List : it->second )
             {
-                md5s.insert( fi.MD5 );
+                md5s.insert( md5List.first );
             }
         }
     }
@@ -342,11 +346,16 @@ void FileDatabase::getFiles( uint64_t inSize, const StringWr& md5, std::vector<F
 {
 #if USE_CACHE
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
-    for( const FileInfo& fi : m_cachedFiles )
+    const auto it = m_cachedFiles.find( inSize );
+    if( it != m_cachedFiles.end() )
     {
-        if( ( fi.Size.toUint64() == inSize ) && ( fi.MD5.equals( md5 ) ) )
+        const auto itMd5 = it->second.find( md5.getSTDString() );
+        if( itMd5 != it->second.end() )
         {
-            out.push_back( fi );
+            for( const auto& itFile : itMd5->second.Files )
+            {
+                out.push_back( itFile );
+            }
         }
     }
 #else
@@ -357,8 +366,8 @@ void FileDatabase::getFiles( uint64_t inSize, const StringWr& md5, std::vector<F
 void FileDatabase::getFilesFromDB( uint64_t size, const StringWr& md5, std::vector<FileInfo>& out ) const
 {
     ProfilerScope( "FileDatabase::getFiles" );
-    const StringWr sqlQuery =
-        StringWr::createFromPrintf( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\" AND MD5=\"%s\"", size, md5.getUtfChar() );
+    const StringWr sqlQuery = StringWr::createFromPrintf(
+        "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\" AND MD5=\"%s\"", size, md5.getUtfChar() );
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
         std::string filePath( argv[0] );
@@ -397,11 +406,15 @@ void FileDatabase::getFiles( uint64_t inSize, std::vector<FileInfo>& out ) const
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
     out.reserve( m_cachedFiles.size() );
 
-    for( const FileInfo& fi : m_cachedFiles )
+    const auto it = m_cachedFiles.find( inSize );
+    if( it != m_cachedFiles.end() )
     {
-        if( fi.Size.toUint64() == inSize )
+        for( const auto& md5Pair : it->second )
         {
-            out.push_back( fi );
+            for( const auto& filePair : md5Pair.second.Files )
+            {
+                out.push_back( filePair );
+            }
         }
     }
 #else
@@ -413,17 +426,14 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
 {
     ProfilerScope( "FileDatabase::getFiles" );
 
-    const StringWr sqlQuery = StringWr::createFromPrintf( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\";", size ); 
+    const StringWr sqlQuery = StringWr::createFromPrintf( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\";", size );
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
-        FileInfo fi;
-        StringWr filePath( argv[0] );
-        fi.Size = argv[1];
-        fi.MD5 = argv[2];
-        fi.ModTime.fromString( argv[3]);
         auto resulPtr = reinterpret_cast<std::vector<FileInfo>*>( voidPtr );
-        fi.FilePath = filePath;
-        resulPtr->push_back( fi );
+
+        Time modTime;
+        modTime.fromString( argv[3] );
+        resulPtr->emplace_back( FileInfo{ false, argv[2], argv[1], argv[0], modTime } );
 
         return 0;
     };
@@ -456,7 +466,8 @@ void FileDatabase::getFilesMatching( const StringWr& fileSize, const StringWr& m
 {
     ProfilerScope( "FileDatabase::getFilesMatching" );
 
-    const StringWr sqlQuery = StringWr::createFromPrintf( "SELECT PATH FROM FILES WHERE ( SIZE='%d' AND MD5='%s');", fileSize, md5.getUtfChar() );
+    const StringWr sqlQuery =
+        StringWr::createFromPrintf( "SELECT PATH FROM FILES WHERE ( SIZE='%d' AND MD5='%s');", fileSize, md5.getUtfChar() );
 
     char* zErrMsg = nullptr;
     auto callback = []( void* voidValue, int argc, char** argv, char** info )
@@ -512,15 +523,20 @@ std::optional<FileInfo> FileDatabase::getFromCache( const StringWr& inFilePath )
 {
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
 
-    const auto it = std::find_if( m_cachedFiles.begin(), m_cachedFiles.end(),
-                                  [&inFilePath]( const FileInfo& curr )
-                                  {
-                                      return curr.FilePath.equals( inFilePath );
-                                  } );
-
-    if( it != m_cachedFiles.end() )
+    for( const auto& sizePair : m_cachedFiles )
     {
-        return *it;
+        for( const auto& md5Pair : sizePair.second )
+        {
+            const auto it = std::find_if( md5Pair.second.Files.begin(), md5Pair.second.Files.end(),
+                                          [&inFilePath]( const FileInfo& curr )
+                                          {
+                                              return curr.FilePath.equals( inFilePath );
+                                          } );
+            if( it != md5Pair.second.Files.end() )
+            {
+                return *it;
+            }
+        }
     }
 
     return {};
@@ -529,22 +545,53 @@ std::optional<FileInfo> FileDatabase::getFromCache( const StringWr& inFilePath )
 bool FileDatabase::removeFromCache( const StringWr& inFilePath )
 {
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
-    const std::list<FileInfo>::iterator it = std::find_if( m_cachedFiles.begin(), m_cachedFiles.end(),
-                                                           [&inFilePath]( const FileInfo& curr )
-                                                           {
-                                                               return curr.FilePath.equals( inFilePath );
-                                                           } );
 
-    if( it != m_cachedFiles.end() )
+    for( auto& sizePair : m_cachedFiles )
     {
-        m_cachedFiles.erase( it );
-        fetchUsage();
-        return true;
+        for( auto& md5Pair : sizePair.second )
+        {
+            auto it = std::find_if( md5Pair.second.Files.begin(), md5Pair.second.Files.end(),
+                                    [&inFilePath]( const FileInfo& curr )
+                                    {
+                                        return curr.FilePath.equals( inFilePath );
+                                    } );
+            if( it != md5Pair.second.Files.end() )
+            {
+                md5Pair.second.Files.erase( it );
+                fetchUsage();
+                return true;
+            }
+        }
     }
+
     return false;
 }
 
-void FileDatabase::addToCache( const FileInfo& inFile )
+void FileDatabase::addToCache( const std::vector<FileInfo>& inFiles ) const
+{
+    ProfileScopeVar( FileDatabase_addToCache_many );
+    if( getIsFull() )
+    {
+        ProfileScopeVar( FileDatabase_addToCache_waitForEmpty );
+        while( getIsFull() )
+        {
+            ITimer::sleepMicroSeconds( 1 );
+        }
+    }
+
+    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    ProfileScopeVar( FileDatabase_addToCache_outOfMtx );
+
+    for( const FileInfo& file : inFiles )
+    {
+        std::unordered_map<std::string, HashGroup>& md5Group = m_cachedFiles[file.Size.toInt64()];
+        auto& fileGroup = md5Group[file.MD5.getSTDString()];
+        fileGroup.Files.insert( file );
+    }
+    fetchUsage();
+}
+
+void FileDatabase::addToCache( const FileInfo& inFile ) const
 {
     ProfileScopeVar( FileDatabase_addToCache );
     if( getIsFull() )
@@ -559,19 +606,13 @@ void FileDatabase::addToCache( const FileInfo& inFile )
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
     ProfileScopeVar( FileDatabase_addToCache_outOfMtx );
 
-    for( const FileInfo& fi : m_cachedFiles )
-    {
-        if( fi == inFile )
-        {
-            return;
-        }
-    }
-
-    m_cachedFiles.push_back( inFile );
+    std::unordered_map<std::string, HashGroup>& md5Group = m_cachedFiles[inFile.Size.toInt64()];
+    auto& fileGroup = md5Group[inFile.MD5.getSTDString()];
+    fileGroup.Files.insert( inFile );
     fetchUsage();
 }
 
-void FileDatabase::fetchUsage()
+void FileDatabase::fetchUsage() const
 {
     // m_cachedFilesMtx
     ProfilerScope( "FileDatabase::fetchUsage" );
@@ -665,9 +706,8 @@ void FileDatabase::updateCache()
     std::vector<uint64_t> listOfSizes;
     getListOfSizesFromDb( listOfSizes );
     const std::int64_t listOfSizesSize = static_cast<std::int64_t>( listOfSizes.size() );
-    std::int64_t md5It = 0;
-    std::int64_t maxMd5s = 4;
     std::vector<CUL::FS::FileInfo> sameSizeFiles;
+    std::vector<CUL::FS::FileInfo> filesToAdd;
     for( std::int64_t i = listOfSizesSize - 1; i >= 0; --i )
     {
         ProfilerScope( "FileDatabase::updateCache it 1" );
@@ -675,11 +715,11 @@ void FileDatabase::updateCache()
         getFilesFromDB( size, sameSizeFiles );
         for( const CUL::FS::FileInfo& fi : sameSizeFiles )
         {
-            ProfilerScope( "FileDatabase::updateCache it 2" );
-            addToCache( fi );
+            filesToAdd.push_back( fi );
         }
         sameSizeFiles.clear();
     }
+    addToCache( filesToAdd );
 }
 
 void FileDatabase::addFile( MD5Value md5, const StringWr& filePath, const StringWr& fileSize, const StringWr& modTime )
@@ -724,15 +764,14 @@ void FileDatabase::addFileImpl( ELockType inLockType, MD5Value md5, const String
     if( foundFile )
     {
         const std::string binaryForm = filePathNormalized.getUtfChar();
-        snprintf( buffer, bufferLength, "UPDATE FILES SET SIZE='%s', MD5='%s', LAST_MODIFICATION='%s' WHERE PATH='%s'",
+        snprintf( buffer, bufferLength, "UPDATE FILES SET SIZE='%s', MD5='%s', LAST_MODIFICATION='%s' WHERE PATH=\"%s\"",
                   fileSize.getUtfChar(), md5.getSTDString().c_str(), modTime.getUtfChar(), binaryForm.c_str() );
     }
     else
     {
         const std::string binaryValue = filePathNormalized.getUtfChar();
 
-
-        snprintf( buffer, bufferLength, "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ( '%s', '%s', '%s', '%s' );",
+        snprintf( buffer, bufferLength, "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ( \"%s\", '%s', '%s', '%s' );",
                   binaryValue.c_str(), fileSize.getUtfChar(), md5.getSTDString().c_str(), modTime.getUtfChar() );
     }
     sqlQuery = buffer;
@@ -818,12 +857,18 @@ std::optional<FileInfo> FileDatabase::getFileInfo_Impl( ELockType inLockType, co
     if( PrintInfo && !result )
     {
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[FileDatabase::getFileInfo] Could not find: %s", path.getUtfChar() );
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[FileDatabase::getFileInfo] Used SQL command: %s", sqlQuery.getUtfChar() );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[FileDatabase::getFileInfo] Used SQL command: %s",
+                                                 sqlQuery.getUtfChar() );
     }
 
     if( rc != SQLITE_OK )
     {
         Assert::check( false, "DB ERROR: %s", zErrMsg );
+    }
+
+    if( result )
+    {
+        addToCache( *result );
     }
 
     return result;
@@ -958,7 +1003,7 @@ SortedStructuredListOfFiles::SortedStructuredListOfFiles( const SortedStructured
 {
 }
 
-SortedStructuredListOfFiles::SortedStructuredListOfFiles( SortedStructuredListOfFiles&& arg )
+SortedStructuredListOfFiles::SortedStructuredListOfFiles( SortedStructuredListOfFiles&& arg ) noexcept
     : m_groupsBySize( std::move( arg.m_groupsBySize ) )
 {
 }
@@ -972,7 +1017,7 @@ SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( const Sorte
     return *this;
 }
 
-SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( SortedStructuredListOfFiles&& arg )
+SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( SortedStructuredListOfFiles&& arg ) noexcept
 {
     if( this != &arg )
     {

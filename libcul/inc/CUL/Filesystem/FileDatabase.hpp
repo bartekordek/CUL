@@ -9,6 +9,7 @@
 #include "CUL/STL_IMPORTS/STD_atomic.hpp"
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_list.hpp"
+#include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
 #include "CUL/STL_IMPORTS/STD_optional.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_future.hpp"
@@ -27,7 +28,6 @@ NAMESPACE_BEGIN( FS )
 using Str = STDStringWrapper;
 using MD5Value = Str;
 
-
 struct FileInfo
 {
     bool Found = false;
@@ -43,7 +43,7 @@ struct FileInfo
 struct HashGroup
 {
     MD5Value MD5;
-    std::vector<FileInfo> Files;
+    std::set<FileInfo> Files;
 };
 
 struct SizeGroup
@@ -82,9 +82,9 @@ class SortedStructuredListOfFiles
 public:
     SortedStructuredListOfFiles();
     SortedStructuredListOfFiles( const SortedStructuredListOfFiles& rhv );
-    SortedStructuredListOfFiles( SortedStructuredListOfFiles&& rhv );
+    SortedStructuredListOfFiles( SortedStructuredListOfFiles&& rhv ) noexcept;
     SortedStructuredListOfFiles& operator=( const SortedStructuredListOfFiles& arg );
-    SortedStructuredListOfFiles& operator=( SortedStructuredListOfFiles&& arg );
+    SortedStructuredListOfFiles& operator=( SortedStructuredListOfFiles&& arg ) noexcept;
 
     void sort();
     void addFile( const FileInfo& arg );
@@ -148,18 +148,24 @@ private:
     void getListOfSizesFromDb( std::vector<uint64_t>& out ) const;
     std::optional<FileInfo> getFromCache( const StringWr& inFilePath ) const;
     bool removeFromCache( const StringWr& inFilePath );
-    void addFileImpl( ELockType inLockType, MD5Value md5, const CUL::StringWr& filePath, const CUL::StringWr& fileSize, const CUL::StringWr& modTime );
+    void addFileImpl( ELockType inLockType, MD5Value md5, const CUL::StringWr& filePath, const CUL::StringWr& fileSize,
+                      const CUL::StringWr& modTime );
     void removeFileFromDB_Impl( const CUL::StringWr& path );
-    void addToCache( const FileInfo& inFile );
+    void addToCache( const FileInfo& inFile ) const;
+    void addToCache( const std::vector<FileInfo>& inFiles ) const;
     std::optional<FileInfo> getFileInfo_Impl( ELockType inLockType, const CUL::StringWr& path ) const;
 
     static StringWr sanitize( const StringWr& inString );
     static StringWr deSanitize( const StringWr& inString );
     bool getIsFull() const;
-    void fetchUsage();
+    void fetchUsage() const;
 
     sqlite3* m_db = nullptr;
+#if defined( CUL_WINDOWS )
     Path m_databasePath = "FilesList.db";
+#else   // defined(CUL_WINDOWS)
+    Path m_databasePath = "FilesList_Linux.db";
+#endif  // defined(CUL_WINDOWS)
 
     StringWr m_currentFile;
     std::atomic<int64_t> m_current = 0;
@@ -169,7 +175,7 @@ private:
     ListAndApi* m_fetchList = nullptr;
     std::mutex m_fetchListMtx;
 
-    std::list<FileInfo> m_cachedFiles;
+    mutable std::unordered_map<std::int64_t, std::unordered_map<std::string, HashGroup>> m_cachedFiles;
     std::size_t m_cachedFilesMax{ 0u };
     mutable std::mutex m_cachedFilesMtx;
 
@@ -181,7 +187,7 @@ private:
 
     CUL::TaskCallback* m_updateCache{ nullptr };
 
-    CacheUsage m_usage;
+    mutable CacheUsage m_usage;
 
 private:
     FileDatabase( const FileDatabase& rhv ) = delete;
