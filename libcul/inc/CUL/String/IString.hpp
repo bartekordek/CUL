@@ -5,6 +5,12 @@
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 
+#if CUL_USE_WCHAR
+    #define CUL_STR( str ) L##str
+#else // #if CUL_USE_WCHAR
+    #define CUL_STR( str ) str
+#endif // #if CUL_USE_WCHAR
+
 namespace CUL
 {
 
@@ -81,6 +87,7 @@ public:
     virtual float toFloat() const;
     virtual std::int64_t toInt64() const;
     virtual std::u8string toU8String() const;
+    const char* operator*() const;
 
     virtual ~IString() = default;
 

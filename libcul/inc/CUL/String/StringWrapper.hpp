@@ -2,124 +2,130 @@
 
 #include "CUL/String/IString.hpp"
 
+#if defined(_MSC_VER)
+    #pragma warning( push )
+    #pragma warning( disable : 4251 )
+#endif
+
 namespace CUL
 {
 class String;
-class STDStringWrapper: public IString
+class CULLib_API STDStringWrapper: public IString
 {
 public:
-    CULLib_API static STDStringWrapper createFromPrintf( const char* msg... );
+    static STDStringWrapper createFromPrintf( const char* msg,... );
 
-    CULLib_API STDStringWrapper();
-    CULLib_API STDStringWrapper( const STDStringWrapper& inArg );
-    CULLib_API STDStringWrapper( STDStringWrapper&& inArg ) noexcept;
+    STDStringWrapper();
+    STDStringWrapper( const STDStringWrapper& inArg );
+    STDStringWrapper( STDStringWrapper&& inArg ) noexcept;
 
-    CULLib_API STDStringWrapper( const std::string& inArg );
-    CULLib_API STDStringWrapper( const char* inArg );
-    CULLib_API STDStringWrapper( const char inArg );
-    CULLib_API STDStringWrapper( const std::wstring& inArg );
-    CULLib_API STDStringWrapper( const wchar_t* inArg );
-    CULLib_API STDStringWrapper( const wchar_t inArg );
+    STDStringWrapper( const std::string& inArg );
+    STDStringWrapper( const char* inArg );
+    STDStringWrapper( const char inArg );
+    STDStringWrapper( const std::wstring& inArg );
+    STDStringWrapper( const wchar_t* inArg );
+    STDStringWrapper( const wchar_t inArg );
 
-    CULLib_API STDStringWrapper& operator=( const STDStringWrapper& inArg );
-    CULLib_API STDStringWrapper& operator=( STDStringWrapper&& inArg ) noexcept;
-    CULLib_API STDStringWrapper& operator=( const char* inArg );
-    CULLib_API STDStringWrapper& operator=( const std::string& inArg );
-    CULLib_API STDStringWrapper& operator=( const wchar_t* inArg );
-    CULLib_API STDStringWrapper& operator=( const std::wstring& inArg );
+    STDStringWrapper& operator=( const STDStringWrapper& inArg );
+    STDStringWrapper& operator=( STDStringWrapper&& inArg ) noexcept;
+    STDStringWrapper& operator=( const char* inArg );
+    STDStringWrapper& operator=( const std::string& inArg );
+    STDStringWrapper& operator=( const wchar_t* inArg );
+    STDStringWrapper& operator=( const std::wstring& inArg );
 
-    CULLib_API STDStringWrapper operator+=( const STDStringWrapper& inArg );
-    CULLib_API STDStringWrapper operator+( const STDStringWrapper& inArg ) const;
-    CULLib_API STDStringWrapper operator+( const char* inArg ) const;
-    CULLib_API STDStringWrapper operator+( const wchar_t* inArg ) const;
+    STDStringWrapper operator+=( const STDStringWrapper& inArg );
+    STDStringWrapper operator+( const STDStringWrapper& inArg ) const;
+    STDStringWrapper operator+( const char* inArg ) const;
+    STDStringWrapper operator+( const wchar_t* inArg ) const;
 
-    CULLib_API void createFrom( const String& inStr );
+    void createFrom( const String& inStr );
 
-    CULLib_API void append( const std::string& inStr ) override;
-    CULLib_API void append( const std::wstring& inStr ) override;
-    CULLib_API void append( char inChar ) override;
-    CULLib_API void append( wchar_t inChar ) override;
-    CULLib_API void append( const char* inChar ) override;
-    CULLib_API void append( const wchar_t* inChar ) override;
+    void append( const std::string& inStr ) override;
+    void append( const std::wstring& inStr ) override;
+    void append( char inChar ) override;
+    void append( wchar_t inChar ) override;
+    void append( const char* inChar ) override;
+    void append( const wchar_t* inChar ) override;
+    void append( const STDStringWrapper& inArg );
 
-    CULLib_API const UnderlyingChar* getCharVal() const override;
-    CULLib_API std::uint64_t toUint64() const;
+    const UnderlyingChar* getCharVal() const override;
+    std::uint64_t toUint64() const;
 
-    CULLib_API bool operator==( const STDStringWrapper& inArg ) const;
-    CULLib_API bool operator<( const STDStringWrapper& inArg ) const;
-    CULLib_API bool empty() const;
-    CULLib_API bool contains( const STDStringWrapper& inArg ) const;
-    CULLib_API std::int32_t size() const override;
+    bool operator==( const STDStringWrapper& inArg ) const;
+    bool operator<( const STDStringWrapper& inArg ) const;
+    bool empty() const;
+    bool contains( const STDStringWrapper& inArg ) const;
+    std::int32_t size() const override;
 
-    CULLib_API IString::UnderlyingChar operator[]( std::int32_t inPos ) const;
-    CULLib_API IString::UnderlyingChar& operator[]( std::int32_t inPos );
+    IString::UnderlyingChar operator[]( std::int32_t inPos ) const;
+    IString::UnderlyingChar& operator[]( std::int32_t inPos );
 
-    CULLib_API void replace( const char inWhat, const char inFor, bool allOccurences );
-    CULLib_API void replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences );
-    CULLib_API void removeFromStart( const wchar_t* inStr );
-    CULLib_API void removeFromStart( const char* inStr );
+    void replace( const char inWhat, const char inFor, bool allOccurences );
+    void replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences );
+    void removeFromStart( const wchar_t* inStr );
+    void removeFromStart( const char* inStr );
 
-    CULLib_API STDStringWrapper getLower() const;
-    CULLib_API STDStringWrapper getUpper() const;
+    STDStringWrapper getLower() const;
+    STDStringWrapper getUpper() const;
 
-    CULLib_API void toLower();
-    CULLib_API void toUpper();
+    void toLower();
+    void toUpper();
 
-    CULLib_API void erase( std::int32_t offset, std::int32_t len ) override;
-    CULLib_API void clear();
+    void erase( std::int32_t offset, std::int32_t len ) override;
+    void clear();
 
-    CULLib_API std::string getSTDString() const;
-    CULLib_API std::wstring getSTDWstring() const;
-    CULLib_API const char* getUtfChar() const;
-    CULLib_API const UnderlyingType& getValue() const;
+    std::string getSTDString() const;
+    std::wstring getSTDWstring() const;
+    const char* getUtfChar() const;
+    const UnderlyingType& getValue() const;
 
-    CULLib_API bool equals( const STDStringWrapper& arg ) const;
+    bool equals( const STDStringWrapper& arg ) const;
 
-    CULLib_API bool equals( const char* arg ) const override;
-    CULLib_API bool equals( const std::string& arg ) const override;
-    CULLib_API bool equals( const wchar_t* arg ) const override;
-    CULLib_API bool equals( const std::wstring& arg ) const override;
+    bool equals( const char* arg ) const override;
+    bool equals( const std::string& arg ) const override;
+    bool equals( const wchar_t* arg ) const override;
+    bool equals( const std::wstring& arg ) const override;
 
-    CULLib_API std::int32_t find( const char* inArg ) const override;
-    CULLib_API std::int32_t find( const char inArg ) const override;
-    CULLib_API std::int32_t find( const wchar_t* inArg ) const override;
-    CULLib_API std::int32_t find( const wchar_t inArg ) const override;
-    CULLib_API std::int32_t find( const std::wstring& inArg ) const override;
-    CULLib_API std::int32_t find( const std::string& inArg ) const override;
+    std::int32_t find( const char* inArg ) const override;
+    std::int32_t find( const char inArg ) const override;
+    std::int32_t find( const wchar_t* inArg ) const override;
+    std::int32_t find( const wchar_t inArg ) const override;
+    std::int32_t find( const std::wstring& inArg ) const override;
+    std::int32_t find( const std::string& inArg ) const override;
 
-    CULLib_API bool contains( const char inArg ) const override;
-    CULLib_API bool contains( const char* inArg ) const override;
-    CULLib_API bool contains( const std::string& inArg ) const override;
+    bool contains( const char inArg ) const override;
+    bool contains( const char* inArg ) const override;
+    bool contains( const std::string& inArg ) const override;
 
-    CULLib_API bool contains( const wchar_t inArg ) const override;
-    CULLib_API bool contains( const wchar_t* inArg ) const override;
-    CULLib_API bool contains( const std::wstring& inArg ) const override;
+    bool contains( const wchar_t inArg ) const override;
+    bool contains( const wchar_t* inArg ) const override;
+    bool contains( const std::wstring& inArg ) const override;
 
-    CULLib_API std::vector<STDStringWrapper> split( const STDStringWrapper& delimiter ) const;
-    CULLib_API std::vector<STDStringWrapper> split( const char delimiter ) const;
-    CULLib_API std::vector<STDStringWrapper> split( const wchar_t delimiter ) const;
+    std::vector<STDStringWrapper> split( const STDStringWrapper& delimiter ) const;
+    std::vector<STDStringWrapper> split( const char delimiter ) const;
+    std::vector<STDStringWrapper> split( const wchar_t delimiter ) const;
 
-    CULLib_API STDStringWrapper substr( std::int32_t off, std::int32_t count ) const;
+    STDStringWrapper substr( std::int32_t off, std::int32_t count ) const;
 
-    CULLib_API void removeAll( const char inWhat ) override;
-    CULLib_API void removeAll( const wchar_t inWhat ) override;
+    void removeAll( const char inWhat ) override;
+    void removeAll( const wchar_t inWhat ) override;
 
     // Compare
     bool startsWith( const char* inArg ) const override;
     bool startsWith( const wchar_t* inArg ) const override;
 
     // Conversion
-    CULLib_API bool isFloat() const override;
-    CULLib_API float toFloat() const override;
-    CULLib_API void fromFloat( float inValue );
-    CULLib_API std::int64_t toInt64() const override;
-    CULLib_API std::u8string toU8String() const;
+    bool isFloat() const override;
+    float toFloat() const override;
+    void fromFloat( float inValue );
+    std::int64_t toInt64() const override;
+    std::u8string toU8String() const;
 
     // Replace
     void replace( const std::string& inWhat, const std::string& inFor );
     void replace( const std::wstring& inWhat, const std::wstring& inFor );
 
-    CULLib_API ~STDStringWrapper();
+    ~STDStringWrapper();
 
 protected:
 private:
@@ -129,5 +135,20 @@ private:
 #endif  // #if CUL_USE_WCHAR
 };
 
+
+struct STDStringWrapperHash
+{
+    size_t operator()( const STDStringWrapper& s ) const noexcept
+    {
+        return std::hash<std::string_view>{}( s.getUtfChar() );
+    }
+};
+
+
+using StringHash = STDStringWrapperHash;
 using StringWr = STDStringWrapper;
+
+#if defined( _MSC_VER )
+    #pragma warning( pop )
+#endif
 }  // namespace CUL

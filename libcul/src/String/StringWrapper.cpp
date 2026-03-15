@@ -5,7 +5,7 @@
 
 namespace CUL
 {
-STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg... )
+STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg,... )
 {
     va_list args;
     va_start( args, msg );
@@ -21,6 +21,11 @@ STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg... )
 
 STDStringWrapper::STDStringWrapper()
 {
+}
+
+void STDStringWrapper::append( const STDStringWrapper& inArg )
+{
+    m_value += inArg.m_value;
 }
 
 // Conversion

@@ -52,4 +52,9 @@ std::u8string IString::toU8String() const
     Assert::check( false, "NOT IMPLEMENTED: %s", name );
     return std::u8string();
 }
+
+const char* IString::operator*() const
+{
+    return getUtfChar();
+}
 }

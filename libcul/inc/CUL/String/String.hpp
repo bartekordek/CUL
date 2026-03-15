@@ -231,7 +231,7 @@ private:
     bool m_serialized{ false };
 };
 
-struct CULLib_API StringHash{ std::size_t operator()( const String & s ) const noexcept { return std::hash<std::string>{}( s.string() );
+struct CULLib_API OldStringHash{ std::size_t operator()( const String & s ) const noexcept { return std::hash<std::string>{}( s.string() );
 }
 }
 ;

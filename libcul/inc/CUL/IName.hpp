@@ -1,6 +1,5 @@
 #pragma once
 
-#include "CUL.hpp"
 #include "CUL/String/StringWrapper.hpp"
 
 NAMESPACE_BEGIN( CUL )
