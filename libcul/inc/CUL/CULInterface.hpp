@@ -42,7 +42,6 @@ public:
     FS::FSApi* getFS();
     FS::FileFactory* getFF();
     Graphics::IImageLoader* getImageLoader();
-    GUTILS::ConsoleUtilities* getConsoleUtils();
     ThreadUtil& getThreadUtils();
 
     GUTILS::IConfigFile* loadConfigFile( const FS::Path& path );
@@ -67,7 +66,6 @@ private:
     OSUtils::ISystemFonts* m_sysFonts = nullptr;
     // GUTILS::DumbPtr<Graphics::IImageLoader> m_imageLoader;
     std::unique_ptr<Graphics::IImageLoader> m_imageLoader;
-    std::unique_ptr<GUTILS::ConsoleUtilities> m_args;
     ThreadUtil* m_threadUtils = nullptr;
 
     static CULInterface* s_instance;

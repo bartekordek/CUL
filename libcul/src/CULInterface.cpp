@@ -78,8 +78,6 @@ void CULInterface::initialize()
 
     // m_sysFonts = OSUtils::ISystemFonts::createConcrete( m_fsApi.get(), m_logger );
 
-    m_args.reset( new GUTILS::ConsoleUtilities() );
-
     m_threadUtils = &ThreadUtil::getInstance();
 
 
@@ -120,11 +118,6 @@ FS::FileFactory* CULInterface::getFF()
 Graphics::IImageLoader* CULInterface::getImageLoader()
 {
     return m_imageLoader.get();
-}
-
-GUTILS::ConsoleUtilities* CULInterface::getConsoleUtils()
-{
-    return m_args.get();
 }
 
 ThreadUtil& CULInterface::getThreadUtils()
