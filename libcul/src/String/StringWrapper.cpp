@@ -1,6 +1,7 @@
 #include "CUL/String/StringWrapper.hpp"
 #include "CUL/String/StringUtil.hpp"
 #include "CUL/String/String.hpp"
+#include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
 
 namespace CUL
@@ -180,6 +181,36 @@ const IString::UnderlyingType& STDStringWrapper::getValue() const
 std::uint64_t STDStringWrapper::toUint64() const
 {
     return StringUtil::strToUint64( m_value );
+}
+
+void STDStringWrapper::trim( TrimType type, UnderlyingChar ch )
+{
+    auto& str = m_value;
+
+    if( str.empty() )
+    {
+        return;
+    }
+
+    if( type == TrimType::Beginning || type == TrimType::Both )
+    {
+        str.erase( str.begin(), std::find_if( str.begin(), str.end(),
+                                              [ch]( UnderlyingChar c )
+                                              {
+                                                  return c != ch;
+                                              } ) );
+    }
+
+    if( type == TrimType::End || type == TrimType::Both )
+    {
+        str.erase( std::find_if( str.rbegin(), str.rend(),
+                                 [ch]( UnderlyingChar c )
+                                 {
+                                     return c != ch;
+                                 } )
+                       .base(),
+                   str.end() );
+    }
 }
 
 bool STDStringWrapper::operator==( const STDStringWrapper& inArg ) const

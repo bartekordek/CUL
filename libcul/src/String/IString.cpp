@@ -57,4 +57,10 @@ const char* IString::operator*() const
 {
     return getUtfChar();
 }
+
+void IString::trim( TrimType type, UnderlyingChar ch )
+{
+    const char* name = __func__;
+    Assert::check( false, "NOT IMPLEMENTED: %s", name );
+}
 }

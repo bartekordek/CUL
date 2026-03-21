@@ -60,6 +60,7 @@ public:
     IString::UnderlyingChar operator[]( std::int32_t inPos ) const;
     IString::UnderlyingChar& operator[]( std::int32_t inPos );
 
+    void trim( TrimType type, UnderlyingChar ch = CUL_CHAR( ' ' ) );
     void replace( const char inWhat, const char inFor, bool allOccurences );
     void replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences );
     void removeFromStart( const wchar_t* inStr );

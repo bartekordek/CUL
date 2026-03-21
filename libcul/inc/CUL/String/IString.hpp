@@ -7,12 +7,21 @@
 
 #if CUL_USE_WCHAR
     #define CUL_STR( str ) L##str
+    #define CUL_CHAR( x ) L##x
 #else // #if CUL_USE_WCHAR
     #define CUL_STR( str ) str
+    #define CUL_CHAR( x ) x
 #endif // #if CUL_USE_WCHAR
 
 namespace CUL
 {
+
+enum class TrimType : std::uint8_t
+{
+    Beginning = 0u,
+    End,
+    Both
+};
 
 class CULLib_API IString
 {
@@ -46,6 +55,7 @@ public:
     virtual void append( const char* inChar ) = 0;
     virtual void append( const wchar_t* inChar ) = 0;
 
+    virtual void trim( TrimType type, UnderlyingChar ch = CUL_CHAR( ' ' ) );
     virtual void removeAll( char inWhat ) = 0;
     virtual void removeAll( wchar_t inWhat ) = 0;
 
