@@ -138,6 +138,7 @@ public:
 
     static void fromFloat( std::string& inOutStr, float inValue );
     static void fromFloat( std::wstring& inOutStr, float inValue );
+    static const char* fromBool( bool value );
 
 protected:
 private:

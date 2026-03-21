@@ -658,6 +658,11 @@ void StringUtil::fromFloat( std::wstring& inOutStr, float v )
     charToWideString( inOutStr, utf8 );
 }
 
+const char* StringUtil::fromBool( bool value )
+{
+    return value ? "true" : "false";
+}
+
 bool StringUtil::startsWith( const char* inSource, const char* inArg )
 {
     if( !inSource || !inArg )
