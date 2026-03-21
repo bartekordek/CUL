@@ -6,6 +6,12 @@
 using namespace CUL;
 using namespace GUTILS;
 
+ConsoleUtilities& ConsoleUtilities::getInstance()
+{
+    static ConsoleUtilities instance;
+    return instance;
+}
+
 ConsoleUtilities::ConsoleUtilities() : m_args( new ArgumentsPairConcrete() )
 {
 }
