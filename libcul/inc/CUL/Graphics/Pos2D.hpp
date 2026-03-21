@@ -69,7 +69,7 @@ public:
         m_y = y;
     }
 
-    StringWr getSerializationContent( CounterType tabsSize, const bool = false ) const override
+    StringWr getSerializationContent( CounterType /*tabsSize*/, const bool = false ) const override
     {
         Assert::simple( false, "Unimplemented." );
         return StringWr();
