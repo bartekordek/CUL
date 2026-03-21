@@ -9,33 +9,33 @@
 
 NAMESPACE_BEGIN( CUL )
 
-class CULLib_API DataWrapper final
+class DataWrapper final
 {
 public:
-    DataWrapper();
-    DataWrapper( const DataWrapper& dw );
-    DataWrapper( DataWrapper&& dw );
-    DataWrapper& operator=( const DataWrapper& dw );
-    DataWrapper& operator=( DataWrapper&& dw );
+    CULLib_API DataWrapper();
+    CULLib_API DataWrapper( const DataWrapper& dw );
+    CULLib_API DataWrapper( DataWrapper&& dw );
+    CULLib_API DataWrapper& operator=( const DataWrapper& dw );
+    CULLib_API DataWrapper& operator=( DataWrapper&& dw );
 
-    void load( const void* data, std::size_t size, ETypes inType );
-    void* getData();
-    const void* getData() const;
-    std::size_t getSize() const;
-    std::size_t getElementCount() const;
+    CULLib_API void load( const void* data, std::size_t size, ETypes inType );
+    CULLib_API void* getData();
+    CULLib_API const void* getData() const;
+    CULLib_API std::size_t getSize() const;
+    CULLib_API std::size_t getElementCount() const;
 
-    void createFrom( const std::vector<float>& inData );
-    void createFrom( const float* inData, std::size_t inDataSize );
+    CULLib_API void createFrom( const std::vector<float>& inData );
+    CULLib_API void createFrom( const float* inData, std::size_t inDataSize );
 
-    void createFrom( const std::vector<std::uint32_t>& inData );
-    void createFrom( const std::vector<std::int32_t>& inData );
+    CULLib_API void createFrom( const std::vector<std::uint32_t>& inData );
+    CULLib_API void createFrom( const std::vector<std::int32_t>& inData );
 
-    void setType( ETypes inType );
-    ETypes getType() const;
+    CULLib_API void setType( ETypes inType );
+    CULLib_API ETypes getType() const;
 
-    bool getIsEmpty() const;
+    CULLib_API bool getIsEmpty() const;
 
-    ~DataWrapper();
+    CULLib_API ~DataWrapper();
 
 protected:
 private:
