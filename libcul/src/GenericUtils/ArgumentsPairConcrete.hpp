@@ -31,6 +31,7 @@ private:
     void createDummyArgs() override;
     void clearArgs();
     const String& getFlagValue( const String& flagName ) const override;
+    bool getDoesFlagExist( const char* inFlagName ) const override;
 
     ArgumentsVec m_argumentsPtrs;
     std::vector<NameValue> m_values;

@@ -84,6 +84,11 @@ void ConsoleUtilities::setArgs( const char* args )
     }
 }
 
+bool ConsoleUtilities::getDoesFlagExist( const char* inFlagName ) const
+{
+    return m_args->getDoesFlagExist( inFlagName );
+}
+
 ConsoleUtilities::~ConsoleUtilities()
 {
 }

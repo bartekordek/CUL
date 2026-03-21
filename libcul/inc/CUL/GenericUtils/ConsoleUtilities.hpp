@@ -17,7 +17,7 @@ public:
     CULLib_API const String& getFlagValue( const String& flagName ) const;
     CULLib_API void setArgs( const int argc, char** argv );
     CULLib_API void setArgs( const char* args );
-
+    CULLib_API bool getDoesFlagExist( const char* inFlagName ) const;
 
 private:
     CULLib_API ConsoleUtilities();

@@ -26,6 +26,7 @@ public:
     virtual void createDummyArgs() = 0;
     virtual const String& getFlagValue( const String& flagName ) const = 0;
     virtual void pushArg( const String& name, const String& value ) = 0;
+    virtual bool getDoesFlagExist( const char* inFlagName ) const = 0;
 
     static IArgumentsList* getConcrete();
 

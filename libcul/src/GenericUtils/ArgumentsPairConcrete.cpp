@@ -128,6 +128,21 @@ const String& ArgumentsPairConcrete::getFlagValue(
     }
 }
 
+bool ArgumentsPairConcrete::getDoesFlagExist( const char* inFlagName ) const
+{
+    auto id = std::find_if( m_values.begin(), m_values.end(),
+                            [inFlagName]( const NameValue& val )
+                            {
+                                if( val.name.equals( inFlagName ) )
+                                {
+                                    return true;
+                                }
+                                return false;
+                            } );
+
+    return id != m_values.end();
+}
+
 ArgumentsPairConcrete::~ArgumentsPairConcrete()
 {
 }
