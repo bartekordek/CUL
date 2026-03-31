@@ -143,14 +143,14 @@ const char* IFile::getUtfChar() const
     return nullptr;
 }
 
-std::string IFile::getLineUtf( std::int32_t inLineNum ) const
+std::string IFile::getLineUtf( std::int32_t /*inLineNum*/ ) const
 {
     const char* name = __func__;
     Assert::check( false, "NOT IMPLEMENTED: %s", name );
     return std::string();
 }
 
-std::wstring IFile::getLineW( std::int32_t inLineNum ) const
+std::wstring IFile::getLineW( std::int32_t /*inLineNum*/ ) const
 {
     const char* name = __func__;
     Assert::check( false, "NOT IMPLEMENTED: %s", name );
@@ -174,7 +174,7 @@ void IFile::calculateMD5()
         std::ifstream file( currPath, std::ios::binary );
         file.unsetf( std::ios::skipws );
 
-        constexpr size_t bytesPerRead = 131072;
+        constexpr size_t bytesPerRead = 16384;
 
         char buffor[bytesPerRead];
         std::array<uint8_t, 4> value;
