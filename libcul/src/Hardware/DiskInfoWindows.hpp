@@ -68,7 +68,7 @@ private:
 
     mutable std::mutex m_diskHandlesMtx;
     std::unordered_map<std::string, DiskInfoValue> m_diskHandles;
-    LARGE_INTEGER m_ticksPerSeconds{ 0 };
+    LARGE_INTEGER m_ticksPerSeconds;
 
 public:
     CUL_NONCOPYABLE( CDiskInfoWindows );

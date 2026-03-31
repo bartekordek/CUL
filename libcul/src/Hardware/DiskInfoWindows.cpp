@@ -15,7 +15,9 @@ using namespace CUL;
 
 CDiskInfoWindows::CDiskInfoWindows()
 {
-    BOOL rc = QueryPerformanceFrequency( &m_ticksPerSeconds );
+    std::memset( &m_ticksPerSeconds, 0, sizeof( m_ticksPerSeconds ) );
+
+    [[maybe_unused]] BOOL rc = QueryPerformanceFrequency( &m_ticksPerSeconds );
 
     findDiskMappings();
 }
@@ -26,7 +28,7 @@ void CDiskInfoWindows::findDiskMappings()
     char buffer[bufferLength];
 
     constexpr float TimeCoverageMs = 4.f * 1000.f;
-    const float howManySamples = TimeCoverageMs / getPoolIntervalMs();
+    const float howManySamples = TimeCoverageMs / static_cast<float>( getPoolIntervalMs() );
 
     for (char currentDiskName = 'A'; currentDiskName <= 'Z'; ++currentDiskName)
     {
@@ -142,30 +144,28 @@ void CDiskInfoWindows::mainLoop()
             }
         }
 
-        //if( !DeviceIoControl( hTarget, IOCTL_DISK_PERFORMANCE, NULL, 0, lpOutBuffer, cbOutBufferSize, &cbBytesReturned, NULL ) )
+        // if( !DeviceIoControl( hTarget, IOCTL_DISK_PERFORMANCE, NULL, 0, lpOutBuffer, cbOutBufferSize, &cbBytesReturned, NULL ) )
         //{
-        //    CloseHandle( hTarget );
-        //    break;
-        //}
+        //     CloseHandle( hTarget );
+        //     break;
+        // }
 
-        //const std::int64_t wt = dp.WriteTime.QuadPart;
-        //const std::int64_t it = dp.IdleTime.QuadPart;
+        // const std::int64_t wt = dp.WriteTime.QuadPart;
+        // const std::int64_t it = dp.IdleTime.QuadPart;
 
-        //const auto diffWt = wt - prevWt;
-        //const auto diffIt = it - prevIt;
+        // const auto diffWt = wt - prevWt;
+        // const auto diffIt = it - prevIt;
 
-        //maxDiff = std::max( maxDiff, diffIt );
+        // maxDiff = std::max( maxDiff, diffIt );
 
-        //LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "Write time diff: %lu, IdleTime diff %lu [%lu]", diffWt, diffIt,
-        //                                         maxDiff );
-        //prevIt = it;
-        //prevWt = wt;
+        // LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "Write time diff: %lu, IdleTime diff %lu [%lu]", diffWt, diffIt,
+        //                                          maxDiff );
+        // prevIt = it;
+        // prevWt = wt;
 
         ITimer::sleepMiliSeconds( getPoolIntervalMs() );
-    }   
+    }
 }
-
-constexpr float bytesInMegabyte = 1024.f * 1024.f;
 
 void CDiskInfoWindows::debugLoop()
 {
@@ -216,7 +216,7 @@ void CDiskInfoWindows::debugLoop()
     }
 }
 
-SDiskInfo calcDelta( const SDiskInfo& v1, const SDiskInfo& v2 )
+SDiskInfo calcDelta( [[maybe_unused]] const SDiskInfo& v1, [[maybe_unused]] const SDiskInfo& v2 )
 {
     SDiskInfo result;
 
@@ -235,7 +235,8 @@ SDiskInfo calcDelta( const SDiskInfo& v1, const SDiskInfo& v2 )
 
 void CDiskInfoWindows::collectData( DiskInfoValue& inOutDataValue )
 {
-    DISK_PERFORMANCE dp = { 0 };
+    DISK_PERFORMANCE dp;
+    std::memset( &dp, 0, sizeof( dp ) );
     DWORD cbOutBufferSize = sizeof( DISK_PERFORMANCE );
     DWORD cbBytesReturned = 0;
     LPVOID lpOutBuffer = (LPVOID)&dp;
