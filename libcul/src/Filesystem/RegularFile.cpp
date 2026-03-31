@@ -242,18 +242,20 @@ const char* RegularFile::getUtfChar() const
 // Getters
 std::string RegularFile::getLineUtf( std::int32_t inLineNum ) const
 {
-    if( (std::size_t)inLineNum < m_rows.size() )
+    const std::size_t lineNumSize = static_cast<std::size_t>( inLineNum );
+    if( lineNumSize < m_rows.size() )
     {
-        return m_rows[inLineNum].getSTDString();
+        return m_rows[lineNumSize].getSTDString();
     }
     return "";
 }
 
 std::wstring RegularFile::getLineW( std::int32_t inLineNum ) const
 {
-    if( (std::size_t)inLineNum < m_rows.size() )
+    const std::size_t lineNumSize = static_cast<std::size_t>( inLineNum );
+    if( lineNumSize < m_rows.size() )
     {
-        return m_rows[inLineNum].getSTDWstring();
+        return m_rows[lineNumSize].getSTDWstring();
     }
     return L"";
 }

@@ -70,14 +70,14 @@ void String::append( wchar_t inChar )
     deleteTemp();
 }
 
-bool String::startsWith( const char* inStr, std::size_t* /*outInStrLen*/ ) const
+bool String::startsWith( const char* inStr ) const
 {
     std::wstring inStrWchar;
     StringUtil::charToWideString( inStrWchar, inStr );
     return StringUtil::startsWith( m_value, inStrWchar.c_str() );
 }
 
-bool String::startsWith( const wchar_t* inStr, std::size_t* /*outInStrLen*/ ) const
+bool String::startsWith( const wchar_t* inStr ) const
 {
     return StringUtil::startsWith( m_value, inStr );
 }

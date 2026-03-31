@@ -181,8 +181,8 @@ public:
     void removeFromStart( const wchar_t* inStr );
     void removeFromStart( const char* inStr );
 
-    bool startsWith( const char* inArg, std::size_t* outInStrLen = nullptr ) const;
-    bool startsWith( const wchar_t* inArg, std::size_t* outInStrLen = nullptr ) const;
+    bool startsWith( const char* inArg ) const override;
+    bool startsWith( const wchar_t* inArg) const override;
 
     static String createFromPrintf( const char* msg... );
 

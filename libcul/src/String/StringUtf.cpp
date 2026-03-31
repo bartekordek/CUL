@@ -101,12 +101,12 @@ std::int32_t String::find( const char arg ) const
     return StringUtil::find( m_value, word );
 }
 
-bool String::startsWith( const char* inStr, std::size_t* outInStrLen ) const
+bool String::startsWith( const char* inStr ) const
 {
     return StringUtil::startsWith( m_value, inStr );
 }
 
-bool String::startsWith( const wchar_t* inStr, std::size_t* outInStrLen ) const
+bool String::startsWith( const wchar_t* inStr ) const
 {
     std::string word;
     StringUtil::wideStringToChar( word, std::wstring( inStr ) );
