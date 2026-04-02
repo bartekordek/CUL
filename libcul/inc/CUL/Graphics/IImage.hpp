@@ -11,11 +11,12 @@ using SSize2Dui = Graphics::SSize2Dui;
 using SSize2Di = Graphics::SSize2Di;
 
 
-enum class PixelFormat: short
+enum class PixelFormat: std::int32_t
 {
     NONE = -1,
     RGB = 0x1907,
     RGBA = 0x1908,
+    RGBA8 = 0x8058,
     ARGB,
     BGR,
     BGRA,
