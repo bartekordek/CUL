@@ -16,6 +16,7 @@ public:
     IName& operator=( IName&& rhv ) noexcept;
     const StringWr& getName() const;
     virtual void setName( const StringWr& name );
+    virtual void setName( const char* name, ... );
 
     virtual ~IName();
 
