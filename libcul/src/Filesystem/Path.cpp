@@ -2,6 +2,7 @@
 #include "CUL/Time.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
+#include "CUL/String/StringWrapper.hpp"
 
 #include "CUL/CULInterface.hpp"
 
@@ -77,7 +78,7 @@ Path& Path::operator=( const Path& path )
     return *this;
 }
 
-Path& Path::operator=( const STDStringWrapper& path )
+Path& Path::operator=( const StringWr& path )
 {
     if( this->m_fullPath != path )
     {
