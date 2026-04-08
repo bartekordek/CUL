@@ -2,7 +2,7 @@
 
 #include "CUL/String/IString.hpp"
 
-#if defined(_MSC_VER)
+#if defined( _MSC_VER )
     #pragma warning( push )
     #pragma warning( disable : 4251 )
 #endif
@@ -13,7 +13,7 @@ class String;
 class CULLib_API STDStringWrapper: public IString
 {
 public:
-    static STDStringWrapper createFromPrintf( const char* msg,... );
+    static STDStringWrapper createFromPrintf( const char* msg, ... );
 
     STDStringWrapper();
     STDStringWrapper( const STDStringWrapper& inArg );
@@ -52,6 +52,7 @@ public:
     std::uint64_t toUint64() const;
 
     bool operator==( const STDStringWrapper& inArg ) const;
+    bool operator!=( const STDStringWrapper& inArg ) const;
     bool operator<( const STDStringWrapper& inArg ) const;
     bool empty() const;
     bool contains( const STDStringWrapper& inArg ) const;
@@ -136,7 +137,6 @@ private:
 #endif  // #if CUL_USE_WCHAR
 };
 
-
 struct STDStringWrapperHash
 {
     size_t operator()( const STDStringWrapper& s ) const noexcept
@@ -144,7 +144,6 @@ struct STDStringWrapperHash
         return std::hash<std::string_view>{}( s.getUtfChar() );
     }
 };
-
 
 using StringHash = STDStringWrapperHash;
 using StringWr = STDStringWrapper;

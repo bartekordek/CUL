@@ -6,7 +6,7 @@
 
 namespace CUL
 {
-STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg,... )
+STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg, ... )
 {
     va_list args;
     va_start( args, msg );
@@ -216,6 +216,11 @@ void STDStringWrapper::trim( TrimType type, UnderlyingChar ch )
 bool STDStringWrapper::operator==( const STDStringWrapper& inArg ) const
 {
     return m_value == inArg.m_value;
+}
+
+bool STDStringWrapper::operator!=( const STDStringWrapper& inArg ) const
+{
+    return m_value != inArg.m_value;
 }
 
 bool STDStringWrapper::operator<( const STDStringWrapper& inArg ) const
