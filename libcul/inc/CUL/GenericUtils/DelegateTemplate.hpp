@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
+#include "CUL/GenericUtils/NonCopyable.hpp"
 
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
@@ -72,7 +73,7 @@ template <typename Type1, typename Type2>
 class DelegateTemplateTwoParam final: public DelegateTemplate
 {
 public:
-    using DelegateInput = std::function < void( Type1, Type2 )>;
+    using DelegateInput = std::function<void( Type1, Type2 )>;
     DelegateTemplateTwoParam() = default;
 
     void addDelegate( DelegateInput delegate )
@@ -102,5 +103,39 @@ private:
     DelegateTemplateTwoParam& operator=( DelegateTemplateTwoParam&& arg ) = delete;
 };
 
+
+template <typename Type1, typename Type2, typename Type3>
+class DelegateTemplateThreeParam final: public DelegateTemplate
+{
+public:
+    using DelegateInput = std::function<void( Type1, Type2, Type3 )>;
+    DelegateTemplateThreeParam() = default;
+
+    void addDelegate( DelegateInput delegate )
+    {
+        m_delegates.push_back( delegate );
+    }
+
+    void execute( Type1 value1, Type2 value2, Type3 value3 )
+    {
+        const size_t size = m_delegates.size();
+        for( size_t i = 0; i < size; ++i )
+        {
+            m_delegates[i]( value1, value2, value3 );
+        }
+    }
+
+    virtual ~DelegateTemplateThreeParam()
+    {
+    }
+
+    CUL_NONCOPYABLE( DelegateTemplateThreeParam )
+
+protected:
+private:
+    std::vector<DelegateInput> m_delegates;
+
+private:
+};
 NAMESPACE_END( GUTILS )
 NAMESPACE_END( CUL )
