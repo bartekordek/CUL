@@ -302,6 +302,13 @@ STDStringWrapper STDStringWrapper::substr( std::int32_t off, std::int32_t count 
 const char* STDStringWrapper::getUtfChar() const
 {
     const auto size = m_value.size();
+
+    if( ( m_utf != nullptr ) && ( strlen( m_utf ) < size ) )
+    {
+        delete[] m_utf;
+        m_utf = nullptr;
+    }
+
     if( !m_utf )
     {
         m_utf = new char[size + 1u];
