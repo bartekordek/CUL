@@ -12,7 +12,9 @@
 using namespace CUL;
 using namespace FS;
 
-FSApi::FSApi( CULInterface* cul, FS::FileFactory* ff ): m_culInterface( cul ), m_fileFactory( ff )
+FSApi::FSApi( CULInterface* cul, FS::FileFactory* ff )
+    : m_culInterface( cul )
+    , m_fileFactory( ff )
 {
 }
 
@@ -31,6 +33,30 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory )
         Path culPath;
         culPath.createFrom( StringWr( entryPath.c_str() ) );
         result.push_back( culPath );
+    }
+
+    return result;
+}
+
+std::vector<Path> FSApi::ListAllFiles( const Path& directory, const StringWr& word )
+{
+    ProfilerScope( "FSApi::ListAllFilesWord" );
+
+    std::vector<Path> result;
+
+    const std::filesystem::path dirAsPath = directory.getPath().getValue();
+    for( const auto& entry : std::filesystem::recursive_directory_iterator(
+             dirAsPath, std::filesystem::directory_options::skip_permission_denied ) )
+    {
+        const std::filesystem::path entryPath = entry.path();
+        std::error_code ec;
+        Path culPath;
+        const StringWr filePathAsString( entryPath.c_str() );
+        if( filePathAsString.contains(word) )
+        {
+            culPath.createFrom( filePathAsString );
+            result.push_back( culPath );
+        }
     }
 
     return result;
