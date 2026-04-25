@@ -11,6 +11,8 @@ class logger;
 }
 
 NAMESPACE_BEGIN( CUL )
+class CULInterface;
+
 NAMESPACE_BEGIN( LOG )
 
 using LogEntry = std::pair<std::string, Severity>;
@@ -34,6 +36,10 @@ private:
     LoggerSimpleStandardOutput( const LoggerSimpleStandardOutput& arg ) = delete;
     LoggerSimpleStandardOutput& operator=( const LoggerSimpleStandardOutput& arg ) = delete;
     void init();
+    void findAndCheckOldestLogFiles( const CUL::String& inLogBaseName );
+
+    CULInterface& m_interface;
+    std::int32_t m_maxLogCount{ 4 };
 
     std::shared_ptr<spdlog::logger> m_logger;
     std::queue<LogEntry> m_logslist;
