@@ -3,6 +3,7 @@
 #include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 NAMESPACE_BEGIN( CUL )
 
@@ -51,6 +52,7 @@ class CULLib_API TimerFactory
 {
 public:
     static ITimer* getChronoTimerPtr( LOG::ILogger* logger );
+    static std::unique_ptr<ITimer> getChronoTimer( LOG::ILogger* logger );
 
 private:
 };

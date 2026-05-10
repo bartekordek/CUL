@@ -24,17 +24,18 @@ IConfigFileConcrete::IConfigFileConcrete( const FS::Path& path, CULInterface* cu
     m_file = culInterface->getFF()->createFileFromPath( path );
 }
 
-void IConfigFileConcrete::addValue( const String& valueName, const String& value )
+void IConfigFileConcrete::addValue( const StringWr& valueName, const StringWr& value )
 {
-    m_values[valueName] = value;
+    m_values.insert( { valueName.getSTDString(), value.getSTDString() } );
 }
 
-const String& IConfigFileConcrete::getValue( const String& valueFieldName ) const
+const StringWr IConfigFileConcrete::getValue( const StringWr& valueFieldName ) const
 {
-    const auto it = m_values.find( valueFieldName );
+    const std::string valueAsStdString = valueFieldName.getSTDString();
+    const auto it = m_values.find( valueAsStdString );
     if( it != m_values.end() )
     {
-        return m_values.at( valueFieldName );
+        return it->second;
     }
 
     return m_empty;

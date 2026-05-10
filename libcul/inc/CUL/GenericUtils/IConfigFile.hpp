@@ -14,7 +14,7 @@ class CULLib_API IConfigFile
 public:
     IConfigFile() = default;
 
-    virtual const String& getValue( const String& valueFieldName ) const = 0;
+    virtual const StringWr getValue( const StringWr& valueFieldName ) const = 0;
     virtual void reload() = 0;
     virtual void getModificationTime(Time& outTime) = 0;
     virtual ~IConfigFile() = default;

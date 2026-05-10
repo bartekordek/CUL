@@ -741,7 +741,7 @@ bool StringUtil::equals( const char* s1, const char* s2 )
 
 std::int32_t StringUtil::cmp( const wchar_t* s1, const wchar_t* s2 )
 {
-    return std::wcscmp( s1, s2 );
+    return std::wcscmp( s1, s2 ) == 0;
 }
 
 bool StringUtil::equals( const wchar_t* s1, const wchar_t* s2 )

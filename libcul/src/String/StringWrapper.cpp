@@ -213,6 +213,28 @@ void STDStringWrapper::trim( TrimType type, UnderlyingChar ch )
     }
 }
 
+ThreeState STDStringWrapper::toBool() const
+{
+    if( empty() )
+    {
+        return ThreeState::Undetermined;
+    }
+
+    auto copy = *this;
+    auto lowerCaseValue = copy.getLower();
+
+    if( lowerCaseValue.equals( CUL_STR( "true" ) ) )
+    {
+        return ThreeState::True;
+    }
+    else if( lowerCaseValue.equals( CUL_STR( "false" ) ) )
+    {
+        return ThreeState::False;
+    }
+
+    return ThreeState::Undetermined;
+}
+
 bool STDStringWrapper::operator==( const STDStringWrapper& inArg ) const
 {
     return m_value == inArg.m_value;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CUL/CUL.hpp"
+#include "CUL/Basic/ThreeState.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
@@ -98,6 +98,7 @@ public:
     virtual std::int64_t toInt64() const;
     virtual std::u8string toU8String() const;
     const char* operator*() const;
+    virtual ThreeState toBool() const = 0;
 
     virtual ~IString() = default;
 

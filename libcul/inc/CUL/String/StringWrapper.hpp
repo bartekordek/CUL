@@ -122,6 +122,7 @@ public:
     void fromFloat( float inValue );
     std::int64_t toInt64() const override;
     std::u8string toU8String() const;
+    ThreeState toBool() const override;
 
     // Replace
     void replace( const std::string& inWhat, const std::string& inFor );

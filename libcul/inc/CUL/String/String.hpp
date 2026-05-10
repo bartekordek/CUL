@@ -159,7 +159,7 @@ public:
     int64_t toInt64() const;
     uint64_t toUint64() const;
     std::uint64_t toUInt() const;
-    ThreeState toBool() const;
+    ThreeState toBool() const override;
 
     std::int32_t length() const;
     std::int32_t size() const override;
