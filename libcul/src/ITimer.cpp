@@ -29,8 +29,7 @@ ITimer* TimerFactory::getChronoTimerPtr( LOG::ILogger* logger )
 
 std::unique_ptr<ITimer> TimerFactory::getChronoTimer( LOG::ILogger* logger )
 {
-    auto ptr = std::make_unique<TimerChrono>( logger );
-    return ptr;
+    return std::make_unique<TimerChrono>( logger );
 }
 
 void ITimer::sleepSeconds( unsigned int seconds )

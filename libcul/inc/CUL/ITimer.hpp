@@ -1,8 +1,8 @@
 #pragma once
 
 #include "CUL/CUL.hpp"
-#include "CUL/STL_IMPORTS/STD_functional.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
+#include "CUL/STL_IMPORTS/STD_functional.hpp"
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 NAMESPACE_BEGIN( CUL )
