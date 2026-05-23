@@ -209,6 +209,15 @@ const STDStringWrapper& Path::getDiskName() const
     return m_diskName;
 }
 
+void Path::convertToSlash()
+{
+    m_fullPath.replace( L'\\', L'/', true );
+    m_extension.replace( L'\\', L'/', true );
+    m_baseName.replace( L'\\', L'/', true );
+    m_dir.replace( L'\\', L'/', true );
+    m_diskName.replace( L'\\', L'/', true );
+}
+
 uint64_t Path::getFileSize() const
 {
     auto calculateSize = [this]()

@@ -68,6 +68,7 @@ TEST_F( FilesystemTests, GetBaseName )
 TEST_F( FilesystemTests, GetFullPath )
 {
     Path file( "C:\\SomeDirectory\\SomeFile.extension" );
+    file.convertToSlash();
     ASSERT_EQ( file.getPath(), "C:/SomeDirectory/SomeFile.extension" );
 }
 

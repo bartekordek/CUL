@@ -316,6 +316,7 @@ TEST_F( StringTests, deserializationTest00 )
 TEST_F( StringTests, pathToFile00 )
 {
     CUL::FS::Path current( "D:/BooksLibrary/Magazines/CD-Action/1999/CDA 02-99.pdf" );
+    current.convertToSlash();
     CUL::String pathAsString = current.getPath().getValue();
     pathAsString.serialize();
 #if CUL_USE_WCHAR
