@@ -214,11 +214,16 @@ uint64_t Path::getFileSize() const
     auto calculateSize = [this]()
     {
         const FsPath file( m_fullPath.getValue() );
-#if defined( _MSC_VER ) && _MSC_VER < 1920
-        m_fileSize = std::experimental::filesystem::file_size( file );
-#else
-        m_fileSize = std::filesystem::file_size( file );
-#endif
+        std::error_code ec;
+        m_fileSize = std::filesystem::file_size( file, ec );
+        const auto errorCodeValue = ec.value();
+        if( errorCodeValue != 0 )
+        {
+            // 3 - path does not exist
+            const std::string errorMessage = ec.message();
+            m_fileSize = 0;
+        }
+
         m_sizeCalculated = true;
     };
 
@@ -469,7 +474,7 @@ void Path::normalizePath( STDStringWrapper& path )
     }
 
 #if defined( CUL_WINDOWS )
-    path.replace( L'\\', L'/', true );
+    path.replace( L'/', L'\\', true );
 #else
     path.replace( '\\', '/', true );
 #endif
