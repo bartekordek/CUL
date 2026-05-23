@@ -14,6 +14,7 @@ class CULLib_API STDStringWrapper: public IString
 {
 public:
     static STDStringWrapper createFromPrintf( const char* msg, ... );
+    static STDStringWrapper createFromPrintf( const wchar_t* msg, ... );
 
     STDStringWrapper();
     STDStringWrapper( const STDStringWrapper& inArg );

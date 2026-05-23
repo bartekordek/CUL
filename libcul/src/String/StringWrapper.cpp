@@ -20,6 +20,20 @@ STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg, ... )
     return result;
 }
 
+STDStringWrapper STDStringWrapper::createFromPrintf( const wchar_t* msg, ... )
+{
+    va_list args;
+    va_start( args, msg );
+    constexpr std::size_t bufferSize{ 1024u };
+    wchar_t buffer[bufferSize];
+    vswprintf( buffer, bufferSize, msg, args );
+    va_end( args );
+
+    STDStringWrapper result( buffer );
+
+    return result;
+}
+
 STDStringWrapper::STDStringWrapper()
 {
 }
