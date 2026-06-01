@@ -3,8 +3,9 @@
 #include "CUL/CUL.hpp"
 #include "CUL/GenericUtils/NonCopyable.hpp"
 
-#include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
+#include "CUL/STL_IMPORTS/STD_mutex.hpp"
+#include "CUL/STL_IMPORTS/STD_vector.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
@@ -101,6 +102,40 @@ private:
     DelegateTemplateTwoParam( DelegateTemplateTwoParam&& arg );
     DelegateTemplateTwoParam& operator=( const DelegateTemplateTwoParam& arg ) = delete;
     DelegateTemplateTwoParam& operator=( DelegateTemplateTwoParam&& arg ) = delete;
+};
+
+
+template <typename Type1, typename Type2>
+class DelegateTemplateGuardedTwoParam final: public DelegateTemplate
+{
+public:
+    using DelegateInput = std::function<void( Type1, Type2 )>;
+    DelegateTemplateGuardedTwoParam() = default;
+
+    void addDelegate( DelegateInput delegate )
+    {
+        std::lock_guard<std::mutex> locker( m_delegatesMtx );
+        m_delegates.push_back( delegate );
+    }
+
+    void execute( Type1 value1, Type2 value2 )
+    {
+        std::lock_guard<std::mutex> locker( m_delegatesMtx );
+        const size_t size = m_delegates.size();
+        for( size_t i = 0; i < size; ++i )
+        {
+            m_delegates[i]( value1, value2 );
+        }
+    }
+
+    virtual ~DelegateTemplateGuardedTwoParam() = default;
+
+    CUL_NONCOPYABLE( DelegateTemplateGuardedTwoParam )
+
+protected:
+private:
+    std::vector<DelegateInput> m_delegates;
+    std::mutex m_delegatesMtx;
 };
 
 
