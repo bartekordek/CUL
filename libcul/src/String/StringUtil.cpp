@@ -70,7 +70,7 @@ void StringUtil::removeFromStart( char* inOutSource, const char* inStr )
         return;
     }
 
-    const std::size_t lenStr = strLen( inStr );
+    const std::size_t lenStr = static_cast<std::size_t>( strLen( inStr ) );
 
     if( lenStr == 0 )
     {
