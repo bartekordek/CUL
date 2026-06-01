@@ -40,7 +40,8 @@ private:
 
 #elif defined( TRACY_ENABLE )
     #include "CUL/IMPORT_tracy.hpp"
-    #define ProfileScopeVar( varName ) ZoneNamed( varName, true )
+    #define ProfileScopeVarName( varName, displayName ) ZoneNamedN( varName, displayName, true )
+    #define ProfileScopeVar( varName ) ZoneNamedN( varName, #varName, true )
     #define ProfilerScope( name ) ZoneScopedN(name)
     #define ProfilerScopeColor( name, color ) ZoneScopedNC( name, color )
     #define FrameEnd FrameMark
