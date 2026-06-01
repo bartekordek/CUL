@@ -9,14 +9,14 @@ bool IString::operator==( const char* inArg ) const
     return equals( inArg );
 }
 
-bool IString::startsWith( const char* inArg ) const
+bool IString::startsWith( const char* /*inArg*/ ) const
 {
     const char* name = __func__;
     Assert::check( false, "NOT IMPLEMENTED: %s", name );
     return false;
 }
 
-bool IString::startsWith( const wchar_t* inArg ) const
+bool IString::startsWith( const wchar_t* /*inArg*/ ) const
 {
     const char* name = __func__;
     Assert::check( false, "NOT IMPLEMENTED: %s", name );
@@ -58,7 +58,7 @@ const char* IString::operator*() const
     return getUtfChar();
 }
 
-void IString::trim( TrimType type, UnderlyingChar ch )
+void IString::trim( TrimType /*type*/, UnderlyingChar /*ch*/ )
 {
     const char* name = __func__;
     Assert::check( false, "NOT IMPLEMENTED: %s", name );
