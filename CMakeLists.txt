@@ -3,8 +3,26 @@ cmake_minimum_required(VERSION 3.0.0)
 set( CMAKE_CXX_STANDARD 23 )
 project(cul_main)
 
+cmake_policy(SET CMP0069 NEW)
 
 message( "CMAKE BUILD TYPE: ${CMAKE_BUILD_TYPE}" )
+
+
+set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_DEBUG FALSE)
+set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO TRUE)
+set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL TRUE)
+set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+
+add_compile_options(
+    $<$<CONFIG:Release>:/Ot>
+    $<$<CONFIG:RelWithDebInfo>:/Ot>
+
+    $<$<CONFIG:Release>:/Oi>
+    $<$<CONFIG:RelWithDebInfo>:/Oi>
+
+    $<$<CONFIG:Release>:/Ob2>
+    $<$<CONFIG:RelWithDebInfo>:/Ob2>
+)
 
 macro(CmakeToWindow InputPath OutputPath)
     string(REGEX REPLACE "/" "\\\\" ${OutputPath} "${InputPath}")
@@ -40,11 +58,15 @@ else()
 endif()
 
 set( ENV{CUL_OUTPUT_DIR} ${CUL_OUTPUT_DIR} )
-list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules" )
+list( APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" )
 
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CUL_OUTPUT_DIR} )
+
+
+include(cmake/ISPC.cmake)
+setup_ispc(VERSION 1.25.3)
 
 set( CUL_DEPS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps )
 # Add sub directories
