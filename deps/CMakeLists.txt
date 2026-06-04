@@ -1,6 +1,8 @@
 #cmake -DCMAKE_BUILD_TYPE=Debug
 cmake_minimum_required(VERSION 3.0.0)
 
+cmake_policy(SET CMP0069 NEW)
+
 project(cul LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)

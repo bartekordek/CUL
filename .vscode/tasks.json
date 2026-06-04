@@ -108,7 +108,6 @@
             "type": "shell",
             "command": "cmake",
             "args": [
-                "cmake",
                 "-S",
                 ".",
                 "-B Build-Windows"
