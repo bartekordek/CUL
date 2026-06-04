@@ -15,9 +15,7 @@ function(setup_ispc)
     )
 
     if(NOT ISPC_VERSION)
-
         message(FATAL_ERROR "setup_ispc requires VERSION")
-
     endif()
 
     # --------------------------------------------------------------------------
@@ -29,46 +27,43 @@ function(setup_ispc)
         set(ISPC_DIR ispc-v${ISPC_VERSION}-windows)
         set(ISPC_ARCHIVE "${ISPC_DIR}.zip")
         set(ISPC_EXECUTABLE_NAME "ispc.exe")
-
-    elseif(APPLE)
-        set(ISPC_PLATFORM "macos")
-        set(ISPC_DIR "ispc-v${ISPC_VERSION}-macOS.universal.tar.gz")
-        set(ISPC_ARCHIVE "${ISPC_DIR}.tar.gz")
-        set(ISPC_EXECUTABLE_NAME "ispc")
-
     elseif(UNIX)
         set(ISPC_PLATFORM "linux")
-        set(ISPC_DIR ispc-v${ISPC_VERSION}-linux.tar.gz)
+        set(ISPC_DIR ispc-v${ISPC_VERSION}-linux)
         set(ISPC_ARCHIVE "${ISPC_DIR}.tar.gz")
         set(ISPC_EXECUTABLE_NAME "ispc")
     else()
         message(FATAL_ERROR "Unsupported platform")
     endif()
 
+    message(STATUS "Detected platform: ${ISPC_PLATFORM}")
+    message(STATUS "ISPC directory: ${ISPC_DIR}")
+    message(STATUS "ISPC archive: ${ISPC_ARCHIVE}")
+    message(STATUS "ISPC executable name: ${ISPC_EXECUTABLE_NAME}")
+
     # --------------------------------------------------------------------------
     # Paths
     # --------------------------------------------------------------------------
 
-    set(ISPC_ROOT
-        "${CMAKE_SOURCE_DIR}/tools/${ISPC_DIR}"
-    )
+    set(ISPC_ROOT "${CMAKE_SOURCE_DIR}/tools/${ISPC_DIR}")
+    message(STATUS "ISPC root: ${ISPC_ROOT}")
 
-    set(ISPC_EXECUTABLE
-        "${ISPC_ROOT}/bin/${ISPC_EXECUTABLE_NAME}" PARENT_SCOPE
-    )
+    set(ISPC_EXECUTABLE "${ISPC_ROOT}/bin/${ISPC_EXECUTABLE_NAME}" PARENT_SCOPE)
+    message(STATUS "ISPC executable: ${ISPC_EXECUTABLE}")
 
-    set(ISPC_URL
-        "https://github.com/ispc/ispc/releases/download/v${ISPC_VERSION}/${ISPC_ARCHIVE}"
-    )
+    set(ISPC_URL "https://github.com/ispc/ispc/releases/download/v${ISPC_VERSION}/${ISPC_ARCHIVE}")
+    message(STATUS "ISPC URL: ${ISPC_URL}")
 
-    set(ISPC_ARCHIVE_PATH
-        "${CMAKE_SOURCE_DIR}/tools/${ISPC_ARCHIVE}"
-    )
+    set(ISPC_ARCHIVE_PATH "${CMAKE_SOURCE_DIR}/tools/${ISPC_ARCHIVE}")
+    message(STATUS "ISPC archive path: ${ISPC_ARCHIVE_PATH}")
+
+    # https://github.com/ispc/ispc/releases/download/v1.25.3/ispc-v1.25.3-linux.tar.gz
 
     # --------------------------------------------------------------------------
     # Download if missing
     # --------------------------------------------------------------------------
 
+    message("Checking for ${ISPC_EXECUTABLE}...")
     if(NOT EXISTS "${ISPC_EXECUTABLE}")
 
         message("${ISPC_EXECUTABLE} not found.")

@@ -43,3 +43,4 @@ libcul/obj
 Makefile
 private*.xml
 runTestsDir/*.so
+tools/ispc*
