@@ -7,23 +7,6 @@ cmake_policy(SET CMP0069 NEW)
 
 message( "CMAKE BUILD TYPE: ${CMAKE_BUILD_TYPE}" )
 
-
-set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_DEBUG FALSE)
-set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO TRUE)
-set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL TRUE)
-set_property(GLOBAL PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
-
-add_compile_options(
-    $<$<CONFIG:Release>:/Ot>
-    $<$<CONFIG:RelWithDebInfo>:/Ot>
-
-    $<$<CONFIG:Release>:/Oi>
-    $<$<CONFIG:RelWithDebInfo>:/Oi>
-
-    $<$<CONFIG:Release>:/Ob2>
-    $<$<CONFIG:RelWithDebInfo>:/Ob2>
-)
-
 macro(CmakeToWindow InputPath OutputPath)
     string(REGEX REPLACE "/" "\\\\" ${OutputPath} "${InputPath}")
 endmacro()
