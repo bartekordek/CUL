@@ -45,7 +45,9 @@ function(setup_ispc)
     # Paths
     # --------------------------------------------------------------------------
 
-    set(ISPC_ROOT "${CMAKE_SOURCE_DIR}/tools/${ISPC_DIR}")
+    message(STATUS "CUL_ROOT_DIR: ${CUL_ROOT_DIR}")
+
+    set(ISPC_ROOT "${CUL_ROOT_DIR}/tools/${ISPC_DIR}")
     message(STATUS "ISPC root: ${ISPC_ROOT}")
 
     set(ISPC_EXECUTABLE "${ISPC_ROOT}/bin/${ISPC_EXECUTABLE_NAME}" PARENT_SCOPE)
@@ -54,7 +56,7 @@ function(setup_ispc)
     set(ISPC_URL "https://github.com/ispc/ispc/releases/download/v${ISPC_VERSION}/${ISPC_ARCHIVE}")
     message(STATUS "ISPC URL: ${ISPC_URL}")
 
-    set(ISPC_ARCHIVE_PATH "${CMAKE_SOURCE_DIR}/tools/${ISPC_ARCHIVE}")
+    set(ISPC_ARCHIVE_PATH "${CUL_ROOT_DIR}/tools/${ISPC_ARCHIVE}")
     message(STATUS "ISPC archive path: ${ISPC_ARCHIVE_PATH}")
 
     # https://github.com/ispc/ispc/releases/download/v1.25.3/ispc-v1.25.3-linux.tar.gz
@@ -90,7 +92,7 @@ function(setup_ispc)
         file(
             ARCHIVE_EXTRACT
             INPUT "${ISPC_ARCHIVE_PATH}"
-            DESTINATION "${CMAKE_SOURCE_DIR}/tools/"
+            DESTINATION "${CUL_ROOT_DIR}/tools/"
         )
 
     endif()
