@@ -1,3 +1,8 @@
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_policy(VERSION 3.5)
+
+cmake_policy(SET CMP0069 NEW)
+
 #cmake -DCMAKE_BUILD_TYPE=Debug
 
 get_filename_component( basename ${CMAKE_CURRENT_SOURCE_DIR} NAME )
