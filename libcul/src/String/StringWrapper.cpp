@@ -10,7 +10,7 @@ STDStringWrapper STDStringWrapper::createFromPrintf( const char* msg, ... )
 {
     va_list args;
     va_start( args, msg );
-    constexpr std::size_t bufferSize{ 1024u };
+    constexpr std::size_t bufferSize{ 4096u};
     char buffer[bufferSize];
     vsnprintf( buffer, bufferSize, msg, args );
     va_end( args );

@@ -116,9 +116,6 @@
 [submodule "deps/boost/stacktrace"]
 	path = deps/boost/stacktrace
 	url = git@github.com:boostorg/stacktrace.git
-[submodule "deps/boost/array"]
-	path = deps/boost/array
-	url = git@github.com:boostorg/array.git
 [submodule "deps/boost/detail"]
 	path = deps/boost/detail
 	url = git@github.com:boostorg/detail.git
@@ -140,3 +137,9 @@
 [submodule "deps/CPP-DateTime-library"]
 	path = deps/CPP-DateTime-library
 	url = git@github.com:bartekordek/CPP-DateTime-library.git
+[submodule "deps/boost/describe"]
+	path = deps/boost/describe
+	url = git@github.com:boostorg/describe.git
+[submodule "deps/boost/mp11"]
+	path = deps/boost/mp11
+	url = git@github.com:boostorg/mp11.git
