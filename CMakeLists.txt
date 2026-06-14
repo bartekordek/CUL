@@ -71,7 +71,6 @@ add_subdirectory( ${CUL_DEPS_PATH}/boost/stacktrace )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/static_assert )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/throw_exception )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/type_traits )
-#add_subdirectory( ${CUL_DEPS_PATH}/boost/variant )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/winapi )
 
 set(PATH_TO_APPLICATION_ICON ${CUL_DEPS_PATH}/CPP-DateTime-library/product.ico CACHE STRING "necessary value" FORCE)
