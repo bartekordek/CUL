@@ -116,9 +116,6 @@
 [submodule "deps/boost/stacktrace"]
 	path = deps/boost/stacktrace
 	url = git@github.com:boostorg/stacktrace.git
-[submodule "deps/boost/integer"]
-	path = deps/boost/integer
-	url = git@github.com:boostorg/integer.git
 [submodule "deps/boost/predef"]
 	path = deps/boost/predef
 	url = git@github.com:boostorg/predef.git
