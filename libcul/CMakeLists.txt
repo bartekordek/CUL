@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-cmake_policy(VERSION 3.5)
 
 cmake_policy(SET CMP0069 NEW)
 
@@ -139,6 +138,8 @@ set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATIO
 
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES COMPILE_DEFINITIONS "")
 target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1)
+target_compile_definitions(${PROJECT_NAME_STATIC} PUBLIC GLM_ENABLE_EXPERIMENTAL=1)
+target_compile_definitions(${PROJECT_NAME_DYNAMIC} PUBLIC GLM_ENABLE_EXPERIMENTAL=1)
 
 ###################################################################
 # LINKING

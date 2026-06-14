@@ -11,6 +11,7 @@
 #include "CUL/Proifling/Profiler.hpp"
 #include "CUL/String/StringUtil.hpp"
 #include "CUL/STL_IMPORTS/STD_inttypes.hpp"
+#include "CUL/STL_IMPORTS/STD_ranges.hpp"
 
 #ifdef _MSC_VER
     #pragma warning( push, 0 )
@@ -433,6 +434,7 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
 
         Time modTime;
         modTime.fromString( argv[3] );
+
         resulPtr->emplace_back( FileInfo{ false, argv[2], argv[1], argv[0], modTime } );
 
         return 0;
@@ -445,6 +447,8 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
     {
         Assert::check( false, "DB ERROR: %s", zErrMsg );
     }
+
+    addToCache( out );
 }
 
 void FileDatabase::loadFilesFromDatabase()
@@ -616,7 +620,16 @@ void FileDatabase::fetchUsage() const
 {
     // m_cachedFilesMtx
     ProfilerScope( "FileDatabase::fetchUsage" );
-    m_usage.Curr = static_cast<decltype( m_usage.Curr )>( m_cachedFiles.size() );
+    std::int32_t loadedFilesCount{ 0 };
+    for( const std::unordered_map<std::string, HashGroup>& groups : m_cachedFiles | std::views::values )
+    {
+        for( const HashGroup& group : groups | std::views::values )
+        {
+            loadedFilesCount += group.Files.size();
+        }
+    }
+
+    m_usage.Curr = loadedFilesCount;
     m_usage.Max = static_cast<decltype( m_usage.Max )>( m_cachedFilesMax );
 
     constexpr static std::size_t sizeOfOne = sizeof( FileInfo );

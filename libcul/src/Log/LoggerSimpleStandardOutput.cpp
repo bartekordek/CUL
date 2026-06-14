@@ -1,8 +1,9 @@
 #include "Log/LoggerSimpleStandardOutput.hpp"
-#include "IMPORT_spdlog.hpp"
-#include "CUL/Filesystem/FSApi.hpp"
-#include "CUL/IMPORT_windows.hpp"
 #include "CUL/CULInterface.hpp"
+#include "CUL/Filesystem/FSApi.hpp"
+#include "IMPORT_spdlog.hpp"
+#include "CUL/IMPORT_windows.hpp"
+#include "CUL/CUL.hpp"
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
 
@@ -40,8 +41,6 @@ std::shared_ptr<spdlog::logger> g_fileLogger;
 
 void LoggerSimpleStandardOutput::init()
 {
-    CUL::CULInterface::getInstance();
-
 #if defined( CUL_WINDOWS )
     auto sink = std::make_shared<spdlog::sinks::msvc_sink_mt>();
     m_logger = std::make_shared<spdlog::logger>( "win logger", std::move( sink ) );
