@@ -56,7 +56,6 @@ setup_ispc(VERSION 1.25.3)
 set( CUL_DEPS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps )
 # Add sub directories
 add_subdirectory( ${CUL_DEPS_PATH} )
-#add_subdirectory( ${CUL_DEPS_PATH}/boost/array )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/assert )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/circular_buffer )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/concept_check )
