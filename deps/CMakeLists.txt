@@ -34,7 +34,6 @@ ${HASH_LIBRARY_SOURCES}
 )
 
 include_directories( SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public )
-message("DUPA: ${CUL_ROOT_DIR}")
 
 source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES_ALL} )
 add_library(AdditionalDeps STATIC ${SOURCES_ALL})

@@ -4,34 +4,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "[LINUX][CMAKE][CREATE DIR]",
-            "type": "shell",
-            "command": "mkdir -p Build-Linux",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "dedicated",
-                "showReuseMessage": true,
-                "clear": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-        },
-        {
             "label": "[LINUX][CMAKE][CREATE]",
             "type": "shell",
             "command": "cmake",
             "args": [
-                "cmake",
                 "-S",
                 ".",
                 "-B Build-Linux",
@@ -51,15 +27,13 @@
             },
             "options": {
                 "cwd": "${workspaceFolder}"
-            },
-            "dependsOn": "[LINUX][CMAKE][CREATE DIR]"
+            }
         },
         {
             "label": "[LINUX][CMAKE][CREATE][NoTracy]",
             "type": "shell",
             "command": "cmake",
             "args": [
-                "cmake",
                 "-S",
                 ".",
                 "-B Build-Linux",
@@ -80,8 +54,7 @@
             },
             "options": {
                 "cwd": "${workspaceFolder}"
-            },
-            "dependsOn": "[LINUX][CMAKE][CREATE DIR]"
+            }
         },
         {
             "label": "[WINDOWS][CMAKE][CREATE]",
@@ -137,11 +110,87 @@
             }
         },
         {
+            "label": "[WINDOWS][CMAKE][RemoveTMP][NoTracy]",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "rmdir /s /q Build_custom 2>nul || exit /b 0"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": []
+        },
+        {
+            "label": "[WINDOWS][CMAKE][CreateTMP][NoTracy]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
+                "-DTRACY_ENABLE=0",
+                "-S",
+                ".",
+                "-B Build_custom"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "[WINDOWS][CMAKE][RemoveTMP][NoTracy]"
+            ]
+        },
+        {
+            "label": "[WINDOWS][CMAKE][build_all_tmp][Debug][NoTracy]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build_custom",
+                "--config",
+                "DEBUG"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
             "label": "[WINDOWS][CMAKE][CREATE][CLang]",
             "type": "shell",
             "command": "cmake",
             "args": [
-                "cmake",
                 "-S",
                 "..",
                 "-G",
@@ -180,7 +229,33 @@
                 "DEBUG",
                 "-j16",
                 "--target",
-                "libculTests"
+                "libculTests_static",
+                "libculTests_dynamic"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "[WINDOWS][DEBUG][BUILLD][libculTests_static]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build-Windows",
+                "--config",
+                "DEBUG",
+                "-j16",
+                "--target",
+                "libculTests_static"
             ],
             "presentation": {
                 "echo": true,
@@ -219,6 +294,33 @@
                 "$gcc"
             ],
             "dependsOn": "[LINUX][CMAKE][CREATE][NoTracy]"
+        },
+        {
+            "label": "[LINUX][DEBUG][BUILLD][libculTests]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build-Linux",
+                "--config",
+                "DEBUG",
+                "-j16",
+                "--target",
+                "libculTests_static",
+                "libculTests_dynamic"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "dependsOn": "[LINUX][CMAKE][CREATE]"
         },
         {
             "label": "[LINUX][DEBUG][BUILLD][libculTests_static]",
@@ -294,8 +396,7 @@
             },
             "problemMatcher": [
                 "$gcc"
-            ],
-            "dependsOn": "[LINUX][CMAKE][CREATE]"
+            ]
         }
     ]
 }

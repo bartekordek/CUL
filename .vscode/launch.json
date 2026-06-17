@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[LINUX][RUN][libculTests_static][DEBUG]",
+            "name": "[LINUX][RUN][libculTests_static][Debug]",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Build-Linux/libculTests_static.bin",
@@ -25,14 +25,55 @@
                     "ignoreFailures": true,
                 }
             ],
-            "miDebuggerPath": "/usr/bin/gdb",
-            "preLaunchTask": "[LINUX][DEBUG][BUILLD][libculTests_static][Faster]"
+            "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "[Windows] Run tests",
+            "name": "[LINUX][RUN][libculTests_dynamic][Debug]",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Build-Linux/libculTests_dynamic.bin",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/runDir",
+            "environment": [],
+            "env": {
+                "TRACY_NO_INVARIANT_CHECK": "1"
+            },
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true,
+                }
+            ],
+            "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "[Windows][RUN][libculTests_static][Debug]",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\Build-Windows\\Debug\\culTests.exe",
+            "program": "${workspaceFolder}\\Build-Windows\\Debug\\libculTests_static.exe",
+            "cwd": "${workspaceRoot}/runDir",
+            "symbolSearchPath": "${workspaceRoot}/runDir",
+            "args": [
+                "-w",
+                "1680",
+                "-h",
+                "900"
+            ],
+            "externalConsole": false,
+            "logging": {
+                "moduleLoad": false,
+                "trace": true,
+            }
+        },
+        {
+            "name": "[Windows][RUN][libculTests_dynamic][Debug]",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\Build-Windows\\Debug\\libculTests_dynamic.exe",
             "cwd": "${workspaceRoot}/runDir",
             "symbolSearchPath": "${workspaceRoot}/runDir",
             "args": [

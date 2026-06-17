@@ -8,11 +8,9 @@ set(PROJECT_NAME_DYNAMIC cul_dynamic)
 set(PROJECT_NAME_STATIC_IMPL cul-static-impl)
 set(PROJECT_NAME_STATIC cul_static)
 
-project(${PROJECT_NAME_DYNAMIC} LANGUAGES CXX)
-project(${PROJECT_NAME_STATIC} LANGUAGES CXX)
+project(cul LANGUAGES CXX)
 
 set(CMAKE_ENABLE_EXPORTS true)
-
 
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/CPP-DateTime-library/src)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/hash-library)

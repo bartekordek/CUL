@@ -49,15 +49,10 @@ jobs:
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_POLICY_VERSION_MINIMUM=3.5.0 -DTRACY_ENABLE=0
 
-    - name: Build libculTests_dynamic
+    - name: Build libculTests
       working-directory: ${{github.workspace}}//Build-Linux
       shell: bash
-      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_dynamic -j $(nproc)
-
-    - name: Build libculTests_static
-      working-directory: ${{github.workspace}}//Build-Linux
-      shell: bash
-      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_static -j $(nproc)
+      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_static libculTests_dynamic -j $(nproc)
 
     - name: Run libculTests_dynamic
       working-directory: ${{github.workspace}}/runDir

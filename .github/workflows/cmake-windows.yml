@@ -24,20 +24,10 @@ jobs:
               working-directory: ${{github.workspace}}
               run: cmake -DCMAKE_POLICY_VERSION_MINIMUM="3.5" -DTRACY_ENABLE=0 -S . -B Build-Windows
 
-            - name: Build libculTests_dynamic
+            - name: Build libculTests
               # Build your program with the given configuration
               working-directory: ${{github.workspace}}/Build-Windows
-              run: cmake --build . --config Debug --target libculTests_dynamic -j 16
-
-            - name: Build libculTests_static
-              # Build your program with the given configuration
-              working-directory: ${{github.workspace}}/Build-Windows
-              run: cmake --build . --config Debug --target libculTests_static -j 16
-
-            - name: Check binary
-              shell: cmd
-              working-directory: ${{github.workspace}}/Build-Windows/Debug
-              run: tree /F /A
+              run: cmake --build . --config Debug --target libculTests_static libculTests_dynamic -j 16
 
             - name: Run libculTests_dynamic
               shell: cmd
