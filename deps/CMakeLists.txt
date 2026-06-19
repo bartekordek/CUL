@@ -52,8 +52,6 @@ set(HEADERS_PUBLIC
     ${SQLITE_HEADERS}
 )
 
-set(DEPENDENCIES PUBLIC TracyClient)
-
 if (MSVC)
     add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Ot>")
     add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Oi>")

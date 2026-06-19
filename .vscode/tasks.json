@@ -2,192 +2,99 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
-    "tasks": [
+    "inputs": [
         {
-            "label": "[LINUX][CMAKE][CREATE]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "-S",
-                ".",
-                "-B Build-Linux",
-                "-DENABLE_TRACY=0"
+            "id": "configuration",
+            "type": "pickString",
+            "description": "Select configuration",
+            "options": [
+                "Debug",
+                "Release",
+                "RelWithDebInfo"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
+            "default": "Debug"
         },
         {
-            "label": "[LINUX][CMAKE][CREATE][NoTracy]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "-S",
-                ".",
-                "-B Build-Linux",
-                "-DTRACY_ENABLE=0",
-                "-DCMAKE_BUILD_TYPE=Debug"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
-        },
-        {
-            "label": "[WINDOWS][CMAKE][CREATE]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
-                "-S",
-                ".",
-                "-B Build-Windows"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
-        },
-        {
-            "label": "[WINDOWS][CMAKE][CREATE][NoTracy]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
-                "-DTRACY_ENABLE=0",
-                "-S",
-                ".",
-                "-B Build-Windows"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "options": {
-                "cwd": "${workspaceFolder}"
-            }
-        },
-        {
-            "label": "[WINDOWS][CMAKE][RemoveTMP][NoTracy]",
-            "type": "shell",
-            "command": "cmd",
-            "args": [
-                "/c",
-                "rmdir /s /q Build_custom 2>nul || exit /b 0"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "dependsOn": []
-        },
-        {
-            "label": "[WINDOWS][CMAKE][CreateTMP][NoTracy]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
-                "-DTRACY_ENABLE=0",
-                "-S",
-                ".",
-                "-B Build_custom"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "dependsOn": [
-                "[WINDOWS][CMAKE][RemoveTMP][NoTracy]"
+            "id": "platform",
+            "type": "pickString",
+            "description": "Select platform",
+            "options": [
+                "Win64",
+                "Linux"
             ]
         },
         {
-            "label": "[WINDOWS][CMAKE][build_all_tmp][Debug][NoTracy]",
+            "id": "tracy_enabled",
+            "type": "pickString",
+            "description": "Toggle tracy",
+            "options": [
+                "ON",
+                "OFF"
+            ],
+            "default": "OFF"
+        }
+    ],
+    "tasks": [
+        {
+            "label": "[CMake][Create]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B Build_${input:platform}",
+                "-DENABLE_TRACY=${input:tracy_enabled}",
+                "-DCMAKE_BUILD_TYPE=${input:configuration}"
+            ],
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "revealProblems": "onProblem",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "[CMake][Build][libCulTests]",
             "type": "shell",
             "command": "cmake",
             "args": [
                 "--build",
-                "Build_custom",
+                "Build_${input:platform}",
                 "--config",
-                "DEBUG"
+                "${input:configuration}",
+                "-j16",
+                "--target",
+                "libculTests_static",
+                "libculTests_dynamic"
             ],
+            "group": {
+                "kind": "build",
+            },
             "presentation": {
                 "echo": true,
                 "reveal": "always",
+                "revealProblems": "onProblem",
                 "focus": true,
                 "panel": "dedicated",
                 "showReuseMessage": false,
                 "clear": true
             },
-            "problemMatcher": [
-                "$msCompile"
-            ]
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[CMake][Create]",
         },
         {
-            "label": "[WINDOWS][CMAKE][CREATE][CLang]",
+            "label": "[Win64][CMake][Create][CLang]",
             "type": "shell",
             "command": "cmake",
             "args": [
@@ -203,12 +110,12 @@
                 "x64"
             ],
             "group": {
-                "kind": "build",
-                "isDefault": true
+                "kind": "build"
             },
             "presentation": {
                 "echo": true,
                 "reveal": "always",
+                "revealProblems": "onProblem",
                 "focus": true,
                 "panel": "dedicated",
                 "showReuseMessage": false,
@@ -219,184 +126,72 @@
             }
         },
         {
-            "label": "[WINDOWS][DEBUG][BUILLD][libculTests]",
+            "label": "[Run][libculTets_static][Win64]",
             "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "Build-Windows",
-                "--config",
-                "DEBUG",
-                "-j16",
-                "--target",
-                "libculTests_static",
-                "libculTests_dynamic"
-            ],
+            "command": "${workspaceFolder}/Build_Win64/Debug/libculTests_static.exe",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
-                "focus": true,
+                "focus": false,
                 "panel": "dedicated",
                 "showReuseMessage": false,
                 "clear": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
+            }
         },
         {
-            "label": "[WINDOWS][DEBUG][BUILLD][libculTests_static]",
+            "label": "[Run][libculTets_dynamic][Win64]",
             "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "Build-Windows",
-                "--config",
-                "DEBUG",
-                "-j16",
-                "--target",
-                "libculTests_static"
-            ],
+            "command": "${workspaceFolder}/Build_Win64/Debug/libculTests_dynamic.exe",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
-                "focus": true,
+                "focus": false,
                 "panel": "dedicated",
                 "showReuseMessage": false,
                 "clear": true
-            },
-            "problemMatcher": [
-                "$msCompile"
-            ]
+            }
         },
         {
-            "label": "[LINUX][DEBUG][BUILLD][libculTests_static][NoTracy]",
+            "label": "[Run][libculTets_static][Linux]",
             "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "Build-Linux",
-                "--config",
-                "DEBUG",
-                "-j16",
-                "--target",
-                "libculTests_static"
-            ],
+            "command": "${workspaceFolder}/Build_Linux/libculTests_static.bin",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
-                "focus": true,
+                "focus": false,
                 "panel": "dedicated",
                 "showReuseMessage": false,
                 "clear": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "dependsOn": "[LINUX][CMAKE][CREATE][NoTracy]"
+            }
         },
         {
-            "label": "[LINUX][DEBUG][BUILLD][libculTests]",
+            "label": "[Run][libculTets_dynamic][Linux]",
             "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "Build-Linux",
-                "--config",
-                "DEBUG",
-                "-j16",
-                "--target",
-                "libculTests_static",
-                "libculTests_dynamic"
-            ],
+            "command": "${workspaceFolder}/Build_Linux/libculTests_dynamic.bin",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
-                "focus": true,
+                "focus": false,
                 "panel": "dedicated",
                 "showReuseMessage": false,
                 "clear": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "dependsOn": "[LINUX][CMAKE][CREATE]"
-        },
-        {
-            "label": "[LINUX][DEBUG][BUILLD][libculTests_static]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "Build-Linux",
-                "--config",
-                "DEBUG",
-                "-j16",
-                "--target",
-                "libculTests_static"
-            ],
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "dependsOn": "[LINUX][CMAKE][CREATE]"
-        },
-        {
-            "label": "[LINUX][DEBUG][BUILLD][libculTests_static][Faster]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "Build-Linux",
-                "--config",
-                "DEBUG",
-                "-j16",
-                "--target",
-                "libculTests_static"
-            ],
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "[LINUX][DEBUG][BUILLD][libculTests_dynamic]",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "Build-Linux",
-                "--config",
-                "DEBUG",
-                "-j16",
-                "--target",
-                "libculTests_dynamic"
-            ],
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": true,
-                "panel": "dedicated",
-                "showReuseMessage": false,
-                "clear": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
+            }
         }
     ]
 }

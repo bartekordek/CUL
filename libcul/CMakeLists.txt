@@ -19,9 +19,15 @@ include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/rapidjson/include)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/stb)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/tiny-image/src)
-include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public)
 
-set_option(CUL_PROFILER_PIX "Enable profiling" 0)
+if(ENABLE_TRACY)
+    message("TRACY ENABLED.")
+    include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/tracy/public)
+else()
+    message("TRACY DISABLED.")
+endif()
+
+option(CUL_PROFILER_PIX "Enable profiling" 0)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     message(STATUS "WARNING: building msvc version.")
@@ -110,7 +116,6 @@ set(DEPENDENCIES
     PRIVATE spdlog
     PRIVATE udp-discovery
     PUBLIC zlibstatic
-    PUBLIC TracyClient
     PRIVATE nfd
     PUBLIC datetime
 )
@@ -139,6 +144,20 @@ target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1)
 target_compile_definitions(${PROJECT_NAME_STATIC} PUBLIC GLM_ENABLE_EXPERIMENTAL=1)
 target_compile_definitions(${PROJECT_NAME_DYNAMIC} PUBLIC GLM_ENABLE_EXPERIMENTAL=1)
 
+if(ENABLE_TRACY)
+    target_compile_definitions(
+        ${PROJECT_NAME_DYNAMIC}
+        PUBLIC
+        TRACY_ENABLE
+    )
+
+    target_compile_definitions(
+        ${PROJECT_NAME_STATIC}
+        PUBLIC
+        TRACY_ENABLE
+    )
+endif()
+
 ###################################################################
 # LINKING
 ###################################################################
@@ -156,6 +175,11 @@ endif()
 
 if(NOT MSVC AND NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+endif()
+
+if(ENABLE_TRACY)
+    target_link_libraries(${PROJECT_NAME_DYNAMIC} PUBLIC TracyClient)
+    target_link_libraries(${PROJECT_NAME_STATIC} PUBLIC TracyClient)
 endif()
 
 ###################################################################

@@ -1,4 +1,4 @@
 #include "CUL/Memory/MemoryPool.hpp"
-#if defined( TRACY_ENABLE )
+#if defined( ENABLE_TRACY )
 #include "tracy/Tracy.hpp"
-#endif  // TRACY_ENABLE
+#endif  // ENABLE_TRACY
