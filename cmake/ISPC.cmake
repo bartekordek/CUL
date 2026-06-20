@@ -96,22 +96,6 @@ function(setup_ispc)
         )
 
     endif()
-
-    # --------------------------------------------------------------------------
-    # Export compiler path to parent scope
-    # --------------------------------------------------------------------------
-
-    set(
-        CMAKE_ISPC_COMPILER
-        "${ISPC_EXECUTABLE}"
-        CACHE FILEPATH
-        "ISPC compiler"
-        FORCE
-    )
-
-    message(STATUS "ISPC compiler:")
-    message(STATUS "  ${CMAKE_ISPC_COMPILER}")
-
 endfunction()
 
 
