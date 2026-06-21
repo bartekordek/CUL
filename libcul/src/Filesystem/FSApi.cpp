@@ -4,7 +4,7 @@
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/CULInterface.hpp"
-#include "CUL/Proifling/Profiler.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 
 #include "CUL/STL_IMPORTS/STD_exception.hpp"
 #include <CUL/STL_IMPORTS/STD_chrono.hpp>
@@ -25,8 +25,8 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory )
     std::vector<Path> result;
 
     const std::filesystem::path dirAsPath = directory.getPath().getValue();
-    for( const auto& entry :
-         std::filesystem::recursive_directory_iterator( dirAsPath, std::filesystem::directory_options::skip_permission_denied ) )
+    for( const auto& entry : std::filesystem::recursive_directory_iterator(
+             dirAsPath, std::filesystem::directory_options::skip_permission_denied ) )
     {
         const std::filesystem::path entryPath = entry.path();
         std::error_code ec;
@@ -52,7 +52,7 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory, const StringWr& wo
         std::error_code ec;
         Path culPath;
         const StringWr filePathAsString( entryPath.c_str() );
-        if( filePathAsString.contains(word) )
+        if( filePathAsString.contains( word ) )
         {
             culPath.createFrom( filePathAsString );
             result.push_back( culPath );
@@ -62,21 +62,25 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory, const StringWr& wo
     return result;
 }
 
-void FSApi::ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback )
+void FSApi::ListAllFiles( const Path& directory,
+                          std::function<void( const Path& path )> callback )
 {
     ProfilerScope( "FSApi::ListAllFiles" );
 
     const auto dir = directory.getPath().getValue();
-    const auto directoryOptions = std::filesystem::directory_options::skip_permission_denied;
+    const auto directoryOptions =
+        std::filesystem::directory_options::skip_permission_denied;
     std::error_code ec;
-    const std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator( dir, directoryOptions, ec );
+    const std::filesystem::directory_iterator dirIt =
+        std::filesystem::directory_iterator( dir, directoryOptions, ec );
     for( const std::filesystem::directory_entry& it : dirIt )
     {
         iterateThrought( it, callback );
     }
 }
 
-void FSApi::iterateThrought( const std::filesystem::directory_entry& de, std::function<void( const Path& path )> callback )
+void FSApi::iterateThrought( const std::filesystem::directory_entry& de,
+                             std::function<void( const Path& path )> callback )
 {
     ProfilerScope( "FSApi::iterateThrought" );
 
@@ -116,14 +120,20 @@ void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
     {
         // The system cannot find the path specified.
         const std::string errorMessage = ec.message();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(), inPath,
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[Path::preparePaths] %s [%s][%d]",
+                                                 errorMessage.c_str(),
+                                                 inPath,
                                                  errorCodeValue );
     }
     else if( errorCodeValue == 1920 )
     {
         // The file cannot be accessed by the system..
         const std::string errorMessage = ec.message();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(), inPath,
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[Path::preparePaths] %s [%s][%d]",
+                                                 errorMessage.c_str(),
+                                                 inPath,
                                                  errorCodeValue );
     }
     else
@@ -147,7 +157,8 @@ void FSApi::deleteFile( const Path& path )
     {
         const auto messageStr = ec.message();
         const char* msg = messageStr.c_str();
-        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "FSApi::DeleteFile error: [%s]", msg );
+        LOG::ILogger::getInstance().logVariable(
+            CUL::LOG::Severity::Error, "FSApi::DeleteFile error: [%s]", msg );
     }
 }
 
@@ -164,7 +175,8 @@ void FSApi::getCreationTime( const Path&, Time& )
     throw std::logic_error( "Method not implemented" );
 }
 
-std::string getTimeh( const std::chrono::sys_time<std::chrono::system_clock::duration>& duration )
+std::string getTimeh(
+    const std::chrono::sys_time<std::chrono::system_clock::duration>& duration )
 {
     const time_t convertedTimeT = std::chrono::system_clock::to_time_t( duration );
     char buffer[256];
@@ -208,7 +220,8 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
         localtime_s( &timeValue, &convertedTimeT );
         std::strftime( buffer, bufferSize, "%Y/%m/%d %H:%M:%S", &timeValue );
 #else
-        std::strftime( buffer, bufferSize, "%Y/%m/%d %H:%M:%S", std::localtime( &convertedTimeT ) );
+        std::strftime(
+            buffer, bufferSize, "%Y/%m/%d %H:%M:%S", std::localtime( &convertedTimeT ) );
 #endif
     }
 
@@ -284,7 +297,9 @@ bool FSApi::isRegularFile( const String& path )
     {
         const std::string errorCodeMessageStr = existsErrorCode.message();
         const auto pathString = filePath.string();
-        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error, "FSApi::isRegularFile: [%s] %s", pathString.c_str(),
+        LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error,
+                                                 "FSApi::isRegularFile: [%s] %s",
+                                                 pathString.c_str(),
                                                  errorCodeMessageStr.c_str() );
     }
     return result;
@@ -312,7 +327,8 @@ String FSApi::getFileSize( const Path& path )
         else
         {
             std::error_code isRegularFileCheck;
-            if( std::filesystem::is_regular_file( filePath, isRegularFileCheck ) == false )
+            if( std::filesystem::is_regular_file( filePath, isRegularFileCheck ) ==
+                false )
             {
                 size = 0u;
             }

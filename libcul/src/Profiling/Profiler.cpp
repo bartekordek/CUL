@@ -1,9 +1,9 @@
-#include "CUL/Proifling/Profiler.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 
 #if defined( CUL_WINDOWS ) && !CUL_WINDOWS_CLANG && CUL_PROFILER_PIX
-#include "IMPORT_pix.hpp"
+    #include "IMPORT_pix.hpp"
 
-#undef FrameEnd
+    #undef FrameEnd
 namespace CUL
 {
 PixRuntimeHelper& PixRuntimeHelper::getInstance()

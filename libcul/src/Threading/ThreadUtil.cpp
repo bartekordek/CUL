@@ -4,7 +4,7 @@
 #include "CUL/Threading/TaskCallback.hpp"
 #include "CUL/Threading/ThreadUtilObserver.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "CUL/Proifling/Profiler.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 #include <CUL/STL_IMPORTS/STD_ranges.hpp>
 #include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
 
@@ -88,7 +88,8 @@ ThreadString ThreadUtil::getThreadName( const std::thread::id* inThreadId ) cons
 {
     ProfilerScope( "ThreadUtil::getThreadName" );
 
-    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &getCurrentThreadId() };
+    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId
+                                                           : &getCurrentThreadId() };
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
 
@@ -107,7 +108,8 @@ ThreadString ThreadUtil::getThreadStatus( const std::thread::id* inThreadId ) co
 {
     ProfilerScope( "ThreadUtil::getThreadStatus" );
 
-    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &getCurrentThreadId() };
+    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId
+                                                           : &getCurrentThreadId() };
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
 
@@ -121,16 +123,19 @@ ThreadString ThreadUtil::getThreadStatus( const std::thread::id* inThreadId ) co
 
     return "";
 }
-void ThreadUtil::setThreadName( const ThreadString& status, const std::thread::id* inThreadId )
+void ThreadUtil::setThreadName( const ThreadString& status,
+                                const std::thread::id* inThreadId )
 {
     ProfilerScope( "ThreadUtil::getThreadStatus" );
 
     const std::thread::id& currentThreadId = getCurrentThreadId();
-    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId : &currentThreadId };
+    const std::thread::id* threadId{ inThreadId != nullptr ? inThreadId
+                                                           : &currentThreadId };
 
     std::lock_guard<std::mutex> m_threadInfoLocker( m_threadInfoMtx );
 
-    const auto it = std::find_if( m_threadInfo.begin(), m_threadInfo.end(),
+    const auto it = std::find_if( m_threadInfo.begin(),
+                                  m_threadInfo.end(),
                                   [threadId]( const auto& pair )
                                   {
                                       return pair.second.ID == *threadId;
@@ -161,7 +166,8 @@ void ThreadUtil::setThreadName( const ThreadString& status, const std::thread::i
 
 constexpr std::size_t g_maxBufferSize{ 4096u };
 
-void ThreadUtil::setThreadStatusArgs( const std::thread::id* inThreadId, const char* msg... )
+void ThreadUtil::setThreadStatusArgs( const std::thread::id* inThreadId,
+                                      const char* msg... )
 {
     ProfilerScope( "ThreadUtil::setThreadStatusArgs_ti" );
 
@@ -188,7 +194,8 @@ void ThreadUtil::setThreadStatusArgs( const char* msg... )
     setThreadStatus( buffer, threadId );
 }
 
-void ThreadUtil::setThreadStatus( const ThreadString& status, const std::thread::id* inThreadId )
+void ThreadUtil::setThreadStatus( const ThreadString& status,
+                                  const std::thread::id* inThreadId )
 {
     ProfilerScope( "ThreadUtil::setThreadStatus" );
 
@@ -202,7 +209,8 @@ void ThreadUtil::setThreadStatus( const ThreadString& status, const std::thread:
         } );
 }
 
-void ThreadUtil::setThreadStatusImpl( const ThreadString& status, const std::thread::id& inThreadId )
+void ThreadUtil::setThreadStatusImpl( const ThreadString& status,
+                                      const std::thread::id& inThreadId )
 {
     ProfilerScope( "ThreadUtil::setThreadStatusImpl" );
 

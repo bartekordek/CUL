@@ -8,7 +8,7 @@
 #include "CUL/Threading/ThreadUtil.hpp"
 
 #include "Imports/IMPORT_sqlite3.hpp"
-#include "CUL/Proifling/Profiler.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 #include "CUL/String/StringUtil.hpp"
 #include "CUL/STL_IMPORTS/STD_inttypes.hpp"
 #include "CUL/STL_IMPORTS/STD_ranges.hpp"
@@ -51,7 +51,10 @@ std::mutex g_sqliteMtx;
 
 static FileDatabase* g_dbInstance = nullptr;
 
-std::int32_t SQLiteQueryImpl( sqlite3* db, const char* query, int ( *callback )( void*, int, char**, char** ), void* firstArgument,
+std::int32_t SQLiteQueryImpl( sqlite3* db,
+                              const char* query,
+                              int ( *callback )( void*, int, char**, char** ),
+                              void* firstArgument,
                               char** errmsg )
 {
     ProfilerScope( "SQLiteQueryImpl" );
@@ -59,7 +62,10 @@ std::int32_t SQLiteQueryImpl( sqlite3* db, const char* query, int ( *callback )(
     return rc;
 }
 
-std::int32_t SQLiteQuery( sqlite3* db, const char* query, int ( *callback )( void*, int, char**, char** ), void* firstArgument,
+std::int32_t SQLiteQuery( sqlite3* db,
+                          const char* query,
+                          int ( *callback )( void*, int, char**, char** ),
+                          void* firstArgument,
                           char** errmsg )
 {
     ProfilerScopeColor( "SQLiteQuery", 16711680 );
@@ -88,7 +94,7 @@ bool FileInfo::operator<( const FileInfo& second ) const
     return FilePath < second.FilePath;
 }
 
-FileDatabase::FileDatabase(): m_cachedFilesMax( 256u * 1024u * 1024u )
+FileDatabase::FileDatabase() : m_cachedFilesMax( 256u * 1024u * 1024u )
 {
     m_cachedFileInserting.setBody(
         [this]()
@@ -136,7 +142,8 @@ float FileDatabase::getPercentage() const
     return 100.f * m_current / ( 1.f * m_rowCount );
 }
 
-void FileDatabase::getListOfPossibleDuplicates( SortedStructuredListOfFiles& inOutPossibleDuplicates )
+void FileDatabase::getListOfPossibleDuplicates(
+    SortedStructuredListOfFiles& inOutPossibleDuplicates )
 {
     ProfilerScope( "FileDatabase::getListOfPossibleDuplicates" );
 
@@ -175,7 +182,8 @@ void FileDatabase::getListOfPossibleDuplicates( SortedStructuredListOfFiles& inO
 
     char* zErrMsg = nullptr;
 
-    std::int32_t rc = SQLiteQuery( m_db, query, callback, &inOutPossibleDuplicates, &zErrMsg );
+    std::int32_t rc =
+        SQLiteQuery( m_db, query, callback, &inOutPossibleDuplicates, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
@@ -211,18 +219,21 @@ void FileDatabase::getListOfSizes( std::vector<uint64_t>& out ) const
 
 void FileDatabase::getListOfSizesFromDb( std::vector<uint64_t>& out ) const
 {
-    const std::string sqlQuery = std::string( "SELECT DISTINCT SIZE FROM FILES ORDER BY SIZE;" );
+    const std::string sqlQuery =
+        std::string( "SELECT DISTINCT SIZE FROM FILES ORDER BY SIZE;" );
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
         StringWr valueAsString = argv[0];
-        std::vector<uint64_t>* resulPtr = reinterpret_cast<std::vector<uint64_t>*>( voidPtr );
+        std::vector<uint64_t>* resulPtr =
+            reinterpret_cast<std::vector<uint64_t>*>( voidPtr );
         resulPtr->push_back( valueAsString.toUint64() );
 
         return 0;
     };
 
     char* zErrMsg = nullptr;
-    const std::int32_t rc = SQLiteQuery( m_db, sqlQuery.c_str(), callback, &out, &zErrMsg );
+    const std::int32_t rc =
+        SQLiteQuery( m_db, sqlQuery.c_str(), callback, &out, &zErrMsg );
 
     if( ( rc != SQLITE_OK ) && ( rc != SQLITE_MISUSE ) )
     {
@@ -257,11 +268,13 @@ std::vector<StringWr> FileDatabase::getListOfMd5() const
     }
 
 #else   // #if USE_CACHE
-    const std::string sqlQuery = std::string( "SELECT DISTINCT MD5 FROM FILES ORDER BY SIZE;" );
+    const std::string sqlQuery =
+        std::string( "SELECT DISTINCT MD5 FROM FILES ORDER BY SIZE;" );
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
         StringWr valueAsString = argv[0];
-        std::vector<StringWr>* resulPtr = reinterpret_cast<std::vector<StringWr>*>( voidPtr );
+        std::vector<StringWr>* resulPtr =
+            reinterpret_cast<std::vector<StringWr>*>( voidPtr );
         resulPtr->push_back( valueAsString );
 
         return 0;
@@ -311,13 +324,17 @@ std::vector<StringWr> FileDatabase::getListOfMd5( std::uint64_t inSize ) const
 
     constexpr std::size_t bufferLength = 1024u;
     char buffer[bufferLength];
-    snprintf( buffer, bufferLength, "SELECT DISTINCT MD5 FROM FILES WHERE SIZE=\"%I64u\";", inSize );
+    snprintf( buffer,
+              bufferLength,
+              "SELECT DISTINCT MD5 FROM FILES WHERE SIZE=\"%I64u\";",
+              inSize );
 
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
         ProfilerScope( "FileDatabase::getListOfMd5 inSize it" );
         std::string valueAsString = argv[0];
-        std::vector<std::string>* resulPtr = reinterpret_cast<std::vector<std::string>*>( voidPtr );
+        std::vector<std::string>* resulPtr =
+            reinterpret_cast<std::vector<std::string>*>( voidPtr );
         resulPtr->push_back( valueAsString );
 
         return 0;
@@ -343,7 +360,9 @@ std::vector<StringWr> FileDatabase::getListOfMd5( std::uint64_t inSize ) const
     return result;
 }
 
-void FileDatabase::getFiles( uint64_t inSize, const StringWr& md5, std::vector<FileInfo>& out ) const
+void FileDatabase::getFiles( uint64_t inSize,
+                             const StringWr& md5,
+                             std::vector<FileInfo>& out ) const
 {
 #if USE_CACHE
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
@@ -364,11 +383,16 @@ void FileDatabase::getFiles( uint64_t inSize, const StringWr& md5, std::vector<F
 #endif
 }
 
-void FileDatabase::getFilesFromDB( uint64_t size, const StringWr& md5, std::vector<FileInfo>& out ) const
+void FileDatabase::getFilesFromDB( uint64_t size,
+                                   const StringWr& md5,
+                                   std::vector<FileInfo>& out ) const
 {
     ProfilerScope( "FileDatabase::getFiles" );
     const StringWr sqlQuery = StringWr::createFromPrintf(
-        "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\" AND MD5=\"%s\"", size, md5.getUtfChar() );
+        "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\" AND "
+        "MD5=\"%s\"",
+        size,
+        md5.getUtfChar() );
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
         std::string filePath( argv[0] );
@@ -393,7 +417,8 @@ void FileDatabase::getFilesFromDB( uint64_t size, const StringWr& md5, std::vect
     };
 
     char* zErrMsg = nullptr;
-    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
+    std::int32_t rc =
+        SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
@@ -427,7 +452,8 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
 {
     ProfilerScope( "FileDatabase::getFiles" );
 
-    const StringWr sqlQuery = StringWr::createFromPrintf( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\";", size );
+    const StringWr sqlQuery = StringWr::createFromPrintf(
+        "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES WHERE SIZE=\"%d\";", size );
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
         auto resulPtr = reinterpret_cast<std::vector<FileInfo>*>( voidPtr );
@@ -441,7 +467,8 @@ void FileDatabase::getFilesFromDB( uint64_t size, std::vector<FileInfo>& out ) c
     };
 
     char* zErrMsg = nullptr;
-    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
+    std::int32_t rc =
+        SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
@@ -455,7 +482,8 @@ void FileDatabase::loadFilesFromDatabase()
 {
     ProfilerScope( "FileDatabase::loadFilesFromDatabase" );
 
-    ThreadUtil::getInstance().setThreadStatus( "FileDatabase::loadFilesFromDatabase::initDb();" );
+    ThreadUtil::getInstance().setThreadStatus(
+        "FileDatabase::loadFilesFromDatabase::initDb();" );
     initDb();
 
     std::lock_guard<std::mutex> locker( m_fetchListMtx );
@@ -466,23 +494,29 @@ void FileDatabase::loadFilesFromDatabase()
     m_fetchList->m_currentFileIndex = &m_current;
 }
 
-void FileDatabase::getFilesMatching( const StringWr& fileSize, const StringWr& md5, std::list<StringWr>& out ) const
+void FileDatabase::getFilesMatching( const StringWr& fileSize,
+                                     const StringWr& md5,
+                                     std::list<StringWr>& out ) const
 {
     ProfilerScope( "FileDatabase::getFilesMatching" );
 
-    const StringWr sqlQuery =
-        StringWr::createFromPrintf( "SELECT PATH FROM FILES WHERE ( SIZE='%d' AND MD5='%s');", fileSize, md5.getUtfChar() );
+    const StringWr sqlQuery = StringWr::createFromPrintf(
+        "SELECT PATH FROM FILES WHERE ( SIZE='%d' AND MD5='%s');",
+        fileSize,
+        md5.getUtfChar() );
 
     char* zErrMsg = nullptr;
     auto callback = []( void* voidValue, int argc, char** argv, char** info )
     {
-        std::list<StringWr>* resultPtr = reinterpret_cast<std::list<StringWr>*>( voidValue );
+        std::list<StringWr>* resultPtr =
+            reinterpret_cast<std::list<StringWr>*>( voidValue );
         StringWr foundPath( argv[0] );
         resultPtr->push_back( foundPath );
         return 0;
     };
 
-    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
+    std::int32_t rc =
+        SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, &out, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
@@ -502,7 +536,8 @@ int64_t FileDatabase::getFileCount() const
     int64_t result = 0;
 
     char* zErrMsg = nullptr;
-    // std::string sqlQuery = std::string( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM FILES" );
+    // std::string sqlQuery = std::string( "SELECT PATH, SIZE, MD5, LAST_MODIFICATION FROM
+    // FILES" );
     std::string sqlQuery = std::string( "SELECT COUNT(PATH) as something from FILES" );
     auto callback = []( void* voidPtr, int, char** argv, char** )
     {
@@ -531,7 +566,8 @@ std::optional<FileInfo> FileDatabase::getFromCache( const StringWr& inFilePath )
     {
         for( const auto& md5Pair : sizePair.second )
         {
-            const auto it = std::find_if( md5Pair.second.Files.begin(), md5Pair.second.Files.end(),
+            const auto it = std::find_if( md5Pair.second.Files.begin(),
+                                          md5Pair.second.Files.end(),
                                           [&inFilePath]( const FileInfo& curr )
                                           {
                                               return curr.FilePath.equals( inFilePath );
@@ -554,7 +590,8 @@ bool FileDatabase::removeFromCache( const StringWr& inFilePath )
     {
         for( auto& md5Pair : sizePair.second )
         {
-            auto it = std::find_if( md5Pair.second.Files.begin(), md5Pair.second.Files.end(),
+            auto it = std::find_if( md5Pair.second.Files.begin(),
+                                    md5Pair.second.Files.end(),
                                     [&inFilePath]( const FileInfo& curr )
                                     {
                                         return curr.FilePath.equals( inFilePath );
@@ -588,7 +625,8 @@ void FileDatabase::addToCache( const std::vector<FileInfo>& inFiles ) const
 
     for( const FileInfo& file : inFiles )
     {
-        std::unordered_map<std::string, HashGroup>& md5Group = m_cachedFiles[file.Size.toInt64()];
+        std::unordered_map<std::string, HashGroup>& md5Group =
+            m_cachedFiles[file.Size.toInt64()];
         auto& fileGroup = md5Group[file.MD5.getSTDString()];
         fileGroup.Files.insert( file );
     }
@@ -610,7 +648,8 @@ void FileDatabase::addToCache( const FileInfo& inFile ) const
     std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
     ProfileScopeVar( FileDatabase_addToCache_outOfMtx );
 
-    std::unordered_map<std::string, HashGroup>& md5Group = m_cachedFiles[inFile.Size.toInt64()];
+    std::unordered_map<std::string, HashGroup>& md5Group =
+        m_cachedFiles[inFile.Size.toInt64()];
     auto& fileGroup = md5Group[inFile.MD5.getSTDString()];
     fileGroup.Files.insert( inFile );
     fetchUsage();
@@ -621,7 +660,8 @@ void FileDatabase::fetchUsage() const
     // m_cachedFilesMtx
     ProfilerScope( "FileDatabase::fetchUsage" );
     std::int32_t loadedFilesCount{ 0 };
-    for( const std::unordered_map<std::string, HashGroup>& groups : m_cachedFiles | std::views::values )
+    for( const std::unordered_map<std::string, HashGroup>& groups :
+         m_cachedFiles | std::views::values )
     {
         for( const HashGroup& group : groups | std::views::values )
         {
@@ -637,7 +677,8 @@ void FileDatabase::fetchUsage() const
     m_usage.MBUsed /= 1024.f;                   // How many KiloBytes.
     m_usage.MBUsed /= 1024.f;                   // How many MegaBytes.
 
-    m_usage.Percentage = static_cast<float>( m_usage.Curr ) / static_cast<float>( m_usage.Max );
+    m_usage.Percentage =
+        static_cast<float>( m_usage.Curr ) / static_cast<float>( m_usage.Max );
 }
 
 bool FileDatabase::getIsFull() const
@@ -669,7 +710,8 @@ void FileDatabase::initDb()
 
     if( rc != SQLITE_OK )
     {
-        const std::size_t writeSize = snprintf( sqlQueryBuffor, bufferLength,
+        const std::size_t writeSize = snprintf( sqlQueryBuffor,
+                                                bufferLength,
                                                 "CREATE TABLE FILES (\
         PATH BINARY(2048),\
         SIZE BIGINT(255),\
@@ -677,7 +719,8 @@ void FileDatabase::initDb()
         LAST_MODIFICATION varchar(1024),\
         CONSTRAINT DB_ID PRIMARY KEY (PATH) \
         );" );
-        Assert::simple( ( writeSize < bufferLength ) && ( writeSize > 0 ), "Query input wrong! Command is too long!" );
+        Assert::simple( ( writeSize < bufferLength ) && ( writeSize > 0 ),
+                        "Query input wrong! Command is too long!" );
 
         std::string errorResult( zErrMsg );
         rc = sqlite3_exec( m_db, sqlQueryBuffor, callback, 0, &zErrMsg );
@@ -735,28 +778,35 @@ void FileDatabase::updateCache()
     addToCache( filesToAdd );
 }
 
-void FileDatabase::addFile( MD5Value md5, const StringWr& filePath, const StringWr& fileSize, const StringWr& modTime )
+void FileDatabase::addFile( MD5Value md5,
+                            const StringWr& filePath,
+                            const StringWr& fileSize,
+                            const StringWr& modTime )
 {
     ProfilerScope( "FileDatabase::addFile" );
     ++m_tasksCounter;
-    auto resultToBeDiscarded = std::async( std::launch::async,
-                                           [this, md5, filePath, fileSize, modTime]()
-                                           {
-                                               FileInfo fi;
-                                               fi.MD5 = md5;
-                                               fi.FilePath = filePath;
-                                               fi.Size = fileSize;
-                                               fi.ModTime.fromString( modTime );
-                                               fi.Found = true;
+    auto resultToBeDiscarded = std::async(
+        std::launch::async,
+        [this, md5, filePath, fileSize, modTime]()
+        {
+            FileInfo fi;
+            fi.MD5 = md5;
+            fi.FilePath = filePath;
+            fi.Size = fileSize;
+            fi.ModTime.fromString( modTime );
+            fi.Found = true;
 
-                                               addToCache( fi );
+            addToCache( fi );
 
-                                               addFileImpl( ELockType::Locked, md5, filePath, fileSize, modTime );
-                                               --m_tasksCounter;
-                                           } );
+            addFileImpl( ELockType::Locked, md5, filePath, fileSize, modTime );
+            --m_tasksCounter;
+        } );
 }
 
-void FileDatabase::addFileImpl( ELockType inLockType, MD5Value md5, const StringWr& filePath, const StringWr& fileSize,
+void FileDatabase::addFileImpl( ELockType inLockType,
+                                MD5Value md5,
+                                const StringWr& filePath,
+                                const StringWr& fileSize,
                                 const StringWr& modTime )
 {
     ProfilerScope( "FileDatabase::addFile" );
@@ -777,15 +827,27 @@ void FileDatabase::addFileImpl( ELockType inLockType, MD5Value md5, const String
     if( foundFile )
     {
         const std::string binaryForm = filePathNormalized.getUtfChar();
-        snprintf( buffer, bufferLength, "UPDATE FILES SET SIZE='%s', MD5='%s', LAST_MODIFICATION='%s' WHERE PATH=\"%s\"",
-                  fileSize.getUtfChar(), md5.getSTDString().c_str(), modTime.getUtfChar(), binaryForm.c_str() );
+        snprintf( buffer,
+                  bufferLength,
+                  "UPDATE FILES SET SIZE='%s', MD5='%s', LAST_MODIFICATION='%s' WHERE "
+                  "PATH=\"%s\"",
+                  fileSize.getUtfChar(),
+                  md5.getSTDString().c_str(),
+                  modTime.getUtfChar(),
+                  binaryForm.c_str() );
     }
     else
     {
         const std::string binaryValue = filePathNormalized.getUtfChar();
 
-        snprintf( buffer, bufferLength, "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ( \"%s\", '%s', '%s', '%s' );",
-                  binaryValue.c_str(), fileSize.getUtfChar(), md5.getSTDString().c_str(), modTime.getUtfChar() );
+        snprintf( buffer,
+                  bufferLength,
+                  "INSERT INTO FILES (PATH, SIZE, MD5, LAST_MODIFICATION ) VALUES ( "
+                  "\"%s\", '%s', '%s', '%s' );",
+                  binaryValue.c_str(),
+                  fileSize.getUtfChar(),
+                  md5.getSTDString().c_str(),
+                  modTime.getUtfChar() );
     }
     sqlQuery = buffer;
 
@@ -827,18 +889,21 @@ std::optional<FileInfo> FileDatabase::getFileInfo( const StringWr& path ) const
     return getFileInfo_Impl( ELockType::Locked, path );
 }
 
-std::optional<FileInfo> FileDatabase::getFileInfo_Impl( ELockType inLockType, const StringWr& path ) const
+std::optional<FileInfo> FileDatabase::getFileInfo_Impl( ELockType inLockType,
+                                                        const StringWr& path ) const
 {
     ProfilerScope( "FileDatabase::getFileInfo" );
     std::optional<FileInfo> result;
 
     waitForInit();
-    const StringWr sqlQuery = StringWr::createFromPrintf( "SELECT * FROM FILES WHERE PATH=\"%s\";", path.getUtfChar() );
+    const StringWr sqlQuery = StringWr::createFromPrintf(
+        "SELECT * FROM FILES WHERE PATH=\"%s\";", path.getUtfChar() );
 
     auto callback = []( void* fileInfoPtr, int argc, char** argv, char** info )
     {
         ProfilerScope( "FileDatabase::getFileInfo::lambda" );
-        std::optional<FileInfo>* fileInfoFromPtr = reinterpret_cast<std::optional<FileInfo>*>( fileInfoPtr );
+        std::optional<FileInfo>* fileInfoFromPtr =
+            reinterpret_cast<std::optional<FileInfo>*>( fileInfoPtr );
         FileInfo fi;
         fi.Found = true;
         fi.Size = argv[1];
@@ -869,9 +934,14 @@ std::optional<FileInfo> FileDatabase::getFileInfo_Impl( ELockType inLockType, co
     constexpr bool PrintInfo = false;
     if( PrintInfo && !result )
     {
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[FileDatabase::getFileInfo] Could not find: %s", path.getUtfChar() );
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[FileDatabase::getFileInfo] Used SQL command: %s",
-                                                 sqlQuery.getUtfChar() );
+        LOG::ILogger::getInstance().logVariable(
+            LOG::Severity::Info,
+            "[FileDatabase::getFileInfo] Could not find: %s",
+            path.getUtfChar() );
+        LOG::ILogger::getInstance().logVariable(
+            LOG::Severity::Info,
+            "[FileDatabase::getFileInfo] Used SQL command: %s",
+            sqlQuery.getUtfChar() );
     }
 
     if( rc != SQLITE_OK )
@@ -918,12 +988,16 @@ void FileDatabase::removeFileFromDB_Impl( const StringWr& pathRaw )
 
     constexpr std::size_t bufferSize{ 512 };
     static char buffer[bufferSize];
-    snprintf( buffer, bufferSize, "FileDatabase::removeFileFromDB pathRaw: %s", pathRaw.getUtfChar() );
+    snprintf( buffer,
+              bufferSize,
+              "FileDatabase::removeFileFromDB pathRaw: %s",
+              pathRaw.getUtfChar() );
     ThreadUtil::getInstance().setThreadStatus( buffer );
     StringWr path = pathRaw;
 
     const std::string binaryForm = path.getUtfChar();
-    std::string sqlQuery = std::string( "DELETE FROM FILES WHERE PATH='" ) + binaryForm + "';";
+    std::string sqlQuery =
+        std::string( "DELETE FROM FILES WHERE PATH='" ) + binaryForm + "';";
 
     char* zErrMsg = nullptr;
     auto callback = []( void* thisPtrValue, int argc, char** argv, char** info )
@@ -957,7 +1031,8 @@ void FileDatabase::removeFilesFromDb( const std::vector<StringWr>& paths )
     StringWr lastPath = paths[pathsSize - 1];
     pathsListed += lastPath + "')";
 
-    StringWr sqlQuery = StringWr( "DELETE FROM FILES WHERE PATH IN " ) + pathsListed + ";";
+    StringWr sqlQuery =
+        StringWr( "DELETE FROM FILES WHERE PATH IN " ) + pathsListed + ";";
 
     char* zErrMsg = nullptr;
     auto callback = []( void* thisPtrValue, int argc, char** argv, char** info )
@@ -966,7 +1041,8 @@ void FileDatabase::removeFilesFromDb( const std::vector<StringWr>& paths )
         return 0;
     };
 
-    std::int32_t rc = SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, nullptr, &zErrMsg );
+    std::int32_t rc =
+        SQLiteQuery( m_db, sqlQuery.getUtfChar(), callback, nullptr, &zErrMsg );
 
     if( rc != SQLITE_OK )
     {
@@ -1012,16 +1088,20 @@ SortedStructuredListOfFiles::SortedStructuredListOfFiles()
 {
 }
 
-SortedStructuredListOfFiles::SortedStructuredListOfFiles( const SortedStructuredListOfFiles& arg ): m_groupsBySize( arg.m_groupsBySize )
+SortedStructuredListOfFiles::SortedStructuredListOfFiles(
+    const SortedStructuredListOfFiles& arg )
+    : m_groupsBySize( arg.m_groupsBySize )
 {
 }
 
-SortedStructuredListOfFiles::SortedStructuredListOfFiles( SortedStructuredListOfFiles&& arg ) noexcept
+SortedStructuredListOfFiles::SortedStructuredListOfFiles(
+    SortedStructuredListOfFiles&& arg ) noexcept
     : m_groupsBySize( std::move( arg.m_groupsBySize ) )
 {
 }
 
-SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( const SortedStructuredListOfFiles& arg )
+SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=(
+    const SortedStructuredListOfFiles& arg )
 {
     if( this != &arg )
     {
@@ -1030,7 +1110,8 @@ SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( const Sorte
     return *this;
 }
 
-SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=( SortedStructuredListOfFiles&& arg ) noexcept
+SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=(
+    SortedStructuredListOfFiles&& arg ) noexcept
 {
     if( this != &arg )
     {
@@ -1068,7 +1149,8 @@ void SortedStructuredListOfFiles::addFile( const FileInfo& arg )
     }
 }
 
-std::vector<std::int32_t> SortedStructuredListOfFiles::getPossibleSizes( EOrderType inOrderType ) const
+std::vector<std::int32_t> SortedStructuredListOfFiles::getPossibleSizes(
+    EOrderType inOrderType ) const
 {
     std::vector<std::int32_t> result;
 

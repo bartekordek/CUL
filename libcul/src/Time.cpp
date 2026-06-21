@@ -1,6 +1,6 @@
 #include "CUL/Time.hpp"
 #include "IMPORT_datetime.hpp"
-#include "CUL/Proifling/Profiler.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 #include "CUL/ITimer.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
 
@@ -21,19 +21,27 @@ inline std::tm localtime_xp( std::time_t* timer )
     return bt;
 }
 
-Time::Time(): m_dateTime( std::make_unique<jed_utils::datetime>() )
+Time::Time() : m_dateTime( std::make_unique<jed_utils::datetime>() )
 {
 }
 
-Time::Time( std::int32_t inYear, std::int32_t inMonth, std::int32_t inDay, std::int32_t inHour, std::int32_t inMinute,
+Time::Time( std::int32_t inYear,
+            std::int32_t inMonth,
+            std::int32_t inDay,
+            std::int32_t inHour,
+            std::int32_t inMinute,
             std::int32_t inSeconds )
     : m_dateTime( std::make_unique<jed_utils::datetime>() )
 {
-    *m_dateTime = jed_utils::datetime( inYear, inMonth, inDay, inHour, inMinute, inSeconds );
+    *m_dateTime =
+        jed_utils::datetime( inYear, inMonth, inDay, inHour, inMinute, inSeconds );
     m_initialized = true;
 }
 
-Time::Time( const Time& rhv ): m_ns( rhv.m_ns ), m_dateTime(), m_asString( rhv.m_asString )
+Time::Time( const Time& rhv )
+    : m_ns( rhv.m_ns )
+    , m_dateTime()
+    , m_asString( rhv.m_asString )
 {
     m_dateTime = std::make_unique<jed_utils::datetime>();
 
@@ -42,7 +50,10 @@ Time::Time( const Time& rhv ): m_ns( rhv.m_ns ), m_dateTime(), m_asString( rhv.m
     m_initialized = true;
 }
 
-Time::Time( Time&& rhv ): m_ns( rhv.m_ns ), m_dateTime( std::move( rhv.m_dateTime ) ), m_asString( std::move( rhv.m_asString ) )
+Time::Time( Time&& rhv )
+    : m_ns( rhv.m_ns )
+    , m_dateTime( std::move( rhv.m_dateTime ) )
+    , m_asString( std::move( rhv.m_asString ) )
 {
     m_initialized = true;
 }
@@ -75,14 +86,23 @@ Time& Time::operator=( Time&& rhv )
 void Time::setDate( TimeType inYear, TimeType inMonth, TimeType inDay )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime( inYear, inMonth, inDay, m_dateTime->get_hour(), m_dateTime->get_minute(), m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( inYear,
+                                       inMonth,
+                                       inDay,
+                                       m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(),
+                                       m_dateTime->get_second() );
 }
 
 void Time::setYear( TimeType inYear )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime( inYear, m_dateTime->get_month(), m_dateTime->get_day(), m_dateTime->get_hour(),
-                                       m_dateTime->get_minute(), m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( inYear,
+                                       m_dateTime->get_month(),
+                                       m_dateTime->get_day(),
+                                       m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(),
+                                       m_dateTime->get_second() );
     updateString();
     m_initialized = true;
 }
@@ -96,8 +116,12 @@ TimeType Time::getYear() const
 void Time::setMonth( TimeType inMonth )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), inMonth, m_dateTime->get_day(), m_dateTime->get_hour(),
-                                       m_dateTime->get_minute(), m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(),
+                                       inMonth,
+                                       m_dateTime->get_day(),
+                                       m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(),
+                                       m_dateTime->get_second() );
     updateString();
     m_initialized = true;
 }
@@ -111,8 +135,12 @@ TimeType Time::getMonth() const
 void Time::setDay( TimeType inDay )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), inDay, m_dateTime->get_hour(),
-                                       m_dateTime->get_minute(), m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(),
+                                       m_dateTime->get_month(),
+                                       inDay,
+                                       m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(),
+                                       m_dateTime->get_second() );
     updateString();
     m_initialized = true;
 }
@@ -126,8 +154,12 @@ TimeType Time::getDay() const
 void Time::setHour( TimeType inHour )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), m_dateTime->get_day(), inHour,
-                                       m_dateTime->get_minute(), m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(),
+                                       m_dateTime->get_month(),
+                                       m_dateTime->get_day(),
+                                       inHour,
+                                       m_dateTime->get_minute(),
+                                       m_dateTime->get_second() );
     updateString();
     m_initialized = true;
 }
@@ -141,8 +173,12 @@ TimeType Time::getHour() const
 void Time::setMinute( TimeType inMinute )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), m_dateTime->get_day(), m_dateTime->get_hour(),
-                                       inMinute, m_dateTime->get_second() );
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(),
+                                       m_dateTime->get_month(),
+                                       m_dateTime->get_day(),
+                                       m_dateTime->get_hour(),
+                                       inMinute,
+                                       m_dateTime->get_second() );
     updateString();
     m_initialized = true;
 }
@@ -156,8 +192,12 @@ TimeType Time::getMinute() const
 void Time::setSecond( TimeType inSecond )
 {
     waitForDateTime();
-    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(), m_dateTime->get_month(), m_dateTime->get_day(), m_dateTime->get_hour(),
-                                       m_dateTime->get_minute(), inSecond );
+    *m_dateTime = jed_utils::datetime( m_dateTime->get_year(),
+                                       m_dateTime->get_month(),
+                                       m_dateTime->get_day(),
+                                       m_dateTime->get_hour(),
+                                       m_dateTime->get_minute(),
+                                       inSecond );
     updateString();
     m_initialized = true;
 }
@@ -245,7 +285,8 @@ const char* Time::cStr() const
 
 void removePrecedingZero( StringWr& inOutVal )
 {
-    while( ( inOutVal.empty() == false ) && ( inOutVal.startsWith( "0" ) ) && ( inOutVal.size() > 1 ) )
+    while( ( inOutVal.empty() == false ) && ( inOutVal.startsWith( "0" ) ) &&
+           ( inOutVal.size() > 1 ) )
     {
         inOutVal.erase( 0, 1 );
     }
@@ -260,41 +301,42 @@ void Time::fromString( const StringWr& inString )
     }
     m_asString = inString;
     m_initialized = false;
-    m_initializedFuture = std::async( std::launch::async,
-                                      [this]()
-                                      {
-                                          ProfilerScope( "Time::fromString::datetime_load" );
+    m_initializedFuture = std::async(
+        std::launch::async,
+        [this]()
+        {
+            ProfilerScope( "Time::fromString::datetime_load" );
 
-                                          std::vector<StringWr> dateTimeSeparated = m_asString.split( " " );
+            std::vector<StringWr> dateTimeSeparated = m_asString.split( " " );
 
-                                          std::vector<StringWr> dateSeparted = dateTimeSeparated[0].split( "-" );
+            std::vector<StringWr> dateSeparted = dateTimeSeparated[0].split( "-" );
 
-                                          if( dateSeparted.size() < 3u )
-                                          {
-                                              dateSeparted = dateTimeSeparated[0].split( "/" );
-                                          }
+            if( dateSeparted.size() < 3u )
+            {
+                dateSeparted = dateTimeSeparated[0].split( "/" );
+            }
 
-                                          for( auto& currString : dateSeparted )
-                                          {
-                                              removePrecedingZero( currString );
-                                          }
+            for( auto& currString : dateSeparted )
+            {
+                removePrecedingZero( currString );
+            }
 
-                                          const auto year = dateSeparted[0].toInt64();
-                                          const auto month = dateSeparted[1].toInt64();
-                                          const auto day = dateSeparted[2].toInt64();
+            const auto year = dateSeparted[0].toInt64();
+            const auto month = dateSeparted[1].toInt64();
+            const auto day = dateSeparted[2].toInt64();
 
-                                          std::vector<StringWr> timeSeparated = dateTimeSeparated[01].split( ":" );
-                                          for( auto& currString : timeSeparated )
-                                          {
-                                              removePrecedingZero( currString );
-                                          }
-                                          const auto hour = timeSeparated[0].toInt64();
-                                          const auto minute = timeSeparated[1].toInt64();
-                                          const auto seconds = timeSeparated[2].toInt64();
+            std::vector<StringWr> timeSeparated = dateTimeSeparated[01].split( ":" );
+            for( auto& currString : timeSeparated )
+            {
+                removePrecedingZero( currString );
+            }
+            const auto hour = timeSeparated[0].toInt64();
+            const auto minute = timeSeparated[1].toInt64();
+            const auto seconds = timeSeparated[2].toInt64();
 
-                                          *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
-                                          m_initialized = true;
-                                      } );
+            *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
+            m_initialized = true;
+        } );
 }
 
 void Time::setTimeNs( std::int64_t ns )
@@ -377,7 +419,8 @@ bool Time::almostTheSame( const Time& arg, std::int32_t differenceInSeconds ) co
         return false;
     }
 
-    return std::abs( m_dateTime->get_second() - arg.m_dateTime->get_second() ) < differenceInSeconds;
+    return std::abs( m_dateTime->get_second() - arg.m_dateTime->get_second() ) <
+           differenceInSeconds;
 }
 
 std::uint64_t Time::dateTimeToEpoch( const BasicTime& /*inBt*/ )

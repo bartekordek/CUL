@@ -2,7 +2,7 @@
 #include "CUL/Threading/ThreadUtil.hpp"
 #include "CUL/Threading/ITask.hpp"
 #include "CUL/ITimer.hpp"
-#include "CUL/Proifling/Profiler.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 #include "CUL/Threading/TaskCallback.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
@@ -113,7 +113,8 @@ void MultiWorkerSystem::addWorker( EPriority priority )
     std::lock_guard<std::mutex> threadsLocker( m_threadsMtx );
     const size_t workerId = m_threads.size();
     ThreadInfo* threadInfo = new ThreadInfo;
-    threadInfo->Thread = std::thread( &MultiWorkerSystem::workerMethod, this, workerId, priority );
+    threadInfo->Thread =
+        std::thread( &MultiWorkerSystem::workerMethod, this, workerId, priority );
     threadInfo->Priority = priority;
     threadInfo->WorkerId = (int8_t)workerId;
     m_threads[threadInfo->Thread.get_id()] = threadInfo;
@@ -144,7 +145,8 @@ void MultiWorkerSystem::removeWorker( EPriority priority )
             m_changeWorkers = std::async( std::launch::async,
                                           [this, foundThread]()
                                           {
-                                              const std::thread::id threaId = foundThread->Thread.get_id();
+                                              const std::thread::id threaId =
+                                                  foundThread->Thread.get_id();
                                               if( foundThread->Thread.joinable() )
                                               {
                                                   foundThread->Thread.join();
@@ -213,7 +215,8 @@ void MultiWorkerSystem::workerMethod( int8_t threadId, EPriority priority )
         {
             std::lock_guard<std::mutex> locker( m_tasksMtxs[(size_t)priority] );
             auto& tasks = m_tasksArray[(size_t)priority];
-            const auto taskIt = std::find_if( tasks.begin(), tasks.end(),
+            const auto taskIt = std::find_if( tasks.begin(),
+                                              tasks.end(),
                                               [priority]( const ITask* task )
                                               {
                                                   return task->Priority == priority;

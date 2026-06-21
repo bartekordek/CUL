@@ -1,5 +1,5 @@
 #include "CUL/Task/TaskAccumulator.hpp"
-#include "CUL/Proifling/Profiler.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 
 using namespace CUL;
 
