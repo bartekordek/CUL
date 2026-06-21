@@ -52,22 +52,63 @@ setup_ispc(VERSION 1.25.3)
 set( CUL_DEPS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps )
 # Add sub directories
 add_subdirectory( ${CUL_DEPS_PATH} )
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/assert )
+set_property(TARGET boost_assert PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/circular_buffer )
+set_property(TARGET boost_circular_buffer PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/concept_check )
+set_property(TARGET boost_concept_check PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/config )
+set_property(TARGET boost_config PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/container_hash )
+set_property(TARGET boost_container_hash PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/core )
+set_property(TARGET boost_core PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/describe )
+set_property(TARGET boost_describe PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/move )
+set_property(TARGET boost_move PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/mp11 )
+set_property(TARGET boost_mp11 PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/predef )
+set_property(TARGET boost_predef PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/preprocessor )
+set_property(TARGET boost_preprocessor PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/stacktrace )
+set_property(TARGET boost_stacktrace PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/static_assert )
+set_property(TARGET boost_static_assert PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/throw_exception )
+set_property(TARGET boost_throw_exception PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/type_traits )
+set_property(TARGET boost_type_traits PROPERTY FOLDER "deps/boost")
+
 add_subdirectory( ${CUL_DEPS_PATH}/boost/winapi )
+set_property(TARGET boost_winapi PROPERTY FOLDER "deps/boost")
+
+set_property(TARGET boost_stacktrace_basic PROPERTY FOLDER "deps/boost")
+set_property(TARGET boost_stacktrace_from_exception PROPERTY FOLDER "deps/boost")
+set_property(TARGET boost_stacktrace_noop PROPERTY FOLDER "deps/boost")
+
+if (MSVC)
+    set_property(TARGET boost_stacktrace_windbg PROPERTY FOLDER "deps/boost")
+    set_property(TARGET boost_stacktrace_windbg_cached PROPERTY FOLDER "deps/boost")
+endif()
 
 set(PATH_TO_APPLICATION_ICON ${CUL_DEPS_PATH}/CPP-DateTime-library/product.ico CACHE STRING "necessary value" FORCE)
 # BUILD_SHARED_LIBS
@@ -76,6 +117,7 @@ set(BUILD_SHARED_LIBS FALSE CACHE BOOL "necessary value" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/CPP-DateTime-library )
+set_property(TARGET datetime PROPERTY FOLDER "deps")
 
 set(OPTION_BUILD_TESTS OFF CACHE BOOL "Disable testing" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -88,11 +130,17 @@ set(OPTION_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLM_TEST_ENABLE OFF CACHE BOOL "" FORCE)
 set(GLM_ENABLE_EXPERIMENTAL OFF CACHE BOOL "" FORCE) # optional
 add_subdirectory( ${CUL_DEPS_PATH}/glm )
+set_property(TARGET glm PROPERTY FOLDER "deps")
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 set(gtest_build_samples OFF CACHE BOOL "" FORCE)
 set(gtest_build_tests OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/googletest )
+set_property(TARGET gmock PROPERTY FOLDER "deps/googletest")
+set_property(TARGET gmock_main PROPERTY FOLDER "deps/googletest")
+set_property(TARGET gtest PROPERTY FOLDER "deps/googletest")
+set_property(TARGET gtest_main PROPERTY FOLDER "deps/googletest")
+
 add_subdirectory( ${CUL_DEPS_PATH}/nativefiledialog-extended )
 
 option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
@@ -108,14 +156,20 @@ set(SPDLOG_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(SPDLOG_BUILD_BENCH OFF CACHE BOOL "" FORCE)
 set(SPDLOG_INSTALL OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
+set_property(TARGET spdlog PROPERTY FOLDER "deps")
 
 set(BUILD_EXAMPLE OFF CACHE BOOL "DISABLE EXAMPLE" FORCE)
 set(BUILD_TOOL OFF CACHE BOOL "DISABLE TOOL" FORCE)
 set(BUILD_TEST OFF CACHE BOOL "DISABLE TEST" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/udp-discovery-cpp )
+set_property(TARGET udp-discovery PROPERTY FOLDER "deps")
+
 add_subdirectory( ${CUL_DEPS_PATH}/zlib )
+set_property(TARGET example PROPERTY FOLDER "deps/zlib")
+
 set( PNG_TESTS OFF )
 add_subdirectory( ${CUL_DEPS_PATH}/libpng )
+set_property(TARGET png PROPERTY FOLDER "deps")
 find_package( PNG REQUIRED )
 
 option(ENABLE_TRACY "Enable Tracy profiler" OFF)
