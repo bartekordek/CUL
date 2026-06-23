@@ -95,6 +95,34 @@
             "dependsOn": "[CMake][Create]",
         },
         {
+            "label": "[CMake][Build][All]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build_${input:platform}",
+                "--config",
+                "${input:configuration}",
+                "-j4"
+            ],
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "revealProblems": "onProblem",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[CMake][Create]",
+        },
+        {
             "label": "[Win64][CMake][Create][CLang]",
             "type": "shell",
             "command": "cmake",
