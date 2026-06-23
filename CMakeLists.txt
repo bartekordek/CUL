@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 cmake_policy(SET CMP0069 NEW)
 
-set( CMAKE_CXX_STANDARD 23 )
-
 project(cul_main)
 
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 message( "CMAKE BUILD TYPE: ${CMAKE_BUILD_TYPE}" )
 
@@ -88,6 +88,7 @@ set_property(TARGET boost_preprocessor PROPERTY FOLDER "deps/boost")
 
 add_subdirectory( ${CUL_DEPS_PATH}/boost/stacktrace )
 set_property(TARGET boost_stacktrace PROPERTY FOLDER "deps/boost")
+set_property(TARGET boost_stacktrace_basic PROPERTY FOLDER "deps/boost")
 
 add_subdirectory( ${CUL_DEPS_PATH}/boost/static_assert )
 set_property(TARGET boost_static_assert PROPERTY FOLDER "deps/boost")
@@ -117,7 +118,8 @@ set(BUILD_SHARED_LIBS FALSE CACHE BOOL "necessary value" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/CPP-DateTime-library )
-set_property(TARGET datetime PROPERTY FOLDER "deps")
+set_property(TARGET datetime PROPERTY FOLDER "deps/DateTime")
+set_property(TARGET uninstall PROPERTY FOLDER "deps/DateTime")
 
 set(OPTION_BUILD_TESTS OFF CACHE BOOL "Disable testing" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
@@ -142,10 +144,13 @@ set_property(TARGET gtest PROPERTY FOLDER "deps/googletest")
 set_property(TARGET gtest_main PROPERTY FOLDER "deps/googletest")
 
 add_subdirectory( ${CUL_DEPS_PATH}/nativefiledialog-extended )
+set_property(TARGET nfd PROPERTY FOLDER "deps")
 
-option( RAPIDJSON_BUILD_TESTS "Enable testing." OFF )
-option( RAPIDJSON_BUILD_EXAMPLES "Build examples." OFF )
+set(RAPIDJSON_BUILD_DOC OFF CACHE BOOL "Enable testing." FORCE)
+set(RAPIDJSON_BUILD_EXAMPLES OFF CACHE BOOL "Enable examples." FORCE)
+set(RAPIDJSON_BUILD_TESTS OFF CACHE BOOL "Enable doc." FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/rapidjson )
+set_property(TARGET travis_doc PROPERTY FOLDER "deps/rapidjson")
 
 if (MSVC)
     set(SPDLOG_WCHAR_SUPPORT ON CACHE BOOL "" FORCE)
@@ -158,16 +163,19 @@ set(SPDLOG_INSTALL OFF CACHE BOOL "" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/spdlog )
 set_property(TARGET spdlog PROPERTY FOLDER "deps")
 
-set(BUILD_EXAMPLE OFF CACHE BOOL "DISABLE EXAMPLE" FORCE)
 set(BUILD_TOOL OFF CACHE BOOL "DISABLE TOOL" FORCE)
 set(BUILD_TEST OFF CACHE BOOL "DISABLE TEST" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/udp-discovery-cpp )
 set_property(TARGET udp-discovery PROPERTY FOLDER "deps")
 
+set(BUILD_EXAMPLE OFF CACHE BOOL "DISABLE EXAMPLE" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/zlib )
 set_property(TARGET example PROPERTY FOLDER "deps/zlib")
+set_property(TARGET minigzip PROPERTY FOLDER "deps/zlib")
+set_property(TARGET zlib PROPERTY FOLDER "deps/zlib")
+set_property(TARGET zlibstatic PROPERTY FOLDER "deps/zlib")
 
-set( PNG_TESTS OFF )
+set(PNG_TESTS OFF CACHE BOOL "Disable libpng tests" FORCE)
 add_subdirectory( ${CUL_DEPS_PATH}/libpng )
 set_property(TARGET png PROPERTY FOLDER "deps")
 find_package( PNG REQUIRED )
