@@ -9,14 +9,14 @@ NAMESPACE_BEGIN( CUL )
 
 class IObject;
 
-class CULLib_API ObjectRegistry final: public CUL::Singleton<ObjectRegistry>
+class ObjectRegistry final: public CUL::Singleton<ObjectRegistry>
 {
 public:
-    friend class CUL::Singleton<ObjectRegistry>;
-    ObjectRegistry( const ObjectRegistry& ) = delete;
-    ObjectRegistry( ObjectRegistry&& ) = delete;
-    ObjectRegistry& operator=( const ObjectRegistry& ) = delete;
-    ObjectRegistry& operator=( ObjectRegistry&& ) = delete;
+    CULLib_API friend class CUL::Singleton<ObjectRegistry>;
+    CULLib_API ObjectRegistry( const ObjectRegistry& ) = delete;
+    CULLib_API ObjectRegistry( ObjectRegistry&& ) = delete;
+    CULLib_API ObjectRegistry& operator=( const ObjectRegistry& ) = delete;
+    CULLib_API ObjectRegistry& operator=( ObjectRegistry&& ) = delete;
 
     std::uint64_t getFirstFreeIndex();
 
@@ -32,4 +32,4 @@ private:
     std::unordered_set<std::uint64_t> m_list;
 };
 
-NAMESPACE_END(CUL)
+NAMESPACE_END( CUL )
