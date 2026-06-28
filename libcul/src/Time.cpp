@@ -263,7 +263,7 @@ bool Time::operator>( const Time& arg ) const
 Time* Time::copy() const
 {
     auto result = new Time();
-    result->setTimeUs( m_ns );
+    result->setTimeUs( static_cast<std::int64_t>( m_ns ) );
     result->updateString();
     return result;
 }
@@ -334,7 +334,12 @@ void Time::fromString( const StringWr& inString )
             const auto minute = timeSeparated[1].toInt64();
             const auto seconds = timeSeparated[2].toInt64();
 
-            *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
+            *m_dateTime = jed_utils::datetime( static_cast<std::int32_t>( year ),
+                                               static_cast<std::int32_t>( month ),
+                                               static_cast<std::int32_t>( day ),
+                                               static_cast<std::int32_t>( hour ),
+                                               static_cast<std::int32_t>( minute ),
+                                               static_cast<std::int32_t>( seconds ) );
             m_initialized = true;
         } );
 }
