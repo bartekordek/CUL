@@ -78,8 +78,8 @@ cmake --build Build-Linux
 ### Windows (MSVC)
 
 ```bat
-cmake -S . -B Build-Windows -G "Visual Studio 17 2022"
-cmake --build Build-Windows --config Release
+cmake -S . -B Build_Win64 -G "Visual Studio 17 2022"
+cmake --build Build_Win64 --config Release
 ```
 
 Or use the provided helper script:
@@ -90,7 +90,7 @@ CreateProjects.bat
 
 Build outputs are placed in:
 - `Build-Linux/` on Linux
-- `Build-Windows/` on Windows
+- `Build_Win64/` on Windows
 
 ---
 
