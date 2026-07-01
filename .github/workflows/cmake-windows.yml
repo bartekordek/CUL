@@ -27,7 +27,7 @@ jobs:
             - name: Build libculTests
               # Build your program with the given configuration
               working-directory: ${{github.workspace}}/Build_Win64
-              run: cmake --build . --config Debug --target libculTests_static libculTests_dynamic -j 16
+              run: cmake --build . --config Debug --target libculTests_static libculTests_dynamic --parallel
 
             - name: Run libculTests_dynamic
               shell: cmd

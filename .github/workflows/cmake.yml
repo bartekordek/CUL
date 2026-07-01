@@ -52,7 +52,7 @@ jobs:
     - name: Build libculTests
       working-directory: ${{github.workspace}}//Build_Linux
       shell: bash
-      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_static libculTests_dynamic -j $(nproc)
+      run: cmake --build . --config ${BUILD_TYPE} --target libculTests_static libculTests_dynamic --parallel
 
     - name: Run libculTests_dynamic
       working-directory: ${{github.workspace}}/runDir
