@@ -24,6 +24,14 @@ jobs:
               with:
                   submodules: "recursive"
 
+            - name: Print runner info
+              shell: pwsh
+              run: |
+                  Write-Host "Runner OS: $env:RUNNER_OS"
+                  Write-Host "Runner Arch: $env:RUNNER_ARCH"
+                  Write-Host "CPU cores: $((Get-CimInstance Win32_Processor | Measure-Object NumberOfLogicalProcessors -Sum).Sum)"
+                  Get-CimInstance Win32_ComputerSystem | Select-Object TotalPhysicalMemory, NumberOfLogicalProcessors | Format-List
+
             - name: Configure CMake
               # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
               # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
