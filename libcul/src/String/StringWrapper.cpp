@@ -1,6 +1,7 @@
 #include "CUL/String/StringWrapper.hpp"
 #include "CUL/String/StringUtil.hpp"
 #include "CUL/String/String.hpp"
+#include "IMPORT_hash_library.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdarg.hpp"
 
@@ -247,6 +248,19 @@ ThreeState STDStringWrapper::toBool() const
     }
 
     return ThreeState::Undetermined;
+}
+
+STDStringWrapper STDStringWrapper::calculateMD5() const
+{
+    STDStringWrapper result;
+
+    if( !empty() )
+    {
+        SHA256 sha256;
+        result = sha256( m_value.data(), sizeof( UnderlyingChar ) * m_value.size() );
+    }
+
+    return result;
 }
 
 bool STDStringWrapper::operator==( const STDStringWrapper& inArg ) const

@@ -124,6 +124,7 @@ public:
     std::int64_t toInt64() const override;
     std::u8string toU8String() const;
     ThreeState toBool() const override;
+    STDStringWrapper calculateMD5() const;
 
     // Replace
     void replace( const std::string& inWhat, const std::string& inFor );
