@@ -1,7 +1,7 @@
 # CUL — Common Utility Library
 
 [![Windows Build](https://github.com/bartekordek/CUL/actions/workflows/cmake-windows.yml/badge.svg?branch=master)](https://github.com/bartekordek/CUL/actions/workflows/cmake-windows.yml)
-[![Linux Build](https://github.com/bartekordek/CUL/actions/workflows/cmake.yml/badge.svg)](https://github.com/bartekordek/CUL/actions/workflows/cmake.yml)
+[![Linux Build](https://github.com/bartekordek/CUL/actions/workflows/cmake-linux.yml/badge.svg)](https://github.com/bartekordek/CUL/actions/workflows/cmake-linux.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT%2FBeer-yellow.svg)](#license)
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue.svg)](https://en.cppreference.com/w/cpp/23)
 
