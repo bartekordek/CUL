@@ -221,6 +221,127 @@
                 "showReuseMessage": false,
                 "clear": true
             }
+        },
+        {
+            "label": "[MSYS2][CMake][Create][Clang]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B Build_MSYS2_Clang",
+                "-G",
+                "Ninja",
+                "-DCMAKE_C_COMPILER=clang",
+                "-DCMAKE_CXX_COMPILER=clang++",
+                "-DENABLE_TRACY=${input:tracy_enabled}",
+                "-DCMAKE_BUILD_TYPE=${input:configuration}",
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+            ],
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "revealProblems": "onProblem",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "[MSYS2][CMake][Build][libCulTests]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build_MSYS2_Clang",
+                "-j16",
+                "--target",
+                "libculTests_static",
+                "libculTests_dynamic"
+            ],
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "revealProblems": "onProblem",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[MSYS2][CMake][Create][Clang]",
+        },
+        {
+            "label": "[MSYS2][CMake][Build][All]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build_MSYS2_Clang",
+                "-j4"
+            ],
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "revealProblems": "onProblem",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[MSYS2][CMake][Create][Clang]",
+        },
+        {
+            "label": "[Run][libculTets_static][MSYS2]",
+            "type": "shell",
+            "command": "${workspaceFolder}/Build_MSYS2_Clang/libculTests_static.exe",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "label": "[Run][libculTets_dynamic][MSYS2]",
+            "type": "shell",
+            "command": "${workspaceFolder}/Build_MSYS2_Clang/libculTests_dynamic.exe",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            }
         }
     ]
 }
