@@ -1,8 +1,9 @@
 #pragma once
 
 #include "CUL/GenericUtils/IArgumentsList.hpp"
-#include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/UselessMacros.hpp"
+#include "CUL/GenericUtils/NonCopyable.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( GUTILS )
@@ -15,19 +16,15 @@ public:
     CULLib_API void printInputParameters();
     CULLib_API IArgumentsList& getArgs();
     CULLib_API const String getFlagValue( const String& flagName ) const;
-    CULLib_API const String getFlagValue( const String& flagName, const String& inFallbackValue ) const;
-    CULLib_API void setArgs( const int argc, char** argv );
+    CULLib_API const String getFlagValue( const String& flagName, const String& inFallbackValue ) const;    CULLib_API void setArgs( const int argc, char** argv );
     CULLib_API void setArgs( const char* args );
     CULLib_API bool getDoesFlagExist( const char* inFlagName ) const;
 
-private:
-    CULLib_API ConsoleUtilities();
-    CULLib_API ConsoleUtilities( const ConsoleUtilities& ) = delete;
-    CULLib_API ConsoleUtilities( ConsoleUtilities&& ) = delete;
-    CULLib_API ConsoleUtilities& operator=( const ConsoleUtilities& ) = delete;
-    CULLib_API ConsoleUtilities& operator=( ConsoleUtilities&& ) = delete;
-    CULLib_API ~ConsoleUtilities();
+    CUL_NONCOPYABLE( ConsoleUtilities );
 
+private:
+    ConsoleUtilities();
+    ~ConsoleUtilities();
     std::unique_ptr<IArgumentsList> m_args;
 };
 
