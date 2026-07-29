@@ -38,9 +38,19 @@ IArgumentsList& ConsoleUtilities::getArgs()
     return *m_args;
 }
 
-CULLib_API const String& ConsoleUtilities::getFlagValue( const String& flagName ) const
+const String ConsoleUtilities::getFlagValue( const String& flagName ) const
 {
     return m_args->getFlagValue( flagName );
+}
+
+const String ConsoleUtilities::getFlagValue( const String& flagName, const String& inFallbackValue ) const
+{
+    if( m_args->getDoesFlagExist( flagName.getUtfChar() ) )
+    {
+        return m_args->getFlagValue( flagName );
+    }
+
+    return inFallbackValue;
 }
 
 void ConsoleUtilities::setArgs( const int argc, char** argv )

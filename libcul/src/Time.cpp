@@ -1,8 +1,9 @@
 #include "CUL/Time.hpp"
-#include "IMPORT_datetime.hpp"
-#include "CUL/Profiling/Profiler.hpp"
+
 #include "CUL/ITimer.hpp"
+#include "CUL/Profiling/Profiler.hpp"
 #include "CUL/STL_IMPORTS/STD_sstream.hpp"
+#include "IMPORT_datetime.hpp"
 
 using namespace CUL;
 
@@ -346,7 +347,7 @@ void Time::fromString( const StringWr& inString )
 
 void Time::setTimeNs( std::int64_t ns )
 {
-    m_ns = ns;
+    m_ns = static_cast<decltype( m_ns )>( ns );
     updateString();
 }
 
@@ -365,7 +366,7 @@ void Time::setTimeSec( std::time_t timeConverted )
     const auto seconds = static_cast<TimeType>( tm.tm_sec );
 
     *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
-    m_ns = timeConverted * 1000000000;
+    m_ns = timeConverted * 1000000000.f;
     m_initialized = true;
     updateString();
 }
