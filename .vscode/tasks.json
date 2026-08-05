@@ -64,6 +64,34 @@
             }
         },
         {
+            "label": "[CMake][Create][Win64][Debug][NoTray]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B Build_Win64",
+                "-DENABLE_TRACY=false",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+            ],
+            "group": {
+                "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "revealProblems": "onProblem",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
             "label": "[CMake][Build][libCulTests]",
             "type": "shell",
             "command": "cmake",

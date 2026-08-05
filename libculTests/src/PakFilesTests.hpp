@@ -1,26 +1,22 @@
-#include "PakFilesTests.hpp"
+#pragma once
 
-void PakFilesTests::SetUp()
-{
-    // Setup code for each test case
-}
+#include "Gtest.hpp"
 
-PakFilesTests::PakFilesTests()
+class PakFilesTests: public ::testing::Test
 {
-    // Constructor code
-}
+public:
+protected:
+    PakFilesTests();
 
-void PakFilesTests::SetUpTestCase()
-{
-    // Setup code for the entire test case
-}
+    static void SetUpTestCase();
+    void SetUp() override;
 
-TEST_F( PakFilesTests, basicPakFileLoad )
-{
-    // Test code
-}
+    void TearDown() override;
+    static void TearDownTestCase();
+    void createTestArchive();
 
-TEST_F( PakFilesTests, pakFileContainsExpectedData )
-{
-    // Test code
-}
+    ~PakFilesTests();
+
+private:
+    
+};
