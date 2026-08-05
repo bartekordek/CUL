@@ -5,16 +5,16 @@
 
 namespace CUL
 {
-class FilePaker
+class Archiver
 {
 public:
-    CULLib_API static FilePaker& getInstance();
+    CULLib_API static Archiver& getInstance();
 
-    CUL_NONCOPYABLE( FilePaker );
+    CUL_NONCOPYABLE( Archiver );
 
 protected:
 private:
-    FilePaker();
-    ~FilePaker();
+    Archiver();
+    ~Archiver();
 };
 }  // namespace CUL
