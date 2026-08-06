@@ -79,6 +79,8 @@ Archive::Archive( const StringWr& inPath )
 
         m_stream.read( buff, sizeOfString( ARCHIVE_FILE_CONTENT_END ) );
         CUL::Assert::simple( std::strcmp( buff, ARCHIVE_FILE_CONTENT_END ) == 0, "Cannot read ARCHIVE_FILE_CONTENT_END tag." );
+
+        m_metadata.Files.push_back( file );
     }
 }
 
@@ -121,6 +123,13 @@ std::vector<SFile> Archive::getFileList() const
 
 SFile* Archive::getFile( const StringWr& inPath )
 {
+    for( SFile& file : m_metadata.Files )
+    {
+        if( file.Path == inPath )
+        {
+            return &file;
+        }
+    }
     return nullptr;
 }
 

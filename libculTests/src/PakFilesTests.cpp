@@ -6,9 +6,45 @@
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 
+class SimpleFile
+{
+public:
+    SimpleFile( const char* path ) : m_path( path )
+    {
+        std::ifstream stream( path, std::ios::binary | std::ios::ate );
+        m_size = stream.tellg();
+        stream.seekg( 0, std::ios::beg );
+        m_content = new std::uint8_t[m_size];
+        stream.read( static_cast<char*>( m_content ), m_size );
+    }
+
+    const char* getPath() const
+    {
+        return m_path.c_str();
+    }
+
+    void* getContent() const
+    {
+        return m_content;
+    }
+
+    std::uint64_t getSize() const
+    {
+        return m_size;
+    }
+
+protected:
+private:
+    void* m_content{ nullptr };
+    std::uint64_t m_size{ 0u };
+    std::string m_path;
+};
+
+
 void PakFilesTests::SetUp()
 {
     // Setup code for each test case
+    m_simpleFile = std::make_unique<SimpleFile>( "Info.txt" );
 }
 
 PakFilesTests::PakFilesTests()
@@ -21,24 +57,17 @@ void PakFilesTests::SetUpTestCase()
     // Setup code for the entire test case
 }
 
-void PakFilesTests::createTestArchive()
+void PakFilesTests::createTestArchive( const char* archivePath )
 {
     CUL::SFile file;
-    file.Path = "Info.txt";
-    file.PathSize = sizeof( file.Path.getUtfChar() );
+    file.Path = m_simpleFile->getPath();
+    file.PathSize = file.Path.getSTDString().size() * sizeof( char );
+    file.Content = m_simpleFile->getContent();
+    file.FileSize = m_simpleFile->getSize();
 
-    std::ifstream stream( file.Path.getValue(), std::ios::binary | std::ios::ate );
-    const auto size = stream.tellg();
-    stream.seekg( 0, std::ios::beg );
-    const std::size_t fileContentsSize = static_cast<std::size_t>( size );
-    auto* buffer = new char[fileContentsSize];
-    stream.read( buffer, size );
-    file.Content = buffer;
-    file.FileSize = static_cast<std::uint64_t>( size );
-
-    CUL::CULInterface::createInstance()->getFS()->deleteFile( "TestArchive.pak" );
+    CUL::CULInterface::createInstance()->getFS()->deleteFile( archivePath );
     CUL::SFArchiveMetadata meta;
-    meta.Path = "TestArchive.pak";
+    meta.Path = archivePath;
     meta.FilesCount = 1u;
     meta.Files.push_back( file );
 
@@ -47,16 +76,19 @@ void PakFilesTests::createTestArchive()
 
 TEST_F( PakFilesTests, basicPakFileWrite )
 {
-    createTestArchive();
+    createTestArchive( "TestArchive.pak" );
 }
 
 TEST_F( PakFilesTests, basicPakFileLoad )
 {
-    createTestArchive();
-    CUL::Archiver::getInstance().
-    CUL::Archiver::getInstance().readArchive( "TestArchive.pak" );
-}
+    createTestArchive( "TestArchive.pak" );
+    CUL::IArchive& archive = CUL::Archiver::getInstance().readArchive( "TestArchive.pak" );
+    CUL::SFile* file =  archive.getFile(m_simpleFile->getPath());
 
+    ASSERT_EQ( file->FileSize, m_simpleFile->getSize() );
+    const int result = std::memcmp( file->Content, m_simpleFile->getContent(), m_simpleFile->getSize() );
+    ASSERT_EQ( result, 0 );
+}
 
 TEST_F( PakFilesTests, pakFileContainsExpectedData )
 {

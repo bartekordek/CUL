@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Gtest.hpp"
+#include "CUL/STL_IMPORTS/STD_memory.hpp"
+
+class SimpleFile;
 
 class PakFilesTests: public ::testing::Test
 {
@@ -13,7 +16,11 @@ protected:
 
     void TearDown() override;
     static void TearDownTestCase();
-    void createTestArchive();
+    void createTestArchive( const char* archivePath );
+
+    const SimpleFile& getSimpleFile() const;
+
+    std::unique_ptr<SimpleFile> m_simpleFile;
 
     ~PakFilesTests();
 
