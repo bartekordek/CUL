@@ -18,8 +18,8 @@ class Archiver
 {
 public:
     CULLib_API static Archiver& getInstance();
-    IArchive& createArchive( const SFArchiveMetadata& inMeta, EAccesMode inAccessMode );
-    IArchive& readArchive( const StringWr& inPath );
+    CULLib_API IArchive& createArchive( const SFArchiveMetadata& inMeta, EAccesMode inAccessMode );
+    CULLib_API IArchive& readArchive( const StringWr& inPath );
 
     CUL_NONCOPYABLE( Archiver );
 
