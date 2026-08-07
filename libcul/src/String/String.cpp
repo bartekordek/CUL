@@ -1854,6 +1854,16 @@ std::int32_t StringUtil::strLen( const wchar_t* inString )
     return static_cast<std::int32_t>( std::wcslen( inString ) );
 }
 
+std::int32_t StringUtil::strSize( const char* inString )
+{
+    return static_cast<std::int32_t>( ( strLen( inString ) + 1 ) * sizeof( char ) );
+}
+
+std::int32_t StringUtil::strSize( const wchar_t* inString )
+{
+    return static_cast<std::int32_t>( ( strLen( inString ) + 1 ) * sizeof( wchar_t ) );
+}
+
 std::uint64_t StringUtil::strToUint64( const std::wstring& inString )
 {
     std::string out;
