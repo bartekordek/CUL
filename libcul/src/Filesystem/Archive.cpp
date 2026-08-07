@@ -23,7 +23,9 @@ Archive::Archive( const StringWr& inPath )
     char buff[buffSize];
 
     m_stream.read( buff, StringUtil::strSize( ARCHIVE_META_MARKER_START ) );
-    CUL::Assert::simple( std::strcmp( buff, ARCHIVE_META_MARKER_START ) == 0, "Cannot read ARCHIVE_META_MARKER_START tag." );
+    
+    CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_META_MARKER_START ),
+                         "Cannot read ARCHIVE_META_MARKER_START tag." );
 
     m_stream.read( buff, sizeof( m_metadata.Version ) );
     std::memcpy( &m_metadata.Version, buff, sizeof( m_metadata.Version ) );
@@ -32,14 +34,16 @@ Archive::Archive( const StringWr& inPath )
     std::memcpy( &m_metadata.FilesCount, buff, sizeof( m_metadata.FilesCount ) );
 
     m_stream.read( buff, StringUtil::strSize( ARCHIVE_META_MARKER_END ) );
-    CUL::Assert::simple( std::strcmp( buff, ARCHIVE_META_MARKER_END ) == 0, "Cannot read ARCHIVE_META_MARKER_END tag." );
+    CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_META_MARKER_END ),
+                         "Cannot read ARCHIVE_META_MARKER_END tag." );
 
     for( std::uint64_t i = 0u; i < m_metadata.FilesCount; ++i )
     {
         SFile file;
 
         m_stream.read( buff, StringUtil::strSize( ARCHIVE_FILE_CONTENT_START ) );
-        CUL::Assert::simple( std::strcmp( buff, ARCHIVE_FILE_CONTENT_START ) == 0, "Cannot read ARCHIVE_FILE_CONTENT_START tag." );
+        CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_FILE_CONTENT_START ),
+                             "Cannot read ARCHIVE_FILE_CONTENT_START tag." );
 
         const std::size_t pathVarSize = sizeof( file.PathSize );
         m_stream.read( buff, pathVarSize );
@@ -55,7 +59,8 @@ Archive::Archive( const StringWr& inPath )
         m_stream.read( static_cast<char*>( file.Content ), file.FileSize );
 
         m_stream.read( buff, StringUtil::strSize( ARCHIVE_FILE_CONTENT_END ) );
-        CUL::Assert::simple( std::strcmp( buff, ARCHIVE_FILE_CONTENT_END ) == 0, "Cannot read ARCHIVE_FILE_CONTENT_END tag." );
+        CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_FILE_CONTENT_END ),
+                             "Cannot read ARCHIVE_FILE_CONTENT_END tag." );
 
         m_metadata.Files.push_back( file );
     }
