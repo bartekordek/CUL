@@ -15,6 +15,8 @@ constexpr const char* ARCHIVE_META_MARKER_END = "ARCHIVE_META_END";
 constexpr const char* ARCHIVE_FILE_CONTENT_START = "FILE_CONTENT_START";
 constexpr const char* ARCHIVE_FILE_CONTENT_END = "FILE_CONTENT_END";
 
+using FileSizeType = std::uint64_t;
+
 Archive::Archive( const StringWr& inPath )
 {
     m_metadata.Path = inPath;
@@ -53,11 +55,12 @@ Archive::Archive( const StringWr& inPath )
         m_stream.read( buff, file.PathSize );
         file.Path = StringWr( buff );
 
-        m_stream.read( buff, sizeof( file.FileSize ) );
-        std::memcpy( &file.FileSize, buff, sizeof( file.FileSize ) );
+        FileSizeType fileSize;
+        m_stream.read( buff, sizeof( FileSizeType ) );
+        std::memcpy( &fileSize, buff, sizeof( FileSizeType ) );
 
-        file.Content = static_cast<char*>( std::malloc( file.FileSize ) );
-        m_stream.read( static_cast<char*>( file.Content ), file.FileSize );
+        file.Content.resize( fileSize );
+        m_stream.read( reinterpret_cast<char*>( file.Content.data() ), fileSize );
 
         m_stream.read( buff, StringUtil::strSize( ARCHIVE_FILE_CONTENT_END ) );
         CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_FILE_CONTENT_END ),
@@ -84,8 +87,10 @@ Archive::Archive( const SFArchiveMetadata& inMetaCpy, EAccesMode inAccessMode )
         file.PathSize = StringUtil::strSize( path );
         m_stream.write( reinterpret_cast<const char*>( &file.PathSize ), sizeof( file.PathSize ) );
         m_stream.write( path, file.PathSize );
-        m_stream.write( reinterpret_cast<const char*>( &file.FileSize ), sizeof( file.FileSize ) );
-        m_stream.write( reinterpret_cast<const char*>( file.Content ), file.FileSize );
+        const FileSizeType fileSize = static_cast<FileSizeType>( file.Content.size() );
+        m_stream.write( reinterpret_cast<const char*>( &fileSize ),
+                        sizeof( FileSizeType ) );
+        m_stream.write( reinterpret_cast<const char*>( file.Content.data() ), fileSize );
 
         m_stream.write( ARCHIVE_FILE_CONTENT_END, StringUtil::strSize( ARCHIVE_FILE_CONTENT_END ) );
     }

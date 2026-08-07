@@ -13,10 +13,9 @@ public:
     SimpleFile( const char* path ) : m_path( path )
     {
         std::ifstream stream( path, std::ios::binary | std::ios::ate );
-        m_size = stream.tellg();
+        m_content.resize( stream.tellg() );
         stream.seekg( 0, std::ios::beg );
-        m_content = new std::uint8_t[m_size];
-        stream.read( static_cast<char*>( m_content ), m_size );
+        stream.read( reinterpret_cast<char*>( m_content.data() ), m_content.size() );
     }
 
     const char* getPath() const
@@ -24,20 +23,25 @@ public:
         return m_path.c_str();
     }
 
-    void* getContent() const
+    const std::vector<std::byte>& getContent() const
     {
         return m_content;
     }
 
     std::uint64_t getSize() const
     {
-        return m_size;
+        return m_content.size();
     }
+
+    ~SimpleFile()
+    {
+    }
+
+    CUL_NONCOPYABLE( SimpleFile );
 
 protected:
 private:
-    void* m_content{ nullptr };
-    std::uint64_t m_size{ 0u };
+    std::vector<std::byte> m_content;
     std::string m_path;
 };
 
@@ -64,7 +68,6 @@ void PakFilesTests::createTestArchive( const char* archivePath )
     file.Path = m_simpleFile->getPath();
     file.PathSize = file.Path.getSTDString().size() * sizeof( char );
     file.Content = m_simpleFile->getContent();
-    file.FileSize = m_simpleFile->getSize();
 
     CUL::CULInterface::createInstance()->getFS()->deleteFile( archivePath );
     CUL::SFArchiveMetadata meta;
@@ -86,9 +89,8 @@ TEST_F( PakFilesTests, basicPakFileLoad )
     CUL::IArchive& archive = CUL::Archiver::getInstance().readArchive( "TestArchive.pak" );
     CUL::SFile* file =  archive.getFile(m_simpleFile->getPath());
 
-    ASSERT_EQ( file->FileSize, m_simpleFile->getSize() );
-    const int result = std::memcmp( file->Content, m_simpleFile->getContent(), m_simpleFile->getSize() );
-    ASSERT_EQ( result, 0 );
+    ASSERT_EQ( file->Content.size(), m_simpleFile->getSize() );
+    ASSERT_EQ( file->Content, m_simpleFile->getContent() );
 }
 
 TEST_F( PakFilesTests, pakFileContainsExpectedData )

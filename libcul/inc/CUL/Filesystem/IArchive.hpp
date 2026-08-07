@@ -18,8 +18,7 @@ struct SFile
 {
     std::uint64_t PathSize{ 0u };
     StringWr Path;
-    std::uint64_t FileSize{ 0u };
-    void* Content{ nullptr };
+    std::vector<std::byte> Content;
 };
 
 struct SFArchiveMetadata
