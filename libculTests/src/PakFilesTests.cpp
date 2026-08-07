@@ -4,6 +4,7 @@
 #include "CUL/Filesystem/IArchive.hpp"
 #include "CUL/CULInterface.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 
 class SimpleFile

@@ -3,6 +3,7 @@
 #include "CUL/GenericUtils/SimpleAssert.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_string.hpp"
+#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "CUL/STL_IMPORTS/STD_cstdint.hpp"
 
 namespace CUL
