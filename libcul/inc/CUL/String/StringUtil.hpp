@@ -36,6 +36,12 @@ public:
     static std::int32_t strLen( const char* inString );
     static std::int32_t strLen( const wchar_t* inString );
 
+
+    /// Returns memory occupied by the string in bytes.
+    /// @param inString Input null-terminated C-string.
+    static std::int32_t strSize( const char* inString );
+    static std::int32_t strSize( const wchar_t* inString );
+
     static std::uint64_t strToUint64( const std::wstring& inString );
     static std::uint64_t strToUint64( const std::string& inString );
 
