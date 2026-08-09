@@ -14,11 +14,22 @@ enum class EAccesMode : std::uint8_t
     Write
 };
 
-struct SFile
+class SFile
 {
-    std::uint64_t PathSize{ 0u };
-    StringWr Path;
-    std::vector<std::byte> Content;
+public:
+    CULLib_API void setFile( const std::string& inPath );
+    CULLib_API const std::string& getPath() const;
+    CULLib_API std::uint64_t getPathSize() const;
+
+    CULLib_API const std::vector<std::byte>& getContent() const;
+    CULLib_API std::vector<std::byte>& getContent();
+    CULLib_API void setPath( const std::string& inPath );
+
+
+protected:
+private:
+    std::string m_path;
+    std::vector<std::byte> m_content;
 };
 
 struct SFArchiveMetadata

@@ -16,85 +16,128 @@ constexpr const char* ARCHIVE_FILE_CONTENT_START = "FILE_CONTENT_START";
 constexpr const char* ARCHIVE_FILE_CONTENT_END = "FILE_CONTENT_END";
 
 using FileSizeType = std::uint64_t;
+constexpr std::size_t sizeOfChar = sizeof( char );
+
+template <typename T>
+requires std::is_trivial_v<T>
+T readValue( std::fstream& inStream )
+{
+    T result;
+    inStream.read( reinterpret_cast<char*>( &result ), sizeof( T ) );
+    return result;
+}
+
+template <typename T>
+requires std::is_trivial_v<T>
+void writeValue( std::fstream& inStream, T inValue )
+{
+    constexpr std::size_t bufferSize{ 512u };
+    char buffer[bufferSize];
+    const std::size_t sizeofT = sizeof( T );
+    const auto charNormalizedSize = static_cast<std::streamsize>( sizeofT / sizeOfChar );
+    inStream.write( reinterpret_cast<const char*>( &inValue ), charNormalizedSize );
+}
+
+void writeData( std::fstream& inOutStream, const std::vector<std::byte>& inData )
+{
+    const std::uint64_t dataSize = static_cast<std::uint64_t>( inData.size() );
+    writeValue( inOutStream, dataSize );
+    inOutStream.write( reinterpret_cast<const char*>( inData.data() ), dataSize );
+}
+
+void readData( std::fstream& inOutStream, std::vector<std::byte>& inOutData )
+{
+    const std::uint64_t dataSize = readValue<std::uint64_t>( inOutStream );
+    inOutData.resize( dataSize );
+    inOutStream.read( reinterpret_cast<char*>( inOutData.data() ), dataSize );
+}
+
+StringWr readString( std::fstream& inStream )
+{
+    constexpr std::size_t bufferSize{ 512u };
+    char buffer[bufferSize];
+
+    // Read string length.
+    std::uint32_t lengthOfStringInBytes{ 0u };
+    inStream.read( reinterpret_cast<char*>( &lengthOfStringInBytes ),
+                   sizeof( decltype( lengthOfStringInBytes ) ) );
+
+    std::vector<char> stringBuffer( lengthOfStringInBytes );
+
+    // ReadString
+    inStream.read( stringBuffer.data(), lengthOfStringInBytes );
+    return StringWr( stringBuffer.data() );
+}
+
+void writeString( std::fstream& inStream, const StringWr& inString )
+{
+    const std::uint32_t lengthOfStringInBytes =
+        static_cast<std::uint32_t>( StringUtil::strSize( inString.getUtfChar() ) );
+    // Write string length.
+    inStream.write( reinterpret_cast<const char*>( &lengthOfStringInBytes ),
+                    sizeof( decltype( lengthOfStringInBytes ) ) );
+    // Write string content.
+    inStream.write( inString.getUtfChar(), lengthOfStringInBytes );
+}
 
 Archive::Archive( const StringWr& inPath )
 {
     m_metadata.Path = inPath;
+    read();
+}
 
-    m_stream.open( inPath.getValue(), std::ios::in | std::ios::binary );
-    constexpr std::size_t buffSize{ 1024 };
-    char buff[buffSize];
+Archive::Archive( const SFArchiveMetadata& inMetaCpy, EAccesMode inAccessMode )
+{
+    m_metadata = inMetaCpy;
+    write();
+}
 
-    m_stream.read( buff, StringUtil::strSize( ARCHIVE_META_MARKER_START ) );
-    
-    CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_META_MARKER_START ),
+void Archive::write()
+{
+    m_stream.open( m_metadata.Path.getValue(), std::ios::out | std::ios::binary );
+
+    writeString( m_stream, ARCHIVE_META_MARKER_START );
+    writeValue( m_stream, m_metadata.Version );
+    writeValue( m_stream, m_metadata.FilesCount );
+    writeString( m_stream, ARCHIVE_META_MARKER_END );
+
+    for( const SFile& file : m_metadata.Files )
+    {
+        writeString( m_stream, ARCHIVE_FILE_CONTENT_START );
+        writeString( m_stream, file.getPath() );
+        writeData( m_stream, file.getContent() );
+        writeString( m_stream, ARCHIVE_FILE_CONTENT_END );
+    }
+    m_stream.close();
+}
+void Archive::read()
+{
+    m_stream.open( m_metadata.Path.getValue(), std::ios::in | std::ios::binary );
+    const auto markerStart = readString(m_stream);
+    CUL::Assert::simple( markerStart.equals( ARCHIVE_META_MARKER_START ),
                          "Cannot read ARCHIVE_META_MARKER_START tag." );
 
-    m_stream.read( buff, sizeof( m_metadata.Version ) );
-    std::memcpy( &m_metadata.Version, buff, sizeof( m_metadata.Version ) );
+    m_metadata.Version = readValue<decltype( m_metadata.Version )>( m_stream );
+    m_metadata.FilesCount = readValue<decltype( m_metadata.FilesCount )>( m_stream );
 
-    m_stream.read( buff, sizeof( m_metadata.FilesCount ) );
-    std::memcpy( &m_metadata.FilesCount, buff, sizeof( m_metadata.FilesCount ) );
-
-    m_stream.read( buff, StringUtil::strSize( ARCHIVE_META_MARKER_END ) );
-    CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_META_MARKER_END ),
+    const auto markerEnd = readString( m_stream );
+    CUL::Assert::simple( markerEnd.equals( ARCHIVE_META_MARKER_END ),
                          "Cannot read ARCHIVE_META_MARKER_END tag." );
 
     for( std::uint64_t i = 0u; i < m_metadata.FilesCount; ++i )
     {
         SFile file;
+        const auto contentStart = readString( m_stream );
+        contentStart.equals( ARCHIVE_FILE_CONTENT_START );
+        CUL::Assert::simple( contentStart.equals( ARCHIVE_FILE_CONTENT_START ), "Cannot read ARCHIVE_FILE_CONTENT_START tag." );
+        file.setPath( readString( m_stream ).getSTDString() );
+        std::vector<std::byte>& content = file.getContent();
+        readData( m_stream, content );
 
-        m_stream.read( buff, StringUtil::strSize( ARCHIVE_FILE_CONTENT_START ) );
-        CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_FILE_CONTENT_START ),
-                             "Cannot read ARCHIVE_FILE_CONTENT_START tag." );
-
-        const std::size_t pathVarSize = sizeof( file.PathSize );
-        m_stream.read( buff, pathVarSize );
-        std::memcpy( &file.PathSize, buff, sizeof( file.PathSize ) );
-
-        m_stream.read( buff, file.PathSize );
-        file.Path = StringWr( buff );
-
-        FileSizeType fileSize;
-        m_stream.read( buff, sizeof( FileSizeType ) );
-        std::memcpy( &fileSize, buff, sizeof( FileSizeType ) );
-
-        file.Content.resize( fileSize );
-        m_stream.read( reinterpret_cast<char*>( file.Content.data() ), fileSize );
-
-        m_stream.read( buff, StringUtil::strSize( ARCHIVE_FILE_CONTENT_END ) );
-        CUL::Assert::simple( StringUtil::equals( buff, ARCHIVE_FILE_CONTENT_END ),
-                             "Cannot read ARCHIVE_FILE_CONTENT_END tag." );
-
+        const auto contentEnd = readString( m_stream );
+        contentEnd.equals( ARCHIVE_FILE_CONTENT_END );
         m_metadata.Files.push_back( file );
     }
-}
-
-Archive::Archive( const SFArchiveMetadata& inMetaCpy, EAccesMode inAccessMode )
-{
-    SFArchiveMetadata inMeta = inMetaCpy;
-
-    m_stream.open( inMeta.Path.getValue(), std::ios::out | std::ios::binary );
-    m_metadata = inMeta;
-    m_stream.write( ARCHIVE_META_MARKER_START, StringUtil::strSize( ARCHIVE_META_MARKER_START ) );
-    m_stream.write( reinterpret_cast<const char*>( &m_metadata.Version ), sizeof( m_metadata.Version ) );
-    m_stream.write( reinterpret_cast<const char*>( &m_metadata.FilesCount ), sizeof( m_metadata.FilesCount ) );
-    m_stream.write( ARCHIVE_META_MARKER_END, StringUtil::strSize( ARCHIVE_META_MARKER_END ) );
-    for( SFile& file : m_metadata.Files )
-    {
-        const char* path = file.Path.getUtfChar();
-        m_stream.write( ARCHIVE_FILE_CONTENT_START, StringUtil::strSize( ARCHIVE_FILE_CONTENT_START ) );
-        file.PathSize = StringUtil::strSize( path );
-        m_stream.write( reinterpret_cast<const char*>( &file.PathSize ), sizeof( file.PathSize ) );
-        m_stream.write( path, file.PathSize );
-        const FileSizeType fileSize = static_cast<FileSizeType>( file.Content.size() );
-        m_stream.write( reinterpret_cast<const char*>( &fileSize ),
-                        sizeof( FileSizeType ) );
-        m_stream.write( reinterpret_cast<const char*>( file.Content.data() ), fileSize );
-
-        m_stream.write( ARCHIVE_FILE_CONTENT_END, StringUtil::strSize( ARCHIVE_FILE_CONTENT_END ) );
-    }
-    m_stream.close();
 }
 
 void Archive::loadFile( const StringWr& inPath )
@@ -113,7 +156,7 @@ SFile* Archive::getFile( const StringWr& inPath )
 {
     for( SFile& file : m_metadata.Files )
     {
-        if( file.Path == inPath )
+        if( inPath.equals( file.getPath() ) )
         {
             return &file;
         }

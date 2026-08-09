@@ -17,6 +17,10 @@ public:
     CUL_NONCOPYABLE( Archive );
 protected:
 private:
+    void read();
+    void write();
+
+
     SFArchiveMetadata m_metadata;
     std::fstream m_stream;
 };

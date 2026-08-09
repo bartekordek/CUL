@@ -65,9 +65,7 @@ void PakFilesTests::SetUpTestCase()
 void PakFilesTests::createTestArchive( const char* archivePath )
 {
     CUL::SFile file;
-    file.Path = m_simpleFile->getPath();
-    file.PathSize = file.Path.getSTDString().size() * sizeof( char );
-    file.Content = m_simpleFile->getContent();
+    file.setFile( m_simpleFile->getPath() );
 
     CUL::CULInterface::createInstance()->getFS()->deleteFile( archivePath );
     CUL::SFArchiveMetadata meta;
@@ -89,8 +87,8 @@ TEST_F( PakFilesTests, basicPakFileLoad )
     CUL::IArchive& archive = CUL::Archiver::getInstance().readArchive( "TestArchive.pak" );
     CUL::SFile* file =  archive.getFile(m_simpleFile->getPath());
 
-    ASSERT_EQ( file->Content.size(), m_simpleFile->getSize() );
-    ASSERT_EQ( file->Content, m_simpleFile->getContent() );
+    ASSERT_EQ( file->getContent().size(), m_simpleFile->getSize() );
+    ASSERT_TRUE( file->getContent() == m_simpleFile->getContent() );
 }
 
 TEST_F( PakFilesTests, pakFileContainsExpectedData )
