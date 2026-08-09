@@ -5,12 +5,12 @@ on:
     paths-ignore:
       - '.github/workflows/cmake-linux.yml'
       - 'README.md'
-      - '.vscode'
+      - '.vscode/**'
   pull_request:
     paths-ignore:
       - '.github/workflows/cmake-linux.yml'
       - 'README.md'
-      - '.vscode'
+      - '.vscode/**'
 
 env:
     # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
