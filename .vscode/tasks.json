@@ -251,6 +251,23 @@
             }
         },
         {
+            "label": "[Run][libculTets_dynamic][Linux]",
+            "type": "shell",
+            "command": "${workspaceFolder}/Build_Linux/libculTests_dynamic.bin",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
             "label": "[MSYS2][CMake][Create][Clang]",
             "type": "shell",
             "command": "cmake",

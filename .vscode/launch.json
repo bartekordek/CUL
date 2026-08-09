@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[LINUX][RUN][libculTests_static][Debug]",
+            "name": "[Run][Linux][libculTests_static][Debug]",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Build_Linux/libculTests_static.bin",
@@ -28,7 +28,7 @@
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "[LINUX][RUN][libculTests_dynamic][Debug]",
+            "name": "[Run][Linux][libculTests_dynamic][Debug]",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/Build_Linux/libculTests_dynamic.bin",
