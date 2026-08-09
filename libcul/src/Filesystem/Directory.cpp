@@ -8,11 +8,6 @@ Directory::Directory( const StringWr& path, CULInterface* inInterface ) : IFile(
 {
 }
 
-const Path& Directory::getPath() const
-{
-    return m_path;
-}
-
 void Directory::changePath( const Path& newPath )
 {
     m_path = newPath;

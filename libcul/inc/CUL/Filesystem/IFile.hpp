@@ -34,7 +34,7 @@ public:
     virtual void addLine( const StringWr& line );
     virtual void saveFile();
 
-    virtual const Path& getPath() const = 0;
+    const Path& getPath() const;
     bool exists() const;
     virtual void changePath( const Path& newPath ) = 0;
     virtual void reload( bool keepLineEndingCharacter ) = 0;
@@ -56,16 +56,16 @@ public:
     const StringWr& getSizeBytes() const;
     bool getIsBigFile() const;
 
-    virtual const StringWr& firstLine() const = 0;
-    virtual const StringWr& lastLine() const = 0;
+    virtual const StringWr& firstLine() const;
+    virtual const StringWr& lastLine() const;
 
-    virtual const StringWr& getAsOneString() const = 0;
-    virtual const char** getContent() const = 0;
+    virtual const StringWr& getAsOneString() const;
+    virtual const char** getContent() const;
     virtual const char* getUtfChar() const;
     virtual std::string getLineUtf( std::int32_t inLineNum ) const;
     virtual std::wstring getLineW( std::int32_t inLineNum ) const;
 
-    virtual unsigned getLinesCount() const = 0;
+    virtual std::uint32_t getLinesCount() const;
 
     virtual FileType getType() const = 0;
     const FileList& getChildList() const;

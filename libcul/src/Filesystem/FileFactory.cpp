@@ -1,7 +1,6 @@
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Filesystem/RegularFile.hpp"
 #include "CSVFile.hpp"
-#include "JSON/JSONFileConcrete.hpp"
 #include "CUL/Graphics/IImageLoader.hpp"
 #include "Graphics/ImageConcrete.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
@@ -12,7 +11,7 @@ using namespace CUL;
 using IFile = FS::IFile;
 using FileFactory = FS::FileFactory;
 using ICSVFile = FS::ICSVFile;
-using IJSONFile = JSON::IJSONFile;
+using JSONFile = JSON::JSONFile;
 
 FileFactory::FileFactory( CULInterface* culInterface ) : m_culInterface( culInterface )
 {
@@ -22,15 +21,6 @@ IFile* FileFactory::createFileFromPath( const Path& path )
 {
     CUL::StringWr ext = path.getExtension();
     ext.toLower();
-    if( ext.equals( ".csv" ) || ext.equals( "csv" ) )
-    {
-        return createJSONFileRawPtr( path );
-    }
-
-    if( ext.equals( ".json" ) || ext.equals( "json" ) )
-    {
-        return createJSONFileRawPtr( path );
-    }
 
     if( ext.equals( "bmp" ) || ext.equals( ".bmp" ) || ext.equals( "jpg" ) ||
         ext.equals( ".jpg" ) || ext.equals( "jpeg" ) || ext.equals( ".jpeg" ) ||
@@ -57,11 +47,12 @@ ICSVFile* FileFactory::createCSVFileRawPtr( const Path& path )
     return csvFile;
 }
 
-IJSONFile* FileFactory::createJSONFileRawPtr( const Path& path )
+FS::JSONFilePtr FileFactory::createJSONFileRawPtr( const Path& path )
 {
-    auto fc = FS::FileFactory::createRegularFileRawPtr( path );
-    auto result = new JSON::JSONFileConcrete( path, fc, m_culInterface );
-    return result;
+    auto result = new JSON::JSONFile( path, m_culInterface );
+    FS::JSONFilePtr file;
+    file.reset( result );
+    return file;
 }
 
 Graphics::IImage* FileFactory::createRawImageRawPtr( const Path& path )

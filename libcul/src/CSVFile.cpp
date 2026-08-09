@@ -5,14 +5,13 @@ using namespace CUL;
 using namespace FS;
 
 CSVFile::CSVFile( const StringWr& fPath, CULInterface* inInterface ):
-    ICSVFile( fPath, inInterface ),
-    m_path( fPath )
+    ICSVFile( fPath, inInterface )
 {
 }
 
 void CSVFile::changePath( const Path& newPath )
 {
-    m_path = newPath;
+    setPath( newPath );
     reload();
 }
 
@@ -75,7 +74,7 @@ void CSVFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
     m_keepLineEndingCharacter = keepLineEndingCharacter;
     m_removeBottomEmptyLines = removeBottomEmptyLines;
     std::ifstream infile;
-    infile.open( m_path.getPath().getSTDString().c_str(), std::ios_base::in );
+    infile.open( getPath().getPath().getSTDString().c_str(), std::ios_base::in );
     std::string line;
     while( std::getline( infile, line ) )
     {
@@ -134,11 +133,6 @@ const StringWr& CSVFile::firstLine() const
 const StringWr& CSVFile::lastLine() const
 {
     return m_rows.back()[m_rows.size() - 1];
-}
-
-const Path& CSVFile::getPath() const
-{
-    return m_path;
 }
 
 const StringWr& CSVFile::getAsOneString() const

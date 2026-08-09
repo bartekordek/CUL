@@ -15,8 +15,6 @@ protected:
 private:
     void changePath( const Path& newPath ) override;
 
-    const Path& getPath() const override;
-
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
     void unload() override;

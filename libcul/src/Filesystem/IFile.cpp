@@ -16,6 +16,8 @@
 using namespace CUL;
 using namespace FS;
 
+static const StringWr g_emptyString;
+
 #if 0  // DEBUG_THIS_FILE, set 0->1 to debug
     #define DEBUG_THIS_FILE 1
 
@@ -34,6 +36,41 @@ IFile::IFile( const StringWr& fPath, CUL::CULInterface* inInterface ): p_cullInt
     m_path.createFrom( fPath );
     p_cullInterface->getFS()->getLastModificationTime( m_path, m_lastModificationTime );
     calculateSizeBytes();
+}
+
+const Path& IFile::getPath() const
+{
+    return m_path;
+}
+
+const StringWr& IFile::firstLine() const
+{
+    throw std::logic_error( "Method not implemented" );
+    return g_emptyString;
+}
+
+const StringWr& IFile::lastLine() const
+{
+    throw std::logic_error( "Method not implemented" );
+    return g_emptyString;
+}
+
+const StringWr& IFile::getAsOneString() const
+{
+    throw std::logic_error( "Method not implemented" );
+    return g_emptyString;
+}
+
+const char** IFile::getContent() const
+{
+    throw std::logic_error( "Method not implemented" );
+    return nullptr;
+}
+
+std::uint32_t IFile::getLinesCount() const
+{
+    throw std::logic_error( "Method not implemented" );
+    return 0u;
 }
 
 void IFile::setPath( const StringWr& fPath )

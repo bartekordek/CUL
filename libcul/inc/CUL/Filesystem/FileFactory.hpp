@@ -4,7 +4,7 @@
 #include "CUL/Filesystem/IFile.hpp"
 #include "CUL/Filesystem/Directory.hpp"
 #include "CUL/ICSVFile.hpp"
-#include "CUL/JSON/IJSONFile.hpp"
+#include "CUL/JSON/JSONFile.hpp"
 #include "CUL/Graphics/IImage.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -13,7 +13,7 @@ NAMESPACE_BEGIN( FS )
 
 using IFilePtr = std::shared_ptr<IFile>;
 using ICSVFilePtr = std::shared_ptr<ICSVFile>;
-using IJSONFilePtr = std::shared_ptr<JSON::IJSONFile>;
+using JSONFilePtr = std::shared_ptr<JSON::JSONFile>;
 using IRawImagePtr = std::shared_ptr<Graphics::IImage>;
 
 class CULLib_API FileFactory final
@@ -26,7 +26,7 @@ public:
     IFile* createFileFromPath( const Path& path );
     IFile* createRegularFileRawPtr( const Path& path );
     ICSVFile* createCSVFileRawPtr( const Path& path );
-    JSON::IJSONFile* createJSONFileRawPtr( const Path& path );
+    JSONFilePtr createJSONFileRawPtr( const Path& path );
     Graphics::IImage* createRawImageRawPtr( const Path& path );
 protected:
 private:

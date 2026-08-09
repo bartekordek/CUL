@@ -18,7 +18,6 @@ class CULLib_API RegularFile final: public IFile
 {
 public:
     RegularFile( const StringWr& path, CULInterface* inInterface );
-    const Path& getPath() const override;
     const StringWr& getAsOneString() const override;
     void overwriteContents( const CUL::StringWr& value );
     void saveFile() override;
@@ -49,7 +48,6 @@ private:
     FileType getType() const override;
     void initializeRowsChar();
 
-    Path m_path;
     std::vector<StringWr> m_rows;
     std::string m_asOne;
     StringWr m_cached;

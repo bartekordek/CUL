@@ -123,7 +123,8 @@ void String::append( const wchar_t* inChar )
 
     #if CUL_USE_WCHAR
     const auto otherSizeWithTerminator = static_cast<std::size_t>( otherSize + 1 );
-    const std::int32_t newSize = m_size + static_cast<std::int32_t>( otherSizeWithTerminator );
+    const std::int32_t newSize =
+        m_size + static_cast<std::int32_t>( otherSizeWithTerminator );
     grow( newSize, true );
 
     for( std::size_t i = 0; i < otherSizeWithTerminator; ++i )

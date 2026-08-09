@@ -22,8 +22,6 @@ public:
 
     void changePath( const Path& newPath ) override;
 
-    const Path& getPath() const override;
-
     bool checkIfFileIsAllRight() const override;
     const StringWr& getVal( unsigned row, unsigned col ) const override;
     void setVal( const StringWr& val, unsigned row, unsigned col ) override;
@@ -59,7 +57,6 @@ private:
     StringWr m_delimeter{ "," };
     //StringWr::UnderlyingChar m_delimeter{ ',' };
     bool m_cellsContainQuotationMarks = true;
-    Path m_path;
     Rows m_rows;
     unsigned m_columnsCount = 0;
     StringWr m_cached;

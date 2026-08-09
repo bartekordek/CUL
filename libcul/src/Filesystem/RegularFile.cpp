@@ -11,18 +11,12 @@ using StringWr = const CUL::StringWr;
 
 RegularFile::RegularFile( const StringWr& path, CULInterface* inInterface ): IFile( path, inInterface )
 {
-    m_path.createFrom( path );
+    IFile::setPath( path );
 }
 
 void RegularFile::changePath( const Path& newPath )
 {
-    m_path = newPath;
     IFile::setPath( newPath );
-}
-
-const Path& RegularFile::getPath() const
-{
-    return m_path;
 }
 
 void RegularFile::reload( bool keepLineEndingCharacter )
@@ -53,7 +47,7 @@ void RegularFile::overwriteContents( const CUL::StringWr& value )
 
 void RegularFile::load( bool keepLineEndingCharacter, bool removeBottomEmptyLines )
 {
-    const auto stdString = m_path.getPath().getSTDString();
+    const auto stdString = getPath().getPath().getSTDString();
     CUL::Assert::check( exists(), "Cannot open the file: %s", stdString.c_str() );
 
     m_rows.clear();
@@ -207,7 +201,7 @@ void RegularFile::addLine( const StringWr& line )
 
 void RegularFile::saveFile()
 {
-    std::ofstream file( m_path.getPath().getUtfChar() );
+    std::ofstream file( getPath().getPath().getUtfChar() );
     const size_t rowsCount = m_rows.size();
     for( size_t i = 0; i < rowsCount; ++i )
     {

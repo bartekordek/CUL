@@ -72,7 +72,8 @@ void CommandlineParser::passVariables( const std::int32_t argc, char** argv )
 
             FS::Path execPath = argStr;
             arg.Name = "ExecutableName";
-            arg.Value.createFromPrintf( "%s.%s", execPath.getBaseName().getSTDString().c_str(),
+            arg.Value.createFromPrintf( "%s.%s",
+                                        execPath.getBaseName().getSTDString().c_str(),
                                         execPath.getExtension().getSTDString().c_str() );
             m_values["ExecutableName"] = arg;
 
@@ -130,8 +131,17 @@ const STDStringWrapper& CommandlineParser::getAppName() const
     return appName;
 }
 
-const STDStringWrapper CommandlineParser::getFlagValue( const STDStringWrapper& /*inFlagName*/ ) const
+const STDStringWrapper CommandlineParser::getFlagValue(
+    const STDStringWrapper& inFlagName ) const
 {
+    for( const auto& pair : m_values )
+    {
+        if( pair.second.Name == inFlagName )
+        {
+            return pair.second.Value;
+        }
+    }
+
     return {};
 }
 

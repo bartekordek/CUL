@@ -13,7 +13,6 @@ class CULLib_API Directory final:
 public:
     Directory( const StringWr& path, CULInterface* interfaceIn );
 
-    const Path& getPath() const override;
     void changePath( const Path& newPath ) override;
     void reload( bool keepLineEndingCharacter ) override;
     void reload() override;
