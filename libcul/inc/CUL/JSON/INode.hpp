@@ -2,8 +2,8 @@
 
 #include "CUL/STL_IMPORTS/STD_memory.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/String/String.hpp"
-//#include "CUL/JSON/DataValue.hpp"
+#include "CUL/String/StringWrapper.hpp"
+
 
 NAMESPACE_BEGIN( CUL )
 NAMESPACE_BEGIN( JSON )
@@ -35,20 +35,20 @@ class CULLib_API INode final
 {
 public:
     INode();
-    explicit INode( const String& name, INode* val );
-    explicit INode( const String& name, const ChildrenNodes& value );
-    explicit INode( const String& name, bool value );
-    explicit INode( const String& name, double value );
-    explicit INode( const String& name, float value );
-    explicit INode( const String& name, int value );
-    explicit INode( const String& name, long int value );
-    explicit INode( const String& name, const char* value );
-    explicit INode( const String& name, const String& value );
+    explicit INode( const StringWr& name, INode* val );
+    explicit INode( const StringWr& name, const ChildrenNodes& value );
+    explicit INode( const StringWr& name, bool value );
+    explicit INode( const StringWr& name, double value );
+    explicit INode( const StringWr& name, float value );
+    explicit INode( const StringWr& name, int value );
+    explicit INode( const StringWr& name, long int value );
+    explicit INode( const StringWr& name, const char* value );
+    explicit INode( const StringWr& name, const StringWr& value );
 
-    const String& getName() const;
-    void setName( const String& name );
+    const StringWr& getName() const;
+    void setName( const StringWr& name );
     bool operator==( const INode& rhv ) const;
-    bool operator==( const String& rhv ) const;
+    bool operator==( const StringWr& rhv ) const;
 
     void setValue( INode* val );
     void setValue( const ChildrenNodes& value );
@@ -58,7 +58,7 @@ public:
     void setValue( int value );
     void setValue( long int value );
     void setValue( const char* value );
-    void setValue( const String& value );
+    void setValue( const StringWr& value );
 
     ElementType getType() const;
     const INode* getObject() const;
@@ -69,15 +69,15 @@ public:
     float getFloat() const;
     int getInt() const;
     int64_t getInt64() const;
-    const String& getString() const;
+    const StringWr& getString() const;
 
-    INode* findChild( const String& name );
+    INode* findChild( const StringWr& name );
 
     ~INode();
 protected:
 private:
     // I am ready for being laugh at to use this, erm, data structure.
-    String m_name;
+    StringWr m_name;
     ElementType m_type = ElementType::NONE;
     INode* m_node = nullptr;
     ChildrenNodes m_array;
@@ -86,7 +86,7 @@ private:
     float m_float = 0.0f;
     int m_int = 0;
     int64_t m_int64 = 1;
-    String m_string;
+    StringWr m_string;
 
     INode( const INode& arg ) = delete;
     INode( INode&& arg ) = delete;

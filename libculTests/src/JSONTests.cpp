@@ -88,11 +88,11 @@ TEST_F( JSONTests, addObject )
 {
     JSON::INode object;
     JSON::INode* child = new JSON::INode();
-    const String childName = "WAT";
+    const StringWr childName = CUL_STR( "WAT" );
     child->setName( childName );
 
     object.setValue( child );
-    ASSERT_TRUE( childName.equals( object.getObject()->getName().getString() ) );
+    ASSERT_TRUE( childName.equals( object.getObject()->getName() ) );
 }
 
 #if _MSC_VER

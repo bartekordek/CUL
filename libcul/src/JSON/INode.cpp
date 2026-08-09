@@ -170,66 +170,66 @@ INode::INode()
 //    return *this;
 //}
 
-INode::INode( const String& name, INode* value ):
+INode::INode( const StringWr& name, INode* value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, const ChildrenNodes& value ):
+INode::INode( const StringWr& name, const ChildrenNodes& value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, bool value ):
+INode::INode( const StringWr& name, bool value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, double value ):
+INode::INode( const StringWr& name, double value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, float value ):
+INode::INode( const StringWr& name, float value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, int value ):
+INode::INode( const StringWr& name, int value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, long int value ):
+INode::INode( const StringWr& name, long int value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, const char* value ):
+INode::INode( const StringWr& name, const char* value ):
     m_name( name )
 {
     setValue( value );
 }
 
-INode::INode( const String& name, const String& value ):
+INode::INode( const StringWr& name, const StringWr& value ):
     m_name( name )
 {
     setValue( value );
 }
 
-const String& INode::getName() const
+const StringWr& INode::getName() const
 {
     return m_name;
 }
 
-void INode::setName( const String& name )
+void INode::setName( const StringWr& name )
 {
     m_name = name;
 }
@@ -238,7 +238,7 @@ bool INode::operator==( const INode& rhv ) const
 {
     if( this != &rhv )
     {
-        if( !m_name.equals( rhv.m_name.getString() ) )
+        if( !m_name.equals( rhv.m_name ) )
         {
             return false;
         }
@@ -246,9 +246,9 @@ bool INode::operator==( const INode& rhv ) const
     return true;
 }
 
-bool INode::operator==( const String& rhv ) const
+bool INode::operator==( const StringWr& rhv ) const
 {
-    if( m_name.equals( rhv.getString() ) )
+    if( m_name.equals( rhv ) )
     {
         return true;
     }
@@ -303,7 +303,7 @@ void INode::setValue( const char* value )
     m_type = ElementType::STRING;
 }
 
-void INode::setValue( const String& value )
+void INode::setValue( const StringWr& value )
 {
     m_string = value;
     m_type = ElementType::STRING;
@@ -329,7 +329,7 @@ ChildrenNodes& INode::getArray()
     return m_array;
 }
 
-bool operator==( INode* lhv, const String& rhv )
+bool operator==( INode* lhv, const StringWr& rhv )
 {
     return lhv->operator==( rhv );
 }
@@ -359,19 +359,19 @@ int64_t INode::getInt64() const
     return m_int64;
 }
 
-const String& INode::getString() const
+const StringWr& INode::getString() const
 {
     return m_string;
 }
 
-INode* INode::findChild( const String& name )
+INode* INode::findChild( const StringWr& name )
 {
     if( ElementType::ARRAY == m_type )
     {
         auto it = std::find_if( m_array.begin(), m_array.end(),
                                 [name]( INode* node )
                                 {
-                                    return node->getName().equals( name.getString() );
+                                    return node->getName().equals( name );
                                 } );
         if( it != m_array.end() )
         {

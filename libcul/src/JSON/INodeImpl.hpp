@@ -16,8 +16,8 @@ class INodeImpl final
 public:
     INodeImpl();
 
-    const String& getName() const;
-    void setName( const String& name );
+    const StringWr& getName() const;
+    void setName( const StringWr& name );
 
     void setValue( INode* val );
     void setValue( const ChildrenNodes& value );
@@ -26,7 +26,7 @@ public:
     void setValue( float value );
     void setValue( int value );
     void setValue( long int value );
-    void setValue( const String& value );
+    void setValue( const StringWr& value );
 
     ElementType getType() const;
     const INode* getObject() const;
@@ -37,13 +37,13 @@ public:
     float getFloat() const;
     int getInt() const;
     int64_t getInt64() const;
-    const String& getString() const;
+    const StringWr& getString() const;
 
     ~INodeImpl();
 protected:
 private:
     // I am ready for being laught at to use this, erm, data structure.
-    String m_name;
+    StringWr m_name;
     ElementType m_type = ElementType::NONE;
     INode* m_node = nullptr;
     ChildrenNodes m_array;
@@ -52,7 +52,7 @@ private:
     float m_float = 0.0f;
     int m_int = 0;
     int64_t m_int64 = 1;
-    String m_string;
+    StringWr m_string;
 
 // Deleted:
     INodeImpl( const INodeImpl& rhv ) = delete;

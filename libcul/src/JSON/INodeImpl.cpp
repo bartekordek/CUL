@@ -8,12 +8,12 @@ INodeImpl::INodeImpl()
 {
 }
 
-const String& INodeImpl::getName() const
+const StringWr& INodeImpl::getName() const
 {
     return m_name;
 }
 
-void INodeImpl::setName( const String& name )
+void INodeImpl::setName( const StringWr& name )
 {
     m_name = name;
 }
@@ -60,7 +60,7 @@ void INodeImpl::setValue( long int value )
     m_type = ElementType::INT64;
 }
 
-void INodeImpl::setValue( const String& value )
+void INodeImpl::setValue( const StringWr& value )
 {
     m_string = value;
     m_type = ElementType::STRING;
@@ -111,7 +111,7 @@ int64_t INodeImpl::getInt64() const
     return m_int64;
 }
 
-const String& INodeImpl::getString() const
+const StringWr& INodeImpl::getString() const
 {
     return m_string;
 }
