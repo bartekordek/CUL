@@ -173,7 +173,7 @@ void FileDatabase::getListOfPossibleDuplicates(
 
         fi.MD5 = md5;
         fi.ModTime.fromString( lastMod );
-        fi.Size = size;
+        fi.SizeInBytes = size;
 
         resulPtr->addFile( fi );
 
@@ -410,7 +410,7 @@ void FileDatabase::getFilesFromDB( uint64_t size,
 
         fi.MD5 = md5;
         fi.ModTime.fromString( lastMod );
-        fi.Size = size;
+        fi.SizeInBytes = size;
         resulPtr->push_back( fi );
 
         return 0;
@@ -626,7 +626,7 @@ void FileDatabase::addToCache( const std::vector<FileInfo>& inFiles ) const
     for( const FileInfo& file : inFiles )
     {
         std::unordered_map<std::string, HashGroup>& md5Group =
-            m_cachedFiles[file.Size.toInt64()];
+            m_cachedFiles[file.SizeInBytes.toInt64()];
         auto& fileGroup = md5Group[file.MD5.getSTDString()];
         fileGroup.Files.insert( file );
     }
@@ -649,7 +649,7 @@ void FileDatabase::addToCache( const FileInfo& inFile ) const
     ProfileScopeVar( FileDatabase_addToCache_outOfMtx );
 
     std::unordered_map<std::string, HashGroup>& md5Group =
-        m_cachedFiles[inFile.Size.toInt64()];
+        m_cachedFiles[inFile.SizeInBytes.toInt64()];
     auto& fileGroup = md5Group[inFile.MD5.getSTDString()];
     fileGroup.Files.insert( inFile );
     fetchUsage();
@@ -792,7 +792,7 @@ void FileDatabase::addFile( MD5Value md5,
             FileInfo fi;
             fi.MD5 = md5;
             fi.FilePath = filePath;
-            fi.Size = fileSize;
+            fi.SizeInBytes = fileSize;
             fi.ModTime.fromString( modTime );
             fi.Found = true;
 
@@ -906,7 +906,7 @@ std::optional<FileInfo> FileDatabase::getFileInfo_Impl( ELockType inLockType,
             reinterpret_cast<std::optional<FileInfo>*>( fileInfoPtr );
         FileInfo fi;
         fi.Found = true;
-        fi.Size = argv[1];
+        fi.SizeInBytes = argv[1];
         fi.MD5 = argv[2];
         fi.ModTime.fromString( argv[3] );
 
@@ -1123,7 +1123,7 @@ SortedStructuredListOfFiles& SortedStructuredListOfFiles::operator=(
 void SortedStructuredListOfFiles::addFile( const FileInfo& arg )
 {
     ProfilerScope( "SortedStructuredListOfFiles::addFile" );
-    const std::uint64_t fileSize = arg.Size.toUint64();
+    const std::uint64_t fileSize = arg.SizeInBytes.toUint64();
     auto it = m_groupsBySize.find( fileSize );
     if( it == m_groupsBySize.end() )
     {

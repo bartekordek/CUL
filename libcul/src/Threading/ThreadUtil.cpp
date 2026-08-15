@@ -52,6 +52,14 @@ void ThreadUtil::sleepFor( uint16_t ms )
     std::this_thread::sleep_for( std::chrono::milliseconds( ms ) );
 }
 
+void ThreadUtil::sleepUntil( std::uint32_t seconds )
+{
+    const auto now = std::chrono::steady_clock::now();
+    const auto target = now + std::chrono::seconds( seconds );
+
+    std::this_thread::sleep_until( target );
+}
+
 void ThreadUtil::registerObserver( CThreadUtilObserver* observer )
 {
     std::lock_guard<std::mutex> locker( m_observersMtx );

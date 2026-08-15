@@ -36,6 +36,17 @@ public:
     CULLib_API std::vector<ThreadString> getThreadNames() const;
     CULLib_API bool getIsCurrentThreadNameEqualTo( const ThreadString& name ) const;
     CULLib_API void sleepFor( uint16_t ms );
+    /// @brief Put the calling thread to sleep until the specified time.
+    ///
+    /// The call yields execution and blocks the calling thread until the
+    /// target time (given in seconds) is reached. Note: when a thread is
+    /// placed to sleep with this function it is not terminated — it is
+    /// considered ready by the scheduler and can be resumed when the sleep
+    /// duration elapses or when the scheduler decides to run it.
+    ///
+    /// @param seconds Target time expressed in seconds (interpretation is
+    /// implementation-defined: e.g., absolute timestamp or relative offset).
+    CULLib_API void sleepUntil( std::uint32_t seconds );
     CULLib_API void registerObserver( CThreadUtilObserver* observer );
     CULLib_API const std::thread::id getThreadId(const std::string& name) const;
     CULLib_API const std::thread::id& getCurrentThreadId() const; 

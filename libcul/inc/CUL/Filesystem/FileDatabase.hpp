@@ -34,7 +34,7 @@ struct FileInfo
 {
     bool Found = false;
     MD5Value MD5;
-    Str Size;
+    Str SizeInBytes;
     Str FilePath;
     Time ModTime;
 
