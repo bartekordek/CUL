@@ -280,7 +280,7 @@ void IFile::waitForDiskToBeReady()
 
     do
     {
-        CUL::ITimer::sleepMiliSeconds( 1000u );
+        CUL::ThreadUtil::sleepUntil( 4u );
         diskUsage = CUL::CDiskInfo::getInstance().getDiskUsage( diskName.getSTDString() );
         if( diskUsage <= usageThreshold )
         {
