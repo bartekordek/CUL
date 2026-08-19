@@ -7,7 +7,7 @@
 #include "CUL/Time.hpp"
 
 #include "CUL/STL_IMPORTS/STD_atomic.hpp"
-#include "CUL/STL_IMPORTS/STD_mutex.hpp"
+#include "CUL/STL_IMPORTS/STD_shared_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_list.hpp"
 #include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
 #include "CUL/STL_IMPORTS/STD_optional.hpp"
@@ -188,13 +188,11 @@ private:
     std::atomic<int64_t> m_rowCount = 0;
 
     std::future<bool> m_deleteRemnantsDone;
-    ListAndApi* m_fetchList = nullptr;
-    std::mutex m_fetchListMtx;
 
     mutable std::unordered_map<std::int64_t, std::unordered_map<std::string, HashGroup>>
         m_cachedFiles;
     std::size_t m_cachedFilesMax{ 0u };
-    mutable std::mutex m_cachedFilesMtx;
+    mutable std::shared_mutex m_cachedFilesMtx;
 
     CUL::ThreadWrapper m_cachedFileInserting;
     bool m_update{ true };

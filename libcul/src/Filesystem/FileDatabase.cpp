@@ -198,7 +198,7 @@ void FileDatabase::getListOfSizes( std::vector<uint64_t>& out ) const
 #if USE_CACHE
     std::set<uint64_t> sizes;
     {
-        std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+        std::shared_lock readLocker( m_cachedFilesMtx );
         for( const auto& fi : m_cachedFiles )
         {
             sizes.insert( fi.first );
@@ -251,7 +251,7 @@ std::vector<StringWr> FileDatabase::getListOfMd5() const
 #if USE_CACHE
     std::set<MD5Value> md5s;
     {
-        std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+        std::shared_lock readLocker( m_cachedFilesMtx );
         for( const auto& fi : m_cachedFiles )
         {
             for( const auto& md5 : fi.second )
@@ -298,7 +298,7 @@ std::vector<StringWr> FileDatabase::getListOfMd5( std::uint64_t inSize ) const
 #if USE_CACHE
     std::set<MD5Value> md5s;
     {
-        std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+        std::shared_lock readLocker( m_cachedFilesMtx );
         const auto it = m_cachedFiles.find( inSize );
         if( it != m_cachedFiles.end() )
         {
@@ -365,7 +365,7 @@ void FileDatabase::getFiles( uint64_t inSize,
                              std::vector<FileInfo>& out ) const
 {
 #if USE_CACHE
-    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    std::shared_lock readLocker( m_cachedFilesMtx );
     const auto it = m_cachedFiles.find( inSize );
     if( it != m_cachedFiles.end() )
     {
@@ -429,7 +429,7 @@ void FileDatabase::getFilesFromDB( uint64_t size,
 void FileDatabase::getFiles( uint64_t inSize, std::vector<FileInfo>& out ) const
 {
 #if USE_CACHE
-    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    std::shared_lock readLocker( m_cachedFilesMtx );
     out.reserve( m_cachedFiles.size() );
 
     const auto it = m_cachedFiles.find( inSize );
@@ -485,13 +485,6 @@ void FileDatabase::loadFilesFromDatabase()
     ThreadUtil::getInstance().setThreadStatus(
         "FileDatabase::loadFilesFromDatabase::initDb();" );
     initDb();
-
-    std::lock_guard<std::mutex> locker( m_fetchListMtx );
-    m_fetchList = new ListAndApi();
-
-    m_fetchList->thisPtr = this;
-    m_fetchList->FS_API = CUL::CULInterface::getInstance()->getFS();
-    m_fetchList->m_currentFileIndex = &m_current;
 }
 
 void FileDatabase::getFilesMatching( const StringWr& fileSize,
@@ -560,7 +553,7 @@ int64_t FileDatabase::getFileCount() const
 
 std::optional<FileInfo> FileDatabase::getFromCache( const StringWr& inFilePath ) const
 {
-    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    std::shared_lock readLocker( m_cachedFilesMtx );
 
     for( const auto& sizePair : m_cachedFiles )
     {
@@ -584,7 +577,7 @@ std::optional<FileInfo> FileDatabase::getFromCache( const StringWr& inFilePath )
 
 bool FileDatabase::removeFromCache( const StringWr& inFilePath )
 {
-    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    std::unique_lock writeLocker( m_cachedFilesMtx );
 
     for( auto& sizePair : m_cachedFiles )
     {
@@ -620,7 +613,7 @@ void FileDatabase::addToCache( const std::vector<FileInfo>& inFiles ) const
         }
     }
 
-    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    std::unique_lock writeLocker( m_cachedFilesMtx );
     ProfileScopeVar( FileDatabase_addToCache_outOfMtx );
 
     for( const FileInfo& file : inFiles )
@@ -645,7 +638,7 @@ void FileDatabase::addToCache( const FileInfo& inFile ) const
         }
     }
 
-    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    std::unique_lock writeLocker( m_cachedFilesMtx );
     ProfileScopeVar( FileDatabase_addToCache_outOfMtx );
 
     std::unordered_map<std::string, HashGroup>& md5Group =
@@ -657,7 +650,6 @@ void FileDatabase::addToCache( const FileInfo& inFile ) const
 
 void FileDatabase::fetchUsage() const
 {
-    // m_cachedFilesMtx
     ProfilerScope( "FileDatabase::fetchUsage" );
     std::int32_t loadedFilesCount{ 0 };
     for( const std::unordered_map<std::string, HashGroup>& groups :
@@ -683,7 +675,7 @@ void FileDatabase::fetchUsage() const
 
 bool FileDatabase::getIsFull() const
 {
-    std::lock_guard<std::mutex> locker( m_cachedFilesMtx );
+    std::shared_lock readLocker( m_cachedFilesMtx );
     return m_cachedFiles.size() >= m_cachedFilesMax;
 }
 
