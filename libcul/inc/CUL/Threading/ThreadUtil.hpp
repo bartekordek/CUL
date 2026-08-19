@@ -46,7 +46,7 @@ public:
     ///
     /// @param seconds Target time expressed in seconds (interpretation is
     /// implementation-defined: e.g., absolute timestamp or relative offset).
-    CULLib_API void sleepUntil( std::uint32_t seconds );
+    CULLib_API static void sleepUntil( std::uint32_t seconds );
     CULLib_API void registerObserver( CThreadUtilObserver* observer );
     CULLib_API const std::thread::id getThreadId(const std::string& name) const;
     CULLib_API const std::thread::id& getCurrentThreadId() const; 
