@@ -65,7 +65,7 @@
 // If on your platform is not true, String class should be updated.
 static_assert( sizeof( char ) == 1 );
 
-#if defined( Release ) || defined( RelWithDebInfo )
+#if defined( Release ) || defined( RelWithDebInfo ) || defined(NDEBUG)
     #define CUL_SHIPPING_BUILD 1
 #else
     #define CUL_SHIPPING_BUILD 0
