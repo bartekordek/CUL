@@ -24,4 +24,4 @@ void Misc::openFileWithDefaultApp( const wchar_t* inPath, const wchar_t* inArgs 
     }
 }  // namespace CUL
 
-#endif / / #if !defined( CUL_WINDOWS )
+#endif // #if !defined( CUL_WINDOWS )
