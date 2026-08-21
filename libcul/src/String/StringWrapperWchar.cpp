@@ -71,6 +71,12 @@ STDStringWrapper& STDStringWrapper::operator=( const char* inArg )
     return *this;
 }
 
+STDStringWrapper& STDStringWrapper::operator=( const wchar_t* inArg )
+{
+    m_value = inArg;
+    return *this;
+}
+
 STDStringWrapper& STDStringWrapper::operator=( const std::wstring& inArg )
 {
     m_value = inArg;
