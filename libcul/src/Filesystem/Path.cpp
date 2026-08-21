@@ -1,10 +1,13 @@
 #include "CUL/Filesystem/Path.hpp"
+#include "CUL/Log/LogMacros.hpp"
+
 #include "CUL/Time.hpp"
 #include "CUL/Filesystem/FileFactory.hpp"
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/String/StringWrapper.hpp"
 
 #include "CUL/CULInterface.hpp"
+#include "CUL/Log/LogMacros.hpp"
 
 #include "Filesystem/FSUtils.hpp"
 
@@ -373,43 +376,70 @@ void Path::preparePaths()
     }
     else if( errorCodeValue == 1 )
     {
+    #if !CUL_SHIPPING_BUILD
         // The system cannot find the path specified.
-        const std::string errorMessage = ec.message();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 fullPathStdString.c_str(), errorCodeValue );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[Path::preparePaths] %s [%s][%d]",
+                                                 ec.message().c_str(),
+                                                 fullPathStdString.c_str(),
+                                                 errorCodeValue );
+    #endif  // #if !CUL_SHIPPING_BUILD
     }
     else if( errorCodeValue == 2 )
     {
+    #if !CUL_SHIPPING_BUILD
         // The system cannot find the file specified.
         const std::string errorMessage = ec.message();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 fullPathStdString.c_str(), errorCodeValue );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[Path::preparePaths] %s [%s][%d]",
+                                                 errorMessage.c_str(),
+                                                 fullPathStdString.c_str(),
+                                                 errorCodeValue );
+    #endif  // #if !CUL_SHIPPING_BUILD
     }
     else if( errorCodeValue == 3 )
     {
+    #if !CUL_SHIPPING_BUILD
         // The system cannot find the path specified.
         const std::string errorMessage = ec.message();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 fullPathStdString.c_str(), errorCodeValue );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[Path::preparePaths] %s [%s][%d]",
+                                                 errorMessage.c_str(),
+                                                 fullPathStdString.c_str(),
+                                                 errorCodeValue );
+    #endif  // #if !CUL_SHIPPING_BUILD
     }
     else if( errorCodeValue == 123 )
     {
-        // The filename, directory name, or volume label syntax is incorrect, propably containing unkown character in path.
+    #if !CUL_SHIPPING_BUILD
+        // The filename, directory name, or volume label syntax is incorrect, propably
+        // containing unkown character in path.
         const std::string errorMessage = ec.message();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 fullPathStdString.c_str(), errorCodeValue );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[Path::preparePaths] %s [%s][%d]",
+                                                 errorMessage.c_str(),
+                                                 fullPathStdString.c_str(),
+                                                 errorCodeValue );
+    #endif  // #if !CUL_SHIPPING_BUILD
     }
     else if( errorCodeValue == 1920 )
     {
+    #if !CUL_SHIPPING_BUILD
         // The file cannot be accessed by the system..
         const std::string errorMessage = ec.message();
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[Path::preparePaths] %s [%s][%d]", errorMessage.c_str(),
-                                                 fullPathStdString.c_str(), errorCodeValue );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[Path::preparePaths] %s [%s][%d]",
+                                                 errorMessage.c_str(),
+                                                 fullPathStdString.c_str(),
+                                                 errorCodeValue );
+    #endif  // #if !CUL_SHIPPING_BUILD
     }
     else
     {
+    #if !CUL_SHIPPING_BUILD
         const std::string errorMessage = ec.message();
         CUL::Assert::check( false, "%s", errorMessage.c_str() );
+    #endif  // #if !CUL_SHIPPING_BUILD
     }
 
     if( m_isDir )
