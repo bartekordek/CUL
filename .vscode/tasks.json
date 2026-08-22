@@ -10,7 +10,7 @@
             "options": [
                 "Debug",
                 "Release",
-                "RelWithDebInfo"
+                "Test"
             ],
             "default": "Debug"
         },
@@ -49,6 +49,34 @@
             ],
             "group": {
                 "kind": "build",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "revealProblems": "onProblem",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "[CMake][Create][All Configurations]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "Build_${input:platform}",
+                "-DENABLE_TRACY=${input:tracy_enabled}",
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+            ],
+            "group": {
+                "kind": "build"
             },
             "presentation": {
                 "echo": true,
@@ -386,6 +414,136 @@
                 "panel": "dedicated",
                 "showReuseMessage": false,
                 "clear": true
+            }
+        },
+        {
+            "label": "[CMake][Create][Debug]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "Build_${input:platform}",
+                "-DENABLE_TRACY=${input:tracy_enabled}",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+            ],
+            "group": {
+                "kind": "build"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "[CMake][Build][Debug]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build_${input:platform}",
+                "--config",
+                "Debug",
+                "-j4"
+            ],
+            "group": {
+                "kind": "build"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[CMake][Create][Debug]"
+        },
+        {
+            "label": "[CMake][Create][Test]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "Build_${input:platform}",
+                "-DENABLE_TRACY=${input:tracy_enabled}",
+                "-DCMAKE_BUILD_TYPE=Test",
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+            ],
+            "group": {
+                "kind": "build"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "[CMake][Build][Test]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build_${input:platform}",
+                "--config",
+                "Test",
+                "-j4"
+            ],
+            "group": {
+                "kind": "build"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[CMake][Create][Test]"
+        },
+        {
+            "label": "[CMake][Create][Release]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "Build_${input:platform}",
+                "-DENABLE_TRACY=${input:tracy_enabled}",
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+            ],
+            "group": {
+                "kind": "build"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "[CMake][Build][Release]",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "Build_${input:platform}",
+                "--config",
+                "Release",
+                "-j4"
+            ],
+            "group": {
+                "kind": "build"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "[CMake][Create][Release]"
+        },
+        {
+            "label": "[CMake][Build][All Configurations]",
+            "dependsOn": [
+                "[CMake][Build][Debug]",
+                "[CMake][Build][Test]",
+                "[CMake][Build][Release]"
+            ],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
             }
         }
     ]

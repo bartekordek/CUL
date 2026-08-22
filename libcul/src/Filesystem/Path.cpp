@@ -19,23 +19,23 @@ Path::Path() noexcept
 }
 
 Path::Path( const Path& path ) noexcept
-    : m_isDir( path.m_isDir ),
-      m_fullPath( path.m_fullPath ),
-      m_extension( path.m_extension ),
-      m_baseName( path.m_baseName ),
-      m_dir( path.m_dir ),
-      m_diskName( path.m_diskName )
+    : m_isDir( path.m_isDir )
+    , m_fullPath( path.m_fullPath )
+    , m_extension( path.m_extension )
+    , m_baseName( path.m_baseName )
+    , m_dir( path.m_dir )
+    , m_diskName( path.m_diskName )
 {
     normalizePaths();
 }
 
 Path::Path( Path&& path ) noexcept
-    : m_isDir( path.m_isDir ),
-      m_fullPath( std::move( path.m_fullPath ) ),
-      m_extension( std::move( path.m_extension ) ),
-      m_baseName( std::move( path.m_baseName ) ),
-      m_dir( std::move( path.m_dir ) ),
-      m_diskName( path.m_diskName )
+    : m_isDir( path.m_isDir )
+    , m_fullPath( std::move( path.m_fullPath ) )
+    , m_extension( std::move( path.m_extension ) )
+    , m_baseName( std::move( path.m_baseName ) )
+    , m_dir( std::move( path.m_dir ) )
+    , m_diskName( path.m_diskName )
 {
     normalizePath( m_fullPath );
     normalizePaths();
@@ -50,20 +50,20 @@ Path::Path( const String& inPath ) noexcept
     normalizePaths();
 }
 
-Path::Path( const std::string& path ) noexcept: m_fullPath( path )
+Path::Path( const std::string& path ) noexcept : m_fullPath( path )
 {
     normalizePath( m_fullPath );
     preparePaths();
     normalizePaths();
 }
 
-Path::Path( const char* r ) noexcept: m_fullPath( r )
+Path::Path( const char* r ) noexcept : m_fullPath( r )
 {
     normalizePath( m_fullPath );
     preparePaths();
 }
 
-Path::Path( const StringWr& inArg ): m_fullPath( inArg )
+Path::Path( const StringWr& inArg ) : m_fullPath( inArg )
 {
     normalizePath( m_fullPath );
     preparePaths();
@@ -376,18 +376,18 @@ void Path::preparePaths()
     }
     else if( errorCodeValue == 1 )
     {
-    #if !CUL_SHIPPING_BUILD
+    #if !CUL_RELEASE
         // The system cannot find the path specified.
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
                                                  "[Path::preparePaths] %s [%s][%d]",
                                                  ec.message().c_str(),
                                                  fullPathStdString.c_str(),
                                                  errorCodeValue );
-    #endif  // #if !CUL_SHIPPING_BUILD
+    #endif  // #if !CUL_TEST
     }
     else if( errorCodeValue == 2 )
     {
-    #if !CUL_SHIPPING_BUILD
+    #if !CUL_TEST
         // The system cannot find the file specified.
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
@@ -395,11 +395,11 @@ void Path::preparePaths()
                                                  errorMessage.c_str(),
                                                  fullPathStdString.c_str(),
                                                  errorCodeValue );
-    #endif  // #if !CUL_SHIPPING_BUILD
+    #endif  // #if !CUL_TEST
     }
     else if( errorCodeValue == 3 )
     {
-    #if !CUL_SHIPPING_BUILD
+    #if !CUL_TEST
         // The system cannot find the path specified.
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
@@ -407,11 +407,11 @@ void Path::preparePaths()
                                                  errorMessage.c_str(),
                                                  fullPathStdString.c_str(),
                                                  errorCodeValue );
-    #endif  // #if !CUL_SHIPPING_BUILD
+    #endif  // #if !CUL_TEST
     }
     else if( errorCodeValue == 123 )
     {
-    #if !CUL_SHIPPING_BUILD
+    #if !CUL_TEST
         // The filename, directory name, or volume label syntax is incorrect, propably
         // containing unkown character in path.
         const std::string errorMessage = ec.message();
@@ -420,11 +420,11 @@ void Path::preparePaths()
                                                  errorMessage.c_str(),
                                                  fullPathStdString.c_str(),
                                                  errorCodeValue );
-    #endif  // #if !CUL_SHIPPING_BUILD
+    #endif  // #if !CUL_TEST
     }
     else if( errorCodeValue == 1920 )
     {
-    #if !CUL_SHIPPING_BUILD
+    #if !CUL_TEST
         // The file cannot be accessed by the system..
         const std::string errorMessage = ec.message();
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
@@ -432,14 +432,14 @@ void Path::preparePaths()
                                                  errorMessage.c_str(),
                                                  fullPathStdString.c_str(),
                                                  errorCodeValue );
-    #endif  // #if !CUL_SHIPPING_BUILD
+    #endif  // #if !CUL_TEST
     }
     else
     {
-    #if !CUL_SHIPPING_BUILD
+    #if !CUL_TEST
         const std::string errorMessage = ec.message();
         CUL::Assert::check( false, "%s", errorMessage.c_str() );
-    #endif  // #if !CUL_SHIPPING_BUILD
+    #endif  // #if !CUL_TEST
     }
 
     if( m_isDir )

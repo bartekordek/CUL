@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.5.0 FATAL_ERROR)
 
+
 cmake_policy(SET CMP0069 NEW)
 
 #cmake -DCMAKE_BUILD_TYPE=Debug
@@ -33,6 +34,9 @@ source_group( TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES} )
 
 add_executable(${EXEC_DYNAMIC} ${SOURCES})
 add_executable(${EXEC_STATIC} ${SOURCES})
+
+cul_setup_target(${EXEC_DYNAMIC})
+cul_setup_target(${EXEC_STATIC})
 
 if (MSVC)
     set_target_properties(

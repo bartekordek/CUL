@@ -1,6 +1,9 @@
 #cmake -DCMAKE_BUILD_TYPE=Debug
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
+include(cmake/CULConfigurations.cmake)
+include(cmake/CULTargetHelpers.cmake)
+
 cmake_policy(SET CMP0069 NEW)
 
 project(cul_main)

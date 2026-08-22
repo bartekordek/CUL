@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
+
 cmake_policy(SET CMP0069 NEW)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -41,12 +42,6 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     add_compile_options( "/wd4774" )
     add_compile_options( "/wd4996" ) # 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead.
     add_compile_options( "/wd5045" )
-
-
-    add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Ot>")
-    add_compile_options("$<$<CONFIG:RelWithDebInfo>:/Oi>")
-    add_compile_options("$<$<CONFIG:Release>:/Ot>")
-    add_compile_options("$<$<CONFIG:Release>:/Oi>")
 
     find_package(RapidJSON REQUIRED)
     if(RapidJSON_FOUND)
@@ -92,6 +87,9 @@ message("ISPC compiler: ${ISPC_EXECUTABLE}")
 add_library(${PROJECT_NAME_DYNAMIC} SHARED ${SOURCES})
 add_library(${PROJECT_NAME_STATIC} STATIC ${SOURCES})
 
+cul_setup_target(${PROJECT_NAME_DYNAMIC})
+cul_setup_target(${PROJECT_NAME_STATIC})
+
 ###################################################################
 # ISPC injection AFTER targets exist (FIX #1)
 ###################################################################
@@ -129,16 +127,6 @@ endif()
 set_property(TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY LINK_LIBRARY_DEPENDENCIES true)
 set_property(TARGET ${PROJECT_NAME_STATIC} PROPERTY LINK_LIBRARY_DEPENDENCIES true)
 
-set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_DEBUG false )
-set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO true )
-set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL true )
-set_property( TARGET ${PROJECT_NAME_DYNAMIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE true )
-set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_DEBUG false )
-set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO true )
-set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL true )
-set_property( TARGET ${PROJECT_NAME_STATIC} PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE true )
-
-
 set_target_properties(${PROJECT_NAME_STATIC} PROPERTIES COMPILE_DEFINITIONS "")
 target_compile_definitions(${PROJECT_NAME_STATIC} PRIVATE CUL_STATIC=1)
 target_compile_definitions(${PROJECT_NAME_STATIC} PUBLIC GLM_ENABLE_EXPERIMENTAL=1)
@@ -165,6 +153,16 @@ endif()
 if(MSVC)
     target_link_options(${PROJECT_NAME_DYNAMIC} PUBLIC "/INCREMENTAL:NO")
     target_link_options(${PROJECT_NAME_STATIC} PUBLIC "/INCREMENTAL:NO")
+
+    target_link_options(${PROJECT_NAME_DYNAMIC} PRIVATE
+        $<$<CONFIG:Test>:/LTCG:INCREMENTAL>
+        $<$<CONFIG:Release>:/LTCG>
+    )
+
+    target_link_options(${PROJECT_NAME_STATIC} PRIVATE
+        $<$<CONFIG:Test>:/LTCG:INCREMENTAL>
+        $<$<CONFIG:Release>:/LTCG>
+    )
 
     target_link_libraries(${PROJECT_NAME_DYNAMIC} ${DEPENDENCIES})
     target_link_libraries(${PROJECT_NAME_STATIC} ${DEPENDENCIES})
