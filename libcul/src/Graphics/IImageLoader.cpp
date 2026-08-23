@@ -33,9 +33,5 @@ CULInterface* IImageLoader::getInterface()
     return m_culInterface;
 }
 
-IImageLoader::~IImageLoader()
-{
-}
-
 NAMESPACE_END( Graphics )
 NAMESPACE_END( CUL )

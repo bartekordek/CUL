@@ -13,7 +13,7 @@ class CULLib_API IImageLoader
 {
 public:
     IImageLoader( CULInterface* culInterface );
-    virtual ~IImageLoader();
+    virtual ~IImageLoader() = default;
 
     virtual IImage* loadImage( const FS::Path& path, bool rgba = false );
     virtual IImage* loadImage(DataType * data, unsigned width, unsigned height );
