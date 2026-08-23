@@ -42,21 +42,20 @@ void writeData( std::fstream& inOutStream, const std::vector<std::byte>& inData 
 {
     const std::uint64_t dataSize = static_cast<std::uint64_t>( inData.size() );
     writeValue( inOutStream, dataSize );
-    inOutStream.write( reinterpret_cast<const char*>( inData.data() ), dataSize );
+    inOutStream.write( reinterpret_cast<const char*>( inData.data() ),
+                       static_cast<std::streamsize>( dataSize ) );
 }
 
 void readData( std::fstream& inOutStream, std::vector<std::byte>& inOutData )
 {
     const std::uint64_t dataSize = readValue<std::uint64_t>( inOutStream );
     inOutData.resize( dataSize );
-    inOutStream.read( reinterpret_cast<char*>( inOutData.data() ), dataSize );
+    inOutStream.read( reinterpret_cast<char*>( inOutData.data() ),
+                      static_cast<std::streamsize>( dataSize ) );
 }
 
 StringWr readString( std::fstream& inStream )
 {
-    constexpr std::size_t bufferSize{ 512u };
-    char buffer[bufferSize];
-
     // Read string length.
     std::uint32_t lengthOfStringInBytes{ 0u };
     inStream.read( reinterpret_cast<char*>( &lengthOfStringInBytes ),
@@ -86,7 +85,7 @@ Archive::Archive( const StringWr& inPath )
     read();
 }
 
-Archive::Archive( const SFArchiveMetadata& inMetaCpy, EAccesMode inAccessMode )
+Archive::Archive( const SFArchiveMetadata& inMetaCpy, EAccesMode /*inAccessMode*/ )
 {
     m_metadata = inMetaCpy;
     write();

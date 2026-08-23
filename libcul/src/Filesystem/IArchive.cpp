@@ -8,9 +8,10 @@ void SFile::setFile( const std::string& inPath )
     m_path = inPath;
 
     std::ifstream stream( inPath, std::ios::binary | std::ios::ate );
-    m_content.resize( stream.tellg() );
+    m_content.resize( static_cast<std::uint64_t>( stream.tellg() ) );
     stream.seekg( 0, std::ios::beg );
-    stream.read( reinterpret_cast<char*>( m_content.data() ), m_content.size() );
+    stream.read( reinterpret_cast<char*>( m_content.data() ),
+                 static_cast<std::streamsize>( m_content.size() ) );
 }
 
 const std::string& SFile::getPath() const
