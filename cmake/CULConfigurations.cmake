@@ -3,6 +3,7 @@ if(CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_CONFIGURATION_TYPES
         Debug
         Test
+        RelWithDebInfo
         Release
         CACHE STRING "" FORCE)
 endif()

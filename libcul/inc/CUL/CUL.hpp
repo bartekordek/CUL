@@ -64,3 +64,19 @@
 
 // If on your platform is not true, String class should be updated.
 static_assert( sizeof( char ) == 1 );
+
+#if !defined(CUL_DEBUG)
+    #define CUL_DEBUG 0
+#endif  // #if !defined(CUL_DEBUG)
+
+#if !defined( CUL_TEST )
+    #define CUL_TEST 0
+#endif  // #if !defined(CUL_TEST)
+
+#if !defined( CUL_RELWITHDEBINFO )
+    #define CUL_RELWITHDEBINFO 0
+#endif  // #if !defined(CUL_RELWITHDEBINFO)
+
+#if !defined( CUL_RELEASE )
+    #define CUL_RELEASE 0
+#endif  // #if !defined(CUL_RELEASE)
