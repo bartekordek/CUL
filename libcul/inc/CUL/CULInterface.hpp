@@ -33,7 +33,8 @@ class ThreadUtil;
 class CULLib_API CULInterface final
 {
 public:
-    static CULInterface* createInstance( const FS::Path& configFile = "" );
+    static CULInterface* createInstance( const StringWr& inConfigPath );
+    static CULInterface* createInstance();
     static CULInterface* getInstance();
 
     OSUtils::ISystemFonts* getSystemFonts();
@@ -44,21 +45,22 @@ public:
     Graphics::IImageLoader* getImageLoader();
     ThreadUtil& getThreadUtils();
 
-    GUTILS::IConfigFile* loadConfigFile( const FS::Path& path );
+    GUTILS::IConfigFile* loadConfigFile( const StringWr& path );
     GUTILS::IConfigFile* getConfig() const;
 
     ~CULInterface();
 
 protected:
 private:
-    explicit CULInterface( const FS::Path& configFile = "" );
+    CULInterface();
+    explicit CULInterface( const StringWr& inConfigPath );
     void initialize();
     explicit CULInterface( const CULInterface& arg ) = delete;
     explicit CULInterface( CULInterface&& arg ) = delete;
     CULInterface& operator=( const CULInterface& arg ) = delete;
     CULInterface& operator=( CULInterface&& arg ) = delete;
 
-    FS::Path m_configFilePath;
+    StringWr m_configFilePath;
     GUTILS::IConfigFile* m_configFile = nullptr;
     CUL::LOG::ILogger* m_logger = nullptr;
     FS::FileFactory* m_fileFactory = nullptr;

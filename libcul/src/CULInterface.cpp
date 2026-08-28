@@ -29,11 +29,22 @@ using namespace CUL;
 
 CULInterface* CULInterface::s_instance = nullptr;
 
-CULInterface* CULInterface::createInstance( const FS::Path& configFile )
+CULInterface* CULInterface::createInstance( const StringWr& inConfigPath )
 {
     if( s_instance == nullptr )
     {
-        auto instance = new CULInterface( configFile );
+        auto instance = new CULInterface( inConfigPath );
+        instance->initialize();
+    }
+
+    return s_instance;
+}
+
+CULInterface* CULInterface::createInstance()
+{
+    if( s_instance == nullptr )
+    {
+        auto instance = new CULInterface();
         instance->initialize();
     }
 
@@ -45,7 +56,17 @@ CULInterface* CULInterface::getInstance()
     return s_instance;
 }
 
-CULInterface::CULInterface( const FS::Path& configFilePath ) : m_configFilePath( configFilePath )
+CULInterface::CULInterface()
+{
+    CUL::Assert::simple(
+        s_instance == nullptr,
+        "Propably DLL Hell. There is already a instance of CUL Interface." );
+
+    s_instance = this;
+}
+
+CULInterface::CULInterface( const StringWr& inConfigPath )
+    : m_configFilePath( inConfigPath )
 {
     CUL::Assert::simple( s_instance == nullptr, "Propably DLL Hell. There is already a instance of CUL Interface." );
 
@@ -59,7 +80,7 @@ void CULInterface::initialize()
 
     m_logger = &LOG::ILogger::getInstance();
 
-    if( !m_configFilePath.getPath().empty() )
+    if( !m_configFilePath.empty() )
     {
         m_configFile = loadConfigFile( m_configFilePath );
     }
@@ -125,7 +146,7 @@ ThreadUtil& CULInterface::getThreadUtils()
     return *m_threadUtils;
 }
 
-GUTILS::IConfigFile* CULInterface::loadConfigFile( const FS::Path& path )
+GUTILS::IConfigFile* CULInterface::loadConfigFile( const StringWr& path )
 {
     return new GUTILS::IConfigFileConcrete( path, this );
 }

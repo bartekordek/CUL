@@ -12,16 +12,19 @@
 using namespace CUL;
 using namespace GUTILS;
 
-IConfigFileConcrete::IConfigFileConcrete( const FS::Path& path, CULInterface* culInterface ):
+IConfigFileConcrete::IConfigFileConcrete( const StringWr& path,
+                                          CULInterface* culInterface )
+    :
     m_culInterface( culInterface ),
     m_path( path )
 {
     auto currentDir = culInterface->getFS()->getCurrentDir();
     culInterface->getLogger()->logVariable( LOG::Severity::Info, "Current dir: %s", currentDir.getUtfChar() );
     Assert::check(nullptr != culInterface, "CUL Is not initialized!");
-    Assert::check(path.exists(), "%s does not exist!", path.getPath().getUtfChar());
+    const FS::Path pathFromString{ path };
+    Assert::check( pathFromString.exists(), "%s does not exist!", path.getUtfChar() );
     loadPath();
-    m_file = culInterface->getFF()->createFileFromPath( path );
+    m_file = culInterface->getFF()->createFileFromPath( pathFromString );
 }
 
 void IConfigFileConcrete::addValue( const StringWr& valueName, const StringWr& value )

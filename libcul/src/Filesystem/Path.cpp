@@ -57,7 +57,20 @@ Path::Path( const std::string& path ) noexcept : m_fullPath( path )
     normalizePaths();
 }
 
+Path::Path( const std::wstring& path ) noexcept : m_fullPath( path )
+{
+    normalizePath( m_fullPath );
+    preparePaths();
+    normalizePaths();
+}
+
 Path::Path( const char* r ) noexcept : m_fullPath( r )
+{
+    normalizePath( m_fullPath );
+    preparePaths();
+}
+
+Path::Path( const wchar_t* inArg ) noexcept : m_fullPath( inArg )
 {
     normalizePath( m_fullPath );
     preparePaths();
@@ -124,7 +137,27 @@ Path& Path::operator=( const char* r )
     return *this;
 }
 
+Path& Path::operator=( const wchar_t* r )
+{
+    if( !m_fullPath.equals( r ) )
+    {
+        m_fullPath = r;
+        preparePaths();
+    }
+    return *this;
+}
+
 Path& Path::operator=( const std::string& rhv )
+{
+    if( !m_fullPath.equals( rhv ) )
+    {
+        m_fullPath = rhv;
+        preparePaths();
+    }
+    return *this;
+}
+
+Path& Path::operator=( const std::wstring& rhv )
 {
     if( !m_fullPath.equals( rhv ) )
     {
@@ -205,6 +238,16 @@ const STDStringWrapper& Path::getDir() const
 bool Path::isRootOf( const Path& inPath ) const
 {
     return inPath.m_dir.contains( m_dir );
+}
+
+bool Path::equals( const char* inPath ) const
+{
+    return m_fullPath == inPath;
+}
+
+bool Path::equals( const wchar_t* inPath ) const
+{
+    return m_fullPath == inPath;
 }
 
 const STDStringWrapper& Path::getDiskName() const

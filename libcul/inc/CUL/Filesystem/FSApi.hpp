@@ -29,23 +29,29 @@ public:
     FSApi& operator=( const FSApi& ) = delete;
     FSApi& operator=( FSApi&& ) = delete;
 
-    String getCurrentDir();
+    StringWr getCurrentDir();
     IFile* getDirectory( const Path& directory );
 
     void getCreationTime( const Path& path, Time& outValue );
     void getLastModificationTime( const Path& path, Time& outValue );
-    String getFileSize( const Path& path );
+    StringWr getFileSize( const Path& path );
 
     bool fileExist( const Path& path );
+    bool fileExist( const StringWr& path );
     bool isDirectory( const Path& path );
-    bool isRegularFile( const String& path );
+    bool isRegularFile( const StringWr& path );
 
     std::vector<Path> ListAllFiles( const Path& directory );
     std::vector<Path> ListAllFiles( const Path& directory, const StringWr& word );
     void ListAllFiles( const Path& directory, std::function<void( const Path& path )> callback );
     static void handleErrorCode( const std::error_code& inErrorCode, const char* inPath );
 
+    static void copy( const Path& inSource,
+                      const Path& inTarget,
+                      bool inRecursive,
+                      bool inAutoOverwrite );
     void deleteFile( const Path& path );
+    void deleteFile( const StringWr& path );
 
     ~FSApi();
 

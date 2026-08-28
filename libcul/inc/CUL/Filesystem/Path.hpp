@@ -27,17 +27,21 @@ public:
     Path() noexcept;
     Path( const Path& path ) noexcept;
     Path( Path&& path ) noexcept;
-    Path( const String& path ) noexcept;
-    Path( const std::string& path ) noexcept;
-    Path( const char* r ) noexcept;
-    Path( const StringWr& inArg );
+    explicit Path( const StringWr& inArg );
+    explicit Path( const String& path ) noexcept;
+    explicit Path( const std::string& path ) noexcept;
+    explicit Path( const std::wstring& inPath ) noexcept;
+    explicit Path( const char* r ) noexcept;
+    explicit Path( const wchar_t* inArg ) noexcept;
 
     Path& operator=( const Path& path );
     Path& operator=( Path&& path ) noexcept;
 
     Path& operator=( const String& r );
     Path& operator=( const char* r );
+    Path& operator=( const wchar_t* r );
     Path& operator=( const std::string& rhv );
+    Path& operator=( const std::wstring& rhv );
     Path& operator=( const StringWr& inArg );
 
     Path& operator+=( const Path& rhv );
@@ -77,6 +81,9 @@ public:
     bool exists() const;
     bool getIsEmpty() const;
     bool isRootOf( const Path& inPath ) const;
+    bool equals( const char* inPath ) const;
+    bool equals( const wchar_t* inPath ) const;
+
     const STDStringWrapper& getDiskName() const;
 
     void convertToSlash();

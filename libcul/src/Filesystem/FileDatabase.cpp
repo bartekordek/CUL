@@ -101,6 +101,7 @@ FileDatabase::FileDatabase() : m_cachedFilesMax( 256u * 1024u * 1024u )
         {
             updateFunction();
         } );
+    //initDb();
 }
 
 void FileDatabase::updateFunction()

@@ -15,7 +15,7 @@ class IConfigFileConcrete final:
     public IConfigFile
 {
 public:
-    IConfigFileConcrete( const FS::Path& path, CULInterface* culInterface );
+    IConfigFileConcrete( const StringWr& path, CULInterface* culInterface );
 
     void addValue( const StringWr& valueName, const StringWr& value );
     void reload() override;

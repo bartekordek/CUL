@@ -70,7 +70,7 @@ void CommandlineParser::passVariables( const std::int32_t argc, char** argv )
             arg.Value = argStr.getString();
             m_values["ExecPath"] = arg;
 
-            FS::Path execPath = argStr;
+            FS::Path execPath{ argStr.getString() };
             arg.Name = "ExecutableName";
             arg.Value.createFromPrintf( "%s.%s",
                                         execPath.getBaseName().getSTDString().c_str(),

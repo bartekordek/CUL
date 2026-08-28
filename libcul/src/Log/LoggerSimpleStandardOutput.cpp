@@ -19,9 +19,9 @@ LoggerSimpleStandardOutput::LoggerSimpleStandardOutput()
     init();
 }
 
-void LoggerSimpleStandardOutput::log( const String& text, const Severity severity )
+void LoggerSimpleStandardOutput::log( const StringWr& text, const Severity severity )
 {
-    log( text.getChar(), severity );
+    log( text.getCharVal(), severity );
 }
 
 const std::string currentDateTime()
@@ -58,11 +58,12 @@ void LoggerSimpleStandardOutput::init()
     findAndCheckOldestLogFiles( baseName );
 }
 
-void LoggerSimpleStandardOutput::findAndCheckOldestLogFiles( const CUL::String& inLogBaseName )
+void LoggerSimpleStandardOutput::findAndCheckOldestLogFiles( const CUL::StringWr& inLogBaseName )
 {
     const auto currentDir = m_interface.getFS()->getCurrentDir(); 
+    const FS::Path currentDirPath{ currentDir };
     std::vector<FS::Path> listOfFiles =
-        m_interface.getFS()->ListAllFiles( currentDir, *inLogBaseName );
+        m_interface.getFS()->ListAllFiles( currentDirPath, inLogBaseName );
 
     const std::int32_t howManyToDelete =
         static_cast<std::int32_t>( listOfFiles.size() ) - m_maxLogCount;
@@ -81,7 +82,7 @@ void LoggerSimpleStandardOutput::findAndCheckOldestLogFiles( const CUL::String& 
 
     for( std::int32_t i = 0; i < howManyToDelete; ++i )
     {
-        m_interface.getFS()->deleteFile( listOfFiles[i] );
+        m_interface.getFS()->deleteFile( listOfFiles[static_cast<std::size_t>( i )] );
     }
 }
 

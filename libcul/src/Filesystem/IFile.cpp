@@ -304,7 +304,7 @@ const StringWr& IFile::getSizeBytes() const
 
 void IFile::calculateSizeBytes()
 {
-    m_sizeBytes = p_cullInterface->getFS()->getFileSize( m_path ).getString();
+    m_sizeBytes = p_cullInterface->getFS()->getFileSize( m_path );
 }
 
 void IFile::loadBackground( bool keepLineEndingCharacter, bool removeBottomEmptyLines, std::function<void( void )> finishCallback )

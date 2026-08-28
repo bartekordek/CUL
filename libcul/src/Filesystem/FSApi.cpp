@@ -12,6 +12,9 @@
 using namespace CUL;
 using namespace FS;
 
+bool g_isRegularFile_impl( const std::filesystem::path& inPath );
+void g_deleteFile_impl( const std::filesystem::path& inPath );
+
 FSApi::FSApi( CULInterface* cul, FS::FileFactory* ff )
     : m_culInterface( cul )
     , m_fileFactory( ff )
@@ -85,10 +88,9 @@ void FSApi::iterateThrought( const std::filesystem::directory_entry& de,
     ProfilerScope( "FSApi::iterateThrought" );
 
     const std::filesystem::path entryPath = de.path();
-
 #ifdef _MSC_VER
-    const String tempPath = entryPath.wstring();
-    Path culPath = tempPath;
+    const StringWr tempPath = entryPath.wstring();
+    Path culPath{ tempPath.getValue() };
 #else
     Path culPath = entryPath.string();
 #endif
@@ -143,16 +145,46 @@ void FSApi::handleErrorCode( const std::error_code& ec, const char* inPath )
     }
 }
 
-void FSApi::deleteFile( const Path& path )
+void FSApi::copy( const Path& inSource,
+                  const Path& inTarget,
+                  bool inRecursive,
+                  bool inAutoOverwrite )
 {
-    ProfilerScope( "FSApi::deleteFile" );
+    std::filesystem::copy_options co{};
+    if( inRecursive )
+    {
+        co |= std::filesystem::copy_options::recursive;
+    }
+    if( inAutoOverwrite )
+    {
+        co |= std::filesystem::copy_options::overwrite_existing;
+    }
+
 
     std::error_code ec;
-    const std::filesystem::path target = path.getPath().getValue();
+    std::filesystem::copy(
+        inSource.getPath().getValue(), inTarget.getPath().getValue(), co, ec );
+}
 
-    std::filesystem::remove( target, ec );
+void FSApi::deleteFile( const Path& path )
+{
+    ProfilerScope( "FSApi::deleteFilePath" );
+    g_deleteFile_impl( path.getPath().getValue() );
+}
 
-    static std::error_condition ok;
+void FSApi::deleteFile( const StringWr& path )
+{
+    ProfilerScope( "FSApi::deleteFileString" );
+    g_deleteFile_impl( path.getValue() );
+}
+
+void g_deleteFile_impl(const std::filesystem::path& inPath)
+{
+    ProfilerScope( "g_deleteFile_impl" );
+    thread_local static std::error_code ec;
+    thread_local static std::error_condition ok;
+    std::filesystem::remove( inPath, ec );
+
     if( ec != ok )
     {
         const auto messageStr = ec.message();
@@ -162,11 +194,29 @@ void FSApi::deleteFile( const Path& path )
     }
 }
 
+bool g_isDirectory( const std::filesystem::path& inPath );
+
 bool FSApi::isDirectory( const Path& path )
 {
     ProfilerScope( "FSApi::isDirectory" );
     std::error_code ec;
     bool result = std::filesystem::is_directory( path.getPath().getValue(), ec );
+    return result;
+}
+
+bool g_isDirectory( const std::filesystem::path& inPath )
+{
+    ProfilerScope( "FSApi::g_isDirectory" );
+    static thread_local std::error_code ec;
+    thread_local static std::error_condition ok;
+    const bool result = std::filesystem::is_directory( inPath, ec );
+    if( ec != ok )
+    {
+        const auto messageStr = ec.message();
+        const char* msg = messageStr.c_str();
+        LOG::ILogger::getInstance().logVariable(
+            CUL::LOG::Severity::Error, "FSApi::isDirectory error: [%s]", msg );
+    }
     return result;
 }
 
@@ -225,19 +275,19 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 #endif
     }
 
-    const String st = buffer;
-    const std::vector<String> parts = st.split( " " );
-    const String date = parts[0];
-    const String time = parts[1];
+    const StringWr st = buffer;
+    const std::vector<StringWr> parts = st.split( " " );
+    const StringWr date = parts[0];
+    const StringWr time = parts[1];
 
-    const std::vector<String> dateSplit = date.split( "/" );
+    const std::vector<StringWr> dateSplit = date.split( "/" );
 
     const std::int32_t year = dateSplit[0].toInt64();
     const std::int32_t month = dateSplit[1].toInt64();
     const std::int32_t day = dateSplit[2].toInt64();
     outTime.setDate( year, month, day );
 
-    const std::vector<String> timeSplit = time.split( ":" );
+    const std::vector<StringWr> timeSplit = time.split( ":" );
     const std::int32_t hour = timeSplit[0].toInt64();
     outTime.setHour( hour );
 
@@ -249,15 +299,32 @@ void FSApi::getLastModificationTime( const Path& inPath, Time& outTime )
 
 bool FSApi::fileExist( const Path& path )
 {
-    return isRegularFile( path.getPath().getValue() );
+    return fileExist( path.getPath() );
 }
 
-String FSApi::getCurrentDir()
+bool FSApi::fileExist( const StringWr& path )
+{
+    return isRegularFile( path );
+}
+
+StringWr FSApi::getCurrentDir()
 {
     auto currentDir = std::filesystem::current_path();
     const std::filesystem::path full_path( currentDir );
     return full_path.string();
 }
+
+#if CUL_USE_WCHAR
+Path g_toString(const std::filesystem::path& inPath)
+{
+    return Path{ inPath.wstring() };
+}
+#else // #if CUL_USE_WCHAR
+Path g_toString( const std::filesystem::path& inPath )
+{
+    return Path{ inPath };
+}
+#endif // #if CUL_USE_WCHAR
 
 IFile* FSApi::getDirectory( const Path& directory )
 {
@@ -270,16 +337,16 @@ IFile* FSApi::getDirectory( const Path& directory )
     for( DI it( directoryBf ); it != end; ++it )
     {
         ProfilerScope( "FSApi::getDirectory::it" );
-        const auto& pathIt = it->path();
-        const auto filePath = pathIt.string();
-        if( isRegularFile( filePath ) )
+        const std::filesystem::path& pathIt = it->path();
+        const Path asPath{ g_toString( pathIt ) };
+        if( g_isRegularFile_impl( pathIt ) )
         {
-            auto child = m_fileFactory->createFileFromPath( filePath );
+            auto child = m_fileFactory->createFileFromPath( asPath );
             result->addChild( child );
         }
-        else if( isDirectory( filePath.c_str() ) )
+        else if( g_isDirectory( pathIt ) )
         {
-            auto nestedDirectory = getDirectory( filePath );
+            auto nestedDirectory = getDirectory( asPath );
             result->addChild( nestedDirectory );
         }
     }
@@ -287,25 +354,34 @@ IFile* FSApi::getDirectory( const Path& directory )
     return result;
 }
 
-bool FSApi::isRegularFile( const String& path )
+bool FSApi::isRegularFile( const StringWr& inPath )
 {
     ProfilerScope( "FSApi::isRegularFile" );
+    return g_isRegularFile_impl( std::filesystem::path( inPath.getValue() ) );
+}
+
+bool g_isRegularFile_impl(const std::filesystem::path& inPath)
+{
+    ProfilerScope( "g_isRegularFile_impl" );
     std::error_code existsErrorCode;
-    const std::filesystem::path filePath = path.getChar();
-    const bool result = std::filesystem::is_regular_file( filePath, existsErrorCode );
-    if( existsErrorCode.value() != 0 )
+    const bool result = std::filesystem::is_regular_file( inPath, existsErrorCode );
+#if !CUL_RELEASE 
+    if (existsErrorCode.value() != 0)
     {
         const std::string errorCodeMessageStr = existsErrorCode.message();
-        const auto pathString = filePath.string();
+        const auto pathString = inPath.string();
+
         LOG::ILogger::getInstance().logVariable( CUL::LOG::Severity::Error,
                                                  "FSApi::isRegularFile: [%s] %s",
                                                  pathString.c_str(),
                                                  errorCodeMessageStr.c_str() );
     }
+#endif  // #if !CUL_RELEASE 
+
     return result;
 }
 
-String FSApi::getFileSize( const Path& path )
+StringWr FSApi::getFileSize( const Path& path )
 {
     ProfilerScope( "FSApi::getFileSize" );
     std::error_code ec;
@@ -343,7 +419,7 @@ String FSApi::getFileSize( const Path& path )
 #endif
 
     const auto string = std::to_string( size );
-    String result = string;
+    StringWr result = string;
     return result;
 }
 

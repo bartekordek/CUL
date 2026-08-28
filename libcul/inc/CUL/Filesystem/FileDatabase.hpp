@@ -178,9 +178,9 @@ private:
 
     sqlite3* m_db = nullptr;
 #if defined( CUL_WINDOWS )
-    Path m_databasePath = "FilesList.db";
+    Path m_databasePath{ CUL_STR( "FilesList.db" ) };
 #else   // defined(CUL_WINDOWS)
-    Path m_databasePath = "FilesList_Linux.db";
+    Path m_databasePath{ CUL_STR( "FilesList_Linux.db" ) };
 #endif  // defined(CUL_WINDOWS)
 
     StringWr m_currentFile;

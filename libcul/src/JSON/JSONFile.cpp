@@ -1,5 +1,5 @@
 #include "CUL/JSON/JSONFile.hpp"
-#include "ImportRapidJSON.hpp"
+#include "CUL/JSON/ImportRapidJSON.hpp"
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_algorithm.hpp"
 
@@ -23,13 +23,13 @@ FS::FileType JSONFile::getType() const
     return FS::FileType::TXT;
 }
 
-void JSONFile::changePath( const FS::Path& newPath )
+void JSONFile::changePath( const FS::Path& /*newPath*/ )
 {
     //m_fileContents->changePath( newPath );
     //IFile::setPath( newPath );
 }
 
-void JSONFile::reload( bool keepLineEndingCharacter )
+void JSONFile::reload( bool /*keepLineEndingCharacter*/ )
 {
     //m_keepLineEndingCharacter = keepLineEndingCharacter;
     //m_fileContents->reload( keepLineEndingCharacter );

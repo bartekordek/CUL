@@ -23,7 +23,7 @@ public:
     LoggerSimpleStandardOutput();
     ~LoggerSimpleStandardOutput();
 
-    void log( const String& text, const Severity severity = Severity::Info ) override;
+    void log( const StringWr& text, const Severity severity = Severity::Info ) override;
     void log( const char* text, const Severity severity = Severity::Info ) override;
     void log( const wchar_t* text, const Severity severity = Severity::Info ) override;
 
@@ -36,7 +36,7 @@ private:
     LoggerSimpleStandardOutput( const LoggerSimpleStandardOutput& arg ) = delete;
     LoggerSimpleStandardOutput& operator=( const LoggerSimpleStandardOutput& arg ) = delete;
     void init();
-    void findAndCheckOldestLogFiles( const CUL::String& inLogBaseName );
+    void findAndCheckOldestLogFiles( const CUL::StringWr& inLogBaseName );
 
     CULInterface& m_interface;
     std::int32_t m_maxLogCount{ 4 };
