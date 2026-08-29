@@ -4,7 +4,7 @@
     #include "CUL/String/StringUtil.hpp"
 namespace CUL
 {
-STDStringWrapper::STDStringWrapper( const char* inArg ): m_value( inArg )
+STDStringWrapper::STDStringWrapper( const char* inArg ) : m_value( inArg )
 {
 }
 
@@ -13,7 +13,7 @@ STDStringWrapper::STDStringWrapper( const char inArg )
     m_value.push_back( inArg );
 }
 
-STDStringWrapper::STDStringWrapper( const std::string& inArg ): m_value( inArg )
+STDStringWrapper::STDStringWrapper( const std::string& inArg ) : m_value( inArg )
 {
 }
 
@@ -41,14 +41,25 @@ void STDStringWrapper::replace( const char inWhat, const char inFor, bool allOcc
     StringUtil::replace( m_value.data(), inWhat, inFor, allOccurences );
 }
 
-void STDStringWrapper::replace( const wchar_t inWhat, const wchar_t inFor, bool allOccurences )
+void STDStringWrapper::replace( const wchar_t inWhat,
+                                const wchar_t inFor,
+                                bool allOccurences )
 {
-    StringUtil::replace( m_value.data(), StringUtil::toChar( inWhat ), StringUtil::toChar( inFor ), allOccurences );
+    StringUtil::replace( m_value.data(),
+                         StringUtil::toChar( inWhat ),
+                         StringUtil::toChar( inFor ),
+                         allOccurences );
 }
 
 STDStringWrapper& STDStringWrapper::operator=( const char* inArg )
 {
     m_value = inArg;
+    return *this;
+}
+
+STDStringWrapper& STDStringWrapper::operator=( const wchar_t* inArg )
+{
+    StringUtil::wideStringToChar( m_value, inArg );
     return *this;
 }
 
@@ -151,7 +162,8 @@ void STDStringWrapper::append( const wchar_t* inChar )
     m_value += argStr;
 }
 
-std::vector<STDStringWrapper> STDStringWrapper::split( const STDStringWrapper& delimiter ) const
+std::vector<STDStringWrapper> STDStringWrapper::split(
+    const STDStringWrapper& delimiter ) const
 {
     std::vector<STDStringWrapper> result;
 
@@ -340,8 +352,9 @@ void STDStringWrapper::replace( const std::string& inWhat, const std::string& in
 
 std::u8string STDStringWrapper::toU8String() const
 {
-    return std::u8string( reinterpret_cast<const char8_t*>( m_value.data() ),
-                          reinterpret_cast<const char8_t*>( m_value.data() + m_value.size() ) );
+    return std::u8string(
+        reinterpret_cast<const char8_t*>( m_value.data() ),
+        reinterpret_cast<const char8_t*>( m_value.data() + m_value.size() ) );
 }
 
 STDStringWrapper::~STDStringWrapper()
