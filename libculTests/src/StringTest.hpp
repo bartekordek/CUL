@@ -1,5 +1,5 @@
 #pragma once
-#include "CUL/String/String.hpp"
+#include "CUL/String/StringWrapper.hpp"
 #include "Gtest.hpp"
 #if _MSC_VER
 #pragma warning( push )
@@ -34,7 +34,7 @@ protected:
     }
 
 public:
-    CUL::String dummyFilePath = "../media/Dummy.txt";
+    CUL::StringWr dummyFilePath = CUL_STR( "../media/Dummy.txt" );
 };
 #ifdef _MSC_VER
 #pragma warning( pop )

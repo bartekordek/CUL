@@ -92,7 +92,7 @@ void FSApi::iterateThrought( const std::filesystem::directory_entry& de,
     const StringWr tempPath = entryPath.wstring();
     Path culPath{ tempPath.getValue() };
 #else
-    Path culPath = entryPath.string();
+    Path culPath{ entryPath.generic_string() };
 #endif
 
     std::error_code ec;
@@ -160,7 +160,6 @@ void FSApi::copy( const Path& inSource,
         co |= std::filesystem::copy_options::overwrite_existing;
     }
 
-
     std::error_code ec;
     std::filesystem::copy(
         inSource.getPath().getValue(), inTarget.getPath().getValue(), co, ec );
@@ -178,7 +177,7 @@ void FSApi::deleteFile( const StringWr& path )
     g_deleteFile_impl( path.getValue() );
 }
 
-void g_deleteFile_impl(const std::filesystem::path& inPath)
+void g_deleteFile_impl( const std::filesystem::path& inPath )
 {
     ProfilerScope( "g_deleteFile_impl" );
     thread_local static std::error_code ec;
@@ -315,16 +314,16 @@ StringWr FSApi::getCurrentDir()
 }
 
 #if CUL_USE_WCHAR
-Path g_toString(const std::filesystem::path& inPath)
+Path g_toString( const std::filesystem::path& inPath )
 {
     return Path{ inPath.wstring() };
 }
-#else // #if CUL_USE_WCHAR
+#else   // #if CUL_USE_WCHAR
 Path g_toString( const std::filesystem::path& inPath )
 {
     return Path{ inPath };
 }
-#endif // #if CUL_USE_WCHAR
+#endif  // #if CUL_USE_WCHAR
 
 IFile* FSApi::getDirectory( const Path& directory )
 {
@@ -360,13 +359,13 @@ bool FSApi::isRegularFile( const StringWr& inPath )
     return g_isRegularFile_impl( std::filesystem::path( inPath.getValue() ) );
 }
 
-bool g_isRegularFile_impl(const std::filesystem::path& inPath)
+bool g_isRegularFile_impl( const std::filesystem::path& inPath )
 {
     ProfilerScope( "g_isRegularFile_impl" );
     std::error_code existsErrorCode;
     const bool result = std::filesystem::is_regular_file( inPath, existsErrorCode );
-#if !CUL_RELEASE 
-    if (existsErrorCode.value() != 0)
+#if !CUL_RELEASE
+    if( existsErrorCode.value() != 0 )
     {
         const std::string errorCodeMessageStr = existsErrorCode.message();
         const auto pathString = inPath.string();
@@ -376,7 +375,7 @@ bool g_isRegularFile_impl(const std::filesystem::path& inPath)
                                                  pathString.c_str(),
                                                  errorCodeMessageStr.c_str() );
     }
-#endif  // #if !CUL_RELEASE 
+#endif  // #if !CUL_RELEASE
 
     return result;
 }

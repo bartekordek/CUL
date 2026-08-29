@@ -17,8 +17,9 @@ FileFactory::FileFactory( CULInterface* culInterface ) : m_culInterface( culInte
 {
 }
 
-IFile* FileFactory::createFileFromPath( const Path& path )
+IFile* FileFactory::createFileFromPath( const StringWr& inPathStr )
 {
+    const Path path( inPathStr );
     CUL::StringWr ext = path.getExtension();
     ext.toLower();
 
@@ -33,30 +34,31 @@ IFile* FileFactory::createFileFromPath( const Path& path )
     return createRegularFileRawPtr( path );
 }
 
-IFile* FileFactory::createRegularFileRawPtr( const Path& path )
+IFile* FileFactory::createRegularFileRawPtr( const StringWr& inPathStr )
 {
     ProfilerScope( "FileFactory::createRegularFileRawPtr" );
-
+    const Path path( inPathStr );
     auto file = new RegularFile( path.getPath(), m_culInterface );
     return file;
 }
 
-ICSVFile* FileFactory::createCSVFileRawPtr( const Path& path )
+ICSVFile* FileFactory::createCSVFileRawPtr( const StringWr& inPathStr )
 {
-    auto csvFile = new CSVFile( path, m_culInterface );
+    auto csvFile = new CSVFile( inPathStr, m_culInterface );
     return csvFile;
 }
 
-FS::JSONFilePtr FileFactory::createJSONFileRawPtr( const Path& path )
+FS::JSONFilePtr FileFactory::createJSONFileRawPtr( const StringWr& inPathStr )
 {
-    auto result = new JSON::JSONFile( path, m_culInterface );
+    auto result = new JSON::JSONFile( inPathStr, m_culInterface );
     FS::JSONFilePtr file;
     file.reset( result );
     return file;
 }
 
-Graphics::IImage* FileFactory::createRawImageRawPtr( const Path& path )
+Graphics::IImage* FileFactory::createRawImageRawPtr( const StringWr& inPathStr )
 {
+    const Path path( inPathStr );
     const auto il = m_culInterface->getImageLoader();
     return il->loadImage( path );
 }

@@ -41,7 +41,8 @@ TEST_F( StringTests, WcharRestore )
 TEST_F( StringTests, SanitizeDeSanitize )
 {
     CUL::CULInterface::getInstance()->createInstance();
-    CUL::FS::IFile* file = CUL::CULInterface::getInstance()->getFF()->createFileFromPath( dummyFilePath );
+    const CUL::FS::Path fp( dummyFilePath );
+    CUL::FS::IFile* file = CUL::CULInterface::getInstance()->getFF()->createFileFromPath( fp );
     file->load( false, false );
     const std::string utfLine = file->getLineUtf( 4 );
 

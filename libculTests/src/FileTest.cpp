@@ -27,19 +27,25 @@ void FileTest::SetUpTestCase()
 
 TEST_F( FileTest, fileFileExtistFileReturnsTrue )
 {
-    std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
+    std::unique_ptr<CUL::FS::IFile> file(
+        m_culInterface->getFF()->createRegularFileRawPtr(
+            CUL::FS::Path( dummyFilePath ) ) );
     GTEST_ASSERT_EQ( true, file->exists() );
 }
 
 TEST_F( FileTest, fileFileDontExtistFileReturnsFalse )
 {
-    std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( "someNotExistingFile.exe" ) );
+    std::unique_ptr<CUL::FS::IFile> file(
+        m_culInterface->getFF()->createRegularFileRawPtr(
+            CUL::FS::Path( "someNotExistingFile.exe" ) ) );
     GTEST_ASSERT_EQ( false, file->exists() );
 }
 
 TEST_F( FileTest, basicFileLoadFirstLine )
 {
-    std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
+    std::unique_ptr<CUL::FS::IFile> file(
+        m_culInterface->getFF()->createRegularFileRawPtr(
+            CUL::FS::Path( dummyFilePath ) ) );
     file->load( false, false );
     auto firstLine = file->firstLine();
     GTEST_ASSERT_TRUE( firstLine.equals( "Line1" ) );
@@ -47,21 +53,23 @@ TEST_F( FileTest, basicFileLoadFirstLine )
 
 TEST_F( FileTest, basicFileLoadlastLine )
 {
-    std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
+    std::unique_ptr<CUL::FS::IFile> file(
+        m_culInterface->getFF()->createRegularFileRawPtr(
+            CUL::FS::Path( dummyFilePath ) ) );
     file->load( false, false );
     GTEST_ASSERT_TRUE( file->lastLine().equals( "LastLine" ) );
 }
 
 TEST_F( FileTest, loadCachedFileRegular )
 {
-    std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( dummyFilePath ) );
+    std::unique_ptr<CUL::FS::IFile> file( m_culInterface->getFF()->createRegularFileRawPtr( CUL::FS::Path( dummyFilePath ) ) );
     file->load( false, false );
     GTEST_ASSERT_TRUE( !file->getAsOneString().empty() );
 }
 
 TEST_F( FileTest, loadRawImage )
 {
-    auto f = m_culInterface->getFF()->createRawImageRawPtr( dummyImage );
+    auto f = m_culInterface->getFF()->createRawImageRawPtr( CUL::FS::Path( dummyImage ) );
 
     GTEST_ASSERT_EQ( f == nullptr, false );
     GTEST_ASSERT_EQ( f->getData() == nullptr, false );

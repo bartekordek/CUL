@@ -15,7 +15,7 @@ FilesystemTests::FilesystemTests()
 {
     m_culInterface->getLogger()->log( "FilesystemTests::FilesystemTests()" );
     auto cwd = m_culInterface->getFS()->getCurrentDir();
-    m_culInterface->getLogger()->log( "Current dir: " + cwd.string() );
+    m_culInterface->getLogger()->logVariable(CUL::LOG::Severity::Info, "Current dir: %s", cwd.getUtfChar() );
 }
 
 void FilesystemTests::SetUpTestCase()
@@ -82,7 +82,7 @@ TEST_F( FilesystemTests, FileExistence )
 
 TEST_F( FilesystemTests, TimeModified )
 {
-    std::string filePath = "../media/Dummy.txt";
+    const CUL::FS::Path filePath( CUL_STR( "../media/Dummy.txt" ) );
     CUL::Time modificationTime;
     m_culInterface->getFS()->getLastModificationTime( filePath, modificationTime );
     auto modTime = modificationTime.toString();
@@ -97,7 +97,9 @@ TEST_F( FilesystemTests, FileNotExist )
 
 TEST_F( FilesystemTests, listFilesCount )
 {
-    std::unique_ptr<CUL::FS::IFile> directory( m_culInterface->getFS()->getDirectory( "FSTEST" ) );
+    const CUL::FS::Path filePath( CUL_STR( "FSTEST" ) );
+    std::unique_ptr<CUL::FS::IFile> directory(
+        m_culInterface->getFS()->getDirectory( filePath ) );
     ASSERT_EQ( 5, directory->getChildList().size() );
 }
 

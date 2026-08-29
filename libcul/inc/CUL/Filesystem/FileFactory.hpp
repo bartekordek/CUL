@@ -23,16 +23,17 @@ public:
 
     Graphics::IImage* createRawImageRawPtr();
 
-    IFile* createFileFromPath( const Path& path );
-    IFile* createRegularFileRawPtr( const Path& path );
-    ICSVFile* createCSVFileRawPtr( const Path& path );
-    JSONFilePtr createJSONFileRawPtr( const Path& path );
-    Graphics::IImage* createRawImageRawPtr( const Path& path );
+    IFile* createFileFromPath( const StringWr& path );
+    IFile* createRegularFileRawPtr( const StringWr& path );
+    ICSVFile* createCSVFileRawPtr( const StringWr& path );
+    JSONFilePtr createJSONFileRawPtr( const StringWr& path );
+    Graphics::IImage* createRawImageRawPtr( const StringWr& path );
+
 protected:
 private:
     CULInterface* m_culInterface = nullptr;
 
-// Deleted:
+    // Deleted:
     FileFactory( const FileFactory& arg ) = delete;
     FileFactory( FileFactory&& arg ) = delete;
     FileFactory& operator=( const FileFactory& arg ) = delete;
