@@ -76,6 +76,11 @@ void CDiskInfo::getInfo()
 {
 }
 
+std::vector<StringWr> CDiskInfo::getDisksNames() const
+{
+    return std::vector<StringWr>();
+}
+
 CDiskInfo::~CDiskInfo()
 {
     m_run = false;

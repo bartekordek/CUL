@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CUL/Threading/ThreadWrap.hpp"
+#include <CUL/String/StringWrapper.hpp>
 #include "CUL/Math/VariableWithAverageValue.hpp"
 #include <CUL/GenericUtils/NonCopyable.hpp>
 
@@ -15,6 +16,7 @@ public:
     void getInfo();
     virtual std::vector<std::pair<std::string, float>> getDisksUsage() const = 0;
     virtual float getDiskUsage( const std::string& inDiskName ) const = 0;
+    virtual std::vector<StringWr> getDisksNames() const;
 
 protected:
     CDiskInfo();

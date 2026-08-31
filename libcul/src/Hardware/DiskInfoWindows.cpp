@@ -302,6 +302,17 @@ void CDiskInfoWindows::collectData( DiskInfoValue& inOutDataValue )
     }
 }
 
+std::vector<StringWr> CUL::CDiskInfoWindows::getDisksNames() const
+{
+    std::vector<StringWr> result;
+    std::lock_guard<std::mutex> locker( m_diskHandlesMtx );
+    for( auto& [diskName,_] : m_diskHandles )
+    {
+        result.push_back( diskName );
+    }
+    return result;
+}
+
 float CDiskInfoWindows::getDiskUsage( const std::string& inDiskName ) const
 {
     std::unordered_map<std::string, DiskInfoValue> diskInfos;

@@ -65,6 +65,7 @@ private:
     std::vector<std::pair<std::string, float>> getDisksUsage() const override;
 
     void collectData( DiskInfoValue& inOutData );
+    std::vector<StringWr> getDisksNames() const override;
 
     mutable std::mutex m_diskHandlesMtx;
     std::unordered_map<std::string, DiskInfoValue> m_diskHandles;
