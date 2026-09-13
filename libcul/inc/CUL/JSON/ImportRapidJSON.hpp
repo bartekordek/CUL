@@ -4,4 +4,6 @@
 CUL_MSVC_SKIP_DEFAULT_WARNING_BEGIN
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
+#include "rapidjson/filewritestream.h"
+#include "rapidjson/writer.h"
 CUL_MSVC_SKIP_DEFAULT_WARNING_END

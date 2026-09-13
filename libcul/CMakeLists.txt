@@ -1,7 +1,23 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-
+include(FetchContent)
 
 cmake_policy(SET CMP0069 NEW)
+
+
+FetchContent_Declare(
+    nlohmann_json
+    URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz
+    SOURCE_DIR ${CUL_ROOT_DIR}/deps/nlohmann_json
+)
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(nlohmann_json)
+add_library(nlohmann_json_system INTERFACE)
+
+target_include_directories(
+    nlohmann_json_system
+    SYSTEM INTERFACE
+        ${nlohmann_json_SOURCE_DIR}/include
+)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -116,6 +132,7 @@ set(DEPENDENCIES
     PUBLIC zlibstatic
     PRIVATE nfd
     PUBLIC datetime
+    PRIVATE nlohmann_json_system
 )
 
 if(MSVC)
