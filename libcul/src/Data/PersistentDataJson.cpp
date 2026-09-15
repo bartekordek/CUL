@@ -1,5 +1,6 @@
 #include <CUL/Data/PersistentDataJson.hpp>
 #include <CUL/Filesystem/Path.hpp>
+#include <CUL/GenericUtils/SimpleAssert.hpp>
 #include <nlohmann/json.hpp>
 #include <CUL/STL_IMPORTS/STD_fstream.hpp>
 
@@ -26,10 +27,64 @@ public:
         m_path = path.getPath();
     }
 
+    void setValue( const StringWr& inPath,
+                                       const TypeContainer& inValue )
+    {
+    }
+
+    const TypeContainer getValue( const StringWr& inPath ) const
+    {
+        TypeContainer result;
+
+        const std::vector<StringWr> path = splitPath( inPath );
+        const nlohmann::json* current = &m_document;
+        for( const StringWr& currentPathPart : path )
+        {
+            const auto it = current->find( currentPathPart.getUtfChar() );
+            if( it == current->end() )
+            {
+                return result;
+            }
+            
+            current = &it.value();
+        }
+
+
+        if( current->is_array() )
+        {
+            Assert::check( false, "Not implemented." );
+        }
+        else if( current->is_binary() )
+        {
+            Assert::check( false, "Not implemented." );
+        }
+        else if( current->is_boolean() )
+        {
+            result = current->get<bool>();
+        }
+        else if( current->is_number_float() )
+        {
+            result = current->get<bool>();
+        }
+        else if( current->is_number_integer() )
+        {
+            Assert::check( false, "Not implemented." );
+        }
+        else if( current->is_object() )
+        {
+            Assert::check( false, "Not implemented." );
+        }
+        else
+        {
+            Assert::check( false, "Not implemented." );
+        }
+
+        return result;
+    }
+
     void addNode( const StringWr& inPath, const DataNode& node )
     {
         const std::vector<StringWr> path = splitPath( inPath );
-
         nlohmann::json* current = &m_document;
         for( const StringWr& currentPathPart : path )
         {
@@ -37,7 +92,6 @@ public:
         }
 
         const auto memberName = node.Name.getUtfChar();
-
         if( std::holds_alternative<bool>( node.Value ) )
         {
             ( *current )[memberName] = std::get<bool>( node.Value );
@@ -101,6 +155,16 @@ void PersistentDataJson::addNode( const StringWr& inPath, const DataNode& node )
 void PersistentDataJson::writeToFile()
 {
     m_impl->writeToFile();
+}
+
+void PersistentDataJson::setValue(const StringWr& inPath, const TypeContainer& inValue)
+{
+    m_impl->setValue( inPath, inValue );
+}
+
+TypeContainer PersistentDataJson::getValue( const StringWr& inPath ) const
+{
+    return m_impl->getValue( inPath );
 }
 
 PersistentDataJson::~PersistentDataJson()
