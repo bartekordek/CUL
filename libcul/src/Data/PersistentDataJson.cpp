@@ -22,13 +22,12 @@ public:
         FS::Path path( inDataPath );
         if( !path.getExtension().equals( CUL_STR( "json" ) ) )
         {
-            path += CUL_STR( ".json" );
+            path.setExtension( CUL_STR( ".json" ) );
         }
         m_path = path.getPath();
     }
 
-    void setValue( const StringWr& inPath,
-                                       const TypeContainer& inValue )
+    void setValue( const StringWr& inPath, const TypeContainer& inValue )
     {
     }
 
@@ -45,10 +44,9 @@ public:
             {
                 return result;
             }
-            
+
             current = &it.value();
         }
-
 
         if( current->is_array() )
         {
@@ -139,7 +137,6 @@ private:
 PersistentDataJson::PersistentDataJson()
     : m_impl( std::make_unique<PersistentDataJson_impl>() )
 {
-
 }
 
 void PersistentDataJson::init( const StringWr& inDataPath )
@@ -157,7 +154,7 @@ void PersistentDataJson::writeToFile()
     m_impl->writeToFile();
 }
 
-void PersistentDataJson::setValue(const StringWr& inPath, const TypeContainer& inValue)
+void PersistentDataJson::setValue( const StringWr& inPath, const TypeContainer& inValue )
 {
     m_impl->setValue( inPath, inValue );
 }

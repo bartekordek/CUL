@@ -16,74 +16,76 @@ using TypeContainer = std::variant<StringWr,
                                    bool,
                                    std::unique_ptr<DataNode>>;
 
-template <typename... Types>
-class Variant
-{
-public:
-    Variant() = default;
+// TODO:
 
-    template <typename T>
-    Variant( T&& value ) : m_value( std::forward<T>( value ) )
-    {
-    }
+// template <typename... Types>
+// class Variant
+// {
+// public:
+//     Variant() = default;
 
-    template <typename T>
-    bool holdsAlternative() const
-    {
-        return std::holds_alternative<T>( m_value );
-    }
+//     template <typename T>
+//     Variant( T&& value ) : m_value( std::forward<T>( value ) )
+//     {
+//     }
 
-    template <typename T>
-    T& get()
-    {
-        return std::get<T>( m_value );
-    }
+//     template <typename T>
+//     bool holdsAlternative() const
+//     {
+//         return std::holds_alternative<T>( m_value );
+//     }
 
-    template <typename T>
-    const T& get() const
-    {
-        return std::get<T>( m_value );
-    }
+//     template <typename T>
+//     T& get()
+//     {
+//         return std::get<T>( m_value );
+//     }
 
-    template <typename T>
-    T* getIf()
-    {
-        return std::get_if<T>( &m_value );
-    }
+//     template <typename T>
+//     const T& get() const
+//     {
+//         return std::get<T>( m_value );
+//     }
 
-    template <typename T>
-    const T* getIf() const
-    {
-        return std::get_if<T>( &m_value );
-    }
+//     template <typename T>
+//     T* getIf()
+//     {
+//         return std::get_if<T>( &m_value );
+//     }
 
-    template <typename Visitor>
-    decltype( auto ) visit( Visitor&& visitor )
-    {
-        return std::visit( std::forward<Visitor>( visitor ), m_value );
-    }
+//     template <typename T>
+//     const T* getIf() const
+//     {
+//         return std::get_if<T>( &m_value );
+//     }
 
-    template <typename Visitor>
-    decltype( auto ) visit( Visitor&& visitor ) const
-    {
-        return std::visit( std::forward<Visitor>( visitor ), m_value );
-    }
+//     template <typename Visitor>
+//     decltype( auto ) visit( Visitor&& visitor )
+//     {
+//         return std::visit( std::forward<Visitor>( visitor ), m_value );
+//     }
 
-    template<typename OtherType>
-    bool isOfType() const
-    {
-        return std::holds_alternative<OtherType>();
-    }
+//     template <typename Visitor>
+//     decltype( auto ) visit( Visitor&& visitor ) const
+//     {
+//         return std::visit( std::forward<Visitor>( visitor ), m_value );
+//     }
 
-    template <typename OtherType>
-    OtherType getValue() const
-    {
-        return std::get<OtherType>( node.Value );
-    }
+//     template<typename OtherType>
+//     bool isOfType() const
+//     {
+//         return std::holds_alternative<OtherType>();
+//     }
 
-private:
-    std::variant<Types...> m_value;
-};
+//     template <typename OtherType>
+//     OtherType getValue() const
+//     {
+//         return std::get<OtherType>( node.Value );
+//     }
+
+// private:
+//     std::variant<Types...> m_value;
+// };
 
 struct DataNode
 {

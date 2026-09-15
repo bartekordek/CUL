@@ -67,6 +67,7 @@ public:
 
     void getLastModificationTime( Time& timeOut ) const;
     void setModTime( const String& inModTime );
+    void setExtension( const IString::UnderlyingChar* extension );
 
     void setIsDir( bool isDir );
     bool getIsDir() const;

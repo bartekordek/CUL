@@ -341,6 +341,11 @@ void Path::setMd5( const String& inMD5 )
     m_md5 = inMD5.getString();
 }
 
+void Path::setExtension( const IString::UnderlyingChar* extension )
+{
+    m_extension = extension;
+}
+
 void Path::getLastModificationTime( Time& timeOut ) const
 {
     std::unique_ptr<CUL::FS::IFile> file;
