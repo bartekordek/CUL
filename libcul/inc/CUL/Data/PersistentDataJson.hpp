@@ -9,19 +9,18 @@ class PersistentDataJson_impl;
 class PersistentDataJson: public IPersistendData
 {
 public:
-    PersistentDataJson();
-    void init( const StringWr& inDataPath );
+    CULLib_API PersistentDataJson();
+    CULLib_API void init( const StringWr& inDataPath );
 
-    void setValue( const StringWr& inPath, const TypeContainer& inValue );
-    TypeContainer getValue( const StringWr& inPath ) const;
+    CULLib_API void setValue( const StringWr& inPath, const TypeContainer& inValue );
+    CULLib_API TypeContainer getValue( const StringWr& inPath ) const;
 
-    void addNode( const StringWr& inPath, const DataNode& node );
-    void writeToFile();
-    ~PersistentDataJson();
+    CULLib_API void addNode( const StringWr& inPath, const DataNode& node );
+    CULLib_API void writeToFile();
+    CULLib_API ~PersistentDataJson();
 
 protected:
 private:
     std::unique_ptr<PersistentDataJson_impl> m_impl;
-    
 };
 }  // namespace CUL
