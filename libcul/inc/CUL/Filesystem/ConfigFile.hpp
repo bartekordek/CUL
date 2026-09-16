@@ -11,8 +11,7 @@ namespace CUL
 {
 enum class EParserType: std::uint8_t
 {
-    Jsonxx,
-    Rapidjson
+    Jsonxx
 };
 
 enum class EVarType : std::uint8_t
@@ -55,7 +54,7 @@ public:
 
 protected:
 
-    
+
 
 private:
 

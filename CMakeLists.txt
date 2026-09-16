@@ -155,12 +155,6 @@ set_property(TARGET gtest_main PROPERTY FOLDER "deps/googletest")
 add_subdirectory( ${CUL_DEPS_PATH}/nativefiledialog-extended )
 set_property(TARGET nfd PROPERTY FOLDER "deps")
 
-set(RAPIDJSON_BUILD_DOC OFF CACHE BOOL "Enable testing." FORCE)
-set(RAPIDJSON_BUILD_EXAMPLES OFF CACHE BOOL "Enable examples." FORCE)
-set(RAPIDJSON_BUILD_TESTS OFF CACHE BOOL "Enable doc." FORCE)
-add_subdirectory( ${CUL_DEPS_PATH}/rapidjson )
-set_property(TARGET travis_doc PROPERTY FOLDER "deps/rapidjson")
-
 if (MSVC)
     set(SPDLOG_WCHAR_SUPPORT ON CACHE BOOL "" FORCE)
     set(SPDLOG_WCHAR_FILENAMES ON CACHE BOOL "" FORCE)

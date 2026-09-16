@@ -32,7 +32,6 @@ set(CMAKE_ENABLE_EXPORTS true)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/CPP-DateTime-library/src)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/hash-library)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/nativefiledialog-extended/src/include)
-include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/rapidjson/include)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/sqlite-amalgamation-3340000)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/stb)
 include_directories(SYSTEM ${CUL_ROOT_DIR}/deps/tiny-image/src)
@@ -59,10 +58,6 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     add_compile_options( "/wd4996" ) # 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead.
     add_compile_options( "/wd5045" )
 
-    find_package(RapidJSON REQUIRED)
-    if(RapidJSON_FOUND)
-        include_directories(SYSTEM ${RapidJSON_INCLUDE_DIRS})
-    endif()
 else()
 
     if(CMAKE_CXX_SIMULATE_ID MATCHES "MSVC")

@@ -49,7 +49,6 @@ All dependencies are bundled as git submodules under `deps/`:
 - [spdlog](https://github.com/gabime/spdlog) — fast logging
 - [glm](https://github.com/g-truc/glm) — math (vectors, matrices)
 - [googletest](https://github.com/google/googletest) — unit testing
-- [rapidjson](https://github.com/Tencent/rapidjson) — JSON parsing
 - [boost](https://www.boost.org/) (selected headers: circular_buffer, stacktrace, variant, …)
 - [zlib](https://zlib.net/) + [libpng](http://www.libpng.org/pub/png/libpng.html)
 - [tracy](https://github.com/wolfpld/tracy) — profiling
