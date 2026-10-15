@@ -21,8 +21,8 @@ public:
         const TypeContainer fileListNode = m_data.getValue( "FileList" );
         if( fileListNode.holdsAlternative<std::vector<std::unique_ptr<DataNode>>>() )
         {
-            const std::vector<std::unique_ptr<DataNode>> list = fileListNode
-                .get<std::vector<std::unique_ptr<DataNode>>>();
+   /*         const std::vector<std::unique_ptr<DataNode>> list = fileListNode
+                .get<std::vector<std::unique_ptr<DataNode>>>();*/
         }
     }
 
@@ -46,10 +46,6 @@ public:
         const StringWr keyMd5 = StringWr::createFromPrintf( CUL_STR( "%s/%s" ), path.getCharVal(), CUL_STR( "md5" ) );
 
         const auto sizeWr = m_data.getValue( keySize );
-
-        if( sizeWr. )
-        {
-        }
 
         {
             std::shared_lock readLock( m_filesLock );
