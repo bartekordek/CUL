@@ -155,3 +155,17 @@ using StringWr = STDStringWrapper;
     #pragma warning( pop )
 #endif
 }  // namespace CUL
+
+// Allow using STDStringWrapper directly as a key in std::unordered_map by
+// providing a specialization of std::hash for CUL::STDStringWrapper.
+namespace std
+{
+    template<>
+    struct hash<CUL::STDStringWrapper>
+    {
+        size_t operator()( const CUL::STDStringWrapper& s ) const noexcept
+        {
+            return CUL::STDStringWrapperHash{}( s );
+        }
+    };
+}
