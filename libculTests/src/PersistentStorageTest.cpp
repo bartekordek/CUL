@@ -30,8 +30,8 @@ TEST_F( PersistentDataJsonTests, readTest )
     data.addNode( CUL_STR( "root/child1" ), { CUL_STR( "boolValue" ), true } );
 
     const auto val = data.getValue( CUL_STR( "root/child1/boolValue" ) );
-    ASSERT_TRUE( std::holds_alternative<bool>( val ) );
-    ASSERT_TRUE( std::get<bool>( val ) == true );
+    ASSERT_TRUE( val.holdsAlternative<bool>() );
+    ASSERT_TRUE( val.getValue<bool>() == true );
 }
 
 void PersistentDataJsonTests::TearDownTestCase()
