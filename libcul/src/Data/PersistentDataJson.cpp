@@ -90,25 +90,25 @@ public:
         }
 
         const auto memberName = node.Name.getUtfChar();
-        if( std::holds_alternative<bool>( node.Value ) )
+        if( node.Value.holdsAlternative<bool>() )
         {
-            ( *current )[memberName] = std::get<bool>( node.Value );
+            ( *current )[memberName] = node.Value.getValue<bool>();
         }
-        else if( std::holds_alternative<std::int64_t>( node.Value ) )
+        else if( node.Value.holdsAlternative<std::int64_t>() )
         {
-            ( *current )[memberName] = std::get<std::int64_t>( node.Value );
+            ( *current )[memberName] = node.Value.getValue<std::int64_t>();
         }
-        else if( std::holds_alternative<std::uint64_t>( node.Value ) )
+        else if( node.Value.holdsAlternative<std::uint64_t>() )
         {
-            ( *current )[memberName] = std::get<std::uint64_t>( node.Value );
+            ( *current )[memberName] = node.Value.getValue<std::uint64_t>();
         }
-        else if( std::holds_alternative<float>( node.Value ) )
+        else if( node.Value.holdsAlternative<float>() )
         {
-            ( *current )[memberName] = std::get<float>( node.Value );
+            ( *current )[memberName] = node.Value.getValue<float>();
         }
-        else if( std::holds_alternative<StringWr>( node.Value ) )
+        else if( node.Value.holdsAlternative<StringWr>() )
         {
-            ( *current )[memberName] = std::get<StringWr>( node.Value ).getUtfChar();
+            ( *current )[memberName] = node.Value.getValue<StringWr>().getUtfChar();
         }
         else
         {
