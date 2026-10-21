@@ -164,6 +164,7 @@ void ThreadUtil::setThreadName( const ThreadString& status,
 
     m_threadInfo[status] = meta;
 
+    SetThreadName( status.c_str() );  // For profillers
 #if defined( _MSC_VER )
     if( *threadId == currentThreadId )
     {
