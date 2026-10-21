@@ -97,7 +97,12 @@ size_t VariableWithAverageValue::size() const
 
 void VariableWithAverageValue::setCapacity( size_t newCapacity )
 {
-    m_sampleCapacity = newCapacity;
+    m_sampleCapacity = newCapacity == 0u ? 1u : newCapacity;
+    if( m_samples.size() > m_sampleCapacity )
+    {
+        m_samples.erase( m_samples.begin(), m_samples.begin() + static_cast<std::ptrdiff_t>( m_samples.size() - m_sampleCapacity ) );
+        calculateAverage();
+    }
 }
 
 void VariableWithAverageValue::calculateAverage()
