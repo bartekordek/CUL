@@ -45,6 +45,8 @@ public:
     std::vector<Path> ListAllFiles( const Path& directory, const StringWr& word );
     void ListAllFiles( const Path& directory,
                        std::function<void( const Path& path )> callback );
+    void ListAllFilesRecursive( const Path& directory,
+                       std::function<void( const Path& path )> callback );
     static void handleErrorCode( const std::error_code& inErrorCode, const char* inPath );
 
     static void copy( const Path& inSource,

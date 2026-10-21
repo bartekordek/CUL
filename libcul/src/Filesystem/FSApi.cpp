@@ -66,6 +66,22 @@ std::vector<Path> FSApi::ListAllFiles( const Path& directory, const StringWr& wo
 }
 
 void FSApi::ListAllFiles( const Path& directory,
+                          std::function<void( const Path& path )> callback)
+{
+    ProfilerScope( "FSApi::ListAllFiles" );
+
+    const auto dir = directory.getPath().getValue();
+    const auto directoryOptions =
+        std::filesystem::directory_options::skip_permission_denied;
+    std::error_code ec;
+    const std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator( dir, directoryOptions, ec );
+    for( const std::filesystem::directory_entry& it : dirIt )
+    {
+        iterateThrought( it, callback );
+    }
+}
+
+void FSApi::ListAllFilesRecursive( const Path& directory,
                           std::function<void( const Path& path )> callback )
 {
     ProfilerScope( "FSApi::ListAllFiles" );
@@ -74,8 +90,8 @@ void FSApi::ListAllFiles( const Path& directory,
     const auto directoryOptions =
         std::filesystem::directory_options::skip_permission_denied;
     std::error_code ec;
-    const std::filesystem::directory_iterator dirIt =
-        std::filesystem::directory_iterator( dir, directoryOptions, ec );
+    const std::filesystem::recursive_directory_iterator dirIt =
+        std::filesystem::recursive_directory_iterator( dir, directoryOptions, ec );
     for( const std::filesystem::directory_entry& it : dirIt )
     {
         iterateThrought( it, callback );
