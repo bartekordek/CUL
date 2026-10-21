@@ -344,6 +344,7 @@ void Path::setMd5( const String& inMD5 )
 void Path::setExtension( const IString::UnderlyingChar* extension )
 {
     m_extension = extension;
+    m_fullPath.append( extension );
 }
 
 void Path::getLastModificationTime( Time& timeOut ) const
