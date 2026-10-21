@@ -36,13 +36,17 @@ using namespace FS;
     #endif
 #endif
 
-#if defined( SQLITE_THREADSAFE ) && SQLITE_THREADSAFE == 1
-    #pragma message( "CUL SQLITE_THREADSAFE ENABLED." )
-    #define DO_NO_USE_SQLITE_MTX 0
-#else  // #if defined( SQLITE_THREADSAFE ) && SQLITE_THREADSAFE == 1
-    #pragma message( "CUL SQLITE_THREADSAFE DISABLED." )
-    #define DO_NO_USE_SQLITE_MTX 1
-#endif  // #if defined( SQLITE_THREADSAFE ) && SQLITE_THREADSAFE == 1
+#define SQLITE_DEBUG 0
+
+#if SQLITE_DEBUG
+    #if defined( SQLITE_THREADSAFE ) && SQLITE_THREADSAFE == 1
+        #pragma message( "CUL SQLITE_THREADSAFE ENABLED." )
+        #define DO_NO_USE_SQLITE_MTX 0
+    #else  // #if defined( SQLITE_THREADSAFE ) && SQLITE_THREADSAFE == 1
+        #pragma message( "CUL SQLITE_THREADSAFE DISABLED." )
+        #define DO_NO_USE_SQLITE_MTX 1
+    #endif  // #if defined( SQLITE_THREADSAFE ) && SQLITE_THREADSAFE == 1
+#endif      // SQLITE_DEBUG
 
 #if DO_NO_USE_SQLITE_MTX
 std::mutex g_sqliteMtx;
@@ -101,7 +105,7 @@ FileDatabase::FileDatabase() : m_cachedFilesMax( 256u * 1024u * 1024u )
         {
             updateFunction();
         } );
-    //initDb();
+    // initDb();
 }
 
 void FileDatabase::updateFunction()
