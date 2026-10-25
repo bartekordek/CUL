@@ -408,8 +408,7 @@ void Path::preparePaths()
 #if CUL_USE_WCHAR
     m_baseName = bPath.stem();
     m_extension = bPath.extension();
-    const auto dot = m_extension[0];
-    if( dot == L'.' )
+    if( !m_extension.empty() && m_extension[0] == L'.' )
     {
         m_extension.erase( 0, 1 );
     }
@@ -506,8 +505,7 @@ void Path::preparePaths()
     m_baseName = stem.c_str();
     auto extension = bPath.extension();
     m_extension = extension.c_str();
-    const auto dot = m_extension[0];
-    if( dot == '.' )
+    if( !m_extension.empty() && m_extension[0] == '.' )
     {
         m_extension.erase( 0, 1 );
     }

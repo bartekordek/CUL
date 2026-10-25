@@ -19,6 +19,8 @@ public:
     CULLib_API void writeToFile();
     CULLib_API ~PersistentDataJson();
 
+    CUL_NONCOPYABLE( PersistentDataJson )
+
 protected:
 private:
     std::unique_ptr<PersistentDataJson_impl> m_impl;

@@ -24,6 +24,7 @@ using TypeContainer_old = std::variant<StringWr,
  {
  public:
      Variant() = default;
+     CUL_NONCOPYABLE_MOVABLE( Variant )
 
      template <typename T>
      Variant( T&& value ) : m_value( std::forward<T>( value ) )
@@ -115,6 +116,17 @@ struct DataNode
     StringWr Name;
     TypeContainer Value;
     bool IsEmpty{ true };
+
+    DataNode() = default;
+    CUL_NONCOPYABLE_MOVABLE( DataNode )
+
+    template <typename T>
+    DataNode( StringWr inName, T&& inValue )
+        : Name( std::move( inName ) ),
+          Value( std::forward<T>( inValue ) ),
+          IsEmpty( false )
+    {
+    }
 
     template <typename T>
     void add( const StringWr& inPath, const T& inValue )

@@ -13,7 +13,7 @@ using namespace CUL;
 using namespace LOG;
 
 LoggerSimpleStandardOutput::LoggerSimpleStandardOutput()
-    : m_interface( *CUL::CULInterface::getInstance() )
+    : m_interface( CUL::CULInterface::getInstance() )
     , m_variableBuffer{}
 {
     init();
@@ -60,10 +60,16 @@ void LoggerSimpleStandardOutput::init()
 
 void LoggerSimpleStandardOutput::findAndCheckOldestLogFiles( const CUL::StringWr& inLogBaseName )
 {
-    const auto currentDir = m_interface.getFS()->getCurrentDir(); 
+    // Tests (and early Path usage) may log before CULInterface exists.
+    if( !m_interface || !m_interface->getFS() )
+    {
+        return;
+    }
+
+    const auto currentDir = m_interface->getFS()->getCurrentDir();
     const FS::Path currentDirPath{ currentDir };
     std::vector<FS::Path> listOfFiles =
-        m_interface.getFS()->ListAllFiles( currentDirPath, inLogBaseName );
+        m_interface->getFS()->ListAllFiles( currentDirPath, inLogBaseName );
 
     const std::int32_t howManyToDelete =
         static_cast<std::int32_t>( listOfFiles.size() ) - m_maxLogCount;
@@ -82,7 +88,7 @@ void LoggerSimpleStandardOutput::findAndCheckOldestLogFiles( const CUL::StringWr
 
     for( std::int32_t i = 0; i < howManyToDelete; ++i )
     {
-        m_interface.getFS()->deleteFile( listOfFiles[static_cast<std::size_t>( i )] );
+        m_interface->getFS()->deleteFile( listOfFiles[static_cast<std::size_t>( i )] );
     }
 }
 

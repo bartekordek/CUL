@@ -38,7 +38,7 @@ private:
     void init();
     void findAndCheckOldestLogFiles( const CUL::StringWr& inLogBaseName );
 
-    CULInterface& m_interface;
+    CULInterface* m_interface{ nullptr };
     std::int32_t m_maxLogCount{ 4 };
 
     std::shared_ptr<spdlog::logger> m_logger;

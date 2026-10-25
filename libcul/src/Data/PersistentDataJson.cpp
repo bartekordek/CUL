@@ -10,13 +10,15 @@ namespace CUL
 
 std::vector<StringWr> splitPath( const StringWr& inPath )
 {
-    return inPath.split( FS::DefaultDirSeparator );
+    // Logical JSON paths always use '/', independent of the OS directory separator.
+    return inPath.split( CUL_CHAR( '/' ) );
 }
 
 class PersistentDataJson_impl
 {
 public:
     PersistentDataJson_impl() = default;
+    CUL_NONCOPYABLE( PersistentDataJson_impl )
 
     void init( const StringWr& inDataPath )
     {
@@ -114,8 +116,15 @@ public:
     void addNode( const StringWr& inPath, const DataNode& node )
     {
         std::unique_lock writeLock( m_mutex );
-        nlohmann::json* current = navigateOrCreate( inPath );
-        *current = dataNodeToJson( node );
+        nlohmann::json* parent = navigateOrCreate( inPath );
+        if( !parent->is_object() )
+        {
+            *parent = nlohmann::json::object();
+        }
+
+        const std::string key = toUtf8( node.Name );
+        parent->erase( key );
+        parent->emplace( key, typeContainerToJson( node.Value ) );
     }
 
     void writeToFile()
@@ -154,7 +163,12 @@ private:
         nlohmann::json* current = &m_document;
         for( const StringWr& currentPathPart : splitPath( inPath ) )
         {
-            current = &( *current )[toUtf8( currentPathPart )];
+            const std::string key = toUtf8( currentPathPart );
+            if( !current->contains( key ) )
+            {
+                current->emplace( key, nullptr );
+            }
+            current = &current->at( key );
         }
         return current;
     }
@@ -219,7 +233,9 @@ private:
                 {
                     continue;
                 }
-                object[toUtf8( child->Name )] = dataNodeToJson( *child );
+                const std::string key = toUtf8( child->Name );
+                object.erase( key );
+                object.emplace( key, dataNodeToJson( *child ) );
             }
             return object;
         }
