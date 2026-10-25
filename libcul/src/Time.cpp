@@ -40,22 +40,22 @@ Time::Time( std::int32_t inYear,
 }
 
 Time::Time( const Time& rhv )
-    : m_ns( rhv.m_ns )
-    , m_dateTime()
-    , m_asString( rhv.m_asString )
 {
-    m_dateTime = std::make_unique<jed_utils::datetime>();
-
     rhv.waitForDateTime();
+    waitForDateTime();
     *m_dateTime = *rhv.m_dateTime;
+    m_asString = rhv.m_asString;
+    m_ns = rhv.m_ns;
     m_initialized = true;
 }
 
 Time::Time( Time&& rhv )
-    : m_ns( rhv.m_ns )
-    , m_dateTime( std::move( rhv.m_dateTime ) )
-    , m_asString( std::move( rhv.m_asString ) )
 {
+    rhv.waitForDateTime();
+    waitForDateTime();
+    m_dateTime = std::move( rhv.m_dateTime );
+    m_ns = rhv.m_ns;
+    m_asString = std::move( rhv.m_asString );
     m_initialized = true;
 }
 
@@ -63,6 +63,8 @@ Time& Time::operator=( const Time& rhv )
 {
     if( &rhv != this )
     {
+        rhv.waitForDateTime();
+        waitForDateTime();
         *m_dateTime = *rhv.m_dateTime;
         m_asString = rhv.m_asString;
         m_ns = rhv.m_ns;
@@ -75,6 +77,7 @@ Time& Time::operator=( Time&& rhv )
 {
     if( &rhv != this )
     {
+        rhv.waitForDateTime();
         waitForDateTime();
         m_dateTime = std::move( rhv.m_dateTime );
         m_ns = rhv.m_ns;
@@ -441,8 +444,8 @@ Time::~Time()
 
 void Time::waitForDateTime() const
 {
-    while( !m_initialized )
+    if( m_initializedFuture.valid() )
     {
-        ITimer::sleepMicroSeconds( 1 );
+        m_initializedFuture.wait();
     }
 }

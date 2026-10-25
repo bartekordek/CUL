@@ -5,6 +5,7 @@
 #include "CUL/ITimer.hpp"
 #include "CUL/IMPORT_windows.hpp"
 #include <CUL/STL_IMPORTS/STD_algorithm.hpp>
+#include <cctype>
 
 #pragma comment( lib, "Pdh.lib" )
 
@@ -27,8 +28,7 @@ void CDiskInfoWindows::findDiskMappings()
     constexpr static std::size_t bufferLength = 8u;
     char buffer[bufferLength];
 
-    constexpr float TimeCoverageMs = 4.f * 1000.f;
-    const float howManySamples = TimeCoverageMs / static_cast<float>( getPoolIntervalMs() );
+    const std::size_t howManySamples = getSamplesPerAverage();
 
     for (char currentDiskName = 'A'; currentDiskName <= 'Z'; ++currentDiskName)
     {
@@ -41,10 +41,10 @@ void CDiskInfoWindows::findDiskMappings()
             di.Name.push_back( currentDiskName );
             di.Name.push_back(':');
 #if CALCULATE_FROM_IDLE
-            di.IdleTime.setCapacity( static_cast<std::size_t>( howManySamples ) );
+            di.IdleTime.setCapacity( howManySamples );
 #else // CALCULATE_FROM_IDLE
-            di.BytesPerSecondRead.setCapacity( static_cast<std::size_t>( howManySamples ) );
-            di.BytesPerSecondWrite.setCapacity( static_cast<std::size_t>( howManySamples ) );
+            di.BytesPerSecondRead.setCapacity( howManySamples );
+            di.BytesPerSecondWrite.setCapacity( howManySamples );
 #endif // CALCULATE_FROM_IDLE
             di.PercentageUsed.setCapacity( howManySamples );
 
@@ -249,23 +249,40 @@ void CDiskInfoWindows::collectData( DiskInfoValue& inOutDataValue )
     if( DeviceIoControl( inOutDataValue.Handle, IOCTL_DISK_PERFORMANCE, NULL, 0, lpOutBuffer, cbOutBufferSize, &cbBytesReturned, NULL ) )
     {
 #if CALCULATE_FROM_IDLE
-        inOutDataValue.PreviousIdle = inOutDataValue.CurrentIdleTime;
+        const std::int64_t previousIdle = inOutDataValue.CurrentIdleTime;
+        const std::int64_t previousQuery = inOutDataValue.CurrentQueryTime;
+        const bool hasPrevious = inOutDataValue.HasPreviousSample;
+
+        inOutDataValue.PreviousIdle = previousIdle;
+        inOutDataValue.PreviousQueryTime = previousQuery;
         inOutDataValue.CurrentIdleTime = dp.IdleTime.QuadPart;
-        inOutDataValue.Delta = inOutDataValue.CurrentIdleTime - inOutDataValue.PreviousIdle;
+        inOutDataValue.CurrentQueryTime = dp.QueryTime.QuadPart;
+        inOutDataValue.HasPreviousSample = true;
 
-        inOutDataValue.IdleTime.add( static_cast<float>( inOutDataValue.Delta ) );
-
-        float percentage;
-        if( static_cast<std::int64_t>( inOutDataValue.IdleTime.getMax() ) == 0 )
+        // IdleTime and QueryTime share performance-counter ticks. The first
+        // sample has no previous QueryTime, so its delta would be "since boot".
+        if( hasPrevious )
         {
-            percentage = 100.f;
-        }
-        else
-        {
-            percentage = 100.f * ( 1.f - ( inOutDataValue.IdleTime.getAverage() / inOutDataValue.IdleTime.getMax() ) );
-        }
+            const std::int64_t deltaIdle = inOutDataValue.CurrentIdleTime - previousIdle;
+            const std::int64_t deltaQuery = inOutDataValue.CurrentQueryTime - previousQuery;
+            inOutDataValue.Delta = deltaIdle;
+            if( deltaQuery > 0 )
+            {
+                double idleFraction = static_cast<double>( deltaIdle ) / static_cast<double>( deltaQuery );
+                if( idleFraction < 0.0 )
+                {
+                    idleFraction = 0.0;
+                }
+                else if( idleFraction > 1.0 )
+                {
+                    idleFraction = 1.0;
+                }
 
-        inOutDataValue.PercentageUsed.add( percentage );
+                const float busyPercent = static_cast<float>( 100.0 * ( 1.0 - idleFraction ) );
+                inOutDataValue.IdleTime.add( static_cast<float>( deltaIdle ) );
+                inOutDataValue.PercentageUsed.add( busyPercent );
+            }
+        }
 #else // #if CALCULATE_FROM_IDLE
         SDiskInfo& current = inOutDataValue.Current;
         current.ReadBytes = dp.BytesRead.QuadPart;
@@ -321,7 +338,18 @@ float CDiskInfoWindows::getDiskUsage( const std::string& inDiskName ) const
         diskInfos = m_diskHandles;
     }
 
-    const auto it = diskInfos.find( inDiskName );
+    std::string key = inDiskName;
+    while( !key.empty() && ( key.back() == '\\' || key.back() == '/' ) )
+    {
+        key.pop_back();
+    }
+    if( key.size() >= 2 && key[1] == ':' )
+    {
+        key[0] = static_cast<char>( ::toupper( static_cast<unsigned char>( key[0] ) ) );
+        key = key.substr( 0, 2 );
+    }
+
+    const auto it = diskInfos.find( key );
     if( it == diskInfos.end() )
     {
         return 0.f;
@@ -366,6 +394,23 @@ std::vector<std::pair<std::string, float>> CDiskInfoWindows::getDisksUsage() con
                } );
 
     return result;
+}
+
+void CDiskInfoWindows::onSampleWindowChanged()
+{
+    const std::size_t howManySamples = getSamplesPerAverage();
+    std::lock_guard<std::mutex> locker( m_diskHandlesMtx );
+    for( auto& [name, diskInfo] : m_diskHandles )
+    {
+        (void)name;
+#if CALCULATE_FROM_IDLE
+        diskInfo.IdleTime.setCapacity( howManySamples );
+#else // CALCULATE_FROM_IDLE
+        diskInfo.BytesPerSecondRead.setCapacity( howManySamples );
+        diskInfo.BytesPerSecondWrite.setCapacity( howManySamples );
+#endif // CALCULATE_FROM_IDLE
+        diskInfo.PercentageUsed.setCapacity( howManySamples );
+    }
 }
 
 CDiskInfoWindows::~CDiskInfoWindows()

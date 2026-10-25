@@ -5,7 +5,7 @@
 
 #if !defined( CUL_PROFILER_PIX )
     #define CUL_PROFILER_PIX 0
-#endif // #if !defined( CUL_PROFILER_PIX )
+#endif  // #if !defined( CUL_PROFILER_PIX )
 
 #if CUL_PROFILER_PIX
 namespace CUL
@@ -33,21 +33,27 @@ private:
 };
 }  // namespace CUL
 
-    #define ProfileScopeVar( varName ) CUL::Profiler varName( MacroArgumentToStringLiteral( varname ) )
+    #define ProfileScopeVar( varName ) \
+        CUL::Profiler varName( MacroArgumentToStringLiteral( varname ) )
     #define ProfilerScope( name ) CUL::Profiler CUL_UNIQUE_VAR( profiler )( name )
-    #define ProfilerScopeColor( name, color ) CUL::Profiler varName( MacroArgumentToStringLiteral( name ) )
+    #define ProfilerScopeColor( name, color ) \
+        CUL::Profiler varName( MacroArgumentToStringLiteral( name ) )
+    #define SetThreadName( name )
     #define FrameEnd CUL::Profiler::FrameEnd()
 
 #elif defined( TRACY_ENABLE )
-    #include "CUL/IMPORT_tracy.hpp"
-    #define ProfileScopeVarName( varName, displayName ) ZoneNamedN( varName, displayName, true )
+    #include <CUL/IMPORT_tracy.hpp>
+    #define ProfileScopeVarName( varName, displayName ) \
+        ZoneNamedN( varName, displayName, true )
     #define ProfileScopeVar( varName ) ZoneNamedN( varName, #varName, true )
-    #define ProfilerScope( name ) ZoneScopedN(name)
+    #define ProfilerScope( name ) ZoneScopedN( name )
     #define ProfilerScopeColor( name, color ) ZoneScopedNC( name, color )
+    #define SetThreadName( name ) tracy::SetThreadName( name );
     #define FrameEnd FrameMark
 #else
     #define ProfileScopeVar( varName )
     #define ProfilerScope( name )
     #define ProfilerScopeColor( name, color )
+    #define SetThreadName( name )
     #define FrameEnd
 #endif

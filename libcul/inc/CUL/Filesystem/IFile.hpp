@@ -53,7 +53,7 @@ public:
     bool getIsCacheEnabled() const;
 
     const StringWr& getMD5();
-    const StringWr& getSizeBytes() const;
+    const StringWr& getSizeBytes_str() const;
     bool getIsBigFile() const;
 
     virtual const StringWr& firstLine() const;
@@ -84,8 +84,9 @@ protected:
 
 private:
     void calculateMD5();
-    void calculateSizeBytes();
+    void calculateSizeBytes() const;
     void waitForDiskToBeReady();
+    std::uint64_t getSizeInBytes() const;
     FileList m_fileList;
     FS::Path m_path;
     StringWr m_md5;
@@ -93,12 +94,15 @@ private:
     Time m_creationTime;
     Time m_lastModificationTime;
 
-    StringWr m_sizeBytes;
+    mutable  std::optional<std::uint64_t> m_sizeInBytes;
+    mutable StringWr m_sizeBytesStr;
     bool m_cacheEnabled{ true };
 
     void waitForBackgroundLoad();
     std::unique_ptr<ThreadWrapper> m_backgroundLoadThread;
     bool m_loaded{ false };
+
+    void calculateBigFileImpl();
 
 private:  // Deleted:
     IFile() = delete;

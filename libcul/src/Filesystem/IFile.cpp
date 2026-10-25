@@ -2,15 +2,14 @@
 #include "CUL/Filesystem/FSApi.hpp"
 #include "CUL/Threading/ThreadUtil.hpp"
 #include "CUL/Threading/ThreadWrap.hpp"
+#include <CUL/Filesystem/DiskScheduler.hpp>
 
 #include "CUL/CULInterface.hpp"
 #include "CUL/Log/ILogger.hpp"
 #include "CUL/Hardware/DiskInfo.hpp"
-#include <CUL/ITimer.hpp>
+#include <CUL/Messaging/MessageSystem.hpp>
 #include "CUL/STL_IMPORTS/STD_fstream.hpp"
 #include "CUL/STL_IMPORTS/STD_iterator.hpp"
-#include "CUL/STL_IMPORTS/STD_array.hpp"
-#include "CUL/STL_IMPORTS/STD_cstring.hpp"
 #include "IMPORT_hash_library.hpp"
 
 using namespace CUL;
@@ -31,7 +30,8 @@ static const StringWr g_emptyString;
     #endif
 #endif
 
-IFile::IFile( const StringWr& fPath, CUL::CULInterface* inInterface ): p_cullInterface( inInterface )
+IFile::IFile( const StringWr& fPath, CUL::CULInterface* inInterface )
+    : p_cullInterface( inInterface )
 {
     m_path.createFrom( fPath );
     p_cullInterface->getFS()->getLastModificationTime( m_path, m_lastModificationTime );
@@ -94,12 +94,14 @@ void IFile::load( bool /*keepLineEndingCharacter*/, bool /*removeBottomEmptyLine
     throw std::logic_error( "Method not implemented" );
 }
 
-void IFile::loadFromString( const StringWr& /*contents*/, bool /*keepLineEndingCharacter = false */ )
+void IFile::loadFromString( const StringWr& /*contents*/,
+                            bool /*keepLineEndingCharacter = false */ )
 {
     throw std::logic_error( "Method not implemented" );
 }
 
-void IFile::loadFromStringNoEmptyLines( const StringWr& /*contents*/, bool /*keepLineEndingCharacter*/ )
+void IFile::loadFromStringNoEmptyLines( const StringWr& /*contents*/,
+                                        bool /*keepLineEndingCharacter*/ )
 {
     throw std::logic_error( "Method not implemented" );
 }
@@ -149,7 +151,8 @@ void IFile::getLastModificationTime( Time& outTime )
 
     if( p_cullInterface->getFS()->fileExist( m_path ) )
     {
-        p_cullInterface->getFS()->getLastModificationTime( m_path, m_lastModificationTime );
+        p_cullInterface->getFS()->getLastModificationTime( m_path,
+                                                           m_lastModificationTime );
     }
     outTime = m_lastModificationTime;
 }
@@ -196,66 +199,30 @@ std::wstring IFile::getLineW( std::int32_t /*inLineNum*/ ) const
 
 void IFile::calculateMD5()
 {
-    const std::uint64_t currentFileSizeBytes = getSizeBytes().toUint64();
-
-    const std::string currPath = getPath().getPath().getSTDString();
-    const char* pathChar = currPath.c_str();
-    CUL::ThreadUtil::getInstance().setThreadStatusArgs( "[IFile::calculateMD5] File: %s wait for disk...", pathChar );
-    waitForDiskToBeReady();
-    CUL::ThreadUtil::getInstance().setThreadStatusArgs( "[IFile::calculateMD5] File: %s wait for disk... done.", pathChar );
-
     if( getIsBigFile() )
     {
-        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "[IFile::calculateMD5] Big file: %s", pathChar );
+        LOG::ILogger::getInstance().logVariable( LOG::Severity::Info,
+                                                 "[IFile::calculateMD5] Big file: %s",
+                                                 getPath().getPath().getUtfChar() );
 
-        std::ifstream file( currPath, std::ios::binary );
-        file.unsetf( std::ios::skipws );
-
-        constexpr size_t bytesPerRead = 16384;
-
-        char buffor[bytesPerRead];
-        std::array<uint8_t, 4> value;
-        value[0] = 0u;
-        value[1] = 0u;
-        value[2] = 0u;
-        value[3] = 0u;
-        void* ptr = &buffor;
-        constexpr std::size_t sizeofChar = sizeof( char );
-        constexpr std::size_t sizeofBuffor = sizeofChar * bytesPerRead;
-        constexpr std::size_t howManyCharacters = sizeofBuffor / sizeofChar;
-
-        std::memset( &buffor, 0, sizeofBuffor );
-        const auto size = file.tellg();
-        SHA256 sha256;
-        uint64_t it = 0u;
-        float coef = 0.f;
-        const auto threadId = CUL::ThreadUtil::getInstance().getCurrentThreadId();
-        unsigned percentage = 0u;
-        while( file.read( buffor, howManyCharacters ) )
-        {
-            sha256.add( ptr, bytesPerRead );
-            ++it;
-            coef = static_cast<float>( bytesPerRead * it ) / static_cast<float>( currentFileSizeBytes );
-            percentage = static_cast<unsigned>( 100.f * coef );
-
-            constexpr std::size_t bufferSize{ 512 };
-            char name[bufferSize];
-            snprintf( name, bufferSize, "[IFile::calculateMD5] Big file: %s, %d %%", pathChar, percentage );
-
-            CUL::ThreadUtil::getInstance().setThreadStatus( name, &threadId );
-        }
-        m_md5 = sha256.getHash();
-        file.close();
+        CDiskScheduler::getInstance().executeWhenPossibleWithWait(
+            getPath().getPath(),
+            [this]()
+            {
+                calculateBigFileImpl();
+            } );
     }
     else
     {
-        std::ifstream file( pathChar, std::ios::binary );
+        std::ifstream file( getPath().getPath().getValue(), std::ios::binary );
         file.unsetf( std::ios::skipws );
 
-        unsigned fileSizeAsNumber = getSizeBytes().toUint64();
+        const std::uint64_t fileSizeAsNumber = getSizeInBytes();
         std::vector<unsigned char> vec;
         vec.reserve( fileSizeAsNumber );
-        vec.insert( vec.begin(), std::istream_iterator<unsigned char>( file ), std::istream_iterator<unsigned char>() );
+        vec.insert( vec.begin(),
+                    std::istream_iterator<unsigned char>( file ),
+                    std::istream_iterator<unsigned char>() );
         if( vec.empty() == false )
         {
             SHA256 sha256;
@@ -266,48 +233,103 @@ void IFile::calculateMD5()
     }
 }
 
+void IFile::calculateBigFileImpl()
+{
+    std::ifstream file( getPath().getPath().getValue(), std::ios::binary );
+    if( !file.is_open() )
+    {
+        return;
+    }
+
+    constexpr std::size_t bytesPerRead = 16384u;
+    char buffer[bytesPerRead];
+
+    SHA256 sha256;
+    const std::uint64_t fileSizeAsNumber = getSizeInBytes();
+    std::uint64_t bytesHashed = 0u;
+
+    SBigMD5FileCalc calcinfo;
+    calcinfo.Path = getPath();
+    calcinfo.Progress = 0.f;
+
+    while( file )
+    {
+        file.read( buffer, static_cast<std::streamsize>( bytesPerRead ) );
+        const std::streamsize bytesRead = file.gcount();
+        if( bytesRead <= 0 )
+        {
+            break;
+        }
+
+        sha256.add( buffer, static_cast<std::size_t>( bytesRead ) );
+        bytesHashed += static_cast<std::uint64_t>( bytesRead );
+
+        if( fileSizeAsNumber > 0u )
+        {
+            calcinfo.percentage = 100.f * static_cast<float>( bytesHashed ) / static_cast<float>( fileSizeAsNumber );
+            MessageSystem<SBigMD5FileCalc>::getInstance().send( calcinfo );
+        }
+    }
+
+    calcinfo.percentage = 100.f;
+    calcinfo.Progress = true;
+    MessageSystem<SBigMD5FileCalc>::getInstance().send( calcinfo );
+
+    m_md5 = sha256.getHash();
+}
+
 void IFile::waitForDiskToBeReady()
 {
     const StringWr diskName = m_path.getDiskName();
 
     constexpr float usageThreshold{ 60.f };
-    float diskUsage = CUL::CDiskInfo::getInstance().getDiskUsage( diskName.getSTDString() );
+    constexpr std::uint32_t maxWaitMs{ 2000u };
+    std::uint32_t waitedMs{ 0u };
 
-    if( diskUsage <= usageThreshold )
-    {
-        return;
-    }
+    float diskUsage =
+        CUL::CDiskInfo::getInstance().getDiskUsage( diskName.getSTDString() );
 
-    do
+    while( diskUsage > usageThreshold && waitedMs < maxWaitMs )
     {
         CUL::ThreadUtil::sleepUntil( 4u );
+        waitedMs += 4u;
         diskUsage = CUL::CDiskInfo::getInstance().getDiskUsage( diskName.getSTDString() );
-        if( diskUsage <= usageThreshold )
-        {
-            return;
-        }
-    } while( true );
+    }
 }
 
 bool IFile::getIsBigFile() const
 {
     constexpr std::uint64_t OneMBinBytes = 1024 * 1024;
-    constexpr std::uint64_t bigFileMinimumBytes = 16 * OneMBinBytes;
-    const std::uint64_t currentFileSizeBytes = getSizeBytes().toUint64();
+    constexpr std::uint64_t bigFileMinimumBytes = 8 * OneMBinBytes;
+    const std::uint64_t currentFileSizeBytes = getSizeInBytes();
     return currentFileSizeBytes > bigFileMinimumBytes;
 }
 
-const StringWr& IFile::getSizeBytes() const
+std::uint64_t IFile::getSizeInBytes() const
 {
-    return m_sizeBytes;
+    if( m_sizeInBytes )
+    {
+        return *m_sizeInBytes;
+    }
+
+    calculateSizeBytes();
+    return *m_sizeInBytes;
 }
 
-void IFile::calculateSizeBytes()
+const StringWr& IFile::getSizeBytes_str() const
 {
-    m_sizeBytes = p_cullInterface->getFS()->getFileSize( m_path );
+    return m_sizeBytesStr;
 }
 
-void IFile::loadBackground( bool keepLineEndingCharacter, bool removeBottomEmptyLines, std::function<void( void )> finishCallback )
+void IFile::calculateSizeBytes() const
+{
+    m_sizeBytesStr = p_cullInterface->getFS()->getFileSize( m_path );
+    m_sizeInBytes = m_sizeBytesStr.toUint64();
+}
+
+void IFile::loadBackground( bool keepLineEndingCharacter,
+                            bool removeBottomEmptyLines,
+                            std::function<void( void )> finishCallback )
 {
     waitForBackgroundLoad();
     m_backgroundLoadThread = std::make_unique<ThreadWrapper>(
