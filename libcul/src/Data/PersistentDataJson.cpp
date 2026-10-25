@@ -3,6 +3,7 @@
 #include <CUL/GenericUtils/SimpleAssert.hpp>
 #include <nlohmann/json.hpp>
 #include <CUL/STL_IMPORTS/STD_fstream.hpp>
+#include <CUL/STL_IMPORTS/STD_mutex.hpp>
 #include <CUL/STL_IMPORTS/STD_shared_mutex.hpp>
 
 namespace CUL
