@@ -1606,8 +1606,8 @@ void String::escapeCharacter( const UnderlyingType& characterToEscape )
         const auto sizeCast2 = static_cast<std::int32_t>( m_size );
         for( std::int32_t j = sizeCast2 - 1; j > i; --j )
         {
-            std::size_t jCast = static_cast<std::size_t>( j );
-            m_value[j] = m_value[j - 1];
+            const std::size_t jCast = static_cast<std::size_t>( j );
+            m_value[jCast] = m_value[jCast - 1];
         }
 
         i -= 1;
@@ -1660,8 +1660,8 @@ void String::singleQuoteEscape()
         sizeCast2 = static_cast<std::int32_t>( m_size );
         for( std::int32_t j = sizeCast2 - 1; j > i; --j )
         {
-            std::size_t jCast = static_cast<std::size_t>( j );
-            m_value[j] = m_value[j - consecutiveQuotesCount];
+            const std::size_t jCast = static_cast<std::size_t>( j );
+            m_value[jCast] = m_value[jCast - consecutiveQuotesCount];
         }
 
         i -= consecutiveQuotesCount;
@@ -1673,11 +1673,6 @@ void String::singleQuoteRestore()
     if( m_size == 0u )
     {
         return;
-    }
-
-    if( count( std::string( "'" )[0] ) > 1 )
-    {
-        auto x = 0;
     }
 
     for( std::int32_t i = 0; i < m_size; )
