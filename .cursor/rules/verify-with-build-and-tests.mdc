@@ -1,0 +1,26 @@
+---
+description: Always verify code changes with builds and tests (libcul + libculTests)
+alwaysApply: true
+---
+
+# Verify changes with builds and tests
+
+After any code change you make:
+
+1. **Always** run a test build that exercises the changed targets (prefer this repo's cmake/`tasks.json` flow; do not rely on Visual Studio UI).
+2. **If possible**, run existing unit/integration tests for the touched area.
+3. **If possible**, add or extend **gtest** coverage under `libculTests`.
+4. Prefer verifying on **both Windows and Linux/WSL** when the change is not platform-specific.
+
+## Host projects
+
+If a host project that consumes CUL (e.g. DuplicateFinder) would benefit from its own unit-test suite analogous to `libculTests`, **tell Bartłomiej** instead of silently scaffolding a large harness. Propose scope briefly and wait for go-ahead.
+
+## Confirmation in the reply
+
+When finishing work that changed code, briefly state what was built and which tests ran (or why tests could not run).
+
+## CUL notes
+
+- Prefer cmake/`tasks.json` flows (`Build_Win64` + `Build_Linux`). Run `libculTests_*` from `runDir`.
+- GCC Linux often uses `-Werror` with `-Wno-unused-*`; MSVC unused warnings may not appear on Linux — still rebuild Linux after CUL changes.
