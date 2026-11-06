@@ -13,6 +13,7 @@ A personal C++ utility library providing reusable building blocks for filesystem
 
 - [Features](#features)
 - [Dependencies](#dependencies)
+- [Third-party warning policy](#third-party-warning-policy)
 - [Building](#building)
 - [Installation / Integration](#installation--integration)
 - [Module Reference](#module-reference)
@@ -55,6 +56,25 @@ All dependencies are bundled as git submodules under `deps/`:
 - [nativefiledialog-extended](https://github.com/btzy/nativefiledialog-extended) — native file dialogs
 - [CPP-DateTime-library](https://github.com/HowardHinnant/date) — date/time utilities
 - [udp-discovery-cpp](https://github.com/hrissan/udp-discovery-cpp) — UDP network discovery
+
+---
+
+## Third-party warning policy
+
+CUL keeps **full warnings** (and on Linux, `-Werror`) for first-party code under `libcul/` and `libculTests/`. Vendored code under `deps/` is treated as third-party: we **do not** fix upstream warning noise there; we silence it in CMake instead.
+
+How it works (Windows + Linux):
+
+1. **Compiling dependency sources** — After all `deps/` subdirectories are added, `cul_silence_warnings_for_deps_dir()` (see `cmake/CULTargetHelpers.cmake`) walks every CMake target whose `SOURCE_DIR` is under `deps/` and applies:
+   - MSVC: `/W0`
+   - GCC / Clang: `-w`  
+   On CMake ≥ 3.25 those targets are also marked `SYSTEM` so their include dirs are system includes for consumers.
+
+2. **Including dependency headers from our code** — `libcul` already uses `include_directories(SYSTEM …)` / `target_include_directories(… SYSTEM …)` for bundled headers (spdlog, nlohmann_json, zlib, stb, …). On MSVC, `libcul` also enables `/external:W0` and `/external:anglebrackets` so system/angle-bracket headers do not spam `/Wall`.
+
+3. **spdlog** — `SPDLOG_SYSTEM_INCLUDES=ON` so spdlog headers are exposed as system includes.
+
+First-party targets (`cul_static`, `cul_dynamic`, tests) are added **after** the deps silence pass, so they keep the normal warning level.
 
 ---
 

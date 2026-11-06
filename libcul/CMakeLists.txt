@@ -57,6 +57,8 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     add_compile_options( "/wd4774" )
     add_compile_options( "/wd4996" ) # 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead.
     add_compile_options( "/wd5045" )
+    # Treat angle-bracket / SYSTEM includes (deps headers) as external — keep /Wall for our code only.
+    add_compile_options( /external:W0 /external:anglebrackets )
 
 else()
 
