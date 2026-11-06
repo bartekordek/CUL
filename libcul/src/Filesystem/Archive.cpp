@@ -9,8 +9,6 @@
 namespace CUL
 {
 constexpr const char* ARCHIVE_META_MARKER_START = "ARCHIVE_META_START";
-constexpr const char* ARCHIVE_FILE_NAME_START = "FILE_NAME_START";
-constexpr const char* ARCHIVE_FILE_NAME_END = "FILE_NAME_END";
 constexpr const char* ARCHIVE_META_MARKER_END = "ARCHIVE_META_END";
 constexpr const char* ARCHIVE_FILE_CONTENT_START = "FILE_CONTENT_START";
 constexpr const char* ARCHIVE_FILE_CONTENT_END = "FILE_CONTENT_END";
