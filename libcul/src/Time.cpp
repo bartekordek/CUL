@@ -369,7 +369,7 @@ void Time::setTimeSec( std::time_t timeConverted )
     const auto seconds = static_cast<TimeType>( tm.tm_sec );
 
     *m_dateTime = jed_utils::datetime( year, month, day, hour, minute, seconds );
-    m_ns = timeConverted * 1000000000.f;
+    m_ns = static_cast<float>( timeConverted ) * 1000000000.f;
     m_initialized = true;
     updateString();
 }

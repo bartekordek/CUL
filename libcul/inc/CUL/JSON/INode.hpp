@@ -28,6 +28,7 @@ using ChildrenNodes = std::vector<INode*>;
 #ifdef _MSC_VER
 #pragma warning( push )
 #pragma warning( disable: 4820 )
+#pragma warning( disable: 4251 )  // STL members in DLL-exported class
 #endif
 
 class INodeImpl;

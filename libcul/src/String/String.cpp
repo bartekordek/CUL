@@ -1710,13 +1710,13 @@ void String::singleQuoteRestore()
         const auto newSize = m_size - reduceSize;
         const auto newSizeCast = static_cast<std::size_t>( newSize );
 
-        for( std::size_t j = i; j < newSizeCast; ++j )
+        for( std::size_t j = static_cast<std::size_t>( i ); j < newSizeCast; ++j )
         {
             m_value[j] = m_value[j + reduceSizeCast];
         }
         m_size = newSize;
         m_value[m_size] = NullTerminator;
-        i += reduceSizeCast;
+        i += reduceSize;
     }
 }
 
@@ -1755,7 +1755,7 @@ void String::removePrecedingZero()
         return;
     }
 
-    if( StringUtil::isNumber( m_value, m_size ) == false )
+    if( StringUtil::isNumber( m_value, static_cast<std::size_t>( m_size ) ) == false )
     {
         return;
     }
@@ -1914,9 +1914,9 @@ std::size_t StringUtil::replaceCalculateRequiredSize( const wchar_t* source, con
         return 0;
     }
 
-    const std::size_t sourceLen = strLen( source );
-    const std::size_t lenWhat = strLen( inWhat );
-    const std::size_t lenFor = strLen( inFor );
+    const std::size_t sourceLen = static_cast<std::size_t>( strLen( source ) );
+    const std::size_t lenWhat = static_cast<std::size_t>( strLen( inWhat ) );
+    const std::size_t lenFor = static_cast<std::size_t>( strLen( inFor ) );
 
     if( lenWhat == 0 )
     {
@@ -1941,7 +1941,7 @@ std::size_t StringUtil::replaceCalculateRequiredSize( const wchar_t* source, con
 
 bool StringUtil::replace( char* inSource, const char inWhat, const char inFor, bool allOccurences )
 {
-    const std::size_t sourceSize = strLen( inSource );
+    const std::size_t sourceSize = static_cast<std::size_t>( strLen( inSource ) );
 
     for( std::size_t i = 0; i < sourceSize; ++i )
     {
@@ -1959,7 +1959,7 @@ bool StringUtil::replace( char* inSource, const char inWhat, const char inFor, b
 
 bool StringUtil::replace( wchar_t* inSource, const wchar_t inWhat, const wchar_t inFor, bool allOccurences )
 {
-    const std::size_t sourceSize = strLen( inSource );
+    const std::size_t sourceSize = static_cast<std::size_t>( strLen( inSource ) );
 
     for( std::size_t i = 0; i < sourceSize; ++i )
     {
@@ -2030,8 +2030,8 @@ bool StringUtil::replace( wchar_t* inSource, std::size_t inSourceSize, const wch
         return false;
     }
 
-    const std::size_t lenWhat = strLen( inWhat );
-    const std::size_t lenFor = strLen( inFor );
+    const std::size_t lenWhat = static_cast<std::size_t>( strLen( inWhat ) );
+    const std::size_t lenFor = static_cast<std::size_t>( strLen( inFor ) );
 
     if( lenWhat == 0 )
     {
@@ -2042,7 +2042,7 @@ bool StringUtil::replace( wchar_t* inSource, std::size_t inSourceSize, const wch
 
     while( ( pos = std::wcsstr( pos, inWhat ) ) != nullptr )
     {
-        const std::size_t currentLen = strLen( inSource );
+        const std::size_t currentLen = static_cast<std::size_t>( strLen( inSource ) );
 
         // Calculate new length after replacement
         const std::size_t newLen = currentLen - lenWhat + lenFor;
