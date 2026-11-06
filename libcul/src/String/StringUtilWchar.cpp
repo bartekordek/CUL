@@ -14,7 +14,7 @@ std::int32_t StringUtil::charToWideString( std::int32_t codePage, wchar_t* out, 
     return charToWideString( codePage, out, outSize, in, static_cast<std::int32_t>( std::strlen( in ) ) );
 }
 
-std::int32_t StringUtil::charToWideString( std::int32_t codePage, wchar_t& out, char in )
+std::int32_t StringUtil::charToWideString( [[maybe_unused]] std::int32_t codePage, wchar_t& out, char in )
 {
     using convert_typeX = std::codecvt_utf8<wchar_t>;
     std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -114,7 +114,8 @@ std::int32_t StringUtil::charToWideString( std::wstring& out, const std::string&
     std::vector<wchar_t> buffer;
     buffer.resize( bufferSize );
 
-    const auto resultSize = charToWideString( CP_ACP, buffer.data(), bufferSize, in.c_str(), in.size() );
+    const auto resultSize = charToWideString( CP_ACP, buffer.data(), static_cast<std::int32_t>( bufferSize ), in.c_str(),
+                                              static_cast<std::int32_t>( in.size() ) );
     out = buffer.data();
     return static_cast<std::int32_t>( resultSize );
 }

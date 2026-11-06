@@ -8,7 +8,7 @@ namespace CUL::JSON
 class JSONFile_impl
 {
 public:
-    JSONFile_impl( const StringWr& inPath )
+    JSONFile_impl( [[maybe_unused]] const StringWr& inPath )
     {
     }
 

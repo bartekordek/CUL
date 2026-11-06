@@ -1043,8 +1043,8 @@ void String::deserializeWchar( std::string& out )
 #if CUL_USE_WCHAR
     for( std::size_t i = 0u; i < dataLength - 1; i += 2 )
     {
-        hexValue[0u] = temp[i];
-        hexValue[1u] = temp[i + 1u];
+        hexValue[0u] = static_cast<std::uint8_t>( temp[i] );
+        hexValue[1u] = static_cast<std::uint8_t>( temp[i + 1u] );
         std::uint8_t value = StringUtil::hexToValue( hexValue );
 
         target.push_back( value );
@@ -1052,18 +1052,18 @@ void String::deserializeWchar( std::string& out )
 #else
     for( std::size_t i = 0u; i < dataLength - 1; i += 4 )
     {
-        hexValue[0] = temp[i];
-        hexValue[1] = temp[i + 1];
+        hexValue[0] = static_cast<std::uint8_t>( temp[i] );
+        hexValue[1] = static_cast<std::uint8_t>( temp[i + 1] );
         std::uint8_t value = StringUtil::hexToValue( hexValue );
 
         target.push_back( value );
     }
 #endif
 
-    std::int32_t zeroCount{ 0u };
-    for( std::int32_t i = target.size() - 1; i >= 0; --i )
+    std::int32_t zeroCount{ 0 };
+    for( std::int32_t i = static_cast<std::int32_t>( target.size() ) - 1; i >= 0; --i )
     {
-        if( target[i] == NullTerminator )
+        if( target[static_cast<std::size_t>( i )] == NullTerminator )
         {
             ++zeroCount;
         }
@@ -1115,17 +1115,17 @@ void String::deserializeChar( std::string& out )
 
     for( std::size_t i = 0u; i < dataLength - 1; i += 2 )
     {
-        hexValue[0] = temp[i];
-        hexValue[1] = temp[i + 1];
+        hexValue[0] = static_cast<std::uint8_t>( temp[i] );
+        hexValue[1] = static_cast<std::uint8_t>( temp[i + 1] );
         std::uint8_t value = StringUtil::hexToValue( hexValue );
 
         target.push_back( value );
     }
 
-    std::int32_t zeroCount{ 0u };
-    for( std::int32_t i = target.size() - 1; i >= 0; --i )
+    std::int32_t zeroCount{ 0 };
+    for( std::int32_t i = static_cast<std::int32_t>( target.size() ) - 1; i >= 0; --i )
     {
-        if( target[i] == NullTerminator )
+        if( target[static_cast<std::size_t>( i )] == NullTerminator )
         {
             ++zeroCount;
         }

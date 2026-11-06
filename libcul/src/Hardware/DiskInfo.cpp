@@ -39,7 +39,7 @@ CDiskInfo::CDiskInfo()
         &CDiskInfo::onMsgReceived, this );
 }
 
-void CDiskInfo::getDiskTasks( const StringWr& diskName ) const
+void CDiskInfo::getDiskTasks( [[maybe_unused]] const StringWr& diskName ) const
 {
 }
 
