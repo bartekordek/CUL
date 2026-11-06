@@ -156,7 +156,6 @@ void StringUtil::erase( wchar_t* inOut, std::int32_t index, std::int32_t length 
 
     const std::int32_t wordLen = strLen( inOut );
     const std::int32_t newEnd = wordLen - length;
-    const std::int32_t stop = index + length;
     for( std::int32_t i = index; i < wordLen; ++i )
     {
         if( ( i >= index ) && ( i < newEnd ) )
@@ -180,7 +179,6 @@ void StringUtil::erase( char* inOut, std::int32_t index, std::int32_t length )
 
     const std::int32_t wordLen = strLen( inOut );
     const std::int32_t newEnd = wordLen - length;
-    const std::int32_t stop = index + length;
     for( std::int32_t i = index; i < wordLen; ++i )
     {
         if( ( i >= index ) && ( i < newEnd ) )
