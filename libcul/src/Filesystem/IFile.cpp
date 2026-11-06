@@ -17,6 +17,11 @@ using namespace FS;
 
 static const StringWr g_emptyString;
 
+[[noreturn]] static void throwMethodNotImplemented()
+{
+    throw std::logic_error( "Method not implemented" );
+}
+
 #if 0  // DEBUG_THIS_FILE, set 0->1 to debug
     #define DEBUG_THIS_FILE 1
 
@@ -43,35 +48,44 @@ const Path& IFile::getPath() const
     return m_path;
 }
 
+#ifdef _MSC_VER
+    // throwMethodNotImplemented() never returns; keep dummy returns for analyzers that
+    // still require a value path, and silence C4702 for that unreachable code.
+    #pragma warning( push )
+    #pragma warning( disable : 4702 )
+#endif
 const StringWr& IFile::firstLine() const
 {
-    throw std::logic_error( "Method not implemented" );
+    throwMethodNotImplemented();
     return g_emptyString;
 }
 
 const StringWr& IFile::lastLine() const
 {
-    throw std::logic_error( "Method not implemented" );
+    throwMethodNotImplemented();
     return g_emptyString;
 }
 
 const StringWr& IFile::getAsOneString() const
 {
-    throw std::logic_error( "Method not implemented" );
+    throwMethodNotImplemented();
     return g_emptyString;
 }
 
 const char** IFile::getContent() const
 {
-    throw std::logic_error( "Method not implemented" );
+    throwMethodNotImplemented();
     return nullptr;
 }
 
 std::uint32_t IFile::getLinesCount() const
 {
-    throw std::logic_error( "Method not implemented" );
+    throwMethodNotImplemented();
     return 0u;
 }
+#ifdef _MSC_VER
+    #pragma warning( pop )
+#endif
 
 void IFile::setPath( const StringWr& fPath )
 {
