@@ -700,11 +700,6 @@ void StringUtil::copyString( wchar_t* target, const wchar_t* source )
 
 void StringUtil::copyString( wchar_t* target, std::int32_t targetSize, const wchar_t* source, std::int32_t sourceSizeS )
 {
-    if( !(targetSize >= sourceSizeS) )
-    {
-        auto x = 0;
-    }
-
     Assert::simple( targetSize >= sourceSizeS, "TARGET TOO SMALL!" );
     const std::size_t sourceSize = static_cast<std::size_t>( sourceSizeS );
     for( std::size_t i = 0; i < sourceSize; ++i )
