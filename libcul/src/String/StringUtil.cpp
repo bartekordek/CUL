@@ -85,7 +85,7 @@ void StringUtil::removeFromStart( char* inOutSource, const char* inStr )
 
     // Shift string left (overlap-safe)
     std::memmove( inOutSource, inOutSource + lenStr,
-                  strLen( inOutSource + lenStr ) + 1  // include '\0'
+                  static_cast<std::size_t>( strLen( inOutSource + lenStr ) ) + 1  // include '\0'
     );
 }
 
@@ -284,10 +284,11 @@ std::int32_t StringUtil::find( const wchar_t* source, const char* word )
     std::wstring wword;
 
     wchar_t wc;
-    while( std::mbrtowc( &wc, src, MB_CUR_MAX, &state ) > 0 )
+    const std::size_t mbCurMax = static_cast<std::size_t>( MB_CUR_MAX );
+    while( std::mbrtowc( &wc, src, mbCurMax, &state ) > 0 )
     {
         wword.push_back( wc );
-        src += std::mbrlen( src, MB_CUR_MAX, &state );
+        src += std::mbrlen( src, mbCurMax, &state );
     }
 
     const wchar_t* pos = std::wcsstr( source, wword.c_str() );
@@ -333,8 +334,9 @@ std::int32_t StringUtil::find( const char* source, const wchar_t* word )
 
     wchar_t wc;
     std::size_t len;
+    const std::size_t mbCurMax = static_cast<std::size_t>( MB_CUR_MAX );
 
-    while( ( len = std::mbrtowc( &wc, s, MB_CUR_MAX, &state ) ) > 0 )
+    while( ( len = std::mbrtowc( &wc, s, mbCurMax, &state ) ) > 0 )
     {
         wsource.push_back( wc );
         s += len;
