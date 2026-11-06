@@ -29,8 +29,6 @@ template <typename T>
 requires std::is_trivial_v<T>
 void writeValue( std::fstream& inStream, T inValue )
 {
-    constexpr std::size_t bufferSize{ 512u };
-    char buffer[bufferSize];
     const std::size_t sizeofT = sizeof( T );
     const auto charNormalizedSize = static_cast<std::streamsize>( sizeofT / sizeOfChar );
     inStream.write( reinterpret_cast<const char*>( &inValue ), charNormalizedSize );
