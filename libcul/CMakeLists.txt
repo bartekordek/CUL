@@ -121,7 +121,6 @@ endforeach()
 set(DEPENDENCIES
     PUBLIC AdditionalDeps
     PUBLIC boost_assert
-    PUBLIC boost_circular_buffer
     PUBLIC boost_core
     PUBLIC glm
     PRIVATE spdlog

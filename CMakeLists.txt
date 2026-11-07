@@ -57,12 +57,6 @@ add_subdirectory( ${CUL_DEPS_PATH} )
 add_subdirectory( ${CUL_DEPS_PATH}/boost/assert )
 set_property(TARGET boost_assert PROPERTY FOLDER "deps/boost")
 
-add_subdirectory( ${CUL_DEPS_PATH}/boost/circular_buffer )
-set_property(TARGET boost_circular_buffer PROPERTY FOLDER "deps/boost")
-
-add_subdirectory( ${CUL_DEPS_PATH}/boost/concept_check )
-set_property(TARGET boost_concept_check PROPERTY FOLDER "deps/boost")
-
 add_subdirectory( ${CUL_DEPS_PATH}/boost/config )
 set_property(TARGET boost_config PROPERTY FOLDER "deps/boost")
 
@@ -74,9 +68,6 @@ set_property(TARGET boost_core PROPERTY FOLDER "deps/boost")
 
 add_subdirectory( ${CUL_DEPS_PATH}/boost/describe )
 set_property(TARGET boost_describe PROPERTY FOLDER "deps/boost")
-
-add_subdirectory( ${CUL_DEPS_PATH}/boost/move )
-set_property(TARGET boost_move PROPERTY FOLDER "deps/boost")
 
 add_subdirectory( ${CUL_DEPS_PATH}/boost/mp11 )
 set_property(TARGET boost_mp11 PROPERTY FOLDER "deps/boost")
