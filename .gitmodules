@@ -66,10 +66,6 @@
 [submodule "deps/opencv"]
 	path = deps/opencv
 	url = git@github.com:opencv/opencv.git
-[submodule "deps/cppcheck"]
-	path = deps/cppcheck
-	ignore = dirty
-	url = git@github.com:danmar/cppcheck.git
 [submodule "deps/libpng"]
 	path = deps/libpng
 	url = git@github.com:LuaDist/libpng.git
