@@ -5,7 +5,6 @@
 #include "CUL/Math/Angle.hpp"
 #include "CUL/Math/Axis.hpp"
 #include "CUL/GenericUtils/SimpleAssert.hpp"
-#include "CUL/GenericUtils/IOnChange.hpp"
 #include "CUL/Math/TriangleRectangularSimple2D.hpp"
 #include "CUL/Math/RotationType.hpp"
 
@@ -25,7 +24,7 @@ using ST = TriangleRectangularSimple2D;
     #pragma warning( disable : 4820 )
 #endif
 template <typename Type>
-class Vector3D: public Epsilon<Type>, public ISerializable, public GUTILS::IOnChange
+class Vector3D: public Epsilon<Type>, public ISerializable
 {
 public:
     using ValueType = std::array<Type, 3>;
@@ -48,7 +47,7 @@ public:
         setAxisValue( AxisCarthesian::Z, zVal );
     }
 
-    Vector3D( const Vector3D<Type>& v2 ): ISerializable(), GUTILS::IOnChange()
+    Vector3D( const Vector3D<Type>& v2 ): ISerializable()
     {
         copyFromOtherVector( v2 );
     }
