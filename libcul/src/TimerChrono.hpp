@@ -12,7 +12,6 @@
 #include "CUL/STL_IMPORTS/STD_mutex.hpp"
 #include "CUL/STL_IMPORTS/STD_thread.hpp"
 #include "CUL/STL_IMPORTS/STD_set.hpp"
-#include "CUL/STL_IMPORTS/STD_vector.hpp"
 #include "CUL/STL_IMPORTS/STD_functional.hpp"
 
 NAMESPACE_BEGIN( CUL )
@@ -59,13 +58,7 @@ private:
     unsigned m_sleepUs = 0u;
     std::function<void(void)> m_callback;
 
-    std::thread m_callbackThread;
-
     std::mutex m_threadsVectorLock;
-
-
-    std::mutex m_tasksLock;
-    std::vector<std::function<void( void )>> m_tasks;
 
     std::unique_ptr<class Worker> m_worker;
     bool m_started = false;

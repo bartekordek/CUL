@@ -131,17 +131,6 @@ void FileDatabase::loadFilesFromDatabase( const Path& inPath )
     loadFilesFromDatabase();
 }
 
-struct ListAndApi
-{
-    FileDatabase* thisPtr = nullptr;
-    std::vector<StringWr> FilesList{};
-    std::deque<StringWr> RemoveList{};
-    std::mutex RemoveListMtx;
-    FSApi* FS_API = nullptr;
-    std::atomic<int64_t>* m_currentFileIndex = nullptr;
-    std::vector<FileInfo> Files;
-};
-
 float FileDatabase::getPercentage() const
 {
     return 100.f * m_current / ( 1.f * m_rowCount );
@@ -686,8 +675,6 @@ bool FileDatabase::getIsFull() const
 
 void FileDatabase::initDb()
 {
-    constexpr std::size_t sizeOfWchar = sizeof( wchar_t );
-
     ProfilerScope( "FileDatabase::initDb" );
     ThreadUtil::getInstance().setThreadStatus( "Initi db..." );
     int rc = sqlite3_open( m_databasePath.getPath().getUtfChar(), &m_db );
@@ -744,15 +731,6 @@ void FileDatabase::initDb()
     m_initialized = true;
 }
 
-struct DataS
-{
-    std::vector<FileInfo> Files;
-    std::uint64_t Counter{ 0u };
-    std::uint64_t Max{ 0u };
-    std::size_t bufferLength{ 1024u };
-    char buffer[1024];
-};
-
 void FileDatabase::updateCache()
 {
     ProfilerScopeColor( "FileDatabase::updateCache", 0xFF0000FF );
@@ -782,7 +760,7 @@ void FileDatabase::addFile( MD5Value md5,
 {
     ProfilerScope( "FileDatabase::addFile" );
     ++m_tasksCounter;
-    auto resultToBeDiscarded = std::async(
+    static_cast<void>( std::async(
         std::launch::async,
         [this, md5, filePath, fileSize, modTime]()
         {
@@ -797,7 +775,7 @@ void FileDatabase::addFile( MD5Value md5,
 
             addFileImpl( ELockType::Locked, md5, filePath, fileSize, modTime );
             --m_tasksCounter;
-        } );
+        } ) );
 }
 
 void FileDatabase::addFileImpl( ELockType inLockType,
@@ -1057,7 +1035,6 @@ FileDatabase::~FileDatabase()
     m_update = false;
     m_cachedFileInserting.waitForCompletion();
 
-    m_deleteRemnantsDone.get();
 #if DO_NO_USE_SQLITE_MTX
     sqlite3_close( m_db );
 #else   // DO_NO_USE_SQLITE_MTX

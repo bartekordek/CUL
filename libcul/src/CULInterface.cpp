@@ -13,11 +13,6 @@
 
 #include "CUL/STL_IMPORTS/STD_iostream.hpp"
 #include "CUL/STL_IMPORTS/STD_new.hpp"
-#include "CUL/STL_IMPORTS/STD_memory_resource.hpp"
-
-static std::array<std::byte, 8192> g_bufferBlocks;
-static std::pmr::monotonic_buffer_resource g_buffer_src( &g_bufferBlocks, sizeof( g_bufferBlocks ) );
-static std::pmr::vector<void*> g_allocatedBlocks( &g_buffer_src );
 
 static CUL::LOG::ILogger* g_logger = nullptr;
 

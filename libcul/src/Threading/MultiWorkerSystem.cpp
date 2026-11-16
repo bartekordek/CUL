@@ -43,10 +43,6 @@ MultiWorkerSystem::MultiWorkerSystem()
     g_maxQueuedTasks[static_cast<std::size_t>( EPriority::Medium )] = std::pow( 2u, 14u );
     g_maxQueuedTasks[static_cast<std::size_t>( EPriority::High )] = 4096u;
 
-    m_sleepMapping[EPriority::High] = 0;
-    m_sleepMapping[EPriority::Medium] = 1;
-    m_sleepMapping[EPriority::Low] = 2;
-
     CUL::ThreadUtil::getInstance().registerObserver( this );
 
     addWorker( EPriority::High );

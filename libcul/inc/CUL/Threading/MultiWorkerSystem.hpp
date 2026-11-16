@@ -79,8 +79,6 @@ private:
     mutable std::array<std::deque<ITask*>, (size_t)EPriority::COUNT> m_tasksArray;
     mutable std::array<std::mutex, (size_t)EPriority::COUNT> m_tasksMtxs;
 
-    std::unordered_map<EPriority, int> m_sleepMapping;
-
     // void updateWorkerStatus( const std::vector<StringWr>& in );
     // void fetchWorkerStatus();
     // std::vector<StringWr> m_workerStatus;

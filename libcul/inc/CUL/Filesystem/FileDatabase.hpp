@@ -12,12 +12,9 @@
 #include "CUL/STL_IMPORTS/STD_unordered_map.hpp"
 #include "CUL/STL_IMPORTS/STD_optional.hpp"
 #include "CUL/STL_IMPORTS/STD_vector.hpp"
-#include "CUL/STL_IMPORTS/STD_future.hpp"
 #include <CUL/STL_IMPORTS/STD_map.hpp>
 
 struct sqlite3;
-
-struct ListAndApi;
 
 namespace CUL
 {
@@ -183,11 +180,8 @@ private:
     Path m_databasePath{ CUL_STR( "FilesList_Linux.db" ) };
 #endif  // defined(CUL_WINDOWS)
 
-    StringWr m_currentFile;
     std::atomic<int64_t> m_current = 0;
     std::atomic<int64_t> m_rowCount = 0;
-
-    std::future<bool> m_deleteRemnantsDone;
 
     mutable std::unordered_map<std::int64_t, std::unordered_map<std::string, HashGroup>>
         m_cachedFiles;

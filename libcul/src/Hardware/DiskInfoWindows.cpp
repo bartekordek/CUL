@@ -40,12 +40,10 @@ void CDiskInfoWindows::findDiskMappings()
             di.Handle = hTarget;
             di.Name.push_back( currentDiskName );
             di.Name.push_back(':');
-#if CALCULATE_FROM_IDLE
-            di.IdleTime.setCapacity( howManySamples );
-#else // CALCULATE_FROM_IDLE
+#if !CALCULATE_FROM_IDLE
             di.BytesPerSecondRead.setCapacity( howManySamples );
             di.BytesPerSecondWrite.setCapacity( howManySamples );
-#endif // CALCULATE_FROM_IDLE
+#endif // !CALCULATE_FROM_IDLE
             di.PercentageUsed.setCapacity( howManySamples );
 
             m_diskHandles[di.Name] = di;
@@ -89,13 +87,11 @@ void CDiskInfoWindows::findDiskMappings()
         PdhCollectQueryData( diskQuery );
         PdhGetFormattedCounterValue( diskTime, PDH_FMT_DOUBLE, NULL, &diskTimeVal );
         const float percentage = diskTimeVal.doubleValue;
-        m_percentageAverage.add( percentage );
         LOG::ILogger::getInstance().logVariable( LOG::Severity::Info, "Disk: %f", percentage );
         ITimer::sleepMiliSeconds( 1000u );
     }
     PdhCloseQuery( diskQuery );
 #elif IOCTL
-    std::string diskInfo{ "D:" };
 
 //#define wszDrive "\\\\.\\PhysicalDrive1"
 //#define wszDrive2 "\\\\.\\D:"
@@ -253,8 +249,6 @@ void CDiskInfoWindows::collectData( DiskInfoValue& inOutDataValue )
         const std::int64_t previousQuery = inOutDataValue.CurrentQueryTime;
         const bool hasPrevious = inOutDataValue.HasPreviousSample;
 
-        inOutDataValue.PreviousIdle = previousIdle;
-        inOutDataValue.PreviousQueryTime = previousQuery;
         inOutDataValue.CurrentIdleTime = dp.IdleTime.QuadPart;
         inOutDataValue.CurrentQueryTime = dp.QueryTime.QuadPart;
         inOutDataValue.HasPreviousSample = true;
@@ -265,7 +259,6 @@ void CDiskInfoWindows::collectData( DiskInfoValue& inOutDataValue )
         {
             const std::int64_t deltaIdle = inOutDataValue.CurrentIdleTime - previousIdle;
             const std::int64_t deltaQuery = inOutDataValue.CurrentQueryTime - previousQuery;
-            inOutDataValue.Delta = deltaIdle;
             if( deltaQuery > 0 )
             {
                 double idleFraction = static_cast<double>( deltaIdle ) / static_cast<double>( deltaQuery );
@@ -279,7 +272,6 @@ void CDiskInfoWindows::collectData( DiskInfoValue& inOutDataValue )
                 }
 
                 const float busyPercent = static_cast<float>( 100.0 * ( 1.0 - idleFraction ) );
-                inOutDataValue.IdleTime.add( static_cast<float>( deltaIdle ) );
                 inOutDataValue.PercentageUsed.add( busyPercent );
             }
         }
@@ -403,12 +395,10 @@ void CDiskInfoWindows::onSampleWindowChanged()
     for( auto& [name, diskInfo] : m_diskHandles )
     {
         (void)name;
-#if CALCULATE_FROM_IDLE
-        diskInfo.IdleTime.setCapacity( howManySamples );
-#else // CALCULATE_FROM_IDLE
+#if !CALCULATE_FROM_IDLE
         diskInfo.BytesPerSecondRead.setCapacity( howManySamples );
         diskInfo.BytesPerSecondWrite.setCapacity( howManySamples );
-#endif // CALCULATE_FROM_IDLE
+#endif // !CALCULATE_FROM_IDLE
         diskInfo.PercentageUsed.setCapacity( howManySamples );
     }
 }

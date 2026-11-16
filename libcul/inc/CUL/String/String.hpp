@@ -221,7 +221,6 @@ private:
     std::int32_t m_size{ 0u };
     std::array<UnderlyingChar, SSO_Size> m_staticValue{};
     UnderlyingChar* m_dynamicValue{ nullptr };
-    bool m_isBinary{ false };
 
 #if CUL_USE_WCHAR
     mutable char* m_temp{ nullptr };

@@ -357,7 +357,6 @@ void Time::setTimeNs( std::int64_t ns )
 void Time::setTimeSec( std::time_t timeConverted )
 {
     ProfilerScope( "Time::setTimeSec" );
-    m_asEpoch = static_cast<decltype( m_asEpoch )>( timeConverted );
 
     const auto tm = localtime_xp( &timeConverted );
 
@@ -377,7 +376,7 @@ void Time::setTimeSec( std::time_t timeConverted )
 void Time::fromEpoch( std::uint64_t inSinceEpoch )
 {
     ProfilerScope( "Time::fromEpoch" );
-    m_asEpoch = inSinceEpoch;
+    setTimeSec( static_cast<std::time_t>( inSinceEpoch ) );
 }
 
 void Time::updateString() const

@@ -111,7 +111,6 @@ private:
     float m_ns{ 0.f };
     std::unique_ptr<jed_utils::datetime> m_dateTime;
     mutable StringWr m_asString;
-    std::uint64_t m_asEpoch;
 
     bool m_initialized{ true };
     std::future<void> m_initializedFuture;

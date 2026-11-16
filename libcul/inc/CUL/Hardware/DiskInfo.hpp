@@ -2,7 +2,6 @@
 
 #include "CUL/Threading/ThreadWrap.hpp"
 #include <CUL/Messaging/FSMessages.hpp>
-#include "CUL/Math/VariableWithAverageValue.hpp"
 #include <CUL/GenericUtils/NonCopyable.hpp>
 #include <CUL/STL_IMPORTS/STD_memory.hpp>
 #include <CUL/STL_IMPORTS/STD_shared_mutex.hpp>
@@ -71,7 +70,6 @@ private:
     std::uint32_t m_poolIntervalMs{ DefaultPoolIntervalMs };
     ThreadWrapper m_mainThread;
     ThreadWrapper m_debugInfoThread;
-    MATH::VariableWithAverageValue m_percentageAverage;
 
     std::unordered_map<StringWr, FileInfoContainer> m_filesInfos;
     mutable std::shared_mutex m_filesInfosMtx;

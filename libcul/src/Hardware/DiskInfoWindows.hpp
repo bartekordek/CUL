@@ -35,13 +35,9 @@ struct DiskInfoValue
     void* Handle{ nullptr };
     std::string Name;
 #if CALCULATE_FROM_IDLE
-    std::int64_t PreviousIdle{ 0 };
     std::int64_t CurrentIdleTime{ 0 };
-    std::int64_t PreviousQueryTime{ 0 };
     std::int64_t CurrentQueryTime{ 0 };
     bool HasPreviousSample{ false };
-    std::int64_t Delta{ 0 };
-    VWAV IdleTime;
     VWAV PercentageUsed;
 #else // CALCULATE_FROM_IDLE
     SDiskInfo Last;
