@@ -54,33 +54,19 @@ set( CUL_DEPS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps )
 # Add sub directories
 add_subdirectory( ${CUL_DEPS_PATH} )
 
-add_subdirectory( ${CUL_DEPS_PATH}/boost/assert )
-set_property(TARGET boost_assert PROPERTY FOLDER "deps/boost")
+# Boost 1.92.0 modular stack (only modules used by CUL + Asio networking core).
+# Pin: boost-1.92.0 on each deps/boost/* submodule.
+set( BOOST_USE_MODULES OFF CACHE BOOL "Disable Boost C++ modules" FORCE )
 
+# Foundation
 add_subdirectory( ${CUL_DEPS_PATH}/boost/config )
 set_property(TARGET boost_config PROPERTY FOLDER "deps/boost")
-
-add_subdirectory( ${CUL_DEPS_PATH}/boost/container_hash )
-set_property(TARGET boost_container_hash PROPERTY FOLDER "deps/boost")
-
-add_subdirectory( ${CUL_DEPS_PATH}/boost/core )
-set_property(TARGET boost_core PROPERTY FOLDER "deps/boost")
-
-add_subdirectory( ${CUL_DEPS_PATH}/boost/describe )
-set_property(TARGET boost_describe PROPERTY FOLDER "deps/boost")
-
-add_subdirectory( ${CUL_DEPS_PATH}/boost/mp11 )
-set_property(TARGET boost_mp11 PROPERTY FOLDER "deps/boost")
 
 add_subdirectory( ${CUL_DEPS_PATH}/boost/predef )
 set_property(TARGET boost_predef PROPERTY FOLDER "deps/boost")
 
-add_subdirectory( ${CUL_DEPS_PATH}/boost/preprocessor )
-set_property(TARGET boost_preprocessor PROPERTY FOLDER "deps/boost")
-
-add_subdirectory( ${CUL_DEPS_PATH}/boost/stacktrace )
-set_property(TARGET boost_stacktrace PROPERTY FOLDER "deps/boost")
-set_property(TARGET boost_stacktrace_basic PROPERTY FOLDER "deps/boost")
+add_subdirectory( ${CUL_DEPS_PATH}/boost/assert )
+set_property(TARGET boost_assert PROPERTY FOLDER "deps/boost")
 
 add_subdirectory( ${CUL_DEPS_PATH}/boost/static_assert )
 set_property(TARGET boost_static_assert PROPERTY FOLDER "deps/boost")
@@ -88,19 +74,88 @@ set_property(TARGET boost_static_assert PROPERTY FOLDER "deps/boost")
 add_subdirectory( ${CUL_DEPS_PATH}/boost/throw_exception )
 set_property(TARGET boost_throw_exception PROPERTY FOLDER "deps/boost")
 
-add_subdirectory( ${CUL_DEPS_PATH}/boost/type_traits )
-set_property(TARGET boost_type_traits PROPERTY FOLDER "deps/boost")
+add_subdirectory( ${CUL_DEPS_PATH}/boost/core )
+set_property(TARGET boost_core PROPERTY FOLDER "deps/boost")
+
+add_subdirectory( ${CUL_DEPS_PATH}/boost/mp11 )
+set_property(TARGET boost_mp11 PROPERTY FOLDER "deps/boost")
+
+add_subdirectory( ${CUL_DEPS_PATH}/boost/describe )
+set_property(TARGET boost_describe PROPERTY FOLDER "deps/boost")
+
+add_subdirectory( ${CUL_DEPS_PATH}/boost/container_hash )
+set_property(TARGET boost_container_hash PROPERTY FOLDER "deps/boost")
 
 add_subdirectory( ${CUL_DEPS_PATH}/boost/winapi )
 set_property(TARGET boost_winapi PROPERTY FOLDER "deps/boost")
 
-set_property(TARGET boost_stacktrace_basic PROPERTY FOLDER "deps/boost")
-set_property(TARGET boost_stacktrace_from_exception PROPERTY FOLDER "deps/boost")
-set_property(TARGET boost_stacktrace_noop PROPERTY FOLDER "deps/boost")
-
+# Stacktrace (CUL assert / MemoryTracker)
+add_subdirectory( ${CUL_DEPS_PATH}/boost/stacktrace )
+set_property(TARGET boost_stacktrace PROPERTY FOLDER "deps/boost")
+if( TARGET boost_stacktrace_dump )
+    set_property(TARGET boost_stacktrace_dump PROPERTY FOLDER "deps/boost")
+endif()
+if( TARGET boost_stacktrace_basic )
+    set_property(TARGET boost_stacktrace_basic PROPERTY FOLDER "deps/boost")
+endif()
+if( TARGET boost_stacktrace_noop )
+    set_property(TARGET boost_stacktrace_noop PROPERTY FOLDER "deps/boost")
+endif()
+if( TARGET boost_stacktrace_from_exception )
+    set_property(TARGET boost_stacktrace_from_exception PROPERTY FOLDER "deps/boost")
+endif()
+if( TARGET boost_stacktrace_addr2line )
+    set_property(TARGET boost_stacktrace_addr2line PROPERTY FOLDER "deps/boost")
+endif()
+if( TARGET boost_stacktrace_backtrace )
+    set_property(TARGET boost_stacktrace_backtrace PROPERTY FOLDER "deps/boost")
+endif()
 if (MSVC)
-    set_property(TARGET boost_stacktrace_windbg PROPERTY FOLDER "deps/boost")
-    set_property(TARGET boost_stacktrace_windbg_cached PROPERTY FOLDER "deps/boost")
+    if( TARGET boost_stacktrace_windbg )
+        set_property(TARGET boost_stacktrace_windbg PROPERTY FOLDER "deps/boost")
+    endif()
+    if( TARGET boost_stacktrace_windbg_cached )
+        set_property(TARGET boost_stacktrace_windbg_cached PROPERTY FOLDER "deps/boost")
+    endif()
+endif()
+
+# Asio core deps (header-only)
+add_subdirectory( ${CUL_DEPS_PATH}/boost/compat )
+set_property(TARGET boost_compat PROPERTY FOLDER "deps/boost")
+
+add_subdirectory( ${CUL_DEPS_PATH}/boost/variant2 )
+set_property(TARGET boost_variant2 PROPERTY FOLDER "deps/boost")
+
+add_subdirectory( ${CUL_DEPS_PATH}/boost/system )
+set_property(TARGET boost_system PROPERTY FOLDER "deps/boost")
+
+add_subdirectory( ${CUL_DEPS_PATH}/boost/align )
+set_property(TARGET boost_align PROPERTY FOLDER "deps/boost")
+
+# Asio CMake also defines deadline_timer / spawn backends that need date_time + context.
+# Those backends are not vendored; stubs keep configure working. Link Boost::asio_core for sockets.
+if( NOT TARGET Boost::date_time )
+    add_library( boost_date_time INTERFACE )
+    add_library( Boost::date_time ALIAS boost_date_time )
+    set_property(TARGET boost_date_time PROPERTY FOLDER "deps/boost")
+endif()
+if( NOT TARGET Boost::context )
+    add_library( boost_context INTERFACE )
+    add_library( Boost::context ALIAS boost_context )
+    set_property(TARGET boost_context PROPERTY FOLDER "deps/boost")
+endif()
+
+add_subdirectory( ${CUL_DEPS_PATH}/boost/asio )
+set_property(TARGET boost_asio_core PROPERTY FOLDER "deps/boost")
+set_property(TARGET boost_asio_deadline_timer PROPERTY FOLDER "deps/boost")
+set_property(TARGET boost_asio_spawn PROPERTY FOLDER "deps/boost")
+set_property(TARGET boost_asio PROPERTY FOLDER "deps/boost")
+
+if( WIN32 )
+    cmake_policy( PUSH )
+    cmake_policy( SET CMP0079 NEW )
+    target_link_libraries( boost_asio_core INTERFACE ws2_32 mswsock )
+    cmake_policy( POP )
 endif()
 
 set(PATH_TO_APPLICATION_ICON ${CUL_DEPS_PATH}/CPP-DateTime-library/product.ico CACHE STRING "necessary value" FORCE)

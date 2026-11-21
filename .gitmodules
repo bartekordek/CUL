@@ -38,18 +38,12 @@
 [submodule "deps/boost/core"]
 	path = deps/boost/core
 	url = git@github.com:boostorg/core.git
-[submodule "deps/boost/preprocessor"]
-	path = deps/boost/preprocessor
-	url = git@github.com:boostorg/preprocessor.git
 [submodule "deps/boost/static_assert"]
 	path = deps/boost/static_assert
 	url = git@github.com:boostorg/static_assert.git
 [submodule "deps/boost/throw_exception"]
 	path = deps/boost/throw_exception
 	url = git@github.com:boostorg/throw_exception.git
-[submodule "deps/boost/type_traits"]
-	path = deps/boost/type_traits
-	url = git@github.com:boostorg/type_traits.git
 [submodule "deps/boost/container_hash"]
 	path = deps/boost/container_hash
 	url = git@github.com:boostorg/container_hash.git
@@ -103,3 +97,18 @@
 [submodule "deps/boost/mp11"]
 	path = deps/boost/mp11
 	url = git@github.com:boostorg/mp11.git
+[submodule "deps/boost/asio"]
+	path = deps/boost/asio
+	url = git@github.com:boostorg/asio.git
+[submodule "deps/boost/align"]
+	path = deps/boost/align
+	url = git@github.com:boostorg/align.git
+[submodule "deps/boost/system"]
+	path = deps/boost/system
+	url = git@github.com:boostorg/system.git
+[submodule "deps/boost/compat"]
+	path = deps/boost/compat
+	url = git@github.com:boostorg/compat.git
+[submodule "deps/boost/variant2"]
+	path = deps/boost/variant2
+	url = git@github.com:boostorg/variant2.git
