@@ -20,6 +20,7 @@ message( "[cul test] Simulate: ${CMAKE_CXX_SIMULATE_ID}" )
 if (MSVC)
     add_compile_options()
     add_compile_options( /MP )
+    add_compile_definitions( _WIN32_WINNT=0x0A00 ) # Windows 10
 else()
     if(CMAKE_CXX_SIMULATE_ID MATCHES "MSVC")
     else()
@@ -66,8 +67,8 @@ else()
     )
 endif()
 
-target_link_libraries(${EXEC_DYNAMIC} cul_dynamic)
-target_link_libraries(${EXEC_STATIC} cul_static )
+target_link_libraries(${EXEC_DYNAMIC} PRIVATE cul_dynamic Boost::asio_core)
+target_link_libraries(${EXEC_STATIC} PRIVATE cul_static Boost::asio_core)
 
 target_include_directories(${EXEC_DYNAMIC} PRIVATE inc)
 target_include_directories(${EXEC_DYNAMIC} PRIVATE src)

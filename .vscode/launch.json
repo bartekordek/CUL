@@ -92,7 +92,7 @@
             "name": "[LocalDiscovery][Debug][Win64]",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\Build_Win64\\Debug\\libculTests_static.exe",
+            "program": "${workspaceFolder}\\Build_Win64\\Debug\\LocalDiscovery_static.exe",
             "cwd": "${workspaceRoot}/runDir",
             "symbolSearchPath": "${workspaceRoot}/runDir",
             "args": [
@@ -101,6 +101,7 @@
                 "-h",
                 "900"
             ],
+            "console": "integratedTerminal",
             "externalConsole": false,
             "logging": {
                 "moduleLoad": false,
