@@ -183,3 +183,4 @@ cul_silence_warnings_for_deps_dir( ${CUL_DEPS_PATH} )
 
 add_subdirectory( libcul )
 add_subdirectory( libculTests )
+add_subdirectory(examples/LocalDiscovery)

@@ -129,6 +129,7 @@ set(DEPENDENCIES
     PRIVATE nfd
     PUBLIC datetime
     PRIVATE nlohmann_json_system
+    PRIVATE udp-discovery
 )
 
 if(MSVC)
