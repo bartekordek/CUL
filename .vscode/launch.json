@@ -87,6 +87,25 @@
                 "moduleLoad": false,
                 "trace": true,
             }
-        }
+        },
+        {
+            "name": "[LocalDiscovery][Debug][Win64]",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\Build_Win64\\Debug\\libculTests_static.exe",
+            "cwd": "${workspaceRoot}/runDir",
+            "symbolSearchPath": "${workspaceRoot}/runDir",
+            "args": [
+                "-w",
+                "1680",
+                "-h",
+                "900"
+            ],
+            "externalConsole": false,
+            "logging": {
+                "moduleLoad": false,
+                "trace": true,
+            }
+        },
     ]
 }
