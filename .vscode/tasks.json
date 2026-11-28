@@ -211,6 +211,23 @@
             }
         },
         {
+            "label": "[Run][LocalDiscovery_static][Win64]",
+            "type": "shell",
+            "command": "${workspaceFolder}/Build_Win64/Debug/LocalDiscovery_static.exe",
+            "options": {
+                "cwd": "${workspaceFolder}/runDir"
+            },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "dedicated",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
             "label": "[Run][libculTets_static][Win64]",
             "type": "shell",
             "command": "${workspaceFolder}/Build_Win64/Debug/libculTests_static.exe",
