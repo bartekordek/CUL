@@ -1,92 +1,77 @@
-#include "CUL/Network/P2P.hpp"
+#include "CUL/Network/CurrentInstance.hpp"
 
-#include <boost/asio.hpp>
-
+#include <atomic>
 #include <chrono>
+#include <csignal>
 #include <iostream>
+#include <mutex>
 #include <string>
 #include <thread>
 
+// Run two (or more) copies of this example on the same LAN / machine. Each instance
+// announces itself via UDP discovery, then sends a binary Hello frame over TCP to
+// every peer it finds. Press Enter or Ctrl+C to quit.
+
 namespace
 {
-constexpr std::uint16_t kDataPort = 13000;
+std::atomic<bool> g_stop{ false };
+std::mutex g_coutMutex;
 
-using boost::asio::ip::tcp;
-
-void runServer( const std::string& myId )
+void onSignal( int )
 {
-    boost::asio::io_context io;
-    tcp::acceptor acceptor( io, tcp::endpoint( tcp::v4(), kDataPort ) );
-    std::cout << "[server] " << myId << " listening on " << kDataPort << std::endl;
-
-    tcp::socket socket( io );
-    acceptor.accept( socket );
-
-    boost::asio::streambuf buffer;
-    boost::asio::read_until( socket, buffer, '\n' );
-    std::istream input( &buffer );
-    std::string line;
-    std::getline( input, line );
-
-    std::cout << "[server] received: " << line << std::endl;
+    g_stop = true;
 }
 
-void runClient( const std::string& myId, const Network::PeerInfo& peer )
+void log( const std::string& line )
 {
-    boost::asio::io_context io;
-    tcp::socket socket( io );
-
-    // Peer may not be listening yet — retry briefly.
-    boost::system::error_code ec;
-    for( int attempt = 0; attempt < 40; ++attempt )
-    {
-        socket = tcp::socket( io );
-        socket.connect( { boost::asio::ip::make_address( peer.address ), kDataPort }, ec );
-        if( !ec )
-            break;
-        std::this_thread::sleep_for( std::chrono::milliseconds( 250 ) );
-    }
-
-    if( ec )
-    {
-        std::cout << "[client] connect failed: " << ec.message() << std::endl;
-        return;
-    }
-
-    const std::string msg = "hello from " + myId + "\n";
-    boost::asio::write( socket, boost::asio::buffer( msg ) );
-    std::cout << "[client] sent to " << peer.instanceId << " @ " << peer.address << ":"
-              << kDataPort << std::endl;
+    std::lock_guard<std::mutex> lock( g_coutMutex );
+    std::cout << line << std::endl;
 }
-
 }  // namespace
 
 int main()
 {
-    Network::P2P p2p;
-    p2p.start();
-    std::cout << "I am " << p2p.instanceId() << " (discovery). Waiting for peers..."
-              << std::endl;
+    std::signal( SIGINT, onSignal );
+    std::signal( SIGTERM, onSignal );
 
-    Network::PeerInfo peer;
-    while( true )
+    CUL::CCurrentInstance::Callbacks callbacks;
+    callbacks.onPeerDiscovered = []( const Network::PeerInfo& peer )
     {
-        std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
-        if( !p2p.hasOtherInstances() )
-            continue;
+        log( "[discovered] " + peer.instanceId + " at " + peer.address + ":" +
+             std::to_string( peer.port ) );
+    };
+    callbacks.onHelloSent = []( const Network::PeerInfo& peer )
+    {
+        log( "[hello sent] -> " + peer.instanceId + " (" + peer.address + ":" +
+             std::to_string( peer.port ) + ")" );
+    };
+    callbacks.onHelloReceived = []( const std::string& id, const std::string& address )
+    {
+        log( "[hello received] <- " + id + " (from " + address + ")" );
+    };
+    callbacks.onError = []( const std::string& error )
+    {
+        log( "[error] " + error );
+    };
 
-        peer = p2p.peers().front();
-        std::cout << "Found " << peer.instanceId << " at " << peer.address << ":" << peer.port
-                  << std::endl;
-        break;
-    }
+    CUL::CCurrentInstance instance( callbacks );
 
-    // Lowest instance id becomes the TCP server so two copies on one machine work.
-    if( p2p.instanceId() < peer.instanceId )
-        runServer( p2p.instanceId() );
-    else
-        runClient( p2p.instanceId(), peer );
+    log( "This instance: " + instance.instanceId() );
+    log( "Waiting for peers... press Enter or Ctrl+C to quit." );
 
-    std::cout << "Done." << std::endl;
+    // getline blocks, so it lives on its own thread; main just watches the stop flag.
+    std::thread(
+        []
+        {
+            std::string line;
+            std::getline( std::cin, line );
+            g_stop = true;
+        } )
+        .detach();
+
+    while( !g_stop ) std::this_thread::sleep_for( std::chrono::milliseconds( 100 ) );
+
+    log( "Shutting down." );
+    instance.stop();
     return 0;
 }

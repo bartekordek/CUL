@@ -1,6 +1,9 @@
 #include "CUL/Network/P2P.hpp"
 
+#include "CUL/Network/Peer.hpp"
+
 #include <cstdio>
+#include <cstdlib>
 #include <list>
 #include <random>
 
@@ -12,7 +15,10 @@ namespace Network
 namespace
 {
 
+// Discovery payload: "inst:<id>;tcp:<port>"  (";tcp:<port>" optional)
+// EXTENSION: append further ";key:value" fields for new announced properties.
 const std::string kIdPrefix = "inst:";
+const std::string kTcpTag = ";tcp:";
 
 std::string makeInstanceId()
 {
@@ -45,8 +51,17 @@ struct P2P::Impl
     std::uint16_t port;
     std::uint32_t appId;
     std::string id = makeInstanceId();
+    std::uint16_t dataPort = 0;
     bool running = false;
     udpdiscovery::Peer peer;
+
+    std::string userData() const
+    {
+        std::string s = kIdPrefix + id;
+        if( dataPort != 0 )
+            s += kTcpTag + std::to_string( dataPort );
+        return s;
+    }
 };
 
 P2P::P2P( std::uint16_t port, std::uint32_t appId ) : impl_( new Impl )
@@ -70,9 +85,18 @@ void P2P::start()
     params.set_application_id( impl_->appId );
     params.set_can_discover( true );
     params.set_can_be_discovered( true );
+    params.set_send_timeout_ms( 1000 );  // announce every second (library default: 5s)
+    params.set_discovered_peer_ttl_ms( 5000 );
 
-    impl_->peer.Start( params, kIdPrefix + impl_->id );
-    impl_->running = true;
+    // On failure the library reports on stderr and we stay "not running".
+    impl_->running = impl_->peer.Start( params, impl_->userData() );
+}
+
+void P2P::setDataPort( std::uint16_t tcpPort )
+{
+    impl_->dataPort = tcpPort;
+    if( impl_->running )
+        impl_->peer.SetUserData( impl_->userData() );
 }
 
 void P2P::stop()
@@ -97,13 +121,24 @@ std::vector<PeerInfo> P2P::peers() const
             continue;
 
         std::string id = data.substr( kIdPrefix.size() );
-        if( id == impl_->id )
-            continue;  // that's us
+        std::uint16_t tcpPort = 0;
+        const auto tagPos = id.find( kTcpTag );
+        if( tagPos != std::string::npos )
+        {
+            const std::string portStr = id.substr( tagPos + kTcpTag.size() );
+            id.resize( tagPos );
+            const unsigned long parsed = std::strtoul( portStr.c_str(), nullptr, 10 );
+            if( parsed > 0 && parsed <= 65535 )
+                tcpPort = static_cast<std::uint16_t>( parsed );
+        }
+
+        if( id.empty() || id == impl_->id )
+            continue;  // malformed, or that's us
 
         PeerInfo info;
         info.instanceId = id;
         info.address = ipToString( d.ip_port().ip() );
-        info.port = d.ip_port().port();
+        info.port = tcpPort != 0 ? tcpPort : CUL::dataPortFor( id );
         out.push_back( std::move( info ) );
     }
     return out;

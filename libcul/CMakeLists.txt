@@ -130,6 +130,7 @@ set(DEPENDENCIES
     PUBLIC datetime
     PRIVATE nlohmann_json_system
     PRIVATE udp-discovery
+    PUBLIC Boost::asio_core
 )
 
 if(MSVC)

@@ -67,8 +67,8 @@ else()
     )
 endif()
 
-target_link_libraries(${EXEC_DYNAMIC} PRIVATE cul_dynamic Boost::asio_core)
-target_link_libraries(${EXEC_STATIC} PRIVATE cul_static Boost::asio_core)
+target_link_libraries(${EXEC_DYNAMIC} PRIVATE cul_dynamic)
+target_link_libraries(${EXEC_STATIC} PRIVATE cul_static)
 
 target_include_directories(${EXEC_DYNAMIC} PRIVATE inc)
 target_include_directories(${EXEC_DYNAMIC} PRIVATE src)

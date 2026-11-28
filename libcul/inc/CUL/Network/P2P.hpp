@@ -13,6 +13,9 @@ namespace Network
 struct PeerInfo
 {
     std::string address;  // dotted IPv4, e.g. "192.168.1.20"
+    // TCP *data* port the peer listens on (taken from the discovery payload
+    // "inst:<id>;tcp:<port>"; falls back to CUL::dataPortFor(instanceId) when the
+    // peer did not announce one). NOT the UDP discovery port.
     std::uint16_t port = 0;
     std::string instanceId;
 };
@@ -27,6 +30,13 @@ public:
 
     P2P( const P2P& ) = delete;
     P2P& operator=( const P2P& ) = delete;
+
+    // TCP data port announced to other instances. Call before start() (or at any
+    // time; the announcement is refreshed). 0 = not announced (peers fall back to the
+    // hashed port).
+    // EXTENSION: more announced fields (name, capabilities) can be added to the
+    // discovery payload here and parsed in P2P::peers().
+    CULLib_API void setDataPort( std::uint16_t tcpPort );
 
     CULLib_API void start();  // begins announcing and listening (background threads)
     CULLib_API void stop();
